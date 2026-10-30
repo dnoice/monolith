@@ -319,10 +319,22 @@
 
 /* settings */
 .keys{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:0;font-size:13px}
-.keys dt{font-family:var(--font-mono);font-size:12px;color:var(--md-on-surface);background:var(--md-surface-3);padding:2px 8px;border-radius:6px;justify-self:start}
+.keys dt{font-family:var(--font-mono);font-size:12px;color:var(--md-on-surface);background:var(--md-surface-3);padding:2px 8px;border-radius:6px;justify-self:start;align-self:start}
 .keys dd{margin:0;color:var(--md-on-surface-var)}
 .about{font-size:12.5px;color:var(--md-on-surface-var)}
 .about a{color:var(--md-secondary)}
+/* Settings in five cards, as Play is built: a choice carries a sentence-case label like a switch
+   row's, the blocks of one card part at a hairline, and the references fold away under the help */
+.set-item{display:flex;flex-direction:column;gap:8px;min-width:0}
+.set-lab{font-size:14px;color:var(--md-on-surface)}
+.card > .set-item + .set-item,.set-about{padding-top:12px;border-top:1px solid var(--md-outline-var)}
+.set-more{margin:0 -16px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
+.set-more > summary{display:flex;align-items:center;min-height:44px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
+.set-more > .keys,.set-more-body{padding-bottom:14px}
+.set-more-body{display:flex;flex-direction:column;gap:10px}
+.set-more + :is(.set-more,.set-about){margin-top:-12px}
+.set-about{display:flex;flex-direction:column;gap:2px}
+:root[data-skin="monolith"] :is(.card > .set-item + .set-item,.set-about,.set-more){border-top-color:var(--mo-rule)}
 
 /* move list (always present) */
 .moves-card{position:relative;flex:0 0 auto;height:var(--moves-h,auto);display:flex;flex-direction:column;gap:8px;max-height:42%;min-height:180px;padding-left:20px;padding-right:var(--gutter-r);padding-block:14px;border-top:1px solid var(--md-outline-var);background:var(--md-surface)}

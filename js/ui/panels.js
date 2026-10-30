@@ -411,6 +411,7 @@ export function init() {
   // Settings
   onRender(() => {
     $('#set-sound').checked = prefs.sound; $('#set-legal').checked = prefs.legal; $('#set-explore').checked = prefs.explore !== false; $('#set-coords').checked = prefs.coords;
+    $('#set-coach').checked = coachOn(); $('#set-eval').checked = prefs.evalOn; $('#set-eval').disabled = !engine.ready;
     for (const b of document.querySelectorAll('[data-speed]')) radio(b, b.dataset.speed === prefs.speed);
     for (const b of document.querySelectorAll('[data-tips]')) radio(b, b.dataset.tips === prefs.tips);
     const learnedCount = TIP_IDS.filter(id => prefs.learned[id]).length;

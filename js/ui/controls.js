@@ -134,6 +134,8 @@ export function init() {
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
   for (const b of document.querySelectorAll('[data-speed]')) b.addEventListener('click', () => { prefs.speed = b.dataset.speed; savePrefs(); applyPrefs(); render(); });
+  // Settings' Coach comments and Evaluation bar are the Coach card's switches, so each runs theirs
+  for (const [set, own] of [['#set-coach', '#coach-switch'], ['#set-eval', '#eval-switch']]) $(set).addEventListener('change', e => { const s = $(own); s.checked = e.target.checked; s.dispatchEvent(new Event('change')); });
   $('#engine-lines').open = prefs.engineOpen !== undefined ? !!prefs.engineOpen : !!prefs.evalOn;
   $('#engine-lines').addEventListener('toggle', e => { prefs.engineOpen = e.target.open; savePrefs(); });
   $('#coach-switch').addEventListener('change', e => { prefs.coach = e.target.checked; savePrefs(); render(); if (prefs.coach) coachKick(); });
