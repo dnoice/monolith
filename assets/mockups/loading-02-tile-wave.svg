@@ -126,7 +126,7 @@
   </g>
   <g id="copy">
     <text id="copy-wordmark" x="800" y="625.62" style="font-family:Inter, 'Segoe UI', system-ui, sans-serif;font-size:44px;font-weight:600;fill:#e8e6df;stroke:none;text-anchor:middle;letter-spacing:18.48px" xml:space="preserve">MONOLITH</text>
-    <text id="copy-tagline" x="800" y="666.97" style="font-family:Inter, 'Segoe UI', system-ui, sans-serif;font-size:14px;font-weight:500;fill:#9a9b9f;stroke:none;text-anchor:middle;letter-spacing:5.04px" xml:space="preserve">MARBLE VS. OBSIDIAN  ·  GOTHIC CATHEDRAL</text>
+    <text id="copy-tagline" x="800" y="666.97" style="font-family:Inter, 'Segoe UI', system-ui, sans-serif;font-size:14px;font-weight:500;fill:#9a9b9f;stroke:none;text-anchor:middle;letter-spacing:5.04px" xml:space="preserve">MARBLE VS. OBSIDIAN  ·  CATHEDRAL</text>
     <g id="bar">
       <rect id="bar-track" x="620" y="760" width="360" height="2" style="fill:#303133;stroke:none" />
       <rect id="bar-fill" x="620" y="760" width="360" height="2" style="fill:#d9b84a;stroke:none;animation-duration:2.60s;animation-delay:0.20s" class="bar-fill" />

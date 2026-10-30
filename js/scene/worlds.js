@@ -184,8 +184,8 @@ export const desiredWorld = () => prefs.world !== 'auto' ? prefs.world : ['analy
 export function setWorld(name, animate = true) {
   if (name === app.worldName && Math.abs(worldK - (name === 'monolith' ? 1 : 0)) < 1e-3) return;
   app.worldName = name; document.documentElement.dataset.skin = name;
-  $('#brand-sub').textContent = name === 'monolith' ? `MONOLITH instrument · ${engineFamily().family}` : 'Marble vs. obsidian · Gothic cathedral';
-  canvas.setAttribute('aria-label', name === 'monolith' ? '3D chess board in the MONOLITH instrument' : '3D chess board inside a Gothic cathedral');
+  $('#brand-sub').textContent = name === 'monolith' ? `MONOLITH instrument · ${engineFamily().family}` : 'Marble vs. obsidian · Cathedral';
+  canvas.setAttribute('aria-label', name === 'monolith' ? '3D chess board in the MONOLITH instrument' : '3D chess board inside a cathedral');
   const to = name === 'monolith' ? 1 : 0, from = worldK, gen = ++worldGen, fade = $('#stage-fade');
   const pose = WORLD[name].pose, p0 = cam.phi, d0 = cam.dist;
   if (!animate || reduceMotion || prefs.speed === 'minimal') {

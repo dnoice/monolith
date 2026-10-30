@@ -75,7 +75,7 @@ a hybrid app … get all of the applicable components built and disregard anythi
 work because of the stack differences. The svg plates are reference only, we still need to use ray
 lighting and other advanced techniques to pull off the other layers now!"
 
-**Shape of the result.** One page, one board, two worlds. The Gothic cathedral holds the game
+**Shape of the result.** One page, one board, two worlds. The cathedral holds the game
 (Play, Position). MONOLITH holds the instrument (Analyze, Crucible). By default the world follows
 the destination; Settings can pin either. The plates' flat SVG layers are rebuilt as lit 3D objects
 and post-processed light on the real board.

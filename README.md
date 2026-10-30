@@ -93,9 +93,9 @@
 
 A playable 3D chess game and a chess analysis instrument on one board, in the browser.
 
-![A game against the computer in the Gothic cathedral: marble and obsidian pieces on the 3D board, the Coach's notes and the move list in the panel](assets/screenshots/01-play-cathedral.jpg)
+![A game against the computer in the cathedral: marble and obsidian pieces on the 3D board, the Coach's notes and the move list in the panel](assets/screenshots/01-play-cathedral.jpg)
 
-The **Gothic cathedral** holds the game: marble and obsidian pieces that idle, glide, hop, lunge and
+The **cathedral** holds the game: marble and obsidian pieces that idle, glide, hop, lunge and
 shatter, played against Stockfish 19 or a friend, with a Coach that reads every move. The
 **MONOLITH** world, whose name the app carries, holds the instrument: engine analysis drawn into the
 scene (a sub-surface move-value field, ballistic vectors, the Tactical X-Ray, a WDL ribbon) and the

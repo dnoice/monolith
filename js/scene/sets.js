@@ -28,7 +28,7 @@
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    The two worlds' sets on one turning rig: the Gothic cathedral (floor,
+    The two worlds' sets on one turning rig: the cathedral (floor,
     arcades, ribs, lancets, the rose window, candles) and MONOLITH (built,
     steel-edged monoliths over a mirror floor). The rig's yaw turns the
     world with the board.

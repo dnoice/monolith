@@ -117,7 +117,7 @@ const COMMANDS = [
   { cmd: ':coach', desc: 'Coach comments on or off (verdicts, threats, tips)', run: () => { prefs.coach = !coachOn(); savePrefs(); render(); if (prefs.coach) coachKick(); snack(prefs.coach ? 'Coach comments: on.' : 'Coach comments: off.'); }, when: yes },
   { cmd: ':eval', desc: 'Evaluation bar on or off', run: () => { prefs.evalOn = !prefs.evalOn; savePrefs(); render(); refreshAnalysis(); }, when: () => engine.ready || 'The engine is still loading' },
   { cmd: ':world auto', desc: 'World follows the destination (MONOLITH for Analyze and Crucible)', run: () => setWorldPref('auto'), when: yes },
-  { cmd: ':world cathedral', desc: 'Stay in the Gothic cathedral', run: () => setWorldPref('cathedral'), when: yes },
+  { cmd: ':world cathedral', desc: 'Stay in the cathedral', run: () => setWorldPref('cathedral'), when: yes },
   { cmd: ':world monolith', desc: 'Stay in MONOLITH', run: () => setWorldPref('monolith'), when: yes },
   { cmd: ':pillars monoliths', desc: 'MONOLITH pillars: the stele, rift and spire', run: () => setPillarsPref('monoliths'), when: yes },
   { cmd: ':pillars classic', desc: 'MONOLITH pillars: a Solomonic column between a Doric and a Tuscan', run: () => setPillarsPref('classic'), when: yes },

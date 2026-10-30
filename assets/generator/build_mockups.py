@@ -336,7 +336,7 @@ def build_loading_02(pal, suffix=""):
               tile_delay=lambda t, i: 0.1 + (t.centre[0] + t.centre[1]) / span * 1.2)
     copy = svg.g("copy")
     wordmark(copy, "copy", pal, W / 2, 610, 44)
-    tagline(copy, "copy", pal, W / 2, 662, "MARBLE VS. OBSIDIAN  ·  GOTHIC CATHEDRAL")
+    tagline(copy, "copy", pal, W / 2, 662, "MARBLE VS. OBSIDIAN  ·  CATHEDRAL")
     hairline_bar(copy, "bar", pal, W / 2 - 180, 760, 360, animate=True, duration=2.6, delay=0.2)
     status_line(copy, "copy-status", pal, W / 2, 810, "compiling shaders  ·  hdr · bloom · mirror floor")
     version_chip(svg, "version", pal, W - 40, H - 40)
@@ -490,7 +490,7 @@ def build_hero_01(pal, suffix=""):
     ana = cta.g("cta-analyze")
     ana.rect("cta-analyze-fill", x + 196, 700, 200, 56, blend(pal["ink"], pal["ground"], 0.08), rx=10)
     ana.text("cta-analyze-label", x + 296, 728, "Analyze", 20, pal["ink"], weight=500, anchor="middle")
-    tagline(copy, "copy", pal, x, 836, "MARBLE VS. OBSIDIAN  ·  GOTHIC CATHEDRAL", anchor="start")
+    tagline(copy, "copy", pal, x, 836, "MARBLE VS. OBSIDIAN  ·  CATHEDRAL", anchor="start")
     version_chip(svg, "version", pal, HERO_W - 60, HERO_H - 56, f"{APP_VERSION} · MIT")
     emit(svg, f"hero-01-mirror-floor{suffix}.svg",
          title=f"MONOLITH Hero 01 Mirror Floor ({pal['label']})",
