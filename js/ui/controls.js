@@ -69,9 +69,9 @@ import { engine } from '../game/engine.js';
 import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo, goLive,
-  offerDraw, openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, turning,
-  undo, viewedPly
+  analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo,
+  goLive, offerDraw, openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView,
+  startGame, turning, undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
@@ -146,14 +146,14 @@ export function init() {
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
   // the free board's line becomes the start of a game: the setup opens on it, Start game begins there
+  $('#btn-explore-play').addEventListener('click', () => { draft.from = true; openSetup(); });
+  $('#btn-from-clear').addEventListener('click', () => { draft.from = false; render(); });
   // the game record: PGN out (copy, a file) and in (the setup's Load a game), the FEN of the board
   $('#btn-pgn-copy').addEventListener('click', copyPgn);
   $('#btn-pgn-save').addEventListener('click', downloadPgn);
   $('#btn-fen-copy').addEventListener('click', copyFen);
   $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
   $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
-  $('#btn-explore-play').addEventListener('click', () => { draft.from = true; openSetup(); panelScroller().scrollTop = 0; });
-  $('#btn-from-clear').addEventListener('click', () => { draft.from = false; render(); });
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });

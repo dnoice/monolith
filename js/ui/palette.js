@@ -70,7 +70,8 @@ import { hideSnack, snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
 import {
-  analyzeGame, canOfferDraw, explore, exploreEnd, offerDraw, openSetup, setAutoFlip, setExplorePref, setOrientation, undo
+  analyzeGame, canOfferDraw, explore, exploreEnd, offerDraw, openSetup, setAutoFlip, setExplorePref, setOrientation,
+  undo
 } from '../game/flow.js';
 import { copyPgn, downloadPgn, openPgnLoad } from '../game/pgn.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';

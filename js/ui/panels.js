@@ -85,7 +85,8 @@ import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView, viewedPly
+  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView,
+  viewedPly
 } from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
