@@ -73,7 +73,7 @@ import { explore, exploreEnd, openSetup, setExplorePref, setOrientation, undo } 
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, coachOn, giveHint } from '../coach/notes.js';
 import { an, anGoToggle, anStopSearch, loadReference, xr } from './analyze.js';
-import { renderAnalyze } from './analyze-view.js';
+import { renderAnalyze, setBadgesPref } from './analyze-view.js';
 import { cr, crConfigError, crStartLive, crStopLive } from './crucible.js';
 import { boardOverride, crLeaveBoard } from './crucible-board.js';
 import { grFind, grOpen, grSearch } from './grimoire.js';
@@ -107,6 +107,9 @@ const COMMANDS = [
   { cmd: ':sprt start', desc: 'Start a live Crucible run with the settings in Crucible', run: () => { setTab('crucible'); crStartLive(); }, when: () => cr.live && cr.live.running ? 'A live run is already playing' : crConfigError() || true },
   { cmd: ':sprt stop', desc: 'Stop the live Crucible run', run: () => crStopLive('user'), when: () => !!(cr.live && cr.live.running) || 'No live run is playing' },
   { cmd: ':recorded', desc: 'Open the recorded gauntlet in Crucible', run: () => { cr.src = 'recorded'; prefs.cr.src = 'recorded'; savePrefs(); cr.view = 'deck'; crLeaveBoard(); setTab('crucible'); render(); }, when: yes },
+  /* instrument: source badges */
+  { cmd: ':badges short', desc: 'Short source badges: [SF] or [Runner], the full badge on hover', run: () => setBadgesPref('short'), when: () => prefs.badges !== 'short' || 'The badges are short already' },
+  { cmd: ':badges full', desc: 'Full source badges, such as [SF: MultiPV 5 · d26]', run: () => setBadgesPref('full'), when: () => prefs.badges === 'short' || 'The badges are full already' },
   { cmd: ':new', desc: 'New game setup', run: openSetup, when: yes },
   { cmd: ':flip', desc: 'Invert the board', run: () => setOrientation(Chess.other(app.orient)), when: yes },
   { cmd: ':fen', arg: true, desc: 'Paste a board state after the command to load it, or open the Position panel', run: arg => palFen(arg), when: yes },
@@ -140,7 +143,7 @@ const COMMANDS = [
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
 const PAL_GROUPS = [
-  ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference']],
+  ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference', ':badges short', ':badges full']],
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
   ['Game', [':new', ':hint', ':undo', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':fen', ':copy fen', ':reset view']],

@@ -115,7 +115,8 @@ export function updateTelemetry(now) {
   const L = engine.last; if (L && L !== telemetry.npsSeen && L.nps > 0) { telemetry.npsSeen = L; telemetry.npsHist.push(L.nps); if (telemetry.npsHist.length > 60) telemetry.npsHist.shift(); }
   if (show('nps', !crTab)) { set_('nps', S.nps !== undefined ? Monolith.fmtCount(S.nps) : '—', `[SF: info nps${rec ? ' · rec' : anTab ? '' : ' · play'}]`); spark(C.nps.cv, anTab ? an.stream.filter(x => x.nps > 0).map(x => x.nps) : telemetry.npsHist); }
   if (show('hash', !crTab)) { set_('hash', S.hashfull !== undefined ? Monolith.fmtPct(S.hashfull / 1000) : '—', `[SF: hashfull${rec ? ' · rec' : ''}]`); C.hash.mt.firstChild.style.width = `${((S.hashfull || 0) / 10).toFixed(1)}%`; }
-  if (show('tb', !crTab)) set_('tb', S.tbhits !== undefined ? String(S.tbhits) : S.nodes !== undefined ? 'not reported' : '—', `[SF: tbhits${rec ? ' · rec' : ''}]`);
+  // tablebase hits only when the engine reports them (this build has no Syzygy, so it never does)
+  if (show('tb', !crTab && S.tbhits !== undefined)) set_('tb', String(S.tbhits), `[SF: tbhits${rec ? ' · rec' : ''}]`);
   const m = crTab ? crModel() : null;
   if (show('games', crTab)) {
     const done = m ? m.games.filter(g => g && g.done).length : 0, secs = m ? (m.kind === 'recorded' ? m.wall : m.running ? (now - m.t0) / 1000 : m.wall) : 0;

@@ -411,7 +411,7 @@
 
     <section id="dock" hidden aria-label="Instrument dock">
       <div class="syn" id="syn" hidden>
-        <div class="syn-head"><span class="mo-title"><span data-term="synaptic-pv">Synaptic PV</span></span><span>scrub to preview · root at playhead</span><span class="syn-hold" id="syn-hold" hidden>held while you read · updates when you leave</span><span class="badge" id="syn-badge-pv">[SF: MultiPV]</span><span class="badge" id="syn-badge-walk">[SF: fork walk]</span><span class="grow"></span><span id="syn-tb">TB / Mate: —</span><span class="badge">[SF]</span></div>
+        <div class="syn-head"><span class="mo-title"><span data-term="synaptic-pv">Synaptic PV</span></span><span>hover to preview · click to pin</span><span class="syn-hold" id="syn-hold" hidden>held while you read · updates when you leave</span><span class="syn-badges"><span class="badge" id="syn-badge-pv">[SF: MultiPV]</span><span class="badge" id="syn-badge-walk">[SF: fork walk]</span></span><span class="grow"></span><span id="syn-tb" hidden></span></div>
         <div class="syn-scroll"><div class="syn-grid" id="syn-grid"></div></div>
         <div class="syn-notes" id="syn-notes"></div>
       </div>
@@ -764,6 +764,7 @@
               <button role="radio" data-world="monolith"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Monolith</button>
             </div>
             <p class="help" id="world-help"></p>
+            <div class="switch-row"><label for="set-badges">Short source badges<span>Each MONOLITH readout names only its source, such as [SF] or [Runner]; the full badge shows on hover</span></label><input type="checkbox" class="switch" role="switch" id="set-badges"></div>
           </div>
           <div class="group"><div class="group-title">MONOLITH pillars</div>
             <div class="seg" role="radiogroup" aria-label="MONOLITH pillars">

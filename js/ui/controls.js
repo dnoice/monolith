@@ -76,7 +76,7 @@ import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
 import { parseTyped } from '../game/input.js';
 import { an, anGoToggle, anSync, loadReference } from './analyze.js';
-import { renderAnalyze } from './analyze-view.js';
+import { renderAnalyze, setBadgesPref, syncBadges } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
 import { boardOverride, crExpand, crLeaveBoard, crStep } from './crucible-board.js';
 import { drawHive, hiveGeom, hiveIndexAt, renderCrucible } from './crucible-view.js';
@@ -165,6 +165,8 @@ export function init() {
   $('#opt-field').addEventListener('change', e => optSave('fieldDepth', +e.target.value));
   $('#opt-walk').addEventListener('change', e => optSave('walkDepth', +e.target.value));
   $('#btn-reference').addEventListener('click', loadReference);
+  $('#set-badges').addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));
+  syncBadges();   // the badges written in the page take the saved form too
   // Crucible controls
   for (const b of document.querySelectorAll('[data-crsrc]')) b.addEventListener('click', () => {
     cr.src = b.dataset.crsrc; prefs.cr.src = cr.src; savePrefs(); cr.expanded = -1; cr.sel = -1; cr.view = 'deck'; crLeaveBoard();

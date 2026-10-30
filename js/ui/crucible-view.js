@@ -52,7 +52,7 @@
 import { $, PI, prefs, reduceMotion } from '../app/base.js';
 import { engineFamily } from '../game/engine.js';
 import { MIN } from '../game/input.js';
-import { fitCanvas, FONT_T, TOK } from './analyze-view.js';
+import { fitCanvas, FONT_T, setBadge, TOK } from './analyze-view.js';
 import {
   BOOK, cr, CR_ELO_MS, CR_LIMITS, CR_MAX_PAIRS, crMaxPar, crModel, getGauntlet, pad2, resultText
 } from './crucible.js';
@@ -107,7 +107,7 @@ export function renderCrucible() {
   $('#cr-verdict-1').textContent = cr.src === 'recorded' && cr.dataState === 'error' ? `data/gauntlet.json: ${cr.dataErr}` : cr.src === 'live' && !m ? 'Set A and B, then Start run.' : v2;
   $('#cr-verdict-2').textContent = v3;
   $('#cr-match-sub').textContent = !m ? '' : m.kind === 'recorded' ? 'SPRT · stopped at bound · recorded' : m.mode === 'sprt' ? 'SPRT · live in this browser' : `fixed ${m.pairsTarget} pairs · live`;
-  $('#cr-badge-match').textContent = m && m.kind === 'recorded' ? '[Runner: GSPRT · recorded]' : '[Runner: GSPRT]';
+  setBadge($('#cr-badge-match'), m && m.kind === 'recorded' ? '[Runner: GSPRT · recorded]' : '[Runner: GSPRT]');
   const prog = $('#cr-progress'); prog.hidden = !(m && m.kind === 'live' && (m.running || m.mode === 'fixed'));
   if (!prog.hidden) { const last = m.trace[m.trace.length - 1], llr = last ? last.llr : 0; const f = m.mode === 'fixed' ? m.pairs.length / m.pairsTarget : Math.min(1, Math.abs(llr) / m.sprt.upper); $('#cr-progress-bar').style.width = `${(f * 100).toFixed(1)}%`; }
   // matrix
@@ -162,9 +162,9 @@ export function renderCrucible() {
   renderMatchbar();
   // deck
   $('#osc-sub').textContent = `pentanomial GSPRT · per pair${m && m.kind === 'live' ? ' · live' : ''}`;
-  $('#osc-badge').textContent = m && m.kind === 'recorded' ? `[Runner: GSPRT · ${m.engine.replace('Stockfish ', 'SF')} × 2 · rec]` : `[Runner: GSPRT · ${engineFamily().short} × 2]`;
+  setBadge($('#osc-badge'), m && m.kind === 'recorded' ? `[Runner: GSPRT · ${m.engine.replace('Stockfish ', 'SF')} × 2 · rec]` : `[Runner: GSPRT · ${engineFamily().short} × 2]`);
   $('#hive-sub').textContent = !m ? '' : m.kind === 'recorded' ? `${m.games.length} games · final states · the recorded run was sequential on one thread, laid out as it would tile ${m.games.length} workers` : `${done.length} of ${m.games.filter(Boolean).length} games done · ${m.par} at once in this browser`;
-  $('#hive-badge').textContent = m && m.kind === 'recorded' ? '[Runner: python-chess · SF19 × 2 · rec]' : `[Runner: browser · ${engineFamily().short} × 2]`;
+  setBadge($('#hive-badge'), m && m.kind === 'recorded' ? '[Runner: python-chess · SF19 × 2 · rec]' : `[Runner: browser · ${engineFamily().short} × 2]`);
   if (!$('#deck').hidden) { drawOsc(); drawHive(); }
   if (cr.view === 'board') { if (boardOverride) { renderBoardCard(); drawBeat(); } else if (m && m.games[cr.expanded]) crShowBoard(); }
   else $('#board-card').hidden = true;
@@ -431,7 +431,7 @@ export function drawBeat() {
     if (l2) { g.font = `10px ${FONT_T}`; g.fillStyle = sev && sev.min >= 100 ? sev.c : TOK.ink2; g.fillText(l2, bx + 8, by + 28); }
   }
   $('#beat-sub').textContent = `game #${pad2(gm.index)} · evals of both engines, White's view · ±10.00 · balanced band ±1.50 · a slot per move`;
-  $('#beat-badge').textContent = gm.live ? '[SF: info score · own search · live]' : '[SF: info score · own search · rec]';
+  setBadge($('#beat-badge'), gm.live ? '[SF: info score · own search · live]' : '[SF: info score · own search · rec]');
   cv.setAttribute('aria-valuemax', String((gm.states ? gm.states.length : total + 1) - 1)); cv.setAttribute('aria-valuenow', String(cr.ply));
   cv.setAttribute('aria-valuetext', `ply ${cr.ply}, ${beatMoveText(gm, cr.ply)}${e0 !== null ? `, eval ${Monolith.fmtCp(e0)}` : ''}`);
 }

@@ -62,12 +62,12 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs } from '../app/base.js';
+import { $, PI, prefs, savePrefs } from '../app/base.js';
 import { camera, renderer } from '../scene/renderer.js';
 import { PIECE_NAMES, sqPos } from '../scene/board.js';
 import { INK, PIECE_TOP, setField, setVectors, setXray } from '../scene/instruments.js';
 import { setPhantoms } from '../scene/phantoms.js';
-import { game, shown } from '../app/state.js';
+import { game, render, shown } from '../app/state.js';
 import { boardState, lineQuality } from '../game/board-ui.js';
 import { PVAL, see } from '../coach/coach.js';
 import { cap1 } from '../coach/facts.js';
@@ -75,6 +75,23 @@ import { materialOf, MIN, pct1, sanList, stmScore, whiteScore } from '../game/in
 import { an, deep, fieldEng, xr } from './analyze.js';
 import { termify } from './grimoire.js';
 import { renderMatchbar } from './panels.js';
+
+/* ---------- source badges ----------
+   Every readout names its source. The short form (Settings, or :badges short) keeps the source
+   and its recorded or live mark and moves the rest to the badge's title: [SF: MultiPV 5 · d26 ·
+   recorded] reads [SF · rec]. The footer's badges (telemetry.js) take their compact form with it. */
+export const badgeShort = full => full.replace(/:\s*[^\]]*?(·\s*(?:rec(?:orded)?|live))?\]$/, (m, r) => r ? ` · ${/live/.test(r) ? 'live' : 'rec'}]` : ']');
+export function setBadge(el, full) {
+  const form = prefs.badges === 'short' ? 'short' : 'full';
+  if (el.dataset.full === full && el.dataset.form === form) return;
+  el.dataset.full = full; el.dataset.form = form;
+  el.textContent = form === 'short' ? badgeShort(full) : full; el.title = form === 'short' ? full : '';
+}
+export function syncBadges() {
+  document.documentElement.dataset.badges = prefs.badges === 'short' ? 'short' : 'full';
+  for (const b of document.querySelectorAll('.badge')) if (!b.closest('.tm')) setBadge(b, b.dataset.full || b.textContent);
+}
+export function setBadgesPref(form) { prefs.badges = form === 'short' ? 'short' : 'full'; savePrefs(); syncBadges(); render(); }
 
 /* ---------- Analyze: scrub preview (phantoms) ---------- */
 export function clearScrub() {
@@ -192,7 +209,7 @@ export function renderAnalyze() {
     : an.reason === 'user' ? ['stopped by you', `at ${sec(tSec)}`] : an.reason === 'limit' ? ['stopped', `at ${sec(tSec)} · limit`] : ['', ''];
   const so = $('#an-stopped');
   if (so.dataset.v !== `${stA}|${stB}`) { so.dataset.v = `${stA}|${stB}`; so.textContent = ''; if (stA) { const x = document.createElement('b'), y = document.createElement('span'); x.textContent = stA; y.textContent = stB; so.append(x, ' ', y); } }
-  $('#an-badge-uci').textContent = `[SF: UCI info${recTag}]`;
+  setBadge($('#an-badge-uci'), `[SF: UCI info${recTag}]`);
   $('#st-depth').textContent = s.depth ? `${s.depth}/${s.seldepth || s.depth}` : '—';
   $('#st-nodes').textContent = Monolith.fmtCount(s.nodes);
   $('#st-nps').textContent = Monolith.fmtCount(s.nps);
@@ -201,7 +218,7 @@ export function renderAnalyze() {
   $('#st-tb').title = s.tbhits === undefined && s.nodes !== undefined ? 'This Stockfish build has no Syzygy tablebase support, so it reports no tbhits.' : '';
   $('#st-time').textContent = s.time !== undefined ? `${tSec.toFixed(1)} s` : '—';
   const dTop = l1 ? l1.depth : 0;
-  $('#an-badge-pv').textContent = `[SF: MultiPV ${lines.length || prefs.mo.multipv}${dTop ? ` · d${dTop}` : ''}${recTag}]`;
+  setBadge($('#an-badge-pv'), `[SF: MultiPV ${lines.length || prefs.mo.multipv}${dTop ? ` · d${dTop}` : ''}${recTag}]`);
   $('#pv-sub').textContent = lines.length ? 'White\'s view · graded vs line 1' : '';
   // MultiPV table
   if (anDomVer !== an.ver) {
@@ -237,8 +254,8 @@ export function renderAnalyze() {
   $('#sh-13').textContent = sharp && sharp.d13 !== null ? Monolith.fmtPct(sharp.d13) : '—';
   const chip = $('#sh-chip'); chip.className = 'chip' + (sharp && sharp.halo ? ' amber' : ''); chip.textContent = !sharp ? 'one line' : sharp.halo ? 'Knife-edge · halo on' : 'Calm · halo off';
   $('#sh-note').textContent = `halo threshold 10 %${an.field ? ` · ${an.field.near} of ${an.field.total} moves within 5 %` : ''}`;
-  $('#an-badge-sharp').textContent = `[SF: MultiPV ${lines.length || prefs.mo.multipv}${recTag}]`;
-  $('#an-badge-stream').textContent = `[SF: info stream · ${an.stream.length} update${an.stream.length === 1 ? '' : 's'}${recTag}]`;
+  setBadge($('#an-badge-sharp'), `[SF: MultiPV ${lines.length || prefs.mo.multipv}${recTag}]`);
+  setBadge($('#an-badge-stream'), `[SF: info stream · ${an.stream.length} update${an.stream.length === 1 ? '' : 's'}${recTag}]`);
   drawProfile();
   // options
   $('#opt-hash').value = String(prefs.mo.hash); $('#opt-multipv').value = String(prefs.mo.multipv); $('#opt-wdl').checked = prefs.mo.wdl;
@@ -275,7 +292,7 @@ function renderStageInstruments(st, sharp, rec) {
     const sb = $('#wdl-sharp'); sb.classList.toggle('calm', !(sharp && sharp.halo));
     $('#wdl-sharp-val').textContent = sharp ? Monolith.fmtPct(sharp.d12) : '—';
     $('#wdl-sharp-sub').textContent = sharp ? (sharp.halo ? `line 1 · d${l1.depth}` : 'halo off') : 'one line';
-    $('#wdl-badge-wdl').textContent = `[SF: WDL${recTag}]`; $('#wdl-badge-pv').textContent = `[SF: MultiPV${recTag}]`;
+    setBadge($('#wdl-badge-wdl'), `[SF: WDL${recTag}]`); setBadge($('#wdl-badge-pv'), `[SF: MultiPV${recTag}]`);
     const halo = $('#wdl-halo'); halo.hidden = !(sharp && sharp.halo);
     const H = halo.clientHeight;
     if (H && halo.dataset.h !== String(H)) {
@@ -287,7 +304,7 @@ function renderStageInstruments(st, sharp, rec) {
   // field legend
   const fl = $('#field-legend'); fl.hidden = !prefs.mo.field;
   const F = an.field;
-  $('#fl-badge').textContent = `[SF: Root MultiPV Field${F ? ` · d${F.depth}` : ''}${recTag}]`;
+  setBadge($('#fl-badge'), `[SF: Root MultiPV Field${F ? ` · d${F.depth}` : ''}${recTag}]`);
   $('#fl-text').textContent = F && F.done ? `${F.total} legal moves · depth ${F.depth} each · brightest move per square · ${F.near} of ${F.total} within 5 % of best · ${F.lit} square${F.lit === 1 ? '' : 's'} lit`
     : an.fieldProg ? `Scoring all ${an.fieldProg.total} legal moves · depth ${an.fieldProg.depth || 1} of ${an.fieldProg.target}…`
     : an.status === 'over' ? 'No legal moves to score.' : fieldEng && fieldEng.failed ? 'The field engine could not start here.' : 'The field starts with the search.';
@@ -366,7 +383,7 @@ export function renderXray(st) {
     const row = el('div', 'xr-side', undefined, sides); el('i', `xr-bead ${c}`, undefined, row).setAttribute('aria-hidden', 'true');
     el('span', 'k', c === 'w' ? 'White' : 'Black', row); const list = el('em', '', R[c].length ? R[c].join(', ') : '—', row); list.title = list.textContent;
   }
-  el('span', 'badge', F ? `[SF: Root MultiPV Field · d${F.depth}${an.source === 'recorded' ? ' · rec' : ''}]` : '[SF: field pending]').dataset.term = 'source-badges';
+  const bd = el('span', 'badge'); bd.dataset.term = 'source-badges'; setBadge(bd, F ? `[SF: Root MultiPV Field · d${F.depth}${an.source === 'recorded' ? ' · rec' : ''}]` : '[SF: field pending]');
   termify(chip);
   xrChip.w = chip.offsetWidth || 224; xrChip.h = chip.offsetHeight || 200; xrChip.key = '';   // measured once per rebuild
   placeXrayChip(sq);
@@ -412,10 +429,12 @@ export function renderSyn() {
   const LN = an.synLines;
   grid.innerHTML = '';
   const st = an.st, rec = an.source === 'recorded', W = an.synWalk;
-  $('#syn-badge-pv').textContent = `[SF: MultiPV ${LN.filter(Boolean).length || prefs.mo.multipv}${LN[0] ? ` · d${LN[0].depth}` : ''}${rec ? ' · rec' : ''}]`;
-  $('#syn-badge-walk').textContent = `[SF: fork walk · MultiPV 2${W && W.depth ? ` · d${W.depth}` : ''}${rec ? ' · rec' : ''}]`;
+  setBadge($('#syn-badge-pv'), `[SF: MultiPV ${LN.filter(Boolean).length || prefs.mo.multipv}${LN[0] ? ` · d${LN[0].depth}` : ''}${rec ? ' · rec' : ''}]`);
+  setBadge($('#syn-badge-walk'), `[SF: fork walk · MultiPV 2${W && W.depth ? ` · d${W.depth}` : ''}${rec ? ' · rec' : ''}]`);
+  // a mate in the lines is named here; the tablebase count, a constant 'not reported' in this build,
+  // stays with the stats card (its TB hits cell says why) and the footer
   const mates = LN.map((l, i) => l && l.kind === 'mate' ? `${Monolith.fmtScore(whiteScore(l, st.turn))} in line ${i + 1}` : null).filter(Boolean);
-  $('#syn-tb').textContent = `TB / Mate: ${mates.length ? mates.join(', ') : 'none'} · tbhits ${an.stats.tbhits !== undefined ? an.stats.tbhits : an.stats.nodes !== undefined ? 'not reported (no Syzygy in this build)' : '—'}`;
+  $('#syn-tb').hidden = !mates.length; $('#syn-tb').textContent = mates.length ? `Mate: ${mates.join(', ')}` : '';
   const notes = $('#syn-notes'); notes.innerHTML = '';
   if (!st || !LN.some(Boolean)) { const e = document.createElement('div'); e.className = 'syn-empty'; e.textContent = an.status === 'over' ? 'No lines: the game is over here.' : 'Lines appear here as the engine searches.'; grid.appendChild(e); return; }
   const chipFor = (line, k, san, small, cls = '') => {

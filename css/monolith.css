@@ -78,6 +78,8 @@
 :root[data-skin="monolith"] .result.win::after{display:none}
 :root[data-skin="monolith"] .evalbar{border-color:var(--mo-steel)}
 #stage-fade{position:absolute;inset:0;background:var(--stage-bg);opacity:0;pointer-events:none}
+/* Analyze's evaluation in the match strip reads at the size of the move number beside it */
+.mb-last b.num{font-size:15px}
 
 /* ---------- MONOLITH instrument components ---------- */
 .badge{display:inline-flex;align-items:center;height:18px;padding:0 6px;border:1px solid var(--mo-rule);border-radius:2px;background:var(--mo-well);color:var(--mo-ink3);font:400 10.5px/1 var(--font-tele);letter-spacing:.01em;white-space:nowrap;flex:none}
@@ -188,6 +190,11 @@
 .syn-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--mo-ink3);min-width:0}
 .syn-head .mo-title{margin-right:4px}
 .syn-head .grow{flex:1}
+/* the dock's two badges wrap as one, never leaving the last alone on a line */
+.syn-badges{display:inline-flex;gap:8px;flex-wrap:nowrap}
+/* the short source badges (Settings) set the footer's compact form too */
+:root[data-badges="short"] .tm .badge .bf{display:none}
+:root[data-badges="short"] .tm .badge .bs{display:inline}
 .syn-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
 .syn-grid{display:grid;grid-template-columns:22px 52px 54px auto;gap:5px 8px;align-items:center;width:max-content;min-width:100%}
 .syn-i{font:400 11px var(--font-tele);color:var(--mo-ink3);text-align:right}
