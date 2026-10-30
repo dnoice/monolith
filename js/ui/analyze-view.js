@@ -215,11 +215,11 @@ export function renderAnalyze() {
   /* The search status in two parts, what is happening over its detail, so the break always falls
      between them (one string wrapped wherever 21ch ran out, leaving 's' or '(limit)' alone); a
      number keeps its unit by a no-break space. Rewritten only when it changes. */
-  const sec = x => `${x.toFixed(1)} s`;
+  const sec = x => `${x.toFixed(1)}\u00a0s`;
   const [stA, stB] = an.status === 'over' ? ['game over', String(an.reason).split('. ')[0].replace(/\.$/, '').toLowerCase()]
     : an.status === 'loading' ? ['engine', 'loading…'] : an.status === 'failed' ? ['engine', 'unavailable']
     : rec ? ['recorded', `${sec(an.meta.seconds)} · limit`]
-    : searching ? ['searching', an.infinite ? `${sec(tSec)} · infinite` : `limit ${prefs.mo.limit} s`]
+    : searching ? ['searching', an.infinite ? `${sec(tSec)} · infinite` : `limit ${prefs.mo.limit}\u00a0s`]
     : an.reason === 'user' ? ['stopped by you', `at ${sec(tSec)}`] : an.reason === 'limit' ? ['stopped', `at ${sec(tSec)} · limit`] : ['', ''];
   const so = $('#an-stopped');
   if (so.dataset.v !== `${stA}|${stB}`) { so.dataset.v = `${stA}|${stB}`; so.textContent = ''; if (stA) { const x = document.createElement('b'), y = document.createElement('span'); x.textContent = stA; y.textContent = stB; so.append(x, ' ', y); } }
