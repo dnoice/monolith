@@ -139,7 +139,9 @@ const COMMANDS = [
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
   { cmd: ':explore', desc: 'Move pieces on any board on or off (Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
-  /* learn: Settings, Position and Help */
+  /* learn: Resign and Rematch, Settings, Position and Help */
+  { cmd: ':resign', desc: 'Resign the game (it asks first)', run: () => $('#btn-resign').click(), when: () => !app.started ? 'No game to resign' : game.result ? 'The game is over' : app.busy ? 'A move is still playing' : true },
+  { cmd: ':rematch', desc: 'Rematch: a new game against the same opponent, once this one is over', run: () => $('#btn-rematch').click(), when: () => (app.started && !!game.result) || (app.started ? 'The game is still going' : 'No game yet') },
   { cmd: ':legal', desc: 'Show legal moves on or off', run: () => { prefs.legal = !prefs.legal; savePrefs(); render(); snack(prefs.legal ? 'Show legal moves: on.' : 'Show legal moves: off.'); }, when: yes },
   { cmd: ':coords', desc: 'Board coordinates on or off', run: () => { prefs.coords = !prefs.coords; savePrefs(); applyPrefs(); render(); snack(prefs.coords ? 'Board coordinates: on.' : 'Board coordinates: off.'); }, when: yes },
   ...[['normal', 'cinematic', 'Cinematic', 'every move and ceremony at full length'], ['fast', 'brisk', 'Brisk', 'moves and ceremonies in about half the time'], ['minimal', 'minimal', 'Minimal', 'quick moves, the heavier effects left out']]
@@ -156,7 +158,7 @@ const COMMANDS = [
 const PAL_GROUPS = [
   ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference']],
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
-  ['Game', [':new', ':hint', ':undo', ':coach', ':calc', ':eval', ':explore', ':explore back']],
+  ['Game', [':new', ':hint', ':undo', ':resign', ':rematch', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':legal', ':coords', ':fen', ':copy fen', ':reset view']],
   ['Position', [':study', ':read', ':setup']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],
@@ -169,7 +171,7 @@ const palGroupOf = c => { const g = PAL_GROUPS.find(([, l]) => l.includes(c.cmd)
 const PAL_KEYS = { ':field': ['F'], ':vectors': ['V'], ':xray': ['X'] };
 /* With nothing typed, the groups for the tab in view come first (Settings in its own cards' order);
    Analyze and Crucible keep the order their users know. */
-const TAB_GROUPS = { play: ['Game', 'Board'], position: ['Position', 'Game', 'Board'], grimoire: ['Grimoire', 'Go to'], settings: ['Game', 'Board', 'Sound and motion', 'World and graphics', 'Help'] };
+const TAB_GROUPS = { play: ['Game', 'Board', 'Two players', 'Game record'], position: ['Position', 'Game', 'Board'], grimoire: ['Grimoire', 'Go to'], settings: ['Game', 'Board', 'Sound and motion', 'World and graphics', 'Help'] };
 const palGroups = () => { const first = TAB_GROUPS[prefs.tab] || []; return [...first.map(n => PAL_GROUPS.find(([g]) => g === n)).filter(Boolean), ...PAL_GROUPS.filter(([g]) => !first.includes(g))]; };
 /* Everyday words for a command, the ones a player types before knowing its name. A family of
    commands (:quality, :world, :animation, :tips …) shares its first word's list; a command may
@@ -177,6 +179,9 @@ const palGroups = () => { const first = TAB_GROUPS[prefs.tab] || []; return [...
 const PAL_WORDS = {
   ':new': ['new game', 'start', 'start game', 'restart', 'game', 'friend', 'computer', 'stockfish', 'two players'],
   ':undo': ['take back', 'takeback', 'back'], ':hint': ['clue', 'help', 'suggest', 'best move'],
+  ':resign': ['give up', 'concede', 'forfeit', 'quit', 'surrender'], ':rematch': ['again', 'play again', 'replay', 'another game'],
+  ':autoflip': ['auto flip', 'auto-flip', 'hotseat', 'pass and play'], ':draw': ['offer draw', 'offer a draw', 'agree'],
+  ':copy pgn': ['pgn', 'export game', 'share game'], ':download pgn': ['save game', 'save', 'download'], ':load pgn': ['import game', 'paste game', 'open game'], ':review': ['analyse game', 'analyze game', 'game review'],
   ':coach': ['comments', 'feedback', 'notes'], ':calc': ['candidates', 'best moves', 'engine lines', 'arrows'], ':eval': ['evaluation', 'evaluation bar', 'score'],
   ':explore': ['try moves', 'what if', 'sandbox'],
   ':flip': ['turn', 'turn board', 'rotate', 'orientation', 'black side', 'switch sides'], ':reset view': ['camera', 'view', 'zoom', 'recenter'],
