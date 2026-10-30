@@ -168,7 +168,7 @@ export function init() {
   // Load: a pasted FEN, analysed here; Enter loads it (Shift Enter keeps a new line)
   $('#btn-an-load').addEventListener('click', () => loadForAnalysis($('#an-load-text').value));
   $('#an-load-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); loadForAnalysis(e.target.value); } });
-  $('#set-badges').addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));
+  $('#set-badges')?.addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));
   syncBadges();   // the badges written in the page take the saved form too
   // Crucible controls
   for (const b of document.querySelectorAll('[data-crsrc]')) b.addEventListener('click', () => {

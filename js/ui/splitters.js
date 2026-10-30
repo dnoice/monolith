@@ -183,25 +183,25 @@ export function init() {
     if (pal_.open) return;
     // a widget that handled the key itself (the Set up board editor, the heartbeat strip) keeps it
     if (e.defaultPrevented) return;
-    /* Space for the X-Ray and / for the Grimoire's search come before the guard below: a click on
-       the rail leaves the focus in it (a tablist), and the keys were lost until the next click
-       elsewhere. Each keeps its own guard: a field, a term (Space opens its card) or another
-       control the key belongs to. */
+    /* Space for the X-Ray, / for the Grimoire's search and Play's keys come before the guard
+       below: a click on the rail leaves the focus in it (a tablist), and the keys were lost until
+       the next click elsewhere. Each keeps its own guard: a field, a term (Space opens its card)
+       or another control the key belongs to. */
     if (prefs.tab === 'analyze' && e.code === 'Space' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,summary,a,[contenteditable],[role="radiogroup"],[role="application"],[data-term]') && (!e.target.closest('button,[tabindex]') || e.target.closest('.nav-item,.pv-row'))) {
       e.preventDefault(); if (!xr.held) { xr.held = true; renderAnalyze(); } return;
     }
     if (prefs.tab === 'grimoire' && e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,[contenteditable]')) { e.preventDefault(); if (gr.id) grBack(); $('#gr-q').focus(); return; }
-    if (e.target.closest('input,textarea,select,[role="radiogroup"],[role="tablist"],[role="application"]')) return;
-    if (e.key === 'Escape') { deselect(); hideSnack(); if (an.pin) clearScrub(); return; }
     /* Play: F flips the board, U takes back and H asks for a hint, each by pressing its own button,
        which knows when it may run (and what Flip does in a game that turns the board itself);
        Ctrl or ⌘ Z takes back too. On Analyze F is the Field, so these keep to Play (F also to
        Position, where the board is the same). */
-    if ((prefs.tab === 'play' || prefs.tab === 'position') && !e.altKey && !e.repeat) {
+    if ((prefs.tab === 'play' || prefs.tab === 'position') && !e.altKey && !e.repeat && !e.target.closest('input,textarea,select,[contenteditable],[role="application"]')) {
       const k = e.key.toLowerCase(), mod = e.ctrlKey || e.metaKey;
       const act = mod ? (k === 'z' && !e.shiftKey && prefs.tab === 'play' ? 'undo' : null) : k === 'f' ? 'flip' : prefs.tab === 'play' ? { u: 'undo', h: 'hint' }[k] : null;
       if (act) { e.preventDefault(); $(act === 'undo' && explore.on ? '#btn-explore-undo' : `#btn-${act}`).click(); return; }
     }
+    if (e.target.closest('input,textarea,select,[role="radiogroup"],[role="tablist"],[role="application"]')) return;
+    if (e.key === 'Escape') { deselect(); hideSnack(); if (an.pin) clearScrub(); return; }
     if (prefs.tab === 'analyze' && !e.ctrlKey && !e.metaKey && !e.altKey) {
       const k = { f: 'field', v: 'vectors', x: 'xray' }[e.key.toLowerCase()];
       if (k && !e.repeat) { e.preventDefault(); layerToggle(k); return; }

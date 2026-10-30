@@ -74,9 +74,13 @@ import { refreshAnalysis } from './lines.js';
 import { coachKick } from '../coach/notes.js';
 import { studyAfterMove, studyScripted } from '../ui/studies.js';
 import { boardOverride } from '../ui/crucible-board.js';
+import { explore, exploreEnd } from './flow.js';
 
 /* ---------- playing moves ---------- */
 export async function playMove(mv) {
+  // a line explored over the live position (Analyze's Play to here) ends before the game's own move:
+  // the pieces on the board are the line's, not the game's
+  if (explore.on && !boardOverride) exploreEnd();
   app.busy = true; const st = cur(), rec = game.states; deselect(); hideSnack(); app.hint = null;
   const next = Chess.apply(st, mv), san = Chess.san(st, mv, next);
   /* A Crucible game on the board (boardOverride) owns its pieces: a reply that lands meanwhile is

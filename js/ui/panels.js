@@ -426,7 +426,7 @@ export function init() {
     for (const b of document.querySelectorAll('[data-world]')) radio(b, b.dataset.world === prefs.world);
     $('#world-help').textContent = prefs.world === 'auto' ? `Follows the destination: MONOLITH for Analyze and Crucible, the cathedral for the rest. Now: ${app.worldName === 'monolith' ? 'MONOLITH' : 'cathedral'}.`
       : prefs.world === 'monolith' ? 'MONOLITH everywhere: solved tokens, mirror floor, cool rim light; colour is semantic only.' : 'The cathedral everywhere, Analyze and Crucible included.';
-    $('#set-badges').checked = prefs.badges === 'short';
+    const sbg = $('#set-badges'); if (sbg) sbg.checked = prefs.badges === 'short';
     for (const b of document.querySelectorAll('[data-pillars]')) radio(b, b.dataset.pillars === pillars.style);
     $('#pillars-help').textContent = (pillars.style === 'classic' ? 'A twisted Solomonic column between a fluted Doric and a plain Tuscan.' : pillars.style === 'modern' ? 'A Prism lit by spiralling cyan lines, between a ringed Halo and a bladed Fin.' : 'The stele, the rift and the spire, each made for its place.')
       + ' Dennis\'s Blender models, seen in MONOLITH.' + (pillars.status === 'loading' ? ' Loading…' : pillars.status === 'failed' ? ` ${pillars.failed.length === 1 ? 'One model' : 'Some models'} could not load here, so the built pillars stand in.` : '');
