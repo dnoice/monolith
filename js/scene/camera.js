@@ -265,6 +265,8 @@ export function init() {
     if (e.target !== canvas) return;
     if (e.pointerType === 'mouse' && e.button !== 0 && e.button !== 1) return;
     if (e.button === 1) e.preventDefault();
+    // a second finger is a pinch (the touch handlers below): the first finger's carry or orbit ends
+    if (ptr.down && e.pointerId !== ptr.id) { endCarry(); ptr.orbit = false; return; }
     Object.assign(ptr, { down: true, drag: false, x: e.clientX, y: e.clientY, id: e.pointerId, piece: -1, mesh: null, wasSel: false });
     // a press on a piece it can carry selects it at once; a press on a target stays a click
     const sq = e.button === 1 ? -1 : grabAt(e.clientX, e.clientY);
@@ -295,8 +297,7 @@ export function init() {
   // the wheel zooms only over the board itself: overlays on the stage (the Crucible deck and its
   // Hive, cards, chips) scroll as pages do; the range and the step follow the fitted distance
   stage.addEventListener('wheel', e => { if (e.target !== canvas) return; e.preventDefault(); learn('orbit'); zoomTo(cam.dist + e.deltaY * 0.01 * fitDist() / 11.5); }, { passive: false });
-  // a second finger turns a carry into a pinch: the piece goes back
-  stage.addEventListener('touchstart', e => { if (e.touches.length === 2) { ptr.pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); endCarry(); } }, { passive: true });
+  stage.addEventListener('touchstart', e => { if (e.touches.length === 2) ptr.pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }, { passive: true });
   stage.addEventListener('touchmove', e => {
     if (e.touches.length === 2 && e.target === canvas) { e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomTo(cam.dist - (d - ptr.pinch) * 0.02 * fitDist() / 11.5); ptr.pinch = d; ptr.drag = true; }
   }, { passive: false });
