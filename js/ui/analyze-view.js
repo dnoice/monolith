@@ -304,7 +304,7 @@ function xrayTarget(st) {
   if (!(xr.held || xr.sticky)) return -1;
   if (xr.hover >= 0) return xr.hover;
   if (xr.pin >= 0) return xr.pin;
-  const m =app.view === null ? game.moves[game.moves.length - 1] : app.view > 0 ? game.moves[app.view - 1] : null;
+  const m = app.view === null ? game.moves[game.moves.length - 1] : app.view > 0 ? game.moves[app.view - 1] : null;
   return m && game.states.includes(st) ? m.to : (an.field ? an.field.best.to : -1);
 }
 /* The X-Ray readout, docked beside the board (see the CSS note at .xray-chip): the square, the
