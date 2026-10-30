@@ -157,15 +157,35 @@ const HazeShader = {
         }
         t += stepLen;
       }
-      gl_FragColor = vec4(acc * stepLen, 1.0);
+      gl_FragColor = vec4(acc * stepLen, dist);   // alpha: where this ray ended, for the composite
     }`
 };
+/* The haze is marched at a fraction of the view's resolution, so a texel can straddle a column's
+   silhouette and take either the column's short ray or the long ray to the wall behind it. Spread
+   over the pixels as it was (Dennis, 10/30/2026: jagged, pixelated pillars), the wrong one drew
+   stair-steps two or four pixels deep along every column standing in front of the lit haze. Each
+   pixel now takes only the texels whose rays ended where its own does (the full-resolution depth
+   against the distance each texel stored), blended as before, and the nearest of the four where
+   none does; across flat surfaces all four agree, so the dust stays as smooth as it was. */
 const HazeComposite = {
-  uniforms: { tDiffuse: { value: null }, tHaze: { value: null } },
+  uniforms: { tDiffuse: { value: null }, tHaze: { value: null }, tDepth: { value: null }, uHazeSize: { value: new THREE.Vector2(1, 1) }, uProjInv: { value: new THREE.Matrix4() }, uMaxDist: { value: 42 } },
   vertexShader: OutputShader.vertexShader,
-  fragmentShader: `uniform sampler2D tDiffuse, tHaze;
+  fragmentShader: `uniform sampler2D tDiffuse, tHaze, tDepth;
+    uniform vec2 uHazeSize; uniform mat4 uProjInv; uniform float uMaxDist;
     varying vec2 vUv;
-    void main() { gl_FragColor = vec4(texture2D(tDiffuse, vUv).rgb + texture2D(tHaze, vUv).rgb, 1.0); }`
+    void main() {
+      float d = texture2D(tDepth, vUv).x;
+      vec4 vp = uProjInv * vec4(vUv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0);
+      float r = d >= 0.99999 ? uMaxDist : min(length(vp.xyz / vp.w), uMaxDist);
+      vec2 p = vUv * uHazeSize - 0.5, f = fract(p), t = (floor(p) + 0.5) / uHazeSize, o = 1.0 / uHazeSize;
+      vec4 h0 = texture2D(tHaze, t), h1 = texture2D(tHaze, t + vec2(o.x, 0.0)), h2 = texture2D(tHaze, t + vec2(0.0, o.y)), h3 = texture2D(tHaze, t + o);
+      vec4 e = abs(vec4(h0.a, h1.a, h2.a, h3.a) - r) / r;
+      vec4 w = vec4((1.0 - f.x) * (1.0 - f.y), f.x * (1.0 - f.y), (1.0 - f.x) * f.y, f.x * f.y) * step(e, vec4(0.1));
+      float s = w.x + w.y + w.z + w.w, m = min(min(e.x, e.y), min(e.z, e.w));
+      vec3 hz = s > 1e-4 ? (h0.rgb * w.x + h1.rgb * w.y + h2.rgb * w.z + h3.rgb * w.w) / s
+        : m == e.x ? h0.rgb : m == e.y ? h1.rgb : m == e.z ? h2.rgb : h3.rgb;
+      gl_FragColor = vec4(texture2D(tDiffuse, vUv).rgb + hz, 1.0);
+    }`
 };
 /* What the haze sees of the world, blended by the world transition (see setWorld). */
 export const hazeMix = { spot: 1, beam: 1, density: 0.012 };
@@ -222,16 +242,18 @@ export function init() {
       u.uBeamCol.value.set(0x9fb2ff);
       this.qH = new THREE.FullScreenQuad(this.haze); this.qC = new THREE.FullScreenQuad(this.comp);
       this.depthMat = new THREE.MeshBasicMaterial({ colorWrite: false }); this.depthMat.name = 'material-depth-prepass';
-      this.makeTargets(1, 1);
+      this.fw = this.fh = 0; this.makeTargets(1, 1, 1, 1);
     }
-    makeTargets(w, h) {
+    /* The depth at the view's full resolution, which the composite matches each pixel against; the
+       haze at the level's fraction of it, read texel by texel (nearest), never blended blind. */
+    makeTargets(fw, fh, w, h) {
       if (this.depthRT) { this.depthRT.depthTexture.dispose(); this.depthRT.dispose(); this.hazeRT.dispose(); }
-      this.depthRT = new THREE.WebGLRenderTarget(w, h); this.depthRT.texture.name = 'rt-haze-depth';
-      this.depthRT.depthTexture = new THREE.DepthTexture(w, h); this.depthRT.depthTexture.type = THREE.UnsignedIntType;
-      this.hazeRT = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType }); this.hazeRT.texture.name = 'rt-haze';
-      this.w = w; this.h = h;
+      this.depthRT = new THREE.WebGLRenderTarget(fw, fh); this.depthRT.texture.name = 'rt-haze-depth';
+      this.depthRT.depthTexture = new THREE.DepthTexture(fw, fh); this.depthRT.depthTexture.type = THREE.UnsignedIntType;
+      this.hazeRT = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter }); this.hazeRT.texture.name = 'rt-haze';
+      this.fw = fw; this.fh = fh; this.w = w; this.h = h; this.comp.uniforms.uHazeSize.value.set(w, h);
     }
-    setSize(w, h) { const sw = Math.max(1, Math.round(w * this.scale)), sh = Math.max(1, Math.round(h * this.scale)); if (sw !== this.w || sh !== this.h) this.makeTargets(sw, sh); }
+    setSize(w, h) { const sw = Math.max(1, Math.round(w * this.scale)), sh = Math.max(1, Math.round(h * this.scale)); if (w !== this.fw || h !== this.fh || sw !== this.w || sh !== this.h) this.makeTargets(w, h, sw, sh); }
     render(r, writeBuffer, readBuffer) {
       // 1. depth pre-pass: opaque geometry only; the mirror floor stands in as a plain plane
       const hide = [instruments, phantoms, fx, fragGroup].filter(o => o.visible);
@@ -257,8 +279,9 @@ export function init() {
       u.uSpotGain.value = hazeMix.spot; u.uBeamGain.value = hazeMix.beam; u.uBeams.value = hazeMix.beam > 0.01 ? 3 : 0; u.uDensity.value = hazeMix.density;
       u.uTime.value = performance.now() / 1000;
       r.setRenderTarget(this.hazeRT); r.clear(); this.qH.render(r);
-      // 3. composite over the scene
-      this.comp.uniforms.tDiffuse.value = readBuffer.texture; this.comp.uniforms.tHaze.value = this.hazeRT.texture;
+      // 3. composite over the scene, each pixel from the texels that ended at its own depth
+      const c = this.comp.uniforms; c.tDiffuse.value = readBuffer.texture; c.tHaze.value = this.hazeRT.texture; c.tDepth.value = this.depthRT.depthTexture;
+      c.uProjInv.value.copy(camera.projectionMatrixInverse); c.uMaxDist.value = u.uMaxDist.value;
       r.setRenderTarget(this.renderToScreen ? null : writeBuffer); this.qC.render(r);
     }
     dispose() { this.depthRT.depthTexture.dispose(); this.depthRT.dispose(); this.hazeRT.dispose(); this.haze.dispose(); this.comp.dispose(); this.depthMat.dispose(); this.qH.dispose(); this.qC.dispose(); }
