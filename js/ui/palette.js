@@ -109,7 +109,7 @@ const COMMANDS = [
   { cmd: ':recorded', desc: 'Open the recorded gauntlet in Crucible', run: () => { cr.src = 'recorded'; prefs.cr.src = 'recorded'; savePrefs(); cr.view = 'deck'; crLeaveBoard(); setTab('crucible'); render(); }, when: yes },
   { cmd: ':new', desc: 'New game setup', run: openSetup, when: yes },
   { cmd: ':flip', desc: 'Invert the board', run: () => setOrientation(Chess.other(app.orient)), when: yes },
-  { cmd: ':fen', arg: true, desc: 'Paste a board state after the command to load it, or open the Position panel', run: arg => palFen(arg), when: yes },
+  { cmd: ':fen', arg: true, desc: 'Paste a FEN after the command to open it in Set up; with nothing after it, opens Set up', run: arg => palFen(arg), when: yes },
   { cmd: ':copy fen', desc: 'Copy the FEN of the position shown', run: () => { try { navigator.clipboard.writeText(Chess.fen(boardOverride ? boardOverride.state : shown())).then(() => snack('FEN copied to the clipboard.'), () => snack('The clipboard is blocked here.')); } catch (e) { snack('The clipboard is blocked here.'); } }, when: yes },
   { cmd: ':hint', desc: 'A hint on your turn, one step at a time: a nudge, the piece, the move', run: () => { setTab('play'); giveHint(); }, when: () => (app.hint && !app.hint.pending) || (canMoveNow() && engine.ready) || (!app.started ? 'Start a game first' : !engine.ready ? 'The engine is still loading' : 'Not your turn at the live position') },
   { cmd: ':undo', desc: 'Take back the last move (yours and the reply)', run: undo, when: () => (app.started && game.states.length > 1 && !app.busy) || 'Nothing to undo' },
@@ -155,7 +155,8 @@ function palFen(arg) {
   if (!arg) { setTab('position'); setPosView('setup'); setTimeout(() => $('#fen').focus(), 0); return; }
   const r = Chess.parseFen(arg);
   if (r.error) { snack(r.error); return; }
-  setTab('position'); openInSetup(arg); $('#btn-fen-load').click();
+  // opened, not played: Set up asks who plays it, and its Play this position takes the focus
+  setTab('position'); openInSetup(arg, { say: 'Pasted. Choose who plays it, then Play this position.' }); setTimeout(() => $('#btn-fen-load').focus(), 0);
 }
 export const pal_ = { open: false, items: [], sel: 0, back: null, arg: '' };
 function palScore(c, q) {
@@ -185,7 +186,7 @@ function palRender() {
     li.setAttribute('role', 'option'); li.setAttribute('aria-selected', String(i === pal_.sel)); if (ok !== true) li.setAttribute('aria-disabled', 'true');
     const code = document.createElement('code'), colon = document.createElement('i'); colon.textContent = ':'; code.append(colon, c.cmd.slice(1));
     const dEntry = c.cmd === ':define' && pal_.arg ? grFind(pal_.arg) : null;
-    const span = document.createElement('span'); span.textContent = c.cmd === ':define' && pal_.arg ? (dEntry ? `Open ${dEntry.term}: ${dEntry.def.slice(0, 64)}${dEntry.def.length > 64 ? '…' : ''}` : `Search the Grimoire for “${pal_.arg.slice(0, 40)}”`) : c.arg && pal_.arg ? `Load ${pal_.arg.slice(0, 48)}${pal_.arg.length > 48 ? '…' : ''}` : c.desc;
+    const span = document.createElement('span'); span.textContent = c.cmd === ':define' && pal_.arg ? (dEntry ? `Open ${dEntry.term}: ${dEntry.def.slice(0, 64)}${dEntry.def.length > 64 ? '…' : ''}` : `Search the Grimoire for “${pal_.arg.slice(0, 40)}”`) : c.arg && pal_.arg ? `Open in Set up: ${pal_.arg.slice(0, 40)}${pal_.arg.length > 40 ? '…' : ''}` : c.desc;
     const side = document.createElement('div'); side.className = 'side';
     if (ok !== true) { const why = document.createElement('em'); why.className = 'why'; why.textContent = ok; why.title = ok; side.appendChild(why); }
     for (const k of PAL_KEYS[c.cmd] || []) { const kb = document.createElement('kbd'); kb.textContent = k; side.appendChild(kb); }

@@ -122,7 +122,8 @@ export function studyStart(s) {
   const r = Chess.parseFen(s.fen); if (r.error) return;
   const go = () => {
     hideSnack();
-    if (s.mode === 'free') { study.cur = null; if (app.started) Object.assign(draft, userSetup()); startGame(r.state); return; }
+    // a set-up plays with Play's settings, or by both sides on this screen when it says so (vs)
+    if (s.mode === 'free') { study.cur = null; if (app.started) Object.assign(draft, userSetup()); if (s.vs === 'both') startGame(r.state, { opponent: 'human', side: s.side, level: draft.level, study: null }); else startGame(r.state); return; }
     const c = { s, state: 'playing', tries: 0, hint: 0, shown: false, reject: null, pending: null, msg: '', msgKind: '', msgAt: null, checking: false, gen: ++study.gen };
     startGame(r.state, { opponent: 'cpu', side: s.side, level: 8, study: c });
   };

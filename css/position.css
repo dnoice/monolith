@@ -367,6 +367,13 @@ button.pr-rule{cursor:pointer}
 .ed-tools .btn.small{flex-direction:column;gap:3px;height:auto;min-width:0;padding:7px 2px;border-radius:10px;font-size:11.5px;line-height:1.2;text-align:center;white-space:normal}
 .ed-tools .btn svg{width:18px;height:18px}
 #ed-flip[aria-pressed="true"]{background:color-mix(in srgb,var(--md-primary) 14%,transparent)}
+/* who plays it, and the card's foot: Play this position and the sentence saying how it will be
+   played stay at the bottom of the panel while the board above is built */
+.ed-play{display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid var(--md-outline-var)}
+.ed-play .seg button{height:34px;font-size:12.5px}
+.ed-foot{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;gap:8px;margin:0 -16px -16px;padding:10px 16px 14px;border-top:1px solid var(--md-outline-var);border-radius:0 0 var(--r-card) var(--r-card);background:var(--md-surface-2);box-shadow:0 -10px 16px -12px rgba(0,0,0,.55)}
+.ed-play-sum{font-size:12.5px;line-height:1.4;color:var(--md-on-surface-var)}
+.ed-play-sum:empty{display:none}
 
 /* ---------- Set up: the FEN, field by field ---------- */
 .fen-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:-4px;padding-top:6px;border-top:1px solid var(--md-outline-var)}
@@ -408,7 +415,8 @@ button.pr-rule{cursor:pointer}
 :root[data-skin="monolith"] .sl-steps li{border-radius:2px}
 :root[data-skin="monolith"] .sl-ranks li,:root[data-skin="monolith"] .sl-hold li,:root[data-skin="monolith"] .sl-bar,:root[data-skin="monolith"] .sl-bar i{border-radius:2px}
 :root[data-skin="monolith"] .pr-gt::after{background:var(--mo-rule)}
-:root[data-skin="monolith"] .fen-head{border-top-color:var(--mo-rule)}
+:root[data-skin="monolith"] .fen-head,:root[data-skin="monolith"] .ed-play{border-top-color:var(--mo-rule)}
+:root[data-skin="monolith"] .ed-foot{background:var(--mo-well);border-top-color:var(--mo-rule)}
 :root[data-skin="monolith"] .pr-status{background:var(--mo-crimson-tint);border-radius:3px}
 :root[data-skin="monolith"] .pr-status.draw{background:var(--mo-raised)}
 :root[data-skin="monolith"] .st-next,:root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .st-tile,:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap,:root[data-skin="monolith"] .ed-tool{border-radius:4px}

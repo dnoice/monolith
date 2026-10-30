@@ -709,12 +709,20 @@
                 <button class="btn text small" id="ed-seen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>Board you see</button>
                 <button class="btn text small" id="ed-flip" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3 5 6.99h3V14h2V6.99h3L9 3z"/></svg>Flip</button>
               </div>
+              <div class="ed-play" id="ed-play" role="group" aria-labelledby="ed-play-lab">
+                <span class="ed-lab" id="ed-play-lab">Who plays it</span>
+                <div class="seg" id="ed-vs" role="radiogroup" aria-label="Opponent"><button type="button" role="radio" data-edvs="cpu">Against Stockfish</button><button type="button" role="radio" data-edvs="human">Both sides</button></div>
+                <div class="seg" id="ed-side" role="radiogroup" aria-label="Your side"><button type="button" role="radio" data-edside="w">You play White</button><button type="button" role="radio" data-edside="b">You play Black</button></div>
+              </div>
               <div class="fen-head"><span class="ed-lab"><span data-term="fen">FEN</span></span><span class="fen-legend" aria-hidden="true">six fields, coloured below</span></div>
               <div class="fen-wrap"><div class="fen-hl" id="fen-hl" aria-hidden="true"></div><textarea class="fen-box" id="fen" spellcheck="false" rows="2" aria-label="FEN of the position" aria-describedby="fen-note fen-explain"></textarea></div>
               <div class="fen-fields" id="fen-fields" role="group" aria-label="The FEN's six fields: select one to read it"></div>
               <p class="fen-explain" id="fen-explain" aria-live="polite"></p>
               <p class="help" id="fen-note"></p>
-              <div class="card-actions"><button class="btn filled" id="btn-fen-load" type="button">Play this position</button><button class="btn outlined" id="btn-fen-copy" type="button">Copy FEN</button></div>
+              <div class="ed-foot" id="ed-foot">
+                <p class="ed-play-sum" id="ed-play-help"></p>
+                <div class="card-actions"><button class="btn filled" id="btn-fen-load" type="button" aria-describedby="ed-play-help">Play this position</button><button class="btn outlined" id="btn-fen-copy" type="button">Copy FEN</button></div>
+              </div>
             </section>
           </div>
         </section>
