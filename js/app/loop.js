@@ -79,7 +79,7 @@ import { stepField, stepVectors, stepXray, xrState } from '../scene/instruments.
 import { holoClock, stepPreview, warmGhostPrograms } from '../scene/phantoms.js';
 import { post } from '../scene/post.js';
 import { stepPerf } from '../scene/quality.js';
-import { updateCamera } from '../scene/camera.js';
+import { fitCamera, updateCamera } from '../scene/camera.js';
 import { stepIdle, stepTweens } from '../scene/motion.js';
 import { renderers } from './state.js';
 import { boardState, stepArrows } from '../game/board-ui.js';
@@ -97,7 +97,7 @@ import { bootCovering, bootReady } from '../ui/boot-screen.js';
 /* ---------- resize + loop ---------- */
 export function resize() {
   const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
-  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); fitCamera();
   post.setSize(w, h); resizeMirror();
   if (renderers.length && (prefs.tab === 'analyze' || prefs.tab === 'crucible')) { const hz = $('#wdl-halo'); if (hz) hz.dataset.h = ''; scheduleResizeDraw(); }
 }

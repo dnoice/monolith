@@ -97,7 +97,7 @@ export function start(data) {
   buildTelemetry();
   post.build();
   const w0 = desiredWorld(); applyWorldMix(w0 === 'monolith' ? 1 : 0); app.worldName = w0 === 'monolith' ? 'cathedral' : 'monolith'; setWorld(w0, false);
-  if (w0 === 'monolith') { cam.phi = WORLD.monolith.pose.phi; cam.dist = WORLD.monolith.pose.dist; }
+  if (w0 === 'monolith') cam.phi = WORLD.monolith.pose.phi;   // its distance is fitted to the stage (scene/camera.js)
   placePieces(cur()); restPose(game.result);
   setTab(prefs.tab);
   render(); engine.init();

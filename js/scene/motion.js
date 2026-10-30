@@ -76,7 +76,22 @@ async function faceHome(g, dur = 0.22) {
   let d = target - from; while (d > PI) d -= 2 * PI; while (d < -PI) d += 2 * PI;
   await tween(dur, e => { g.rotation.y = from + d * e; }, easeInOut);
 }
+/* A piece dropped over its square by hand (drag-to-move, scene/camera.js) does not travel there
+   from its square: it settles from where it was let go, and a capture shatters the victim as it
+   lands. dropAt(g) is called just before the move is played and dropAt(null) after, so only the
+   move it was dropped for reads it (a promotion, which asks first, never does). */
+let dropped = null;
+export function dropAt(g) { dropped = g && { g, x: g.position.x, y: g.position.y + g.userData.body.position.y, z: g.position.z }; }
+async function settle(g, to, victim) {
+  const a = dropped, b = sqPos(to), body = g.userData.body; dropped = null;
+  g.userData.anim = true; if (victim) victim.userData.anim = true; body.position.y = 0; body.rotation.x = body.rotation.z = 0;
+  await tween(0.14, e => g.position.set(a.x + (b.x - a.x) * e, a.y * (1 - e), a.z + (b.z - a.z) * e), easeOut);
+  g.position.set(b.x, 0, b.z);
+  if (victim) { shatter(victim); sound.crack(); app.shake = 0.7; }
+  g.userData.anim = false;
+}
 export async function animMove(g, from, to) {
+  if (dropped && dropped.g === g) return settle(g, to);
   const a = sqPos(from), b = sqPos(to), body = g.userData.body, hop = g.userData.type === 'n';
   g.userData.anim = true; body.rotation.z = 0; body.position.y = 0;
   await faceToward(g, b.x - a.x, b.z - a.z);
@@ -90,6 +105,7 @@ export async function animMove(g, from, to) {
   await faceHome(g); g.userData.anim = false;
 }
 export async function animAttack(g, from, to, victim) {
+  if (dropped && dropped.g === g) return settle(g, to, victim);
   const a = sqPos(from), b = sqPos(to), body = g.userData.body, hop = g.userData.type === 'n';
   g.userData.anim = true; if (victim) victim.userData.anim = true; body.rotation.z = 0; body.position.y = 0;
   await faceToward(g, b.x - a.x, b.z - a.z, 0.12);

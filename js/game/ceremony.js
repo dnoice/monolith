@@ -61,7 +61,7 @@ import { app } from '../app/store.js';
 import { PI, prefs, reduceMotion } from '../app/base.js';
 import { scene } from '../scene/renderer.js';
 import { pieceAt, sqPos } from '../scene/board.js';
-import { cam } from '../scene/camera.js';
+import { cam, fitDist } from '../scene/camera.js';
 import { easeIn, easeInOut, easeOut, tween, wait } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
 import { cur, game } from '../app/state.js';
@@ -85,7 +85,7 @@ let swing = null;     // the camera's pose before an end-of-game swing, while on
 export function clearCeremony() {
   ceremonyGen++;
   cam.target.set(0, 0.3, 0);
-  if (swing) { cam.theta = swing.theta; cam.dist = swing.dist; swing = null; }
+  if (swing) { cam.theta = swing.theta; cam.dist = swing.ratio * fitDist(); swing = null; }
   for (const m of [...fx.children]) { m.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); fx.remove(m); }
   motes.length = 0;
   winnerGlow.intensity = 0;
@@ -242,18 +242,21 @@ async function bow(sq, gen) {
   body.rotation.x = 0; g.userData.anim = false;
 }
 /* A slow swing that drifts toward the point between the two kings, so both stay in frame, then
-   returns to where the player had the camera. */
+   returns to where the player had the camera. Its distance is a share of the fitted one, so a stage
+   resized meanwhile is not undone; Reset view ends it where it is (endSwing). */
+let swingGen = 0;
+export function endSwing() { if (swing) { swingGen++; swing = null; } }
 function cameraSwing(gen, a, b) {
   if (!heavyFx()) return;
-  const t0 = cam.theta, d0 = cam.dist, tg0 = cam.target.clone();
+  const t0 = cam.theta, r0 = cam.dist / fitDist(), tg0 = cam.target.clone(), sg = ++swingGen, on = () => live(gen) && sg === swingGen;
   const pa = sqPos(a), pb = sqPos(b), mid = new THREE.Vector3((pa.x + pb.x) / 2, 0.3, (pa.z + pb.z) / 2);
   const toward = tg0.clone().lerp(mid, 0.45), span = Math.hypot(pa.x - pb.x, pa.z - pb.z);
   const dz = -Math.min(0.9, Math.max(0, 0.9 - span * 0.08));        // zoom in less when the kings are far apart
-  const pose = k => { cam.theta = t0 + 0.32 * k; cam.dist = d0 + dz * k; cam.target.copy(tg0).lerp(toward, k); };
-  swing = { theta: t0, dist: d0 };   // an interrupted swing is put back by clearCeremony()
-  tween(2.2, e => { if (live(gen)) pose(e); }, easeInOut)
-    .then(() => live(gen) && tween(2.4, e => { if (live(gen)) pose(1 - e); }, easeInOut))
-    .then(() => { if (live(gen)) swing = null; else cam.target.copy(tg0); });
+  const pose = k => { cam.theta = t0 + 0.32 * k; cam.dist = (r0 + dz / 11.5 * k) * fitDist(); cam.target.copy(tg0).lerp(toward, k); };
+  swing = { theta: t0, ratio: r0 };   // an interrupted swing is put back by clearCeremony()
+  tween(2.2, e => { if (on()) pose(e); }, easeInOut)
+    .then(() => on() && tween(2.4, e => { if (on()) pose(1 - e); }, easeInOut))
+    .then(() => { if (on()) swing = null; else if (!live(gen)) cam.target.copy(tg0); });
 }
 
 /* The game-end ceremony for a result that has just happened. */
