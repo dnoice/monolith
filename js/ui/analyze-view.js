@@ -68,6 +68,7 @@ import { PIECE_NAMES, sqPos } from '../scene/board.js';
 import { INK, PIECE_TOP, setField, setVectors, setXray } from '../scene/instruments.js';
 import { setPhantoms } from '../scene/phantoms.js';
 import { game, render, shown } from '../app/state.js';
+import { exploreAppend } from '../game/flow.js';
 import { boardState, lineQuality } from '../game/board-ui.js';
 import { PVAL, see } from '../coach/coach.js';
 import { cap1 } from '../coach/facts.js';
@@ -99,30 +100,43 @@ export function clearScrub() {
   setPhantoms(null, ''); const pc = $('#phantom-chip'); if (pc) pc.hidden = true;
   for (const c of document.querySelectorAll('.syn-chip.on')) c.classList.remove('on');
 }
-function previewLine(line, ply, pin = false) {
-  const st = an.st; if (!st) return;
+// a chip's line up to its ply, as the chips show it: a numbered line, or the fork row (the trunk to
+// the fork, then the walk's second choice there)
+function chipLine(line, ply) {
+  const st = an.st; if (!st) return null;
   const LN = an.synLines || an.lines, WK = an.synWalk || an.walk;   // what the chips show
-  const src = line === 'fork' ? null : LN[line];
-  let seq, label;
   if (line === 'fork') {
-    const w = WK && WK.plies[ply]; if (!w) return;
+    const w = WK && WK.plies[ply]; if (!w) return null;
     const trunk = sanList(st, WK.trunk, ply); const base = trunk.length ? trunk[trunk.length - 1].state : st;
-    const alt = sanList(base, w.alts[1].pv, 1);
-    seq = trunk.concat(alt); label = `Fork row, ply ${ply + 1}`;
-  } else {
-    if (!src) return;
-    seq = sanList(st, src.pv, ply + 1); label = `Line ${line + 1}, ply ${ply + 1}`;
+    return { seq: trunk.concat(sanList(base, w.alts[1].pv, 1)), label: `Fork row, ply ${ply + 1}` };
   }
-  if (!seq.length) return;
+  return LN[line] ? { seq: sanList(st, LN[line].pv, ply + 1), label: `Line ${line + 1}, ply ${ply + 1}` } : null;
+}
+/* Play to here: an engine line played onto the board as an explored line, so the analysis goes on
+   from where it leads. It never touches the game: at the live position of a game it explores too,
+   and Back returns to the board it came from. */
+function stepInto(seq) { if (an.st && seq && seq.length) exploreAppend(an.st, seq); }
+function previewLine(line, ply, pin = false) {
+  const st = an.st, L = chipLine(line, ply); if (!L || !L.seq.length) return;
+  const { seq, label } = L;
   const proj = seq[seq.length - 1].state, dm = materialOf(proj) - materialOf(st);
   an.scrub = { line, ply }; if (pin) an.pin = an.pin && an.pin.line === line && an.pin.ply === ply ? null : { line, ply };
   if (pin && !an.pin) { clearScrub(); return; }
   setPhantoms(proj, Chess.fen(proj), st);   // keyed by the projected position: the same position is never rebuilt
   const pc = $('#phantom-chip'); pc.hidden = false;
-  pc.innerHTML = '';
-  const b = document.createElement('b'); b.textContent = `${an.pin ? 'Pinned' : 'Hover'} ${label.toLowerCase()} · ${seq.slice(-4).map(x => x.num + x.san).join(' ')}`;
-  const sub = document.createElement('span'); sub.textContent = `hologram: where pieces land · faint: squares they leave · crimson: captured · material ${dm > 0 ? '+' : dm < 0 ? MIN : '±'}${Math.abs(dm)} (White's view, pawns)`;
-  pc.append(b, sub);
+  /* built once and then only rewritten: a search redraws a pinned line several times a second, and
+     a chip rebuilt between the press and the release of Play to here lost the click */
+  let go = $('#btn-step-in');
+  if (!go) {
+    pc.innerHTML = ''; pc.append(document.createElement('b'), document.createElement('span'));
+    go = document.createElement('button'); go.type = 'button'; go.className = 'btn text small'; go.id = 'btn-step-in'; go.textContent = 'Play to here';
+    go.title = 'Play this line to here on the board and analyse on from there; the game itself does not change';
+    go.addEventListener('click', () => { const P = an.pin && chipLine(an.pin.line, an.pin.ply); if (P) stepInto(P.seq); }); pc.appendChild(go);
+  }
+  const [b, sub] = pc.children, say = (el, t) => { if (el.textContent !== t) el.textContent = t; };
+  say(b, `${an.pin ? 'Pinned' : 'Hover'} ${label.toLowerCase()} · ${seq.slice(-4).map(x => x.num + x.san).join(' ')}`);
+  say(sub, `hologram: where pieces land · faint: squares they leave · crimson: captured · material ${dm > 0 ? '+' : dm < 0 ? MIN : '±'}${Math.abs(dm)} (White's view, pawns)`);
+  go.hidden = !(an.pin && an.pin.line === line && an.pin.ply === ply);
   for (const c of document.querySelectorAll('.syn-chip.on')) c.classList.remove('on');
   const chip = document.querySelector(`.syn-chip[data-line="${line}"][data-ply="${ply}"]`); if (chip) chip.classList.add('on');
 }
@@ -233,7 +247,7 @@ export function renderAnalyze() {
       const item = document.createElement('div'), row = document.createElement('button'); item.setAttribute('role', 'listitem'); row.type = 'button'; item.appendChild(row);
       row.className = 'pv-row' + (i === 0 ? ' best' : '') + (an.focus === i ? ' focus' : ''); row.style.setProperty('--q', q.css);
       row.setAttribute('aria-pressed', String(an.focus === i));
-      row.title = an.focus === i ? 'Show every line' : 'Show only this line on the board';
+      row.title = `${an.focus === i ? 'Show every line' : 'Show only this line on the board'} · Shift-click plays its first move`;
       const idx = document.createElement('span'); idx.className = 'i'; idx.textContent = i + 1;
       const mv = document.createElement('span'); mv.className = 'pv-mv'; mv.textContent = seq.length ? seq[0].san : inf.pv[0];
       const gr = document.createElement('span'); gr.className = 'pv-grade'; gr.textContent = q.label; mv.appendChild(gr);
@@ -243,7 +257,7 @@ export function renderAnalyze() {
       else wm.innerHTML = '<span class="wdl-num">WDL —</span>';
       const ln = document.createElement('span'); ln.className = 'pv-ln'; ln.textContent = seq.slice(1).map(x => x.num + x.san).join(' ');
       row.append(idx, mv, ev, wm, ln);
-      row.addEventListener('click', () => { an.focus = an.focus === i ? -1 : i; an.ver++; renderAnalyze(); });
+      row.addEventListener('click', e => { if (e.shiftKey) return stepInto(sanList(st, inf.pv, 1)); an.focus = an.focus === i ? -1 : i; an.ver++; renderAnalyze(); });
       table.appendChild(item);
     });
     renderSyn();
@@ -447,6 +461,10 @@ export function renderSyn() {
     c.addEventListener('focus', () => { cancelEndPreview(); previewLine(line === 'fork' ? 'fork' : +line, k); });
     c.addEventListener('mouseleave', scheduleEndPreview); c.addEventListener('blur', scheduleEndPreview);
     c.addEventListener('click', () => { cancelEndPreview(); previewLine(line === 'fork' ? 'fork' : +line, k, true); });
+    // Enter on the pinned chip, or a double-click on any, plays the line to it (Play to here)
+    const ln = line === 'fork' ? 'fork' : +line, into = () => { const L = chipLine(ln, k); if (L) stepInto(L.seq); };
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' && an.pin && an.pin.line === ln && an.pin.ply === k) { e.preventDefault(); into(); } });
+    c.addEventListener('dblclick', into);
     return c;
   };
   LN.forEach((inf, i) => {

@@ -225,6 +225,16 @@ export function exploreUndo() {
   explore.states.pop(); explore.moves.pop(); explore.sans.pop();
   deselect(); placePieces(exploreState()); render(); refreshAnalysis();
 }
+/* A line played onto the board at once (Analyze's Play to here): each move ({ mv, san, state }, as
+   sanList gives them) joins the explored line without animation, as a jump in the review does. It
+   starts from `from`, the position Analyze shows: the explored line's end, or the board under it. */
+export function exploreAppend(from, seq) {
+  if (app.busy || !seq.length || from !== (explore.on ? exploreState() : underlyingState())) return false;
+  if (!explore.on) exploreStart();
+  for (const x of seq) { explore.states.push(x.state); explore.moves.push(x.mv); explore.sans.push(x.san); }
+  deselect(); hideSnack(); placePieces(exploreState()); render(); refreshAnalysis();
+  return true;
+}
 // called from render: the board the line started from has changed underneath it
 export function exploreCheck() { if (explore.on && underlyingState() !== explore.base) exploreEnd(false); }
 export function exploreSquare(sq) {

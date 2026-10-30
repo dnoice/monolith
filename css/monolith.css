@@ -188,6 +188,8 @@
 .field-legend p{margin:0}
 .phantom-chip{position:absolute;left:50%;top:56px;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:2px;max-width:min(460px,calc(100% - 32px));padding:7px 14px;background:var(--mo-panel);border:1px solid var(--mo-steel);border-radius:3px;font-size:12.5px;color:var(--mo-ink);text-align:center;pointer-events:none}
 .phantom-chip span{font-size:11px;color:var(--mo-ink2)}
+/* a pinned line's Play to here: the one part of the chip that takes the pointer */
+.phantom-chip button{pointer-events:auto;margin-top:2px}
 
 /* dock: Synaptic PV scrubber (Analyze) and heartbeat (Crucible) */
 #dock{grid-area:dock;min-width:0;background:var(--mo-panel);border-top:1px solid var(--mo-rule);color:var(--mo-ink)}
