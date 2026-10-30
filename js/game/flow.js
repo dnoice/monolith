@@ -70,7 +70,7 @@ import { clearFragments, placePieces } from '../scene/board.js';
 import { cam } from '../scene/camera.js';
 import { tween } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
-import { cur, draft, game, learn, match, render, shown, SIDE, SIDE_COLOR } from '../app/state.js';
+import { cur, draft, game, learn, match, render, shown, SIDE } from '../app/state.js';
 import { hideSnack, snack } from '../ui/snackbar.js';
 import { engine } from './engine.js';
 import { deselect, rookSqOf, select } from './board-ui.js';
@@ -139,8 +139,11 @@ function rollDie(done) {
   spin();
 }
 /* opts (a study): { opponent, side, level, study } set this game's match without touching the
-   saved game settings, which the next ordinary game goes back to. */
-export function startGame(startState, opts = null) {
+   saved game settings, which the next ordinary game goes back to. line: { states, moves, sans }, a
+   game begun part-way with its moves kept (Play from here, a loaded PGN), so the move list, Undo,
+   the captures, the opening's name and repetitions all have its history; a line from the free
+   board (free) is already standing on the board, so it is not dealt in. */
+export function startGame(startState, opts = null, line = null) {
   learn('start'); learn('setup-intro');
   rollGen++; app.rolling = false;   // a roll still tumbling for an earlier start is dropped
   engine.abort(); app.cpuThinking = false; hideSnack(); deselect();
@@ -152,13 +155,15 @@ export function startGame(startState, opts = null) {
   study.cur = opts && opts.study ? opts.study : null;
   const begin = side => {
     app.rolling = false; match.human = side;
-    game.states = [startState || Chess.newGame()]; game.moves = []; game.sans = []; game.title = null;
-    game.result = resultFor(cur()); app.lastMove = null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+    game.states = line ? line.states.slice() : [startState || Chess.newGame()]; game.moves = line ? line.moves.slice() : []; game.sans = line ? line.sans.slice() : []; game.title = null;
+    const lm = game.moves[game.moves.length - 1];
+    game.result = resultFor(cur()); app.lastMove = lm ? { from: lm.from, to: lm.to } : null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+    draft.from = false; exploreEnd(false);
     clearFragments(); placePieces(cur()); app.started = true; app.setupOpen = false;
     setOrientation(autoFlipOn() ? cur().turn : side);   // a set-up position may have Obsidian to move
     app.busy = true; render();
     const g0 = ceremonyGen;   // a newer game owns `busy` once it starts
-    dealIn().then(() => { if (g0 !== ceremonyGen) return; app.busy = false; render(); refreshAnalysis(); maybeComputerMove(); coachKick(); });
+    (line && line.free ? Promise.resolve() : dealIn()).then(() => { if (g0 !== ceremonyGen) return; app.busy = false; render(); refreshAnalysis(); maybeComputerMove(); coachKick(); });
   };
   // with the board turning for each player the die decides nothing in a friend game
   const turns = draft.opponent === 'human' && prefs.autoFlip !== false;
@@ -223,7 +228,12 @@ export const viewedPly = () => app.view === null ? game.states.length - 1 : app.
 export const explore = { on: false, base: null, states: [], moves: [], sans: [] };
 export const exploreState = () => explore.states[explore.states.length - 1];
 export const underlyingState = () => boardOverride ? boardOverride.state : shown();
-export const exploreAvailable = () => !!boardOverride || (app.started && (app.view !== null || !!game.result));
+/* Before any game the board is free (2.18.0): both sides move in turn from the starting position
+   on every tab, and Play from here turns the line into a game. */
+export const exploreAvailable = () => !!boardOverride || !app.started || app.view !== null || !!game.result;
+export const sandbox = () => explore.on && !app.started && !boardOverride;
+// Play from here: the free board's line as it stands when Start game is pressed (draft.from marks the choice)
+export const draftLine = () => draft.from && sandbox() && explore.moves.length ? { states: explore.states.slice(), moves: explore.moves.slice(), sans: explore.sans.slice(), free: true } : null;
 export function setExplorePref(on) { prefs.explore = on; savePrefs(); if (!on && explore.on) exploreEnd(); else render(); }
 function exploreStart() {
   const base = underlyingState();
@@ -235,7 +245,7 @@ function exploreStart() {
 export function exploreEnd(replace = true) {
   if (!explore.on) return;
   Object.assign(explore, { on: false, base: null, states: [], moves: [], sans: [] });
-  app.selected = -1; app.legalFor = [];
+  app.selected = -1; app.legalFor = []; draft.from = false;   // a reset free board takes Play from here with it
   if (replace) { placePieces(underlyingState()); if (!boardOverride && app.view === null) restPose(game.result); hideSnack(); render(); refreshAnalysis(); }
 }
 export function exploreUndo() {
@@ -251,7 +261,8 @@ export function exploreSquare(sq) {
   if (app.busy) return;
   if (!explore.on) {
     const st0 = underlyingState(), p0 = st0.board[sq];
-    if (!p0 || p0.c !== st0.turn) { snack(Chess.allLegal(st0).length ? `${SIDE_COLOR[st0.turn] === 'white' ? 'White' : 'Black'} is to move here: pick one of its pieces to try a move.` : 'No legal moves in this position.'); return; }
+    const who = app.worldName === 'monolith' ? (st0.turn === 'w' ? 'White' : 'Black') : SIDE[st0.turn];
+    if (!p0 || p0.c !== st0.turn) { snack(Chess.allLegal(st0).length ? `${who} is to move here: pick one of its pieces to try a move.` : 'No legal moves in this position.'); return; }
     exploreStart();
   }
   const st = exploreState(), p = st.board[sq];
@@ -262,6 +273,8 @@ export function exploreSquare(sq) {
   if (p && p.c === st.turn) { if (app.selected === sq) deselect(); else { deselect(); select(sq); } }
   else deselect();
 }
+// a typed move (the move box) into the line, starting one from the board on screen if need be
+export function exploreTyped(mv) { if (app.busy || turning) return; if (!explore.on) exploreStart(); return exploreMove(mv); }
 async function exploreMove(mv) {
   if (!explore.on) return;
   app.busy = true; const st = exploreState(); deselect(); hideSnack();
@@ -284,6 +297,7 @@ export function exploreLine(max = 6) {
   return out.length > max ? '… ' + out.slice(-max).join(' ') : out.join(' ');
 }
 export function exploreOrigin() {
+  if (!boardOverride && !app.started) return 'the starting position';
   if (boardOverride && boardOverride.game) return `game #${pad2(boardOverride.game.index)}, ply ${boardOverride.ply}`;
   if (app.view !== null) return app.view === 0 ? 'the starting position' : `move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
   return 'the final position';

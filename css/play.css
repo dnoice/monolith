@@ -159,3 +159,13 @@
    reduced motion) never hides them. */
 .player{transition:border-color .25s,box-shadow .25s,opacity .25s}
 #stage.turning .player{opacity:0;transition:none}
+
+/* ---------- the free board before a game (2.18.0) ----------
+   Its moves in the list are a line being tried, not a record to step through; Play from here
+   opens the setup on it, with the line in the card at the top. */
+.mv.tried{cursor:default}
+.mv.tried:not(.cur):hover{background:none}
+.from-line{margin:0;font:500 13px/1.5 var(--font-mono);color:var(--md-on-surface);overflow-wrap:anywhere}
+.setup-from .help{margin-top:-6px}
+.setup-from .row{margin:-6px 0 -6px -10px}
+:root[data-skin="monolith"] .from-line{font-family:var(--font-tele)}

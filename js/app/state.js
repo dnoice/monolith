@@ -126,6 +126,6 @@ export function render() {
 export function init() {
   // ---------- state
   match = { opponent: prefs.opponent, choice: prefs.choice, human: prefs.choice === 'b' ? 'b' : 'w', level: prefs.level };
-  draft = { opponent: prefs.opponent, choice: prefs.choice, level: prefs.level };
+  draft = { opponent: prefs.opponent, choice: prefs.choice, level: prefs.level, from: false };   // from: Play from here (the free board's line)
   app.orient = match.human;
 }

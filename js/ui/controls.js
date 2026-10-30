@@ -59,18 +59,19 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, savePrefs } from '../app/base.js';
 import { cam } from '../scene/camera.js';
 import { tween } from '../scene/motion.js';
 import { ensureAudio } from '../app/sound.js';
 import { applyPrefs, canMoveNow, cur, draft, match, render } from '../app/state.js';
 import { snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
-import { deselect } from '../game/board-ui.js';
+import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  autoFlipOn, autoOrient, exploreEnd, exploreUndo, goLive, openSetup, rematch, resign, setAutoFlip,
-  setExplorePref, setOrientation, showView, startGame, undo, viewedPly
+  autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo, goLive,
+  openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, undo,
+  viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
@@ -109,7 +110,7 @@ export function init() {
   $('#level-live').addEventListener('input', e => {
     match.level = draft.level = prefs.level = +e.target.value; savePrefs(); render();
   });
-  $('#btn-start').addEventListener('click', () => { ensureAudio(); startGame(); });
+  $('#btn-start').addEventListener('click', () => { ensureAudio(); startGame(null, null, draftLine()); });
   $('#btn-setup-cancel').addEventListener('click', () => { app.setupOpen = false; if (!app.started) return; if (autoFlipOn()) autoOrient(false); else if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human); render(); });
   $('#btn-new').addEventListener('click', openSetup);
   $('#btn-new-2').addEventListener('click', openSetup);
@@ -131,6 +132,9 @@ export function init() {
   for (const id of ['#set-autoflip', '#setup-autoflip', '#live-autoflip']) $(id).addEventListener('change', e => setAutoFlip(e.target.checked));
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
+  // the free board's line becomes the start of a game: the setup opens on it, Start game begins there
+  $('#btn-explore-play').addEventListener('click', () => { draft.from = true; openSetup(); panelScroller().scrollTop = 0; });
+  $('#btn-from-clear').addEventListener('click', () => { draft.from = false; render(); });
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
@@ -145,16 +149,19 @@ export function init() {
   });
   $('#lines').addEventListener('change', e => { prefs.lines = Math.max(1, Math.min(5, +e.target.value || 3)); savePrefs(); });
   $('#btn-calc').addEventListener('click', calculateMoves);
-  $('#nav-first').addEventListener('click', () => showView(0));
-  $('#nav-prev').addEventListener('click', () => showView(viewedPly() - 1));
+  $('#nav-first').addEventListener('click', () => sandbox() ? exploreEnd() : showView(0));
+  $('#nav-prev').addEventListener('click', () => sandbox() ? exploreUndo() : showView(viewedPly() - 1));
   $('#nav-next').addEventListener('click', () => showView(viewedPly() + 1));
   $('#nav-last').addEventListener('click', goLive);
   $('#move-form').addEventListener('submit', e => {
-    e.preventDefault(); ensureAudio(); if (!canMoveNow()) return;
-    const inp = $('#move-input'), r = parseTyped(cur(), inp.value);
+    // the game on your turn; otherwise, as a click would, a line on the board the game does not own
+    e.preventDefault(); ensureAudio();
+    const tryIt = !canMoveNow() && (explore.on || (prefs.explore !== false && exploreAvailable()));
+    if (!canMoveNow() && !tryIt) return;
+    const inp = $('#move-input'), r = parseTyped(tryIt ? boardState() : cur(), inp.value);
     if (!r) return;
     if (r.error) { snack(r.error); return; }
-    inp.value = ''; deselect(); playMove(r);
+    inp.value = ''; deselect(); if (tryIt) exploreTyped(r); else playMove(r);
   });
   // Analyze controls
   for (const b of document.querySelectorAll('[data-layer]')) b.addEventListener('click', () => layerToggle(b.dataset.layer));

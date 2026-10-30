@@ -366,7 +366,7 @@
       <div class="player top" id="player-top" aria-live="polite"><span class="avatar"></span><span class="pinfo"><span class="pname"><span class="pn"></span><span class="psub"></span></span><span class="pcap"></span></span><span class="pstate"></span></div>
       <div class="player bottom" id="player-bottom" aria-live="polite"><span class="avatar"></span><span class="pinfo"><span class="pname"><span class="pn"></span><span class="psub"></span></span><span class="pcap"></span></span><span class="pstate"></span></div>
       <div class="stage-chip" id="review-chip" hidden><span id="review-text">Viewing an earlier move</span><button class="btn filled" id="btn-live">Back to live</button></div>
-      <div class="stage-chip" id="explore-chip" hidden><span id="explore-text">Exploring</span><button class="btn text" id="btn-explore-undo">Undo</button><button class="btn filled" id="btn-explore-back">Back</button></div>
+      <div class="stage-chip" id="explore-chip" hidden><span id="explore-text">Exploring</span><button class="btn text" id="btn-explore-undo">Undo</button><button class="btn filled" id="btn-explore-back">Back</button><button class="btn filled" id="btn-explore-play" hidden>Play from here</button></div>
       <div class="stage-chip plain castle" id="castle-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21h14v-2H5v2zM6 18h12l-1-7h2V4h-3v2h-2V4h-2v2H10V4H8v2H6V4H3v7h2z"/></svg><span id="castle-text"></span></div>
       <div class="stage-chip plain" id="setup-chip" data-tip="start" hidden>Choose your game on the Play tab, then press Start game</div>
       <div class="stage-hint" data-tip="orbit">Middle-drag to orbit · scroll to zoom</div>
@@ -427,7 +427,13 @@
         <!-- PLAY -->
         <section class="pane" id="pane-play" role="tabpanel" aria-labelledby="nav-play">
           <div class="pane" id="setup">
-            <header class="pane-head"><span class="kicker">Play</span><h2>New game</h2><p data-tip="setup-intro" id="setup-intro-text">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
+            <header class="pane-head"><span class="kicker">Play</span><h2 id="setup-title">New game</h2><p data-tip="setup-intro" id="setup-intro-text">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
+            <section class="card setup-from" id="setup-from" aria-labelledby="from-title" hidden>
+              <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8 20H4v-4h4v4zm0-6H4v-4h4v4zm0-6H4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4z"/></svg><h3 id="from-title">From the free board</h3></header>
+              <p class="from-line" id="from-line"></p>
+              <p class="help" id="from-help"></p>
+              <div class="row"><button class="btn text small" id="btn-from-clear">From the start instead</button></div>
+            </section>
             <section class="card" role="group" aria-labelledby="opp-title">
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><h3 id="opp-title">Opponent</h3></header>
               <div class="seg" role="radiogroup" aria-label="Opponent">
@@ -759,7 +765,7 @@
           <div class="group">
             <div class="switch-row"><label for="set-sound">Sound<span>Moves, captures and check</span></label><input type="checkbox" class="switch" role="switch" id="set-sound"></div>
             <div class="switch-row"><label for="set-legal">Show legal moves<span>Dots and rings when a piece is selected</span></label><input type="checkbox" class="switch" role="switch" id="set-legal"></div>
-            <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
+            <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves before a game, on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
             <div class="switch-row"><label for="set-autoflip">Turn the board for each player<span>Friend games on one screen: after each move, the side to move comes to the bottom</span></label><input type="checkbox" class="switch" role="switch" id="set-autoflip"></div>
             <div class="switch-row"><label for="set-coords">Board coordinates<span>Files a–h and ranks 1–8 on the frame</span></label><input type="checkbox" class="switch" role="switch" id="set-coords"></div>
           </div>
