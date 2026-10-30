@@ -51,6 +51,10 @@
 [data-term]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 42%,transparent);border-radius:2px;transition:color .12s,text-decoration-color .12s}
 [data-term]:hover,[data-term][aria-expanded="true"]{color:var(--md-on-surface);text-decoration-color:currentColor}
 [data-term]:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+/* where a Grimoire article's "Go to" lands: the control it names, ringed for a moment */
+.gr-land{border-radius:6px;outline:2px solid transparent;outline-offset:5px;animation:gr-land 1.6s var(--ease-std)}
+@keyframes gr-land{0%,50%{outline-color:var(--md-primary)}100%{outline-color:transparent}}
+@media (prefers-reduced-motion:reduce){.gr-land{animation:none;outline-color:var(--md-primary)}}
 .badge[data-term]{text-decoration:none}
 .badge[data-term]:hover{border-color:var(--mo-slate);color:var(--mo-ink2)}
 .term-pop{position:fixed;z-index:18;left:0;top:0;width:min(344px,calc(100vw - 24px));max-height:min(72vh,560px);overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px 16px 10px;border-radius:12px;background:var(--md-surface-3);border:1px solid var(--md-outline);box-shadow:0 2px 6px rgba(0,0,0,.3),0 18px 44px rgba(0,0,0,.5);color:var(--md-on-surface);scrollbar-width:thin}

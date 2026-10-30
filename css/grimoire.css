@@ -52,7 +52,9 @@
 [data-cat="engine"]{--gc:#ABB5C3}[data-cat="analysis"]{--gc:#9FD8B0}[data-cat="testing"]{--gc:#E8A93A}[data-cat="interface"]{--gc:#C3B7D6}
 .gr-index{display:flex;flex-direction:column;gap:12px}
 .gr-search{display:flex;align-items:center;gap:10px;height:44px;padding:0 10px 0 12px;border:1px solid var(--md-outline);border-radius:var(--r-ctl);background:var(--md-surface-2);transition:border-color .15s}
-.gr-search:focus-within{border-color:var(--md-primary)}
+/* one ring for the whole pill: the field inside draws none of its own */
+.gr-search:focus-within{border-color:var(--md-primary);box-shadow:0 0 0 1px var(--md-primary)}
+.gr-search input:focus,.gr-search input:focus-visible{outline:none;box-shadow:none}
 .gr-search svg{width:20px;height:20px;flex:none;fill:var(--md-on-surface-var)}
 .gr-search input{flex:1;min-width:0;height:100%;border:0;background:transparent;outline:none;font-size:14px}
 .gr-search input::placeholder{color:var(--md-on-surface-var)}
@@ -78,7 +80,8 @@
 .gr-it-cat{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gc)}
 .gr-item p{font-size:12.5px;line-height:1.45;color:var(--md-on-surface-var);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gr-item mark{background:transparent;color:var(--md-primary);font-weight:600}
-.gr-none{padding:16px 8px;font-size:13px;color:var(--md-on-surface-var)}
+.gr-none{padding:16px 8px 10px;font-size:13px;color:var(--md-on-surface-var)}
+.gr-none-act{padding:0 8px 12px}
 .gr-article{display:flex;flex-direction:column;gap:16px;min-width:0}
 .gr-a-nav{display:flex;align-items:center;gap:2px;margin:-8px -8px -6px -12px}
 .gr-a-nav .grow{flex:1}
@@ -113,6 +116,6 @@
 :root[data-skin="monolith"] .gr-view{background:var(--mo-well);border-color:var(--mo-rule)}
 :root[data-skin="monolith"] .gr-example p{background:var(--mo-well);font-family:var(--font-tele)}
 :root[data-skin="monolith"] .gr-search{background:var(--mo-well);border-color:var(--mo-rule)}
-:root[data-skin="monolith"] .gr-search:focus-within{border-color:var(--mo-steel)}
+:root[data-skin="monolith"] .gr-search:focus-within{border-color:var(--mo-steel);box-shadow:0 0 0 1px var(--mo-steel)}
 :root[data-skin="monolith"] .gr-cat{border-radius:2px;font-family:var(--font-ui-mo)}
 :root[data-skin="monolith"] .gr-cat[aria-checked="true"]{background:var(--mo-raised);color:var(--mo-ink);box-shadow:inset 0 -2px 0 var(--mo-ink)}
