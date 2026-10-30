@@ -64,7 +64,7 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { setWorldYaw, worldYaw } from '../scene/sets.js';
 import { clearFragments, placePieces } from '../scene/board.js';
 import { cam } from '../scene/camera.js';
@@ -160,6 +160,7 @@ export function startGame(startState, opts = null, line = null) {
     game.result = resultFor(cur()); app.lastMove = lm ? { from: lm.from, to: lm.to } : null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
     draft.from = false; exploreEnd(false);
     clearFragments(); placePieces(cur()); app.started = true; app.setupOpen = false;
+    if (prefs.tab === 'play') panelScroller().scrollTop = 0;   // the game's pane opens at its top, not where Start game was
     setOrientation(autoFlipOn() ? cur().turn : side);   // a set-up position may have Obsidian to move
     app.busy = true; render();
     const g0 = ceremonyGen;   // a newer game owns `busy` once it starts
@@ -175,7 +176,7 @@ export function rematch() {
 }
 export function openSetup() {
   Object.assign(draft, userSetup());
-  app.setupOpen = true; setTab('play'); render();
+  app.setupOpen = true; setTab('play'); render(); panelScroller().scrollTop = 0;
 }
 export function undo() {
   if (app.busy || game.states.length < 2 || !app.started) return;

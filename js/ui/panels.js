@@ -299,7 +299,7 @@ export function init() {
     $('#setup-chip').hidden = app.started || app.view !== null || !tip('start') || mo || explore.on;
     // before a game the board itself is the invitation (Move pieces on any board)
     if (!$('#setup-chip').hidden) setText($('#setup-chip'), prefs.explore !== false
-      ? (prefs.tab === 'play' ? 'Try a move on the board, or choose a game and press Start game' : 'Try a move on the board, or start a game on the Play tab')
+      ? (prefs.tab === 'play' ? 'Try a move on the board, or start a game' : 'Try a move on the board, or start a game on the Play tab')
       : (prefs.tab === 'play' ? 'Choose your game, then press Start game' : 'Choose your game on the Play tab, then press Start game'));
     for (const el of document.querySelectorAll('.stage-hint')) if (mo) el.hidden = true;
     renderEvalOnly();
@@ -344,7 +344,7 @@ export function init() {
       $('#level-help').textContent = `Level ${draft.level} of 8. ${L.blurb}${levelNote(draft.level)}`;
       $('#btn-setup-cancel').hidden = !app.started;
       $('#btn-start').disabled = app.rolling || (cpu && !engine.ready);   // a failed engine leaves friend games only
-      $('#btn-start').textContent = app.rolling ? 'Rolling…' : (cpu && !engine.ready && !engine.failed) ? 'Loading engine…' : 'Start game';
+      $('#btn-start').textContent = app.rolling ? 'Rolling…' : (cpu && !engine.ready && !engine.failed) ? 'Loading engine…' : app.started && game.sans.length && !game.result ? 'Start new game' : 'Start game';
       return;
     }
     const cpu = match.opponent === 'cpu', L = LEVELS[match.level - 1];

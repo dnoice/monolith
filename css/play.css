@@ -169,3 +169,10 @@
 .setup-from .help{margin-top:-6px}
 .setup-from .row{margin:-6px 0 -6px -10px}
 :root[data-skin="monolith"] .from-line{font-family:var(--font-tele)}
+
+/* ---------- Start game within reach (2.18.0) ----------
+   The setup is taller than the panel at most sizes and Start game is its last line, so the action
+   row holds at the foot of the pane while the cards scroll under it. -20px cancels the panes'
+   padding, as the Position switch does at the top; on phones the panel scrolls, unpadded. */
+#setup > .row.end{position:sticky;bottom:-20px;z-index:2;margin-block:-12px -20px;padding:12px 0 32px;background:linear-gradient(to top,var(--md-surface-1) 72%,transparent)}
+@media (max-width:899px){#setup > .row.end{bottom:0;margin-bottom:-12px;padding-bottom:12px}}

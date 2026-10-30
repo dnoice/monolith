@@ -63,7 +63,7 @@ import { $, panelScroller, PI, prefs, savePrefs } from '../app/base.js';
 import { cam } from '../scene/camera.js';
 import { tween } from '../scene/motion.js';
 import { ensureAudio } from '../app/sound.js';
-import { applyPrefs, canMoveNow, cur, draft, match, render } from '../app/state.js';
+import { applyPrefs, canMoveNow, cur, draft, game, match, render } from '../app/state.js';
 import { snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { boardState, deselect } from '../game/board-ui.js';
@@ -110,8 +110,17 @@ export function init() {
   $('#level-live').addEventListener('input', e => {
     match.level = draft.level = prefs.level = +e.target.value; savePrefs(); render();
   });
-  $('#btn-start').addEventListener('click', () => { ensureAudio(); startGame(null, null, draftLine()); });
-  $('#btn-setup-cancel').addEventListener('click', () => { app.setupOpen = false; if (!app.started) return; if (autoFlipOn()) autoOrient(false); else if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human); render(); });
+  $('#btn-start').addEventListener('click', () => {
+    ensureAudio(); const go = () => startGame(null, null, draftLine());
+    // a game still being played ends only when asked, as a study or a loaded position asks first
+    if (app.started && game.sans.length && !game.result) snack('Start a new game? The current one ends.', [{ label: 'Keep playing', act: () => {} }, { label: 'Start', filled: true, act: go }], true);
+    else go();
+  });
+  $('#btn-setup-cancel').addEventListener('click', () => {
+    app.setupOpen = false; draft.from = false; if (!app.started) return;
+    if (autoFlipOn()) autoOrient(false); else if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human);
+    render(); panelScroller().scrollTop = 0;   // the game's pane opens at its top, where the turn card is
+  });
   $('#btn-new').addEventListener('click', openSetup);
   $('#btn-new-2').addEventListener('click', openSetup);
   $('#btn-rematch').addEventListener('click', rematch);
