@@ -383,9 +383,9 @@
 .boot-mark::before{content:"";position:absolute;inset:-24% -30%;border-radius:50%;background:radial-gradient(closest-side,var(--boot-halo),transparent);opacity:.8;pointer-events:none;animation:boot-breathe 6.5s ease-in-out infinite alternate}
 .boot-emblem{position:relative;display:block;flex:none;width:var(--em);height:auto}
 /* The arc: White's back rank, a to h, over the emblem from one side of it to the other, drawn in
-   the world's accent with the faces only tinted by it, each piece upright. Its centre is the emblem's;
-   each piece is placed by --x and --y (the sine and the cosine of its angle, rook to rook across the
-   top), comes in by --k (rooks first, the royal pair last) and bows by --g (a to h). */
+   the world's accent with the faces only tinted by it, each piece upright. Its centre is the
+   emblem's; each piece is placed by --x and --y (the sine and the cosine of its angle, rook to
+   rook across the top), comes in by --k (rooks first, the royal pair last) and bows by --g. */
 .boot-arc{position:absolute;left:50%;top:calc(100% - var(--em) / 2);width:0;height:0;pointer-events:none}
 .boot-arc-set{position:absolute;width:0;height:0;overflow:hidden}
 .boot-arc-pc{--pc-face:color-mix(in srgb,currentColor 16%,transparent);--pc-line:currentColor;position:absolute;left:calc(var(--arc-pc) / -2);top:calc(var(--arc-pc) / -2);width:var(--arc-pc);height:var(--arc-pc);color:var(--arc-ink);translate:calc(var(--x) * var(--arc-r)) calc(var(--y) * var(--arc-r));filter:drop-shadow(0 0 6px var(--boot-glow))}
