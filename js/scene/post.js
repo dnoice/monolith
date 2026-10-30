@@ -270,7 +270,8 @@ export function init() {
        haze at the level's fraction of it, read texel by texel (nearest), never blended blind. */
     makeTargets(fw, fh, w, h) {
       if (this.depthRT) { this.depthRT.depthTexture.dispose(); this.depthRT.dispose(); this.hazeRT.dispose(); }
-      this.depthRT = new THREE.WebGLRenderTarget(fw, fh); this.depthRT.texture.name = 'rt-haze-depth';
+      // its colour is never written: one byte a pixel rather than four, now that it is full size
+      this.depthRT = new THREE.WebGLRenderTarget(fw, fh, { format: THREE.RedFormat }); this.depthRT.texture.name = 'rt-haze-depth';
       this.depthRT.depthTexture = new THREE.DepthTexture(fw, fh); this.depthRT.depthTexture.type = THREE.UnsignedIntType;
       this.hazeRT = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter }); this.hazeRT.texture.name = 'rt-haze';
       this.fw = fw; this.fh = fh; this.w = w; this.h = h; this.comp.uniforms.uHazeSize.value.set(w, h); this.comp.uniforms.uPx.value.set(1 / fw, 1 / fh);
