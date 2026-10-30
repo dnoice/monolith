@@ -50,6 +50,7 @@
 /* ---------- phone and narrow tablet: rail becomes a bottom bar ---------- */
 @media (max-width:899px){
   #app{grid-template-rows:56px minmax(0,1fr)}
+  .appbar{display:flex}   /* no match strip here, so no centre column */
   .brand small{display:none}
   .brand h1{font-size:18px}
   .brand{min-width:0}   /* on phones the title may ellipsize; the version keeps its own line */

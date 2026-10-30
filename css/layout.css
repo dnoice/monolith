@@ -74,7 +74,10 @@
 ---------
 */
 /* ---------- app bar ---------- */
-.appbar{position:relative;z-index:3;display:flex;align-items:center;gap:12px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);padding-block:0;background:var(--md-surface-1);border-bottom:1px solid var(--md-outline-var)}
+/* Three columns: the brand and the actions each take at least their own width and share what is
+   left equally, so the match strip in the middle sits on the page's centre line, not in the gap
+   between them. Phones, which have no match strip, keep a plain row (css/media.css). */
+.appbar{position:relative;z-index:3;display:grid;grid-template-columns:minmax(max-content,1fr) minmax(0,auto) minmax(max-content,1fr);align-items:center;gap:12px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);padding-block:0;background:var(--md-surface-1);border-bottom:1px solid var(--md-outline-var)}
 /* min-content: the brand never gives up width it needs (the version label sits inside it) */
 .brand{display:flex;align-items:center;gap:12px;min-width:min-content;flex:1}
 .brand .logo{width:32px;height:32px;flex:none;--logo-d:var(--dg-d)}
@@ -91,12 +94,14 @@
    rather than a control. On phones, where the app bar has no room, it is a line under the title
    instead. Both read APP_VERSION. */
 .brand-text{display:flex;align-items:center;gap:10px;min-width:0}
-.app-ver{display:inline-flex;align-items:center;flex:none;height:26px;margin-right:8px;padding:0 11px;border:1px solid var(--md-outline-var);border-radius:999px;font:500 11px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var);white-space:nowrap;cursor:default}
+.app-ver{display:inline-flex;align-items:center;flex:none;height:32px;padding:0 12px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);font:500 11px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var);white-space:nowrap;cursor:default}
 .app-ver:empty{display:none}
 .app-ver-sub{display:none}
 .brand h1{font-size:20px;font-weight:500;letter-spacing:.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand small{display:block;font-size:11px;font-weight:400;letter-spacing:.6px;text-transform:uppercase;color:var(--md-on-surface-var)}
-.appbar-actions{display:flex;gap:4px;align-items:center}
+/* the two labels (the release, the palette) share one height and shape; the icon buttons stay
+   40 px, since they are hit targets */
+.appbar-actions{display:flex;gap:8px;align-items:center;justify-self:end}
 
 /* ---------- shared controls: state layers, ripples, focus ---------- */
 .icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset{position:relative;overflow:hidden;cursor:pointer;-webkit-user-select:none;user-select:none}

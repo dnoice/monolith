@@ -110,7 +110,7 @@
 .pal-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:9px 16px;border-top:1px solid rgba(171,181,195,.14);font:400 11px var(--font-tele);color:var(--mo-ink3)}
 .pal-foot > span{display:inline-flex;align-items:center;gap:6px}
 .pal-foot #pal-foot-note{margin-left:auto}
-.btn-pal{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--md-outline-var);border-radius:var(--r-ctl);background:transparent;color:var(--md-on-surface-var);font:400 12px var(--font-mono);cursor:pointer;margin-right:6px}
+.btn-pal{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:transparent;color:var(--md-on-surface-var);font:400 12px var(--font-mono);cursor:pointer}
 .btn-pal:hover{color:var(--md-on-surface);border-color:var(--md-outline)}
 .btn-pal kbd{font:inherit;font-size:11px;opacity:.8}
 
