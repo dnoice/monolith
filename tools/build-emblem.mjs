@@ -112,7 +112,7 @@ import { fileURLToPath } from 'url';
 
 // fileURLToPath, not the URL's pathname: on Windows that reads /C:/…, and it keeps %20 for a space
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const [srcArg, pageArg, logoArg] = process.argv.slice(2);
+const [srcArg, pageArg, logoArg, setArg] = process.argv.slice(2);
 const SRC = path.resolve(srcArg || path.join(ROOT, 'assets', 'monolith-emblem.svg'));
 const LOGO = path.resolve(logoArg || path.join(ROOT, 'assets', 'monolith-logo.svg'));
 const PAGE = path.resolve(pageArg || ['index.html', 'wizards-chess.html'].map(f => path.join(ROOT, f)).find(f => fs.existsSync(f)) || 'index.html');
@@ -267,16 +267,32 @@ const logoTone = toneOf(logoSquares, L.name);
 const logo = `<svg class="logo" viewBox="${round(L.viewBox, 1)}" aria-hidden="true" focusable="false">`
   + `<g class="bd"${tfAttr(logoBoard.transform)}>${logoSquares.map(d => squareEl(d, logoTone(d), 1)).join('')}</g></svg>`;
 
+/* ================= the arc: White's back rank over the emblem =================
+   The house piece set (js/data/piece-set.js, a classic script, so it is run here rather than
+   imported) as one symbol per kind, and the eight pieces in file order, a to h, each an element of
+   its own: the stylesheet places them on the arc and times them by their order, and an element
+   moves on the compositor where a part of an SVG would not. The set's ids are dropped, since the
+   board diagrams draw the same set into the page later. */
+const SET = path.resolve(setArg || path.join(ROOT, 'js', 'data', 'piece-set.js'));
+const PS = (() => { try { return new Function(`${fs.readFileSync(SET, 'utf8')}\nreturn PIECE_SET;`)(); } catch (e) { fail(`${path.basename(SET)} could not be read: ${e.message}`); } })();
+const RANK = ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'];
+for (const t of new Set(RANK)) if (typeof PS?.pieces?.[t] !== 'string') fail(`${path.basename(SET)} has no ${t} in its pieces`);
+const side = round(String(PS.size), 1);
+const symbols = [...new Set(RANK)].map(t => `<symbol id="boot-pc-${t}" viewBox="0 0 ${side} ${side}">${round(PS.pieces[t].replace(/\s+id="[^"]*"/g, '').replace(/\s+/g, ' ').replace(/> </g, '><'), 1)}</symbol>`);
+const arc = `<div class="boot-arc" aria-hidden="true"><svg class="boot-arc-set" focusable="false"><defs>${symbols.join('')}</defs></svg>`
+  + RANK.map(t => `<span class="boot-arc-pc"><svg viewBox="0 0 ${side} ${side}" focusable="false"><use href="#boot-pc-${t}"/></svg></span>`).join('') + '</div>';
+
 /* ---------- into the page ---------- */
 const page = fs.readFileSync(PAGE, 'utf8');
 let out = page;
-for (const [name, html] of [['boot-emblem', emblem], ['brand-logo', logo]]) {
+for (const [name, html] of [['boot-emblem', emblem], ['boot-arc', arc], ['brand-logo', logo]]) {
   const re = new RegExp(`(<!-- ${name}:start[^>]*-->)[\\s\\S]*?(<!-- ${name}:end -->)`);
   if (!re.test(out)) fail(`${path.basename(PAGE)} has no ${name} markers`);
   out = out.replace(re, (m, a, b) => `${a}\n${html}\n${b}`);
 }
 const rel = f => path.relative(process.cwd(), f);
-if (out === page) { console.log(`${rel(PAGE)}: the emblem and the logo are already current`); process.exit(0); }
+if (out === page) { console.log(`${rel(PAGE)}: the emblem, the arc and the logo are already current`); process.exit(0); }
 fs.writeFileSync(PAGE, out);
 console.log(`${rel(PAGE)}: emblem written from ${rel(SRC)} (${squares.length} squares, ${pieceIds.length} pieces, ${emblem.length.toLocaleString('en-US')} bytes); `
+  + `arc from ${rel(SET)} (${RANK.length} pieces, ${arc.length.toLocaleString('en-US')} bytes); `
   + `logo from ${rel(LOGO)} (${logoSquares.length} squares, ${logo.length.toLocaleString('en-US')} bytes)`);
