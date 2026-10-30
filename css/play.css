@@ -135,6 +135,11 @@
 .mb-p.on .mb-dot{box-shadow:0 0 0 2px var(--md-surface-2),0 0 0 3.5px var(--md-primary)}
 .mb-p.on b{color:var(--md-primary)}
 .mb-move b.num{font-size:15px}
+/* A number is never cut short (move 25 read 'Move 2.'): as the strip runs out of room the title
+   or the players give way, and the move and the last segment stay whole, numbers and words. The
+   steps below take segments away before that could run out. */
+.mb-move,.mb-last{flex-shrink:0}
+.mb-move b,.mb-last b{flex:none;overflow:visible}
 /* before a game whose side the die picks, neither dot is a colour yet */
 .mb-players.by-die .mb-dot{background:linear-gradient(90deg,var(--md-marble) 50%,var(--md-obsidian) 50%)}
 :root[data-skin="monolith"] .mb-pill{background:var(--mo-well);border-color:var(--mo-rule)}
