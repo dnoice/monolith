@@ -184,6 +184,7 @@ export function init() {
   crNum('#cfg-a-val', 'aVal'); crNum('#cfg-b-val', 'bVal'); crNum('#cfg-elo0', 'elo0'); crNum('#cfg-elo1', 'elo1'); crNum('#cfg-pairs', 'pairs'); crNum('#cfg-par', 'par'); crNum('#cfg-alpha', 'alpha');
   for (const [sel, kk, vk] of [['#cfg-a-kind', 'aKind', 'aVal'], ['#cfg-b-kind', 'bKind', 'bVal']]) $(sel).addEventListener('change', e => { prefs.cr[kk] = e.target.value; prefs.cr[vk] = KIND_DEFAULT[e.target.value] - (kk === 'bKind' && e.target.value !== 'level' ? (e.target.value === 'nodes' ? 1000 : 200) : 0); savePrefs(); renderCrucible(); });
   $('#btn-cr-run').addEventListener('click', crStartLive);
+  $('#btn-cr-run-2').addEventListener('click', crStartLive);   // the deck's own, before a live run
   $('#btn-cr-stop').addEventListener('click', () => crStopLive('user'));
   $('#btn-cr-copy').addEventListener('click', crCopyJson);
   // with a Crucible game on the board the Moves card's steps walk that game (showView and goLive

@@ -54,7 +54,7 @@ import { engineFamily } from '../game/engine.js';
 import { MIN } from '../game/input.js';
 import { fitCanvas, FONT_T, setBadge, TOK } from './analyze-view.js';
 import {
-  BOOK, cr, CR_ELO_MS, CR_LIMITS, CR_MAX_PAIRS, crMaxPar, crModel, getGauntlet, pad2, resultText
+  BOOK, cr, CR_ELO_MS, CR_LIMITS, CR_MAX_PAIRS, crConfigError, crMaxPar, crModel, getGauntlet, pad2, resultText
 } from './crucible.js';
 import { boardOverride, crExpand, crShowBoard, renderBoardCard } from './crucible-board.js';
 import { radio, renderMatchbar } from './panels.js';
@@ -73,6 +73,17 @@ function crVerdictText(m) {
   if (m.stopReason === 'limit') return ['NO DECISION', `${m.pairs.length} pairs · LLR ${llr.toFixed(3).replace('-', MIN)} (no bound crossed): ${m.pairsTarget < CR_MAX_PAIRS ? `every book opening played once, the most a run with nodes on both sides holds` : `the run stops at ${CR_MAX_PAIRS} pairs`}`, `${m.wall.toFixed(1)} s wall`];
   if (m.kind === 'live') return ['STOPPED', m.note || `stopped by you after ${m.pairs.length} pair${m.pairs.length === 1 ? '' : 's'} · LLR ${llr.toFixed(3).replace('-', MIN)}`, m.wall ? `${m.wall.toFixed(1)} s wall` : ''];
   return ['NO DECISION', `LLR ${llr.toFixed(3)} after ${m.pairs.length} pairs`, ''];
+}
+/* The verdict in one plain sentence, under its code: which engine is stronger, or that it is not
+   decided. Elo and its interval are A's, from the pairs (as in Result). */
+function crPlain(m) {
+  if (!m || (m.kind === 'live' && m.starting)) return '';
+  const est = m.pairs.length ? Monolith.eloEstimate(m.pairs) : null, fmtElo = x => !isFinite(x) ? (x > 0 ? '+∞' : `${MIN}∞`) : `${x >= 0 ? '+' : MIN}${Math.abs(x).toFixed(1)}`;
+  if (m.verdict === 'H1') return `A is stronger than B${est ? `: ${fmtElo(est.elo)} Elo, 95 % from ${fmtElo(est.lo)} to ${fmtElo(est.hi)}` : ''}.`;
+  if (m.verdict === 'H0') return `A is not stronger than B by ${m.sprt.elo1} Elo or more.`;
+  if (m.running) return m.mode === 'sprt' ? 'Not decided yet: the LLR is still between the bounds.' : `Not done yet: ${m.pairs.length} of ${m.pairsTarget} pairs played.`;
+  if (m.stopReason === 'pairs') return `Every pair played; a fixed run decides nothing, the Elo below is its estimate.`;
+  return m.kind === 'live' && !m.stopReason ? '' : m.stopReason === 'user' ? 'Stopped before a decision.' : 'No decision: the LLR reached neither bound.';
 }
 export function renderCrucible() {
   const on = prefs.tab === 'crucible';
@@ -98,14 +109,21 @@ export function renderCrucible() {
     par.value = String(Math.min(max, c.par));
     for (const el of document.querySelectorAll('#cr-config select, #cr-config input, #cr-config [data-crmode]')) el.disabled = running;
     $('#btn-cr-run').disabled = running; $('#btn-cr-stop').disabled = !running;
+    // Start run sits right under the settings; the note under it keeps to one line (or the error),
+    // and the rest of how a run plays here is one click away
     const note = $('#cr-run-note');
-    if (!note.classList.contains('err') || running) { note.className = 'help'; note.textContent = `${max} game${max === 1 ? '' : 's'} at most at once here (${navigator.hardwareConcurrency || '?'} logical cores, one kept free). Each game uses two engines with 16 MB hash each. UCI_Elo plays ${CR_ELO_MS} ms a move; MONOLITH levels play at their own pace. The book has ${BOOK.length} openings: with nodes on both sides a run holds at most ${BOOK.length} pairs (an opening played again would replay the same games); otherwise the openings come round again. An SPRT run stops undecided at ${CR_MAX_PAIRS} pairs.`; }
+    if (!note.classList.contains('err') || running) { note.className = 'help'; note.textContent = `Up to ${max} game${max === 1 ? '' : 's'} at once here, two engines each.`; }
+    $('#cr-run-facts').textContent = `${navigator.hardwareConcurrency || '?'} logical cores here, one kept free. Each engine has a 16 MB hash. UCI_Elo plays ${CR_ELO_MS} ms a move; MONOLITH levels play at their own pace. The book has ${BOOK.length} openings: with nodes on both sides a run holds at most ${BOOK.length} pairs (an opening played again would replay the same games); otherwise the openings come round again. An SPRT run stops undecided at ${CR_MAX_PAIRS} pairs.`;
   }
+  // the deck before a live run: what to do next, and the button that does it
+  const empty = $('#deck-empty'); empty.hidden = !(cr.src === 'live' && !cr.live);
+  if (!empty.hidden) { const err = crConfigError(); $('#deck-empty-sub').textContent = err || 'Set A and B in the panel, then start the run.'; $('#deck-empty-sub').classList.toggle('err', !!err); $('#btn-cr-run-2').disabled = !!err; }
   // match
   const [v1, v2, v3] = crVerdictText(m);
   $('#cr-verdict').textContent = cr.src === 'recorded' && cr.dataState !== 'ready' ? (cr.dataState === 'error' ? 'NOT REACHABLE' : 'LOADING') : v1;
   $('#cr-verdict-1').textContent = cr.src === 'recorded' && cr.dataState === 'error' ? `data/gauntlet.json: ${cr.dataErr}` : cr.src === 'live' && !m ? 'Set A and B, then Start run.' : v2;
   $('#cr-verdict-2').textContent = v3;
+  $('#cr-verdict-0').textContent = cr.src === 'recorded' && cr.dataState !== 'ready' ? '' : crPlain(m);
   $('#cr-match-sub').textContent = !m ? '' : m.kind === 'recorded' ? 'SPRT · stopped at bound · recorded' : m.mode === 'sprt' ? 'SPRT · live in this browser' : `fixed ${m.pairsTarget} pairs · live`;
   setBadge($('#cr-badge-match'), m && m.kind === 'recorded' ? '[Runner: GSPRT · recorded]' : '[Runner: GSPRT]');
   const prog = $('#cr-progress'); prog.hidden = !(m && m.kind === 'live' && (m.running || m.mode === 'fixed'));
@@ -163,7 +181,7 @@ export function renderCrucible() {
   // deck
   $('#osc-sub').textContent = `pentanomial GSPRT · per pair${m && m.kind === 'live' ? ' · live' : ''}`;
   setBadge($('#osc-badge'), m && m.kind === 'recorded' ? `[Runner: GSPRT · ${m.engine.replace('Stockfish ', 'SF')} × 2 · rec]` : `[Runner: GSPRT · ${engineFamily().short} × 2]`);
-  $('#hive-sub').textContent = !m ? '' : m.kind === 'recorded' ? `${m.games.length} games · final states · the recorded run was sequential on one thread, laid out as it would tile ${m.games.length} workers` : `${done.length} of ${m.games.filter(Boolean).length} games done · ${m.par} at once in this browser`;
+  $('#hive-sub').textContent = !m ? '' : m.kind === 'recorded' ? `${m.games.length} games · final positions · click one to replay it on the board (an anomaly opens at its jump)` : `${done.length} of ${m.games.filter(Boolean).length} games done · ${m.par} at once in this browser · click one to replay it`;
   setBadge($('#hive-badge'), m && m.kind === 'recorded' ? '[Runner: python-chess · SF19 × 2 · rec]' : `[Runner: browser · ${engineFamily().short} × 2]`);
   if (!$('#deck').hidden) { drawOsc(); drawHive(); }
   if (cr.view === 'board') { if (boardOverride) { renderBoardCard(); drawBeat(); } else if (m && m.games[cr.expanded]) crShowBoard(); }
@@ -318,6 +336,20 @@ export function drawHive() {
     const black = gm.white === 'A' ? 'B' : 'A';
     g.fillText(`${pad2(gm.index)} ${gm.white}·${black} ${gm.done ? resultText(gm.white_score) : gm.termination === 'stopped' ? 'stopped' : 'live'}`, cx, cy + tile + beatH + 10);
   });
+  // hover readout, as the heartbeat's: the game in a line, and an anomaly's jump or what a click does;
+  // kept inside the canvas (it scrolls in the deck), under the tile or, on the last row, over it
+  const hv = cr.hover >= 0 ? games[cr.hover] : null;
+  if (hv) {
+    const i = cr.hover, cx = (i % cols) * (tile + gap), cy = Math.floor(i / cols) * cellH, black = hv.white === 'A' ? 'B' : 'A', a = hv.anomaly;
+    const l1 = `#${pad2(hv.index)} · ${hv.opening} · ${hv.white}–${black} ${hv.done ? resultText(hv.white_score) : 'live'} · ${hv.plies} plies${hv.done && hv.termination ? ` · ${hv.termination}` : ''}`;
+    let l2 = 'Click to replay it on the board';
+    if (a && hv.moves[a.ply - 1]) { const k = a.ply - 1, by = k % 2 === 0 ? hv.white : black; l2 = `${Math.floor(k / 2) + 1}${k % 2 ? '…' : '.'}${hv.moves[k]}: ${by === 'A' ? 'B' : 'A'}'s eval ${Monolith.fmtCp(a.before)} → ${Monolith.fmtCp(a.after)} · click to open it there`; }
+    g.font = `500 11px Geist, system-ui, sans-serif`; const w1 = g.measureText(l1).width; g.font = `10px ${FONT_T}`; const w2 = g.measureText(l2).width;
+    const bw = Math.min(W, Math.max(w1, w2) + 16), bh = 34, bx = Math.max(0, Math.min(W - bw, cx)), by = cy + tile + 4 + bh <= Hh ? cy + tile + 4 : Math.max(0, cy - bh - 4);
+    g.fillStyle = 'rgba(20,24,31,.92)'; g.fillRect(bx, by, bw, bh); g.strokeStyle = 'rgba(171,181,195,.45)'; g.lineWidth = 1; g.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
+    g.fillStyle = TOK.ink; g.font = `500 11px Geist, system-ui, sans-serif`; g.fillText(l1, bx + 8, by + 14);
+    g.fillStyle = a ? TOK.crimson : TOK.ink2; g.font = `10px ${FONT_T}`; g.fillText(l2, bx + 8, by + 28);
+  }
 }
 export function hiveIndexAt(x, y) {
   if (!hiveGeom) return -1; const { cols, tile, gap, cellH, n } = hiveGeom;

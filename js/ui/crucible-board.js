@@ -129,27 +129,42 @@ export function renderCrMoves() {
   $('#nav-first').disabled = $('#nav-prev').disabled = cr.ply <= 0; $('#nav-next').disabled = $('#nav-last').disabled = cr.ply >= last;
   const inp = $('#move-input'); inp.disabled = true; inp.placeholder = 'Click a piece to try a move';
 }
+/* The card over the board keeps to two rows, the game (with an anomaly's move, or the result) and
+   where you are in it, so it stays off the board's far corner; the rest of the story, the anomaly's
+   included, is under Details, which stays open or closed as you step through the game. */
 export function renderBoardCard() {
   const card = $('#board-card'), g = boardOverride && boardOverride.game;
   card.hidden = !g; if (!g) return;
+  // rebuilt only when what it says changes: every render redraws it, and a rebuild between the press
+  // and the release of a click lost the click (Back to the deck, Details)
+  const key = `${cr.src} ${g.index} ${g.plies} ${g.done} ${cr.ply} ${g.states.length} ${!!(prefs.explore && !explore.on)}`;
+  if (card.dataset.key === key && card.childElementCount) return;
+  card.dataset.key = key;
   const a = g.anomaly, black = g.white === 'A' ? 'B' : 'A';
   card.innerHTML = '';
-  const line = (cls, text) => { const el = document.createElement('div'); if (cls) el.className = cls; el.textContent = text; card.appendChild(el); return el; };
-  line('ink', `Game #${pad2(g.index)}${a ? ' · anomaly' : ''}${g.live && !g.done ? ' · in progress' : ''}`);
-  line('', `${g.opening} · White ${g.white} · Black ${black} · ${g.plies} plies${g.done ? ` · ${resultText(g.white_score)}` : ''}`);
+  const line = (cls, text, parent = card, tag = 'div') => { const el = document.createElement(tag); if (cls) el.className = cls; el.textContent = text; parent.appendChild(el); return el; };
+  const head = line('bc-head', '');
+  line('ink', `Game #${pad2(g.index)}${a ? ' · anomaly' : ''}${g.live && !g.done ? ' · in progress' : ''}`, head, 'b');
+  let mvIdx = -1, by = '';
   if (a) {
-    const mvIdx = a.ply - 1, by = mvIdx % 2 === 0 ? g.white : black, num = Math.floor(mvIdx / 2) + 1;
-    const big = line('mv-big', `${num}${mvIdx % 2 ? '…' : '.'}${g.moves[mvIdx]}`);
+    mvIdx = a.ply - 1; by = mvIdx % 2 === 0 ? g.white : black;
+    const big = line('mv-big', `${Math.floor(mvIdx / 2) + 1}${mvIdx % 2 ? '…' : '.'}${g.moves[mvIdx]}`, head, 'span');
     big.title = 'The move after which the other engine\'s eval jumped';
-    line('', `played by ${by} · its own eval ${Monolith.fmtCp(a.cause)}`);
-    const other = by === 'A' ? 'B' : 'A';
-    line('ink', `${other}'s eval ${Monolith.fmtCp(a.before)} → ${Monolith.fmtCp(a.after)}`);
-    line('', 'balanced to decisive in one own move');
-  }
-  if (g.done) line('', `ended by ${g.termination}`);
-  line('', `Ply ${cr.ply} of ${g.states.length - 1} · ← → to step`);
-  if (prefs.explore && !explore.on) line('', 'Click a piece to try your own moves from here.');
-  const back = document.createElement('div'); back.className = 'row';
+  } else if (g.done) line('bc-res', resultText(g.white_score), head, 'span');
+  const foot = line('bc-foot', '');
+  line('', `Ply ${cr.ply} of ${g.states.length - 1} · ← → to step`, foot, 'span');
   const b1 = document.createElement('button'); b1.className = 'btn outlined small'; b1.textContent = 'Back to the deck'; b1.addEventListener('click', () => { cr.view = 'deck'; crLeaveBoard(); render(); });
-  back.appendChild(b1); card.appendChild(back);
+  foot.appendChild(b1);
+  const more = document.createElement('details'); more.className = 'bc-more mo-details'; more.open = !!cr.cardOpen;
+  more.addEventListener('toggle', () => { cr.cardOpen = more.open; });
+  line('mo-head', 'Details', more, 'summary');
+  line('bc-line', `${g.opening} · White ${g.white} · Black ${black} · ${g.plies} plies${g.done ? ` · ${resultText(g.white_score)}` : ''}`, more).title = g.opening;
+  if (a) {
+    line('', `played by ${by} · its own eval ${Monolith.fmtCp(a.cause)}`, more);
+    line('ink', `${by === 'A' ? 'B' : 'A'}'s eval ${Monolith.fmtCp(a.before)} → ${Monolith.fmtCp(a.after)}`, more);
+    line('', 'balanced to decisive in one own move', more);
+  }
+  if (g.done) line('', `ended by ${g.termination}`, more);
+  if (prefs.explore && !explore.on) line('', 'Click a piece to try your own moves from here.', more);
+  card.appendChild(more);
 }

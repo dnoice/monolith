@@ -404,6 +404,7 @@
             <span class="hive-legend"><span><i></i>1–0</span><span><i class="d"></i>½</span><span><i class="l"></i>0–1</span><span><i class="a"></i>anomaly</span></span><span class="badge" id="hive-badge">[Runner]</span></div>
           <canvas id="hive" tabindex="0" aria-label="Final positions of every game; select one to open it on the board"></canvas>
         </section>
+        <div class="deck-empty" id="deck-empty" hidden><b>No live run yet</b><span id="deck-empty-sub">Set A and B in the panel, then start the run.</span><button class="btn filled small" id="btn-cr-run-2" type="button">Start run</button></div>
       </div>
       <div class="webgl-fail" id="webgl-fail">This browser could not start WebGL, so the 3D board cannot be drawn.</div>
       <div class="webgl-fail" id="serve-fail">MONOLITH runs from a web server. Open this folder with VS Code's Live Server, or any static server, and load the page there: browsers do not run its modules from a file opened directly.</div>
@@ -563,7 +564,7 @@
           </div>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="crucible">Match</span></span><span class="mo-sub" id="cr-match-sub"></span><span class="badge" id="cr-badge-match">[Runner: GSPRT]</span></div>
-            <div class="cr-verdict"><b id="cr-verdict">—</b><span id="cr-verdict-1"></span><span id="cr-verdict-2"></span></div>
+            <div class="cr-verdict"><b id="cr-verdict">—</b><span class="cr-plain" id="cr-verdict-0"></span><span id="cr-verdict-1"></span><span id="cr-verdict-2"></span></div>
             <div class="cr-progress" id="cr-progress" hidden><i id="cr-progress-bar"></i></div>
           </div>
           <div class="mo-section" id="cr-config" hidden>
@@ -584,8 +585,9 @@
             </div>
             <div class="cfg-grid" id="cfg-fixed" hidden><b><span data-term="game-pair">Pairs</span></b><input class="num-in" id="cfg-pairs" type="number" min="1" max="200" aria-label="Pairs to play"><span class="help">2 games each</span></div>
             <div class="cfg-grid"><b><span data-term="parallel-games">Parallel</span></b><select class="select" id="cfg-par" aria-label="Games played at once"></select><span class="help">games at once</span></div>
-            <p class="help" id="cr-run-note"></p>
             <div class="row"><button class="btn filled small" id="btn-cr-run">Start run</button><button class="btn outlined small" id="btn-cr-stop">Stop</button></div>
+            <p class="help" id="cr-run-note"></p>
+            <details class="mo-details cr-run-more"><summary class="mo-head"><span class="mo-sub">How a live run plays here</span></summary><p class="help" id="cr-run-facts"></p></details>
           </div>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="parameter-matrix">UCI parameter matrix</span></span></div>

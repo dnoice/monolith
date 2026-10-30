@@ -85,7 +85,7 @@ import { setTab } from './nav.js';
 export const BOOK = ["e4 e5 Nf3 Nc6 Bb5 a6", "e4 e5 Nf3 Nc6 Bc4 Bc5", "e4 c5 Nf3 d6 d4 cxd4", "e4 c5 Nc3 Nc6", "e4 e6 d4 d5 Nc3 Nf6", "e4 c6 d4 d5 e5 Bf5", "e4 d5 exd5 Qxd5", "e4 Nf6 e5 Nd5", "d4 d5 c4 e6 Nc3 Nf6", "d4 d5 c4 c6 Nf3 Nf6", "d4 Nf6 c4 e6 Nc3 Bb4", "d4 Nf6 c4 g6 Nc3 Bg7", "d4 Nf6 c4 c5 d5 e6", "d4 f5 g3 Nf6", "c4 e5 Nc3 Nf6", "c4 c5 Nf3 Nc6", "Nf3 d5 g3 Nf6", "Nf3 Nf6 c4 b6", "e4 g6 d4 Bg7", "e4 d6 d4 Nf6 Nc3 g6", "d4 e6 c4 Bb4+", "e4 e5 Nf3 d6 d4 exd4", "e4 c5 Nf3 e6 d4 cxd4", "d4 d5 Bf4 Nf6", "e4 e5 Nc3 Nf6", "d4 Nf6 Bg5 e6", "e4 c5 c3 Nf6", "e4 e6 d4 d5 e5 c5", "c4 Nf6 Nc3 e6", "d4 d5 Nf3 Nf6 e3 e6", "e4 e5 f4 exf4", "g3 d5 Bg2 Nf6", "e4 e5 Nf3 Nf6", "e4 e5 Nf3 Nc6 d4 exd4", "e4 e5 Nf3 Nc6 Nc3 Nf6", "e4 e5 Bc4 Nf6", "e4 c5 Nf3 Nc6 d4 cxd4", "e4 c5 Nf3 g6", "e4 c5 d4 cxd4 c3", "e4 c6 Nc3 d5 Nf3 Bg4", "e4 e6 d4 d5 Nd2 c5", "e4 e6 d4 d5 exd5 exd5", "e4 d6 d4 Nf6 Nc3 e5", "e4 Nc6 d4 d5", "e4 b6 d4 Bb7"];
 export const CR_LIMITS = { nodes: [100, 2000000], elo: [1320, 3190], level: [1, 8] };
 export const CR_ELO_MS = 150;
-export const cr = { data: null, dataState: 'idle', dataErr: '', dataPromise: null, recorded: null, live: null, view: 'deck', sel: -1, hover: -1, beatHover: -1, expanded: -1, ply: 0, ver: 0, lastDraw: 0 };
+export const cr = { data: null, dataState: 'idle', dataErr: '', dataPromise: null, recorded: null, live: null, view: 'deck', sel: -1, hover: -1, beatHover: -1, expanded: -1, ply: 0, ver: 0, lastDraw: 0, cardOpen: false };
 export const crMaxPar = () => Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 2) - 1));
 export const pad2 = n => String(n).padStart(2, '0');
 export const resultText = ws => ws === 1 ? '1–0' : ws === 0 ? '0–1' : '½–½';
