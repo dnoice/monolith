@@ -1,0 +1,82 @@
+/*
+✒ Metadata
+    - Title: Coach Styles (MONOLITH Edition - v1.0)
+    - File Name: coach.css
+    - Relative Path: css/coach.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.2
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
+      release audit Dennis asked for: a [hidden] rule the base rule in
+      css/tokens.css already covers is gone.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The Coach's feed in the Play pane: one note per moment of the game, each
+    with its badge, the move, the score and the text in the Coach's voice.
+
+✒ Key Features:
+    - The note: badge, move, score, text, an extra line and a closing maxim.
+    - Kinds: the verdict on your move, the reply, the watch on your turn
+      (alert or chance), book moves and the end of the game.
+    - Idle and busy states, with the thinking ellipsis while the Coach's
+      engine works.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 10 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* ---------- the Coach's notes ----------
+   Newest first: the game's end, what to watch on your turn, the move just played (a verdict when
+   it was yours, a reading when it was theirs), and the move before it. A verdict's edge takes its
+   grade's colour; a warning's takes the error colour. Maxims sit in italics under a lesson. */
+.coach-feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cn{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px 12px 11px;border-radius:var(--r-ctl);background:var(--md-surface-1);border:1px solid var(--md-outline-var);border-left:3px solid var(--cq,var(--md-outline))}
+.cn-head{display:flex;align-items:baseline;gap:8px;min-width:0}
+.cn-badge{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cq,var(--md-on-surface-var))}
+.cn-move{min-width:0;font:500 12.5px var(--font-mono);color:var(--md-on-surface);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cn-score{margin-left:auto;flex:none;font:400 11.5px var(--font-mono);color:var(--md-on-surface-var)}
+.cn-text{font-size:13px;line-height:1.5;color:var(--md-on-surface)}
+.cn-extra{font-size:12.5px;line-height:1.45;color:var(--md-on-surface-var);padding-top:2px}
+.cn-maxim{font-size:12px;line-height:1.4;font-style:italic;color:var(--md-primary)}
+.cn.reply{--cq:var(--md-secondary)}
+.cn.watch{--cq:var(--md-secondary)}
+.cn.watch.alert{--cq:var(--md-error)}
+.cn.watch.chance{--cq:var(--md-success)}
+.cn.end{--cq:var(--md-primary)}
+.cn.c-book{--cq:var(--md-secondary)}
+.cn-act{align-self:flex-start;margin:2px 0 -4px -10px}
+.cn.idle,.cn.busy{--cq:var(--md-outline);background:transparent}
+.cn.idle .cn-text,.cn.busy .cn-text{color:var(--md-on-surface-var);font-size:12.5px}
+.cn.busy .cn-text::after{content:'';display:inline-block;width:1.2em;animation:dots 1.2s steps(4) infinite}
+.cn.c-blunder .cn-badge{text-decoration:underline;text-underline-offset:3px}
+.mv .mk{margin-left:2px;font:700 10.5px var(--font-mono);vertical-align:2px}
+.mk-good{color:#4fd18b}.mk-brilliant{color:#2cc8d8}.mk-inaccuracy{color:#f5963b}.mk-mistake{color:#ef5b5b}.mk-blunder{color:#ef5b5b}
+:root[data-skin="monolith"] .cn{background:var(--mo-panel);border-color:var(--mo-rule);border-radius:2px}
+:root[data-skin="monolith"] .cn-badge{font:500 10px var(--font-tele);letter-spacing:.1em}
+:root[data-skin="monolith"] .cn-move,:root[data-skin="monolith"] .cn-score{font-family:var(--font-tele)}
+:root[data-skin="monolith"] .cn-maxim{color:var(--mo-ink2)}
+:root[data-skin="monolith"] .cn.reply,:root[data-skin="monolith"] .cn.watch{--cq:var(--mo-steel)}
+:root[data-skin="monolith"] .cn.watch.chance{--cq:var(--mo-cyan)}
+:root[data-skin="monolith"] .cn.watch.alert{--cq:var(--mo-crimson)}
+:root[data-skin="monolith"] .mk-good{color:var(--mo-cyan)}:root[data-skin="monolith"] .mk-inaccuracy{color:var(--mo-amber)}:root[data-skin="monolith"] .mk-mistake,:root[data-skin="monolith"] .mk-blunder{color:var(--mo-crimson)}
+@media (prefers-reduced-motion:reduce){.cn.busy .cn-text::after{animation:none;content:'…'}}

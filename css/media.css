@@ -1,0 +1,106 @@
+/*
+✒ Metadata
+    - Title: Media Overrides (MONOLITH Edition - v1.0)
+    - File Name: media.css
+    - Relative Path: css/media.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.1
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
+      Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The overrides for small screens and reduced motion, kept last so they
+    win: on phones and narrow tablets the rail becomes a bottom bar, very
+    narrow screens tighten further, and reduced motion turns transitions
+    off.
+
+✒ Key Features:
+    - Up to 899 px: one column (stage, dock, panel, then the rail as a
+      bottom bar); the splitters and the match strip are hidden and the
+      chrome is compact.
+    - Up to 420 px: no player subtitles, a tighter brand and narrower side
+      cards.
+    - prefers-reduced-motion: no transitions on the snackbar, the evaluation
+      bar, switches and the instrument bars, and no halo animation.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 12 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* ---------- phone and narrow tablet: rail becomes a bottom bar ---------- */
+@media (max-width:899px){
+  #app{grid-template-rows:56px minmax(0,1fr)}
+  .brand small{display:none}
+  .brand h1{font-size:18px}
+  .brand{min-width:0}   /* on phones the title may ellipsize; the version keeps its own line */
+  .brand-text{flex-direction:column;align-items:flex-start;gap:2px}
+  .brand-text h1{max-width:100%}
+  :root[data-skin="monolith"] .brand h1{font-size:11px;letter-spacing:.1em}   /* Michroma runs wide */
+  .app-ver{display:none}
+  .app-ver-sub{display:block;font:400 10px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var)}
+  :root[data-skin="monolith"] .app-ver-sub{font-family:var(--font-tele);color:var(--mo-ink3)}
+  .body{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(220px,42%) auto minmax(0,1fr) auto;grid-template-areas:"stage" "dock" "panel" "rail"}
+  #dock{max-height:136px}
+  .deck .mo-sub,.hive-legend{display:none}
+  .syn,.beat{padding-left:var(--gutter-l)}
+  .syn-notes,.syn-head .badge{display:none}
+  .beat canvas{height:92px}
+  .split{display:none}
+  .moves-card,:root[data-moves-sized] .moves-card{height:auto}
+  .wdl{top:52px;bottom:70px}
+  .wdl-sharp{display:none}
+  .layer-toggles{top:10px;left:var(--gutter-l);right:auto}
+  :root[data-tab="analyze"][data-skin="monolith"] .player,:root[data-tab="crucible"] .player{display:none}
+  .layer-btn small{display:none}
+  .field-legend{display:none}
+  .deck{grid-template-rows:200px minmax(0,1fr)}
+  .matchbar{display:none}
+  .btn-pal kbd{display:none}
+  #telemetry{height:28px}
+  .rail{flex-direction:row;justify-content:space-around;gap:0;padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));padding-left:var(--gutter-l);padding-right:var(--gutter-r);border-right:0;border-top:1px solid var(--md-outline-var)}
+  .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
+  .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
+  .moves-card{max-height:none;min-height:0;padding-left:var(--gutter-l)}
+  .moves{max-height:132px}
+  .player{left:calc(var(--gutter-l) + 18px);padding:6px 10px 6px 6px;gap:10px}
+  .player .avatar{width:30px;height:30px}
+  .player.top{top:10px}.player.bottom{bottom:10px}
+  .stage-hint{display:none}
+  .stage-chip{max-width:calc(100% - 32px);white-space:normal;text-align:center}
+  .stage-chip.castle{bottom:60px}
+  #snackbar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:420px){
+  .pname .psub{display:none}
+  .brand{gap:8px}
+  :root[data-skin="monolith"] .brand h1{font-size:10.5px;letter-spacing:.06em}
+  .side-card{padding:12px 4px 10px}
+  .side-card small{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){
+  .result,.result.win::after,.pstate.won{animation:none}
+  .ripple,.die.landed,.pstate.think::after{animation:none}
+  #snackbar,.evalbar-fill,.switch,.switch::before{transition:none}
+  .wdl-halo svg{animation:none}
+  .wdl-v i,.penta i,.cr-progress i{transition:none}
+}

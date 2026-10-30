@@ -1,0 +1,160 @@
+/*
+✒ Metadata
+    - Title: Design Tokens (MONOLITH Edition - v1.0)
+    - File Name: tokens.css
+    - Relative Path: css/tokens.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.1
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
+      Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The custom properties every other sheet reads: colour, type, shape and
+    motion tokens for the cathedral world, and the MONOLITH solved stops
+    that replace them in the instrument world. It also carries the page's
+    layout concept, the note that explains how the screen is arranged.
+
+✒ Key Features:
+    - The layout concept: app bar, navigation rail (a bottom bar on phones),
+      the stage with a player card at each end, the dock, the panel over an
+      always-present move list, and the telemetry footer.
+    - Material-style tokens for surfaces, text, outlines, primary and error
+      colours, radii and easing.
+    - The MONOLITH solved stops (System Sheet, plate 03): cyan optimal,
+      amber volatile, crimson anomaly; structure in ink and steel.
+    - The MONOLITH world override (:root[data-skin="monolith"]): the shared
+      tokens take the solved stops, and docked surfaces stay opaque.
+    - Base rules: box sizing, [hidden], form controls, headings and the #app
+      frame.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 1 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: none; every other sheet depends on this one.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* Layout concept: one screen, one level of navigation. App bar on top; below it a navigation
+   rail (bottom bar on phones), the 3D stage with a player card at each end of the board, a dock
+   under the stage for the instrument strips, and a panel that shows the selected destination
+   above a move list that is always present. A telemetry footer closes the MONOLITH world.
+   Two worlds share one board: the Cathedral (play) and MONOLITH (the instrument). Tokens below
+   are the cathedral's Material set; :root[data-skin="monolith"] remaps them to MONOLITH's solved
+   stops, so every shared component follows the world without a second stylesheet.
+   Extending: add an entry to NAV in the script, one <section class="pane"> here, and one
+   onRender() callback. Nothing else needs to know about it. */
+:root{
+  --md-surface:#141217;
+  --md-surface-1:#1c1a20;
+  --md-surface-2:#242129;
+  --md-surface-3:#2d2933;
+  --md-surface-4:#36313d;
+  --md-on-surface:#ebe6f0;
+  --md-on-surface-var:#b0a8bb;
+  --md-outline:#6a6475;
+  --md-outline-var:#3b3643;
+  --md-primary:#e8c377;
+  --md-on-primary:#2b1e00;
+  --md-primary-container:#4e3d12;
+  --md-on-primary-container:#f8e3b2;
+  --md-secondary:#a3bde3;
+  --md-secondary-container:#2c3a52;
+  --md-on-secondary-container:#d6e3fa;
+  --md-error:#ffa59c;
+  --md-error-container:#5c1d18;
+  --md-success:#9fd8b0;
+  --md-marble:#ece7dd;
+  --md-obsidian:#1a1620;
+  --stage-bg:#0b0a0e;
+  --font-body:'Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'Roboto Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --gutter-l:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --ease-std:cubic-bezier(.2,0,0,1);
+  --rail-w:88px;
+  --panel-w:368px;
+  --r-pill:999px;
+  --r-card:16px;
+  --r-ctl:12px;
+  /* MONOLITH solved stops (System Sheet, plate 03). Colour is semantic only: cyan optimal,
+     amber volatility, crimson anomaly or refutation; structure is ink, steel and slate. */
+  --mo-canvas:#0B0D10;
+  --mo-panel:#14181F;
+  --mo-raised:#1B212A;
+  --mo-well:#0E1116;
+  --mo-rule:#262D38;
+  --mo-sq-dark:#181D25;
+  --mo-sq-light:#3F4B5B;
+  --mo-steel:#ABB5C3;
+  --mo-ivory:#ECE8EF;
+  --mo-slate:#556275;
+  --mo-obsidian:#0F1318;
+  --mo-glass:rgba(20,24,31,.85);
+  --mo-ink:#E3E7EE;
+  --mo-ink2:#A4ACB9;
+  --mo-ink3:#7E8898;
+  --mo-cyan:#2CC8D8;
+  --mo-amber:#E8A93A;
+  --mo-crimson:#ED7F83;
+  --mo-cyan-tint:#173139;
+  --mo-amber-tint:#322C23;
+  --mo-crimson-tint:#311F25;
+  --font-struct:'Michroma','Geist',system-ui,sans-serif;
+  --font-ui-mo:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-tele:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+/* MONOLITH world: the shared Material tokens take the solved stops. Docked surfaces stay opaque. */
+:root[data-skin="monolith"]{
+  --md-surface:var(--mo-canvas);
+  --md-surface-1:var(--mo-panel);
+  --md-surface-2:var(--mo-raised);
+  --md-surface-3:#222934;
+  --md-surface-4:#2A323E;
+  --md-on-surface:var(--mo-ink);
+  --md-on-surface-var:var(--mo-ink2);
+  --md-outline:#3A4352;
+  --md-outline-var:var(--mo-rule);
+  --md-primary:var(--mo-ink);
+  --md-on-primary:var(--mo-canvas);
+  --md-primary-container:#222934;
+  --md-on-primary-container:var(--mo-ink);
+  --md-secondary:var(--mo-steel);
+  --md-secondary-container:#26303C;
+  --md-on-secondary-container:var(--mo-ink);
+  --md-error:var(--mo-crimson);
+  --md-error-container:var(--mo-crimson-tint);
+  --md-success:var(--mo-ivory);
+  --md-marble:var(--mo-ivory);
+  --md-obsidian:var(--mo-obsidian);
+  --stage-bg:var(--mo-canvas);
+  --font-body:var(--font-ui-mo);
+  --font-mono:var(--font-tele);
+  --r-pill:3px;
+  --r-card:4px;
+  --r-ctl:3px;
+}
+html,body{height:100%}
+body{margin:0;background:var(--md-surface);color:var(--md-on-surface);font-family:var(--font-body);font-size:14px;line-height:1.45;overflow:hidden;-webkit-tap-highlight-color:transparent}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+#app{height:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:64px minmax(0,1fr) auto}
+.appbar,.rail,.panel,.moves-card,#dock,#telemetry,.player,.btn,.seg,.side-card,.turn-banner,.cand,.preset{transition:background-color .45s var(--ease-std),border-color .45s var(--ease-std),color .45s var(--ease-std)}

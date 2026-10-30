@@ -1,0 +1,171 @@
+/*
+✒ Metadata
+    - Title: Workspace Styles (MONOLITH Edition - v1.0)
+    - File Name: workspace.css
+    - Relative Path: css/workspace.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.2
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
+      Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
+      release audit Dennis asked for: a [hidden] rule the base rule in
+      css/tokens.css already covers is gone.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The parts of the workspace around the board that are not a tab: the
+    telemetry footer, the Command Palette, the System sheet, the dock, the
+    move sheet and the splitters.
+
+✒ Key Features:
+    - Telemetry footer, and how it fits its width as room runs out (Dennis,
+      10/22/2026: it bled off the right edge).
+    - Command Palette: a quieter glass, focus shown as a cyan rule (Dennis,
+      10/15/2026).
+    - System sheet in Settings: swatches and the contrast ledger.
+    - The dock at a fixed height while shown, so search lines scroll inside
+      it.
+    - The move list as a sheet docked under the panel.
+    - Splitters: the grip, drag, arrow keys (Shift for bigger steps), Home
+      or double-click to reset.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 5 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* telemetry footer */
+#telemetry{display:flex;align-items:stretch;min-width:0;height:30px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);background:var(--mo-panel);border-top:1px solid var(--mo-rule);font:400 11px/1 var(--font-tele);color:var(--mo-ink2);overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none}
+#telemetry::-webkit-scrollbar{display:none}
+/* The footer fits its width (Dennis, 10/22/2026: it bled off the right edge). As room runs out it
+   steps down: compact keeps every source badge but shows only its source ("[SF]", full text on
+   hover); tight also drops the sparklines and meters and closes the padding. If even that is too
+   wide it scrolls (wheel or drag), with a fade marking the clipped edge. */
+.tm .badge .bs{display:none}
+#telemetry[data-fit] .tm .badge .bf{display:none}
+#telemetry[data-fit] .tm .badge .bs{display:inline}
+#telemetry[data-fit="tight"] .tm{padding:0 8px;gap:5px}
+#telemetry[data-fit="tight"] .tm canvas,#telemetry[data-fit="tight"] .meter{display:none}
+.tm.tm-cut{display:none}
+#telemetry.over{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
+.tm{display:inline-flex;align-items:center;gap:7px;padding:0 12px;border-right:1px solid var(--mo-rule);flex:none}
+.tm:first-child{padding-left:0}
+.tm:last-child{border-right:0}
+.tm > b{font-weight:400;color:var(--mo-ink3);letter-spacing:.08em}
+.tm .v{color:var(--mo-ink)}
+.tm canvas{width:58px;height:14px;display:block}
+.tm .badge{height:16px;font-size:10px}
+.meter{width:40px;height:6px;background:var(--mo-well);border:1px solid var(--mo-rule)}
+.meter i{display:block;height:100%;background:var(--mo-steel)}
+
+/* Command Palette: glass, one at a time */
+/* Command palette, refined (Dennis, 10/15/2026): a quieter glass, the focus shown as a cyan
+   rule under the input instead of a box, commands grouped when nothing is typed, the reason a
+   command can't run as its own tag, and shortcuts beside the commands that have one. */
+#palette{position:fixed;inset:0;z-index:20;display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px;background:rgba(8,10,13,.5)}
+#palette.show{display:flex}
+#palette.show .pal{animation:pal-in .16s cubic-bezier(.2,0,0,1)}
+@keyframes pal-in{from{opacity:0;transform:translateY(6px) scale(.985)}to{opacity:1;transform:none}}
+.pal{width:min(620px,100%);overflow:hidden;border-radius:6px;background:linear-gradient(180deg,rgba(27,33,42,.9),rgba(18,22,28,.92));-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);border:1px solid rgba(171,181,195,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 2px 6px rgba(0,0,0,.35),0 24px 64px rgba(0,0,0,.55);color:var(--mo-ink);font-family:var(--font-ui-mo)}
+.pal-input{position:relative;display:flex;align-items:center;gap:12px;height:54px;padding:0 16px;border-bottom:1px solid rgba(171,181,195,.16)}
+.pal-input::after{content:'';position:absolute;left:16px;right:16px;bottom:-1px;height:1px;background:var(--mo-cyan);transform:scaleX(0);transform-origin:left;transition:transform .2s cubic-bezier(.2,0,0,1)}
+.pal-input:focus-within::after{transform:scaleX(1)}
+.pal-input > span{font:500 13px var(--font-tele);color:var(--mo-cyan)}
+.pal-input input{flex:1;min-width:0;height:100%;border:0;background:transparent;font:400 15px var(--font-tele);color:var(--mo-ink);caret-color:var(--mo-cyan);outline:none}
+.pal-input input:focus,.pal-input input:focus-visible{outline:none;box-shadow:none}
+.pal-input input::placeholder{color:var(--mo-ink3)}
+.pal kbd{display:inline-flex;align-items:center;min-width:18px;height:18px;justify-content:center;font:400 10.5px var(--font-tele);color:var(--mo-ink2);background:rgba(11,13,16,.55);border:1px solid rgba(171,181,195,.22);border-bottom-width:2px;padding:0 5px;border-radius:3px}
+.pal-list{list-style:none;margin:0;padding:6px;max-height:min(54vh,440px);overflow:auto;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent}
+.pal-group{padding:10px 10px 4px;font:500 10px/1 var(--font-tele);letter-spacing:.12em;text-transform:uppercase;color:var(--mo-ink3)}
+.pal-group:first-child{padding-top:4px}
+.pal-item{display:grid;grid-template-columns:minmax(118px,auto) minmax(0,1fr) auto;gap:14px;align-items:center;min-height:36px;padding:6px 10px;border-radius:4px;cursor:pointer;transition:background .1s}
+.pal-item[aria-selected="true"]{background:rgba(227,231,238,.075);box-shadow:inset 2px 0 0 var(--mo-cyan)}
+.pal-item code{font:500 13px var(--font-tele);color:var(--mo-ink)}
+.pal-item code i{font-style:normal;color:var(--mo-ink3)}
+.pal-item span{font-size:13px;color:var(--mo-ink2);min-width:0}
+.pal-item .side{display:flex;align-items:center;gap:6px;justify-self:end;white-space:nowrap}
+.pal-item .why{font:400 10.5px var(--font-tele);color:var(--mo-amber);border:1px solid rgba(232,169,58,.35);border-radius:3px;padding:2px 6px;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.pal-item .enter{opacity:0;color:var(--mo-ink3);font:400 12px var(--font-tele)}
+.pal-item[aria-selected="true"] .enter{opacity:1}
+.pal-item.off code,.pal-item.off span{color:var(--mo-ink3)}
+.pal-empty{padding:16px 10px;font-size:13px;color:var(--mo-ink2)}
+.pal-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:9px 16px;border-top:1px solid rgba(171,181,195,.14);font:400 11px var(--font-tele);color:var(--mo-ink3)}
+.pal-foot > span{display:inline-flex;align-items:center;gap:6px}
+.pal-foot #pal-foot-note{margin-left:auto}
+.btn-pal{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px;border:1px solid var(--md-outline-var);border-radius:var(--r-ctl);background:transparent;color:var(--md-on-surface-var);font:400 12px var(--font-mono);cursor:pointer;margin-right:6px}
+.btn-pal:hover{color:var(--md-on-surface);border-color:var(--md-outline)}
+.btn-pal kbd{font:inherit;font-size:11px;opacity:.8}
+
+/* System sheet in Settings */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:10px 8px}
+.sw{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:11px;color:var(--md-on-surface-var)}
+.sw i{display:block;height:26px;border-radius:2px;border:1px solid var(--mo-rule)}
+.sw code{font:400 10.5px var(--font-tele);color:var(--md-on-surface)}
+.ledger{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.ledger th{font:400 10px var(--font-tele);letter-spacing:.06em;text-transform:uppercase;color:var(--md-on-surface-var);text-align:left;padding:4px}
+.ledger td{padding:5px 4px;border-top:1px solid var(--md-outline-var);color:var(--md-on-surface-var)}
+.ledger td:first-child{color:var(--md-on-surface)}
+.ledger .r{font-family:var(--font-tele);text-align:right;white-space:nowrap}
+.ledger .pair{display:inline-block;width:22px;height:12px;margin-right:6px;vertical-align:-2px;border-radius:1px;box-shadow:0 0 0 1px var(--mo-rule)}
+
+/* The dock keeps a fixed height while it is shown, so lines arriving during a search scroll inside
+   it instead of growing it in steps and squeezing the board each time (Dennis, 10/22/2026). Its
+   height, the side panel's width and the move list's height are the user's to drag (see the
+   splitters below); these are the defaults. The board always keeps at least 240 px. */
+:root{--dock-h:auto;--beat-h:116px}
+:root[data-tab="analyze"]{--dock-h:clamp(170px,32vh,300px)}
+#dock{height:var(--dock-h);max-height:calc(100vh - 64px - 240px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent}
+.syn-head{position:sticky;top:0;z-index:1;margin:-10px 0 0;padding-top:10px;padding-bottom:4px;background:var(--mo-panel)}
+.syn-hold{font:400 10.5px var(--font-tele);color:var(--mo-amber)}
+.syn-chip small{display:inline-block;min-width:4.6ch;text-align:right}
+:root[data-moves-sized] .moves-card{max-height:75%;min-height:110px}
+/* The move list reads as a sheet docked under the panel rather than more content under the
+   panel's scrollbar (Dennis, 10/22/2026): a soft lift above its top edge, where its splitter's
+   grip sits, and slim scrollbars on both. */
+.moves-card{box-shadow:0 -12px 18px -14px rgba(0,0,0,.6)}
+:root[data-skin="monolith"] .panes,:root[data-skin="monolith"] .moves{scrollbar-color:var(--mo-rule) transparent}
+@media (max-height:820px){.syn-notes{display:none}.field-legend p{display:none}}
+@media (max-height:700px){.field-legend{display:none}:root[data-tab="analyze"]{--dock-h:clamp(130px,30vh,240px)}}
+/* Splitters: drag, arrow keys (Shift for bigger steps), Home or double-click to reset. A grip shows
+   where each one is; the line brightens on hover, focus and while dragging. Not on phones, where
+   the containers stack. */
+.split{position:absolute;z-index:6;touch-action:none;outline:none}
+.split::before,.split::after{content:'';position:absolute;pointer-events:none;transition:background-color .15s,opacity .15s}
+.split::after{background:transparent}
+.split::before{border-radius:3px;background:var(--md-outline);opacity:.45}
+.split-y{left:0;right:0;height:10px;cursor:row-resize}
+.split-y::after{left:0;right:0;top:4px;height:2px}
+.split-y::before{left:50%;top:2px;width:40px;height:6px;margin-left:-20px}
+.split-x{top:0;bottom:0;width:10px;cursor:col-resize}
+.split-x::after{top:0;bottom:0;left:4px;width:2px}
+.split-x::before{top:50%;left:2px;width:6px;height:40px;margin-top:-20px}
+.split:hover::after,.split:focus-visible::after,.split.dragging::after{background:var(--md-primary)}
+.split:hover::before,.split:focus-visible::before,.split.dragging::before{opacity:1;background:var(--md-primary)}
+:root[data-skin="monolith"] .split::before{background:var(--mo-slate)}
+:root[data-skin="monolith"] .split:hover::after,:root[data-skin="monolith"] .split:focus-visible::after,:root[data-skin="monolith"] .split.dragging::after,
+:root[data-skin="monolith"] .split:hover::before,:root[data-skin="monolith"] .split:focus-visible::before,:root[data-skin="monolith"] .split.dragging::before{background:var(--mo-steel)}
+#split-dock{bottom:0}
+#split-panel{left:-5px}
+#split-moves{top:-5px}
+body.splitting,body.splitting *{user-select:none}
+body.splitting-y,body.splitting-y *{cursor:row-resize!important}
+body.splitting-x,body.splitting-x *{cursor:col-resize!important}
+@media (max-width:1180px){:root[data-skin="monolith"] .brand h1{font-size:12px;letter-spacing:.2em}}

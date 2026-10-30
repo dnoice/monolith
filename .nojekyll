@@ -1,0 +1,24 @@
+# ✒ Metadata
+#     - Title: GitHub Pages Jekyll Opt-out (MONOLITH Edition - v1.0)
+#     - File Name: .nojekyll
+#     - Relative Path: .nojekyll
+#     - Artifact Type: config
+#     - Version: 1.0.1
+#     - Date: 10/24/2026
+#     - Update: Saturday, October 24, 2026
+#     - Author: Dennis 'dendogg' Smaltz
+#     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+#     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+#
+# ✒ Changelog:
+#     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+#       with the project: Wizard's Chess is now MONOLITH, the name Dennis
+#       chose.
+#     - 1.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+#       release, for the public repository Dennis asked to prepare.
+#
+# ✒ Description:
+#     A marker for GitHub Pages: its presence tells Pages to serve the
+#     folder as it is, without running Jekyll over it. GitHub reads only
+#     that the file exists, never what it says.
+# ---------

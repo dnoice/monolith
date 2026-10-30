@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+✒ Metadata
+    - Title: Conical Monolith M 16 x 16 grid slate (MONOLITH Edition - v1.2)
+    - File Name: conical-m-16-grid-slate.svg
+    - Relative Path: assets/brand/variants/conical-m-16-grid-slate.svg
+    - Artifact Type: illustration
+    - Version: 1.2.0
+    - Date: 10/26/2026
+    - Update: Monday, October 26, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      grid's lines are invisible guide paths over the outline, as Dennis
+      ruled for a construction template; the filled rects of 1.1.0 painted
+      pixels and widened the bounding box.
+    - 1.1.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt
+      with Dennis's placements measured from his kit, sides named by faces,
+      and the construction layout.
+    - 1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Fable 5.1] — First
+      build of the system Dennis landed on in
+      conical-monolith-brand-kit.svg.
+
+✒ Description:
+    The Conical Monolith M on a 16 by 16 grid of 75 px cells in the slate
+    skin, the construction template: the outline with the full grid over it as
+    invisible guide lines. Built by assets/generator/conical_m.py from the
+    letter's parameters; the system is described in
+    assets/brand/CONICAL_MONOLITH_SYSTEM.md.
+
+✒ Key Features:
+    - Canvas 1200 x 1200; grid 16 x 16; cell 75 px
+    - Outline: legs S/4, corners r 26.24, valley floor 146.43 deep and
+      185.39 wide with cubic flanks (handles 59.35 and 72.39), crossbar
+      underside at 509.68, notch to 600 (1200 units, scaled)
+    - Skin slate: tiles #6f8a91 and #6f8a91, mortar #000000
+    - Grid: 17 guide lines each way, the frame's edges included, laid over
+      the outline; no fill, no stroke, no width
+
+✒ Id Convention:
+    component-subcomponent-panel, the panel suffix last: board-<panel> holds
+    board-row-NN-<panel>, and each row its tiles, square-rNN-cNN-<panel>
+    counted from the top left, -cut before the suffix for a tile the outline
+    crosses, plinth-rNN-cNN-<panel> for a merged block under a piece;
+    pieces-<panel> holds pieces-white-<panel> and pieces-black-<panel>, and
+    they hold piece-<side>-<kind>[-NN]-<panel>, each its -contour- and -face-
+    path. Sides are named by their faces: White is boxwood-faced. A
+    construction panel holds outline-<panel> and grid-<panel> with its
+    verticals and horizontals. The grid's lines are invisible guide paths (no
+    fill, no stroke, no width): a template to snap to, not drawing, so they
+    paint nothing and the grid's bounding box is the square itself.
+
+✒ Other Important Information:
+    - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
+    - Source of truth: assets/generator/conical_m.py emits this file; edit
+      the script or its parameters, not the SVG, then rerun it
+    - XML note: an SVG header cannot carry the standard's closing dash rule,
+      because a double hyphen is illegal inside an XML comment
+-->
+
+<svg
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   version="1.1"
+   id="svg-conical-m-16-grid-slate"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="conical-m-16-grid-slate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title-conical-m-16-grid-slate">Conical Monolith M 16 x 16 grid slate (MONOLITH Edition - v1.2)</title>
+  <sodipodi:namedview
+     id="namedview-conical-m-16-grid-slate"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showborder="false"
+     inkscape:zoom="0.35"
+     inkscape:cx="600"
+     inkscape:cy="600"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg-conical-m-16-grid-slate" />
+  <defs
+     id="defs-conical-m-16-grid-slate">
+  </defs>
+  <g id="mark-16-grid">
+    <path id="outline-16-grid" d="M 0,26.239 A 26.239,26.239 0 0 1 26.239,0 L 273.761,0 C 333.111,0 434.915,146.43 507.305,146.43 L 692.695,146.43 C 765.085,146.43 866.889,0 926.239,0 L 1173.761,0 A 26.239,26.239 0 0 1 1200,26.239 L 1200,1173.761 A 26.239,26.239 0 0 1 1173.761,1200 L 926.239,1200 A 26.239,26.239 0 0 1 900,1173.761 L 900,535.09 A 25.41,25.41 0 0 0 874.59,509.68 L 720.84,509.68 C 673.6,509.68 673.6,600 626.36,600 L 573.64,600 C 526.4,600 526.4,509.68 479.16,509.68 L 325.41,509.68 A 25.41,25.41 0 0 0 300,535.09 L 300,1173.761 A 26.239,26.239 0 0 1 273.761,1200 L 26.239,1200 A 26.239,26.239 0 0 1 0,1173.761 Z" style="fill:#6f8a91;stroke:none" />
+    <g id="grid-16-grid">
+      <g id="grid-verticals-16-grid">
+        <path id="grid-line-v-01-16-grid" d="M 0,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-02-16-grid" d="M 75,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-03-16-grid" d="M 150,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-04-16-grid" d="M 225,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-05-16-grid" d="M 300,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-06-16-grid" d="M 375,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-07-16-grid" d="M 450,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-08-16-grid" d="M 525,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-09-16-grid" d="M 600,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-10-16-grid" d="M 675,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-11-16-grid" d="M 750,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-12-16-grid" d="M 825,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-13-16-grid" d="M 900,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-14-16-grid" d="M 975,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-15-16-grid" d="M 1050,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-16-16-grid" d="M 1125,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-v-17-16-grid" d="M 1200,0 V 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+      </g>
+      <g id="grid-horizontals-16-grid">
+        <path id="grid-line-h-01-16-grid" d="M 0,0 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-02-16-grid" d="M 0,75 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-03-16-grid" d="M 0,150 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-04-16-grid" d="M 0,225 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-05-16-grid" d="M 0,300 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-06-16-grid" d="M 0,375 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-07-16-grid" d="M 0,450 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-08-16-grid" d="M 0,525 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-09-16-grid" d="M 0,600 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-10-16-grid" d="M 0,675 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-11-16-grid" d="M 0,750 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-12-16-grid" d="M 0,825 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-13-16-grid" d="M 0,900 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-14-16-grid" d="M 0,975 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-15-16-grid" d="M 0,1050 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-16-16-grid" d="M 0,1125 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+        <path id="grid-line-h-17-16-grid" d="M 0,1200 H 1200" style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke" />
+      </g>
+    </g>
+  </g>
+  <metadata
+     id="metadata-conical-m-16-grid-slate">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Conical Monolith M 16 x 16 grid slate (MONOLITH Edition - v1.2)</dc:title>
+        <dc:date>2026-10-26</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:language>en</dc:language>
+        <dc:description>The Conical Monolith M on a 16 by 16 grid of 75 px cells in the slate skin, the construction template: the outline with the full grid over it as invisible guide lines. Built by assets/generator/conical_m.py from the letter's parameters; the system is described in assets/brand/CONICAL_MONOLITH_SYSTEM.md.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>MONOLITH</rdf:li>
+            <rdf:li>brand</rdf:li>
+            <rdf:li>logo</rdf:li>
+            <rdf:li>tiled M</rdf:li>
+            <rdf:li>chess</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

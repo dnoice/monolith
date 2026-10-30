@@ -1,0 +1,79 @@
+# ✒ Metadata
+#     - Title: Git Ignore Rules (MONOLITH Edition - v1.1)
+#     - File Name: .gitignore
+#     - Relative Path: .gitignore
+#     - Artifact Type: config
+#     - Version: 1.1.2
+#     - Date: 10/24/2026
+#     - Update: Saturday, October 24, 2026
+#     - Author: Dennis 'dendogg' Smaltz
+#     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+#     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+#
+# ✒ Changelog:
+#     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+#       pillar models moved to assets/models/, as Dennis asked; the rule for
+#       their .glb.json wrappers follows them.
+#     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+#       with the project: Wizard's Chess is now MONOLITH, the name Dennis
+#       chose.
+#     - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+#       the calibration kit folded into the project, as Dennis chose, the
+#       calibrator's results file is left out, and so is archive/, the
+#       local keepsakes folder.
+#     - 1.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+#       release, for the public repository Dennis asked to prepare: what
+#       Git leaves out of version control.
+#
+# ✒ Description:
+#     Files that are machine-specific, regenerated or disposable. The page
+#     itself needs nothing here: every file it loads is tracked, including
+#     the vendored engine (engine/) and the pillar models
+#     (assets/models/*.glb).
+#
+# ✒ Other Important Information:
+#     - assets/models/*.glb.json are the same bytes as each .glb, wrapped for a
+#       host that serves no .glb (tools/pack-models.mjs writes them when
+#       the page is published there). GitHub Pages and local servers serve
+#       the .glb, so the wrappers are not kept.
+#     - The .blend files in assets/models/ are Dennis's sources and stay tracked;
+#       only Blender's numbered backups are left out.
+#     - archive/ holds superseded material kept on Dennis's machine and not
+#       published. calibration-kit-1.0.0/ is the kit of 10/14/2026 (the
+#       1.3.0 page, calibrator 1.0.0 and its guides) without its engine,
+#       which was a copy of engine/; tools/calibrate.js still measures
+#       that page when --page points at it.
+# ---------
+
+# operating systems
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editors (VS Code's folder holds per-machine Live Server settings)
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node tools and their logs
+node_modules/
+npm-debug.log*
+*.log
+
+# the level calibrator's results (tools/calibrate.js, CALIBRATION.md)
+calibration.csv
+
+# superseded material kept locally, never published (see above)
+archive/
+
+# models wrapped for hosts that serve no .glb (tools/pack-models.mjs)
+assets/models/*.glb.json
+
+# Blender's backups of the .blend sources
+*.blend1
+*.blend2
+
+# local secrets, never committed
+.env
+.env.*

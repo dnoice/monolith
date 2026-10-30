@@ -1,0 +1,489 @@
+/*
+✒ Metadata
+    - Title: Page Layout (MONOLITH Edition - v1.6)
+    - File Name: layout.css
+    - Relative Path: css/layout.css
+    - Artifact Type: stylesheet
+    - Version: 1.6.0
+    - Date: 10/26/2026
+    - Update: Monday, October 26, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
+      Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.6.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The app
+      bar carries Dennis's logo, the Conical M he made MONOLITH's official
+      mark: its squares in the board diagrams' dark tone (in the cathedral
+      the slate he drew it in), its mortar the bar's own colour, one pixel
+      wide at any size so the twelve squares read at 32 px.
+    - 1.5.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      loading screen slowed down as Dennis asked, every length scaled by
+      --bt for the saved Animation speed, with the loading meter (a recessed
+      rail, a segment for each step, a sheen on the step under way and a
+      flash as each comes in) and the tip card (raised off the stage, a chip
+      for its kind, key caps), styled for both worlds; the bar is gone.
+    - 1.4.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      loading screen animated, as Dennis asked: the M written square by
+      square, the pieces set down in turn, a glint, then the lift, timed by
+      class and by two marker animations (see the section). The graphics
+      meter follows his version 1.2 drawing: the needle turns about the hub,
+      which carries the Automatic mark; the ribbon is gone, and the chosen
+      cell sits above its neighbours, since the cells now meet.
+    Earlier entries: see CHANGELOG.md (moved entries)
+
+✒ Description:
+    The frame of the page and its shared controls: the app bar, the
+    navigation rail, the stage, the side panel and the move list, with the
+    buttons, segmented choices, switches and cards the panels are built
+    from. Everything a destination shows sits inside this frame. The
+    loading screen covers it until the 3D board has drawn.
+
+✒ Key Features:
+    - App bar: the brand at its min-content width, with Dennis's logo (the
+      Conical M, written into the page by tools/build-emblem.mjs) in the
+      board diagrams' tones, and the release chip beside the palette
+      button.
+    - Shared controls: state layers, ripples and focus rings.
+    - Body layout: the navigation rail, the stage and its overlays, the
+      panel and the move list that is always present.
+    - Panel parts: segmented buttons, side choice cards, the difficulty
+      slider, the in-game summary and switch rows; Settings' graphics
+      meter (Dennis's dial of five back-rank cells, with its needle and
+      pawn hub) and its Fine-tune rows.
+    - Per-tab basics for Analyze, Position and Settings, and the snackbar
+      (one message at a time).
+    - The stage's notices: WebGL missing (over the stage), and the page
+      opened from disk (over the whole page, since nothing can run).
+    - The loading screen: Dennis's emblem on the stage colour, its squares
+      and woods the board diagrams', with the name in Michroma; animated in
+      three stages (the M written, a rest with a bar if the board takes
+      long, the pieces set and a glint) and still under reduced motion.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 2 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties) and
+      the board diagrams' colours in css/position.css, the markup of
+      index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* ---------- app bar ---------- */
+.appbar{position:relative;z-index:3;display:flex;align-items:center;gap:12px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);padding-block:0;background:var(--md-surface-1);border-bottom:1px solid var(--md-outline-var)}
+/* min-content: the brand never gives up width it needs (the version label sits inside it) */
+.brand{display:flex;align-items:center;gap:12px;min-width:min-content;flex:1}
+.brand .logo{width:32px;height:32px;flex:none;--logo-d:var(--dg-d)}
+/* The logo: Dennis's Conical M (assets/monolith-logo.svg, written into the page by
+   tools/build-emblem.mjs), its squares in the board diagrams' tones, as the loading screen's emblem
+   is (in the cathedral the dark square is the very slate he drew the M in; MONOLITH lifts it in
+   css/monolith.css), and its mortar in the bar's own colour, one pixel wide at any size so the
+   twelve squares still read at 32 px, where the drawing's own mortar would be a thirtieth of a
+   pixel. */
+.brand .logo .l{fill:var(--dg-l)}.brand .logo .d{fill:var(--logo-d)}
+.brand .logo .bd{stroke:var(--md-surface-1);stroke-linejoin:round}
+.brand .logo .bd>*{stroke-width:1px;vector-effect:non-scaling-stroke}
+/* The release on screen (Dennis, 10/22/2026): a rounded chip beside the palette button, a label
+   rather than a control. On phones, where the app bar has no room, it is a line under the title
+   instead. Both read APP_VERSION. */
+.brand-text{display:flex;align-items:center;gap:10px;min-width:0}
+.app-ver{display:inline-flex;align-items:center;flex:none;height:26px;margin-right:8px;padding:0 11px;border:1px solid var(--md-outline-var);border-radius:999px;font:500 11px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var);white-space:nowrap;cursor:default}
+.app-ver:empty{display:none}
+.app-ver-sub{display:none}
+.brand h1{font-size:20px;font-weight:500;letter-spacing:.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:block;font-size:11px;font-weight:400;letter-spacing:.6px;text-transform:uppercase;color:var(--md-on-surface-var)}
+.appbar-actions{display:flex;gap:4px;align-items:center}
+
+/* ---------- shared controls: state layers, ripples, focus ---------- */
+.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset{position:relative;overflow:hidden;cursor:pointer;-webkit-user-select:none;user-select:none}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:999px;background:transparent;color:var(--md-on-surface-var);transition:background .15s var(--ease-std),color .15s}
+.icon-btn svg{width:22px;height:22px;fill:currentColor}
+.icon-btn:hover{background:rgba(235,230,240,.08);color:var(--md-on-surface)}
+.icon-btn[aria-pressed="false"]{color:var(--md-on-surface-var)}
+.icon-btn:disabled{opacity:.38;cursor:default;background:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border:0;border-radius:var(--r-pill);font-weight:500;letter-spacing:.1px;background:var(--md-surface-4);color:var(--md-on-surface);transition:background .15s var(--ease-std),filter .15s}
+.btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+.btn.tonal{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.btn.filled{background:var(--md-primary);color:var(--md-on-primary)}
+.btn.text{background:transparent;color:var(--md-primary);padding:0 12px}
+.btn.outlined{background:transparent;border:1px solid var(--md-outline);color:var(--md-on-surface)}
+.btn.danger{background:transparent;border:1px solid var(--md-outline);color:var(--md-error)}
+.btn:hover:not(:disabled){filter:brightness(1.1)}
+.btn:disabled{opacity:.38;cursor:default}
+.btn.small{height:32px;padding:0 14px;font-size:13px}
+:is(.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset,input,select,textarea,.mv):focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:currentColor;opacity:.2;pointer-events:none;animation:ripple .5s var(--ease-std) forwards}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+
+/* ---------- body layout ---------- */
+.body{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) max(280px,min(var(--panel-w),calc(100vw - var(--rail-w) - 480px)));grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"rail stage panel" "rail dock panel";min-height:0}
+@media (min-width:1280px){:root[data-skin="monolith"][data-tab="analyze"]{--panel-w:440px}:root[data-tab="crucible"]{--panel-w:500px}}
+
+/* navigation rail */
+.rail{grid-area:rail;display:flex;flex-direction:column;align-items:center;gap:12px;padding-block:16px;background:var(--md-surface-1);border-right:1px solid var(--md-outline-var);padding-left:max(0px,env(safe-area-inset-left,0px))}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:72px;border:0;background:transparent;color:var(--md-on-surface-var);padding:0;font-size:12px;font-weight:500;letter-spacing:.4px;border-radius:12px}
+.nav-pill{display:grid;place-items:center;width:56px;height:32px;border-radius:var(--r-pill);transition:background .2s var(--ease-std)}
+.nav-pill svg{width:24px;height:24px;fill:currentColor}
+.nav-item:hover .nav-pill{background:rgba(235,230,240,.08)}
+.nav-item[aria-selected="true"]{color:var(--md-on-surface)}
+.nav-item[aria-selected="true"] .nav-pill{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+
+/* stage */
+#stage{grid-area:stage;position:relative;min-width:0;min-height:0;background:var(--stage-bg);overflow:hidden}
+#stage.dragging{cursor:grabbing}
+#stage canvas{display:block;width:100%;height:100%}
+.player{position:absolute;left:calc(var(--gutter-l) + 22px);display:flex;align-items:center;gap:12px;min-width:0;max-width:min(420px,calc(100% - 64px));padding:8px 14px 8px 8px;border-radius:var(--r-card);background:rgba(28,26,32,.78);border:1px solid var(--md-outline-var);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,box-shadow .25s}
+.player.top{top:14px}
+.player.bottom{bottom:14px}
+.player.active{border-color:var(--md-primary);box-shadow:0 0 0 1px var(--md-primary),0 6px 20px rgba(0,0,0,.35)}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;border:1px solid var(--md-outline);overflow:hidden}
+.avatar .king-icon{width:68%;height:68%;display:block;fill:currentColor}
+.avatar.w{background:var(--md-marble);color:#4a4450}
+.avatar.b{background:var(--md-obsidian);color:#a59db0}
+.pinfo{display:flex;flex-direction:column;min-width:0}
+.pname{display:flex;align-items:baseline;gap:8px;font-weight:500;font-size:14px;white-space:nowrap}
+.pname .psub{font-weight:400;font-size:12px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis}
+.pcap{display:flex;align-items:center;gap:6px;min-height:18px;font-size:15px;line-height:1;letter-spacing:-1px;color:var(--md-on-surface-var);white-space:nowrap;overflow:hidden}
+.pcap .adv{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:var(--md-primary)}
+.pcap:empty::after{content:'No captures';font-size:11px;letter-spacing:.2px}
+.pstate{margin-left:auto;flex:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--md-surface-3);color:var(--md-on-surface-var)}
+.pstate:empty{display:none}
+.pstate.turn{background:var(--md-primary);color:var(--md-on-primary)}
+.pstate.think{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.pstate.think::after{content:'';display:inline-block;width:1.2em;text-align:left;animation:dots 1.2s steps(4) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+.pstate.check{background:var(--md-error-container);color:var(--md-error)}
+.pstate.won{background:var(--md-success);color:#0e2a18}
+.stage-chip{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;border-radius:var(--r-pill);background:var(--md-secondary-container);color:var(--md-on-secondary-container);font-weight:500;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.35);white-space:nowrap}
+.stage-chip.plain{padding:8px 16px}
+.stage-chip .btn{height:30px;padding:0 12px;font-size:12.5px}
+#explore-chip{max-width:calc(100% - 32px);gap:6px}
+#explore-chip > span{min-width:0;overflow:hidden;text-overflow:ellipsis;margin-right:4px}
+#explore-chip .btn{flex:none}
+/* In Analyze the layer toggles hold the top edge and the WDL note its right side, so the review
+   and explore chips drop below the toggles and stay clear of the note; the phantom chip takes
+   the same slot while a line is previewed, one chip at a time. */
+:root[data-tab="analyze"] #review-chip,:root[data-tab="analyze"] #explore-chip{top:54px;max-width:max(300px,calc(100% - 440px))}
+#stage:has(#phantom-chip:not([hidden])) #review-chip,#stage:has(#phantom-chip:not([hidden])) #explore-chip{visibility:hidden}
+.stage-chip.castle{top:auto;bottom:76px;background:#24344f;color:#d9e6fb;border:1px solid #a9c4ea}
+.stage-chip.castle svg{width:18px;height:18px;fill:currentColor;flex:none}
+.stage-chip.castle b{color:#ffffff;font-weight:700}
+.stage-hint{position:absolute;right:var(--gutter-r);bottom:16px;font-size:12px;color:var(--md-on-surface-var);background:rgba(20,18,23,.62);padding:4px 10px;border-radius:999px;pointer-events:none}
+.evalbar{position:absolute;left:var(--gutter-l);top:14px;bottom:14px;width:10px;border-radius:5px;background:var(--md-obsidian);border:1px solid var(--md-outline);overflow:hidden}
+.evalbar-fill{position:absolute;left:0;right:0;bottom:0;height:50%;background:var(--md-marble);transition:height .4s var(--ease-std)}
+.evalbar.flipped .evalbar-fill{bottom:auto;top:0}
+.evalbar-mid{position:absolute;left:-2px;right:-2px;top:50%;height:1px;background:var(--md-primary);opacity:.7}
+.webgl-fail{position:absolute;inset:0;display:none;place-items:center;padding:24px;text-align:center;color:var(--md-on-surface-var)}
+.webgl-fail.show{display:grid}
+/* opened from disk the page cannot run at all (js/file-check.js), so that note covers everything */
+#serve-fail.show{position:fixed;z-index:100;padding-inline:max(24px,calc(50vw - 320px));background:var(--md-surface);font-size:15px;line-height:1.6}
+
+/* panel */
+.panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--md-surface-1);border-left:1px solid var(--md-outline-var)}
+.panes{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
+.pane{display:flex;flex-direction:column;gap:20px}
+.pane-head{display:flex;flex-direction:column;gap:4px}
+.pane-head h2{font-size:22px;font-weight:400;line-height:1.25;text-wrap:balance}
+.pane-head p{color:var(--md-on-surface-var);font-size:13.5px}
+.group{display:flex;flex-direction:column;gap:10px;border:0;margin:0;padding:0;min-width:0}
+.group > legend,.group-title{padding:0;margin-bottom:10px;font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var)}
+.help{font-size:12.5px;color:var(--md-on-surface-var)}
+.help.err{color:var(--md-error)}
+.help:empty{display:none}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row.end{justify-content:flex-end}
+
+/* segmented button */
+.seg{display:flex;border:1px solid var(--md-outline);border-radius:var(--r-pill);overflow:hidden}
+.seg button{flex:1;min-width:0;height:40px;border:0;background:transparent;color:var(--md-on-surface);font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap}
+.seg button + button{border-left:1px solid var(--md-outline)}
+.seg button svg{width:18px;height:18px;fill:currentColor;display:none;flex:none}
+.seg button[aria-checked="true"]{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.seg button[aria-checked="true"] svg{display:block}
+
+/* graphics: the level meter, after Dennis's drawing, version 1.2 (js/ui/gfx-meter.js). Five cells on
+   a dial a little more than a half circle, each a real button sized to its cell; only the cell's
+   shape takes the pointer, so the button box itself is transparent to it. The needle, one shape
+   with the hub ring, sits on top with the hub's face and the pawn, and takes none. */
+.gfx-meter{position:relative;width:100%;max-width:340px;margin:2px auto 0;aspect-ratio:var(--gm-ratio,16/9);
+  --gm-frame:var(--md-surface-3);--gm-edge:var(--md-outline-var);--gm-panel:var(--md-surface-1);--gm-ink:var(--md-on-surface-var);--gm-on:var(--md-secondary-container)}
+.gfx-cell{position:absolute;padding:0;margin:0;border:0;background:none;color:inherit;pointer-events:none;outline:none;-webkit-tap-highlight-color:transparent}
+.gfx-cell svg{display:block;width:100%;height:100%;overflow:visible}
+.gfx-hit{fill:transparent;pointer-events:fill;cursor:pointer}
+.gfx-cell:disabled .gfx-hit{cursor:default}
+.gfx-frame{fill:var(--gm-frame);stroke:var(--gm-edge);stroke-width:1;transition:fill .15s,stroke .15s}
+.gfx-panel{fill:var(--gm-panel);transition:fill .15s}
+.gfx-piece{--pc-face:var(--md-surface-4);--pc-line:var(--gm-ink)}
+.gfx-label{font:600 8.5px/1 var(--font-body,inherit);letter-spacing:1.4px;fill:var(--gm-ink)}
+.gfx-cell:hover:not(:disabled) .gfx-frame{fill:var(--md-surface-4)}
+.gfx-cell:focus-visible .gfx-frame{stroke:var(--md-primary);stroke-width:2}
+.gfx-cell[aria-checked="true"] .gfx-frame{stroke:var(--md-primary);stroke-width:1.5}
+.gfx-cell[aria-checked="true"] .gfx-panel{fill:var(--gm-on)}
+.gfx-cell[aria-checked="true"] .gfx-piece{--pc-face:var(--pc-boxwood);--pc-line:var(--pc-ebony)}
+.gfx-cell[aria-checked="true"] .gfx-label{fill:var(--md-on-surface)}
+.gfx-cell:disabled{opacity:.38}
+/* the cells meet edge to edge, so the one whose outline is drawn sits above its neighbours */
+.gfx-cell[aria-checked="true"],.gfx-cell:focus-visible{z-index:1}
+.gfx-dial{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+/* turned about the hub's centre, which js/ui/gfx-meter.js sets as its transform-origin */
+.gfx-needle{fill:var(--md-on-surface);transform-box:view-box;transition:transform .6s cubic-bezier(.3,1.4,.55,1)}
+.gfx-meter[data-motion="off"] .gfx-needle{transition:none}
+.gfx-hub-face{fill:var(--gm-on)}
+.gfx-meter[data-auto="true"] .gfx-hub-face{stroke:var(--md-primary);stroke-width:2.5}
+.gfx-pawn{--pc-face:var(--pc-boxwood);--pc-line:var(--pc-ebony)}
+.gfx-read{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-top:-2px;font-size:12.5px;color:var(--md-on-surface-var)}
+.gfx-read b{font-size:15px;font-weight:600;color:var(--md-on-surface)}
+.gfx-read b:empty,.gfx-read span:empty{display:none}
+@media (prefers-reduced-motion:reduce){.gfx-needle,.gfx-frame,.gfx-panel{transition:none}}
+.gfx-fine > summary{display:flex;align-items:center;min-height:36px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
+.gfx-fine-body{display:flex;flex-direction:column;gap:10px;padding-top:6px}
+.gfx-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:8px 12px;align-items:center}
+.gfx-grid label{font-size:13px;color:var(--md-on-surface)}
+.gfx-grid .select{height:34px;width:100%;min-width:0;font-size:13px;color:var(--md-on-surface)}
+.gfx-grid .select:disabled{opacity:.55;cursor:default}
+
+/* side choice cards */
+.side-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.side-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px 12px;border-radius:var(--r-card);border:1px solid var(--md-outline-var);background:var(--md-surface-2);text-align:center;transition:border-color .15s,background .15s}
+.side-card:hover{background:var(--md-surface-3)}
+.side-card[aria-checked="true"]{border-color:var(--md-primary);background:var(--md-primary-container);color:var(--md-on-primary-container)}
+.side-card b{font-weight:500;font-size:14px}
+.side-card small{font-size:11.5px;color:var(--md-on-surface-var);line-height:1.3}
+.side-card[aria-checked="true"] small{color:var(--md-on-primary-container);opacity:.85}
+.side-card .avatar{width:40px;height:40px}
+.die{width:40px;height:40px;flex:none;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:2px;padding:7px;border-radius:9px;background:var(--md-marble);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:transform .08s linear}
+.die i{border-radius:50%;background:var(--md-obsidian);opacity:0}
+.die.landed{transform:none!important;animation:land .32s var(--ease-std)}
+@keyframes land{0%{transform:scale(1.28)}100%{transform:scale(1)}}
+
+/* difficulty */
+.level{display:flex;align-items:center;gap:14px}
+.level input{flex:1;min-width:0;accent-color:var(--md-primary)}
+.level output{min-width:7ch;text-align:right;font-weight:500;color:var(--md-primary)}
+
+/* in-game summary */
+.turn-banner{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r-card);background:var(--md-surface-2);border:1px solid var(--md-outline-var)}
+.turn-banner .avatar{width:32px;height:32px}
+.turn-banner b{font-weight:500;font-size:15px}
+.turn-banner span{display:block;font-size:12.5px;color:var(--md-on-surface-var)}
+.result{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:var(--r-card);background:var(--md-primary-container);color:var(--md-on-primary-container)}
+.result b{font-size:15px;font-weight:500}
+.result-kicker{font-size:26px;font-weight:700;letter-spacing:.2px;line-height:1.1}
+.result{position:relative;overflow:hidden;animation:result-in .55s var(--ease-std) both}
+.result.loss{background:var(--md-surface-3);color:var(--md-on-surface)}
+.result.draw{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.result.win::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,240,200,.38) 50%,transparent 70%);transform:translateX(-120%);animation:shimmer 1.6s .4s var(--ease-std) 2}
+.result .row{position:relative;z-index:1}
+@keyframes result-in{0%{opacity:0;transform:translateY(14px) scale(.96)}100%{opacity:1;transform:none}}
+@keyframes shimmer{to{transform:translateX(120%)}}
+.pstate.won{animation:pop .5s var(--ease-std)}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+/* switch rows */
+.switch-row{display:flex;align-items:center;gap:16px;justify-content:space-between;min-height:48px}
+.switch-row label{display:flex;flex-direction:column;cursor:pointer}
+.switch-row label > span:not(.sr-label){font-size:12.5px;color:var(--md-on-surface-var)}
+.switch{appearance:none;-webkit-appearance:none;flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--md-outline);background:var(--md-surface-3);position:relative;cursor:pointer;margin:0;transition:background .2s,border-color .2s}
+.switch::before{content:'';position:absolute;top:50%;left:6px;width:16px;height:16px;border-radius:50%;background:var(--md-outline);transform:translateY(-50%);transition:left .2s var(--ease-std),width .2s,height .2s,background .2s}
+.switch:checked{background:var(--md-primary);border-color:var(--md-primary)}
+.switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-primary)}
+
+/* analysis */
+.bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px;min-width:0}
+.bestline b{color:var(--md-primary);font-weight:500;font-variant-numeric:tabular-nums}
+.bestline span{color:var(--md-on-surface);overflow-wrap:anywhere}
+.select{height:40px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px}
+.cands{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.cand{display:grid;grid-template-columns:auto 48px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 8px 8px 10px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px}
+.cand:hover{background:var(--md-surface-3)}
+.cand .grade{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:11.5px;font-weight:500;letter-spacing:.2px;color:var(--q);min-width:9.5ch}
+.cand .grade::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--q);flex:none;box-shadow:0 0 0 2px rgba(0,0,0,.35)}
+.cand.active{border-color:var(--q)}
+.cand .score{color:var(--md-primary);font-weight:500;font-variant-numeric:tabular-nums}
+.cand .line{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.engine-foot{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--md-on-surface-var)}
+.engine-foot .led{width:8px;height:8px;border-radius:50%;background:var(--md-outline)}
+.engine-foot.ok .led{background:var(--md-success)}
+.engine-foot.err .led{background:var(--md-error)}
+
+/* position */
+.fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
+.preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:10px 14px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2)}
+.preset:hover{background:var(--md-surface-3)}
+.preset b{font-weight:500}
+.preset small{color:var(--md-on-surface-var);font-size:12px}
+
+/* settings */
+.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:0;font-size:13px}
+.keys dt{font-family:var(--font-mono);font-size:12px;color:var(--md-on-surface);background:var(--md-surface-3);padding:2px 8px;border-radius:6px;justify-self:start}
+.keys dd{margin:0;color:var(--md-on-surface-var)}
+.about{font-size:12.5px;color:var(--md-on-surface-var)}
+.about a{color:var(--md-secondary)}
+
+/* move list (always present) */
+.moves-card{position:relative;flex:0 0 auto;height:var(--moves-h,auto);display:flex;flex-direction:column;gap:8px;max-height:42%;min-height:180px;padding-left:20px;padding-right:var(--gutter-r);padding-block:14px;border-top:1px solid var(--md-outline-var);background:var(--md-surface)}
+.moves-head{display:flex;align-items:center;gap:8px}
+.moves-head h2{font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var);flex:1}
+.moves-head .icon-btn{width:34px;height:34px}
+.moves-head .icon-btn svg{width:20px;height:20px}
+.moves{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;font-family:var(--font-mono);font-size:13px;display:grid;grid-template-columns:4ch 1fr 1fr;align-content:start;column-gap:6px;row-gap:2px;font-variant-numeric:tabular-nums}
+.moves .num{color:var(--md-on-surface-var);padding:3px 0}
+.mv{padding:3px 8px;border-radius:6px;cursor:pointer}
+.mv:hover{background:rgba(235,230,240,.07)}
+.mv.cur{background:var(--md-primary-container);color:var(--md-on-primary-container)}
+.moves .empty{grid-column:1/-1;color:var(--md-on-surface-var);font-family:var(--font-body);font-size:13px}
+.move-entry{display:flex;gap:8px}
+.move-entry label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.move-entry input{flex:1;min-width:0;height:40px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 12px;font-family:var(--font-mono);font-size:14px}
+.move-entry input::placeholder{color:var(--md-on-surface-var)}
+.move-entry input:disabled{opacity:.5}
+
+/* snackbar: one at a time */
+#snackbar{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);opacity:0;pointer-events:none;z-index:10;display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:calc(100% - var(--gutter-l) - var(--gutter-r));padding:10px 12px 10px 16px;border-radius:8px;background:var(--md-surface-4);color:var(--md-on-surface);box-shadow:0 3px 5px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.4);transition:transform .22s var(--ease-std),opacity .22s}
+#snackbar.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+#snackbar .msg{font-weight:500;margin-right:6px}
+#snackbar .btn{height:34px;padding:0 12px}
+
+/* ---------- loading screen ----------
+   Dennis's emblem (10/24/2026): his M of chessboard squares carrying the house piece set, on the
+   stage colour of the world the page opens in (js/ui/boot-screen.js runs the order). Its squares
+   and woods are the board diagrams' (css/position.css), so it changes with the world as they do,
+   and the seams between squares are the stage colour. The emblem is inline in the page, written
+   there by tools/build-emblem.mjs, which gives every square and piece its moment as a class:
+   a0..a20 (when a square lights), g0..g12 (when the glint reaches it), i0..i11 (a piece's turn).
+   At Dennis's request (10/24/2026) it takes its time, with a loading meter and rotating tips:
+     1. From the first paint, 2.65 s: the M is written square by square, stroke by stroke, each
+        square lit in the world's primary colour and cooling to its own; the name gathers in,
+        then the meter and the tip card rise beneath it.
+     2. The board is built behind it (the page's boot, which holds the main thread); the meter's
+        working segment keeps its sheen moving on the compositor meanwhile.
+     3. Once the board has drawn, 3.6 s: the pieces are set down in turn, the sides alternating,
+        a glint crosses the emblem corner to corner, and it holds a breath. Then the screen lifts
+        (0.95 s).
+   The meter has one segment for each real step (scripts, board, first frame, pillar models,
+   Stockfish), filled only when that step reports in; the screen never waits for the last two.
+   --bt scales every length to the saved Animation speed: Cinematic 1, Brisk 0.55. Minimal, and
+   reduced motion, draw it still and lift it at once. The markers boot-written and boot-set time
+   stages 1 and 3 for the script; a key or a click jumps to the end of the stage under way. */
+.boot{--bt:1;--boot-halo:color-mix(in srgb,var(--md-primary) 11%,transparent);--boot-fill:linear-gradient(180deg,color-mix(in srgb,var(--md-primary) 45%,#fff),var(--md-primary) 50%,color-mix(in srgb,var(--md-primary) 72%,#000));--boot-glow:color-mix(in srgb,var(--md-primary) 50%,transparent);--boot-sheen:color-mix(in srgb,var(--md-primary) 42%,transparent);--boot-edge:color-mix(in srgb,var(--md-primary) 20%,transparent);--boot-warm:color-mix(in srgb,var(--md-primary) 12%,transparent);position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:24px var(--gutter-r) calc(18px + env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--stage-bg) radial-gradient(ellipse 75% 62% at 50% 38%,color-mix(in srgb,var(--stage-bg) 93%,#fff),var(--stage-bg) 72%)}
+/* MONOLITH: ink and steel, never cyan (colour is semantic there) */
+:root[data-skin="monolith"] .boot{--boot-halo:rgba(171,181,195,.07);--boot-fill:linear-gradient(180deg,#fff,var(--mo-ink) 45%,var(--mo-steel));--boot-glow:rgba(227,231,238,.26);--boot-sheen:rgba(227,231,238,.32);--boot-edge:var(--mo-rule);--boot-warm:rgba(171,181,195,.06)}
+:root[data-boot-pace="fast"] .boot{--bt:.55}
+.boot-core{flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vmin,26px)}
+.boot-mark{position:relative;display:grid;place-items:center}
+/* a slow breath of light behind the emblem, on the compositor */
+.boot-mark::before{content:"";position:absolute;inset:-24% -30%;border-radius:50%;background:radial-gradient(closest-side,var(--boot-halo),transparent);opacity:.8;pointer-events:none;animation:boot-breathe 6.5s ease-in-out infinite alternate}
+/* as wide as a phone allows, short of the name, the meter and the tip card below it */
+.boot-emblem{position:relative;display:block;flex:none;width:min(68vw,340px,calc((100vh - 320px) / 1.05));height:auto}
+.boot-emblem .bd{stroke:var(--stage-bg);stroke-linejoin:round;stroke-linecap:round}
+.boot-emblem .l{fill:var(--dg-l)}.boot-emblem .d{fill:var(--dg-d)}
+.boot-emblem .pw{--pc-face:var(--pc-wf);--pc-line:var(--pc-wl)}.boot-emblem .pb{--pc-face:var(--pc-bf);--pc-line:var(--pc-bl)}
+.boot-emblem .f{fill:var(--pc-face)}.boot-emblem .c{fill:var(--pc-line)}
+/* the name's tracking is balanced by an equal indent, so it sits centred under the emblem */
+.boot-name{margin:0;font:400 clamp(13px,2vmin,16px)/1 var(--font-struct);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--md-on-surface)}
+.boot-name span{display:inline-block}
+/* the meter: a recessed rail, a segment for each step, and the step under way in words */
+.boot-meter{width:min(320px,80vw);display:flex;flex-direction:column;gap:9px}
+.boot-rail{position:relative;display:flex;gap:4px;padding:3px;border-radius:999px;overflow:hidden;background:rgba(0,0,0,.36);box-shadow:inset 0 1px 3px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.035),0 1px 0 rgba(255,255,255,.045)}
+.boot-rail span{position:relative;flex:1;height:7px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--md-outline-var) 75%,transparent);transition:box-shadow .6s ease}
+.boot-rail i{position:absolute;inset:0;border-radius:inherit;background:var(--boot-fill);transform:scaleX(0);transform-origin:0 50%;transition:transform calc(750ms * var(--bt)) cubic-bezier(.2,.8,.2,1)}
+.boot-rail .ok{box-shadow:0 0 10px var(--boot-glow)}
+.boot-rail .ok i,.boot-rail .no i{transform:none}
+/* and a flash of light as a step comes in */
+.boot-rail .ok i{animation:boot-flash calc(900ms * var(--bt)) ease-out}
+.boot-rail .no i{background:color-mix(in srgb,var(--md-error) 65%,transparent)}
+/* a step under way: a sheen keeps crossing it, on the compositor, even while the board is built */
+.boot-rail .on::after{content:"";position:absolute;top:0;bottom:0;left:0;width:55%;background:linear-gradient(90deg,transparent,var(--boot-sheen),transparent);animation:boot-sweep 1.3s var(--ease-std) infinite}
+/* every step in: one sweep of light along the whole rail */
+.boot-rail::after{content:"";position:absolute;top:0;bottom:0;left:0;width:35%;background:linear-gradient(90deg,transparent,var(--boot-sheen),transparent);opacity:0;pointer-events:none}
+.boot-rail.full::after{animation:boot-sweep-rail calc(1100ms * var(--bt)) var(--ease-std)}
+.boot-status{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0;font:400 12.5px/1.25 var(--font-body);letter-spacing:.01em;color:var(--md-on-surface-var)}
+.boot-now{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.boot-count{flex:none;font:500 11.5px/1 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--md-primary)}
+:root[data-skin="monolith"] .boot-rail{border-radius:2px}
+:root[data-skin="monolith"] .boot-rail span{height:5px;border-radius:1px}
+:root[data-skin="monolith"] .boot-status{font:500 10.5px/1.25 var(--font-tele);letter-spacing:.13em;text-transform:uppercase}
+:root[data-skin="monolith"] .boot-count{font-family:var(--font-tele);color:var(--mo-ink)}
+/* the tip card, raised off the stage, its tip or fact turning over every few seconds */
+.boot-foot{flex:none;width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:14px}
+.boot-tip{position:relative;display:grid;width:min(480px,100%);padding:13px 18px 15px;border:1px solid var(--boot-edge);border-radius:var(--r-card);overflow:hidden;background:linear-gradient(180deg,var(--md-surface-2),var(--md-surface-1));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.4),0 22px 44px -16px rgba(0,0,0,.8);opacity:0;transform:translateY(16px) scale(.98);transition:opacity calc(800ms * var(--bt)) var(--ease-std),transform calc(900ms * var(--bt)) cubic-bezier(.2,.8,.2,1)}
+.boot.tips .boot-tip{opacity:1;transform:none}
+.boot-tip::before{content:"";position:absolute;inset:0;background:radial-gradient(130% 150% at 0% 0%,var(--boot-warm),transparent 58%);pointer-events:none}
+:root[data-skin="monolith"] .boot-tip{background:linear-gradient(180deg,var(--mo-raised),var(--mo-panel));box-shadow:inset 0 1px 0 rgba(227,231,238,.07),0 2px 5px rgba(0,0,0,.5),0 22px 44px -16px rgba(0,0,0,.85)}
+:root[data-skin="monolith"] .boot-tip::after{content:"";position:absolute;top:0;left:18px;right:18px;height:1px;background:linear-gradient(90deg,transparent,rgba(171,181,195,.55),transparent)}
+/* two slots in one cell: the next rises in from below as the last lifts away */
+.boot-tip-item{position:relative;grid-area:1/1;display:flex;flex-direction:column;align-items:flex-start;gap:8px;opacity:0;transform:translateY(10px);filter:blur(4px)}
+.boot-tip-item.on{opacity:1;transform:none;filter:none;transition:opacity .7s var(--ease-std) .12s,transform .85s cubic-bezier(.2,.8,.2,1) .12s,filter .7s var(--ease-std) .12s}
+.boot-tip-item.off{opacity:0;transform:translateY(-8px);filter:blur(3px);transition:opacity .45s ease-in,transform .5s ease-in,filter .45s ease-in}
+.boot-tip p{margin:0;min-height:3em;font:400 14px/1.5 var(--font-body);color:var(--md-on-surface);text-wrap:pretty}
+.boot-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 6px;border-radius:var(--r-pill);font:600 10.5px/1.4 var(--font-body);letter-spacing:.12em;text-transform:uppercase;background:var(--md-primary-container);color:var(--md-on-primary-container);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 1px 3px rgba(0,0,0,.4)}
+.boot-chip svg{width:13px;height:13px;flex:none;fill:currentColor}
+.boot-chip .fact,.boot-tip-item[data-kind="fact"] .boot-chip .tip{display:none}
+.boot-tip-item[data-kind="fact"] .boot-chip .fact{display:block}
+.boot-tip-item[data-kind="fact"] .boot-chip{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+:root[data-skin="monolith"] .boot-chip{border-radius:2px;font:500 10px/1.4 var(--font-tele);letter-spacing:.14em;background:var(--mo-well);color:var(--mo-ink);box-shadow:inset 0 0 0 1px var(--mo-rule)}
+:root[data-skin="monolith"] .boot-tip-item[data-kind="fact"] .boot-chip{background:transparent;color:var(--mo-steel);box-shadow:inset 0 0 0 1px var(--mo-slate)}
+/* keys named in a tip are drawn as key caps */
+.boot-tip kbd{display:inline-block;margin:0 1px;padding:0 5px;border:1px solid var(--md-outline-var);border-radius:5px;font:500 12px/1.45 var(--font-mono);color:var(--md-on-surface);background:linear-gradient(180deg,var(--md-surface-4),var(--md-surface-3));box-shadow:0 1px 0 rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07)}
+:root[data-skin="monolith"] .boot-tip kbd{border-radius:2px}
+.boot-skip{margin:0;font:400 11.5px/1.2 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var);opacity:.6}
+.boot-skip .t{display:none}
+:root[data-skin="monolith"] .boot-skip{font:500 10px/1.2 var(--font-tele);letter-spacing:.14em;text-transform:uppercase}
+@media (hover:none) and (pointer:coarse){.boot-skip .k{display:none}.boot-skip .t{display:inline}}
+@media (max-width:520px){.boot-tip p{min-height:4.5em;font-size:13.5px}}
+/* a short window (a phone held sideways): the emblem, the name and the meter only */
+@media (max-height:560px){.boot-foot{display:none}.boot-emblem{width:min(68vw,340px,calc((100vh - 170px) / 1.05))}}
+/* the moments, by class */
+.boot-emblem .a1{--a:1}.boot-emblem .a2{--a:2}.boot-emblem .a3{--a:3}.boot-emblem .a4{--a:4}.boot-emblem .a5{--a:5}.boot-emblem .a6{--a:6}.boot-emblem .a7{--a:7}.boot-emblem .a8{--a:8}.boot-emblem .a9{--a:9}.boot-emblem .a10{--a:10}.boot-emblem .a11{--a:11}.boot-emblem .a12{--a:12}.boot-emblem .a13{--a:13}.boot-emblem .a14{--a:14}.boot-emblem .a15{--a:15}.boot-emblem .a16{--a:16}.boot-emblem .a17{--a:17}.boot-emblem .a18{--a:18}.boot-emblem .a19{--a:19}.boot-emblem .a20{--a:20}
+.boot-emblem .g1{--g:1}.boot-emblem .g2{--g:2}.boot-emblem .g3{--g:3}.boot-emblem .g4{--g:4}.boot-emblem .g5{--g:5}.boot-emblem .g6{--g:6}.boot-emblem .g7{--g:7}.boot-emblem .g8{--g:8}.boot-emblem .g9{--g:9}.boot-emblem .g10{--g:10}.boot-emblem .g11{--g:11}.boot-emblem .g12{--g:12}
+.boot-emblem .i1{--i:1}.boot-emblem .i2{--i:2}.boot-emblem .i3{--i:3}.boot-emblem .i4{--i:4}.boot-emblem .i5{--i:5}.boot-emblem .i6{--i:6}.boot-emblem .i7{--i:7}.boot-emblem .i8{--i:8}.boot-emblem .i9{--i:9}.boot-emblem .i10{--i:10}.boot-emblem .i11{--i:11}
+.boot-name span:nth-child(2){--n:1}.boot-name span:nth-child(3){--n:2}.boot-name span:nth-child(4){--n:3}.boot-name span:nth-child(5){--n:4}.boot-name span:nth-child(6){--n:5}.boot-name span:nth-child(7){--n:6}.boot-name span:nth-child(8){--n:7}
+/* stage 1, from the first paint: the M is written, the name gathers, the meter and the hint rise */
+.boot-emblem .bd{animation:boot-written calc(2650ms * var(--bt)) linear}
+.boot-emblem .l{animation:boot-lay-l calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards}
+.boot-emblem .d{animation:boot-lay-d calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards}
+.boot-name{animation:boot-track calc(1500ms * var(--bt)) cubic-bezier(.2,0,0,1) calc(900ms * var(--bt)) backwards}
+.boot-name span{animation:boot-letter calc(750ms * var(--bt)) cubic-bezier(.2,0,0,1) calc((950ms + var(--n,0) * 85ms) * var(--bt)) backwards}
+.boot-meter{animation:boot-rise calc(800ms * var(--bt)) cubic-bezier(.2,.8,.2,1) calc(1300ms * var(--bt)) backwards}
+.boot-skip{animation:boot-fade calc(900ms * var(--bt)) ease calc(3200ms * var(--bt)) backwards}
+/* stage 3, once the board has drawn: the pieces, then the glint, then a breath */
+.boot-emblem .pc{opacity:0;transform-box:fill-box;transform-origin:50% 100%}
+.boot.go .boot-emblem .bd{animation:boot-set calc(3600ms * var(--bt)) linear}
+.boot.go .boot-emblem .pc{opacity:1;animation:boot-place calc(750ms * var(--bt)) cubic-bezier(.2,.9,.3,1.12) calc((200ms + var(--i,0) * 125ms) * var(--bt)) backwards}
+.boot.go .boot-emblem .l{animation:boot-lay-l calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-l calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
+.boot.go .boot-emblem .d{animation:boot-lay-d calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-d calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
+.boot.go .boot-emblem .pc .f{animation:boot-glint-f calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
+/* lifting: the emblem comes forward as it fades, the rest settles away, then the screen */
+.boot-emblem,.boot-name,.boot-meter,.boot-foot{transition:transform calc(900ms * var(--bt)) cubic-bezier(.3,0,.2,1),opacity calc(550ms * var(--bt)) ease}
+.boot.done{opacity:0;pointer-events:none;transition:opacity calc(800ms * var(--bt)) var(--ease-std) calc(150ms * var(--bt))}
+.boot.done .boot-emblem{transform:scale(1.06);opacity:0}
+.boot.done .boot-name,.boot.done .boot-meter{transform:translateY(8px);opacity:0}
+.boot.done .boot-foot{transform:translateY(18px);opacity:0}
+@keyframes boot-written{to{--boot-phase:1}}
+@keyframes boot-set{to{--boot-phase:2}}
+@keyframes boot-lay-l{from{opacity:0;fill:var(--md-primary)}35%{opacity:1;fill:var(--md-primary)}to{fill:var(--dg-l)}}
+@keyframes boot-lay-d{from{opacity:0;fill:var(--md-primary)}35%{opacity:1;fill:var(--md-primary)}to{fill:var(--dg-d)}}
+/* the glint's ends are written out: Chrome cannot blend a colour-mix with an implied end (it draws black) */
+@keyframes boot-glint-l{from,to{fill:var(--dg-l)}50%{fill:color-mix(in srgb,var(--dg-l) 55%,#fff)}}
+@keyframes boot-glint-d{from,to{fill:var(--dg-d)}50%{fill:color-mix(in srgb,var(--dg-d) 62%,#fff)}}
+@keyframes boot-glint-f{from,to{fill:var(--pc-face)}50%{fill:color-mix(in srgb,var(--pc-face) 68%,#fff)}}
+@keyframes boot-place{from{opacity:0;transform:translateY(-40px) scale(1.06)}60%{opacity:1}to{transform:none}}
+@keyframes boot-track{from{letter-spacing:.9em;text-indent:.9em}}
+@keyframes boot-letter{from{opacity:0;transform:translateY(.45em);filter:blur(5px)}}
+@keyframes boot-rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes boot-fade{from{opacity:0}}
+@keyframes boot-flash{from{filter:brightness(1.9) saturate(1.2)}to{filter:none}}
+@keyframes boot-breathe{from{opacity:.45;transform:scale(.94)}to{opacity:1;transform:scale(1.04)}}
+@keyframes boot-sweep{from{transform:translateX(-100%)}to{transform:translateX(185%)}}
+@keyframes boot-sweep-rail{from{opacity:1;transform:translateX(-100%)}to{opacity:1;transform:translateX(290%)}}
+/* still: reduced motion, or Animation speed Minimal */
+@media (prefers-reduced-motion:reduce){
+  .boot,.boot *,.boot *::before,.boot *::after{animation:none!important;transition:none!important}
+  .boot-emblem .pc{opacity:1}
+}
+:root[data-boot-pace="minimal"] .boot,:root[data-boot-pace="minimal"] .boot *,:root[data-boot-pace="minimal"] .boot *::before,:root[data-boot-pace="minimal"] .boot *::after{animation:none!important;transition:none!important}
+:root[data-boot-pace="minimal"] .boot-emblem .pc{opacity:1}

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+✒ Metadata
+    - Title: Conical Monolith M 16 x 16 bare slate (MONOLITH Edition - v1.1)
+    - File Name: conical-m-16-bare-slate.svg
+    - Relative Path: assets/brand/variants/conical-m-16-bare-slate.svg
+    - Artifact Type: illustration
+    - Version: 1.1.0
+    - Date: 10/26/2026
+    - Update: Monday, October 26, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.1.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt
+      with Dennis's placements measured from his kit, sides named by faces,
+      and the construction layout.
+    - 1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Fable 5.1] — First
+      build of the system Dennis landed on in
+      conical-monolith-brand-kit.svg.
+
+✒ Description:
+    The Conical Monolith M on a 16 by 16 grid of 75 px cells in the slate
+    skin, the tiled M without pieces: 156 whole tiles, 30 cut to the outline.
+    Built by assets/generator/conical_m.py from the letter's parameters; the
+    system is described in assets/brand/CONICAL_MONOLITH_SYSTEM.md.
+
+✒ Key Features:
+    - Canvas 1200 x 1200; grid 16 x 16; cell 75 px
+    - Outline: legs S/4, corners r 26.24, valley floor 146.43 deep and
+      185.39 wide with cubic flanks (handles 59.35 and 72.39), crossbar
+      underside at 509.68, notch to 600 (1200 units, scaled)
+    - Skin slate: tiles #6f8a91 and #6f8a91, mortar #000000
+    - Pieces: chess-pieces.svg stamped verbatim at Dennis's placements;
+      White is boxwood-faced
+
+✒ Id Convention:
+    component-subcomponent-panel, the panel suffix last: board-<panel> holds
+    board-row-NN-<panel>, and each row its tiles, square-rNN-cNN-<panel>
+    counted from the top left, -cut before the suffix for a tile the outline
+    crosses, plinth-rNN-cNN-<panel> for a merged block under a piece;
+    pieces-<panel> holds pieces-white-<panel> and pieces-black-<panel>, and
+    they hold piece-<side>-<kind>[-NN]-<panel>, each its -contour- and -face-
+    path. Sides are named by their faces: White is boxwood-faced. A
+    construction panel holds outline-<panel> and grid-<panel> with its
+    verticals and horizontals.
+
+✒ Other Important Information:
+    - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
+    - Source of truth: assets/generator/conical_m.py emits this file; edit
+      the script or its parameters, not the SVG, then rerun it
+    - XML note: an SVG header cannot carry the standard's closing dash rule,
+      because a double hyphen is illegal inside an XML comment
+-->
+
+<svg
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   version="1.1"
+   id="svg-conical-m-16-bare-slate"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="conical-m-16-bare-slate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:c2pa="http://c2pa.org/manifest">
+  <title
+     id="title-conical-m-16-bare-slate">Conical Monolith M 16 x 16 bare slate (MONOLITH Edition - v1.1)</title>
+  <sodipodi:namedview
+     id="namedview-conical-m-16-bare-slate"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showborder="false"
+     inkscape:zoom="0.35"
+     inkscape:cx="600"
+     inkscape:cy="600"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg-conical-m-16-bare-slate" />
+  <defs
+     id="defs-conical-m-16-bare-slate">
+  </defs>
+  <g id="mark-16-bare">
+    <g id="board-16-bare">
+      <g id="board-row-01-16-bare">
+        <path id="square-r01-c01-cut-16-bare" d="M 75,75 L 75,0 L 26.239,0 L 24.952,0.032 L 23.667,0.126 L 22.389,0.284 L 21.12,0.504 L 19.863,0.786 L 18.622,1.13 L 17.399,1.534 L 16.198,1.997 L 15.02,2.519 L 13.87,3.098 L 12.749,3.733 L 11.661,4.422 L 10.608,5.164 L 9.593,5.956 L 8.618,6.797 L 7.685,7.685 L 6.797,8.618 L 5.956,9.593 L 5.164,10.608 L 4.422,11.661 L 3.733,12.749 L 3.098,13.87 L 2.519,15.02 L 1.997,16.198 L 1.534,17.399 L 1.13,18.622 L 0.786,19.863 L 0.504,21.12 L 0.284,22.389 L 0.126,23.667 L 0.032,24.952 L 0,26.239 L 0,75 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r01-c02-16-bare" x="75" y="0" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r01-c03-16-bare" x="150" y="0" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c04-cut-16-bare" d="M 225,75 L 300,75 L 300,7.372 L 297.867,6.292 L 291.513,3.62 L 285.369,1.644 L 279.447,0.42 L 273.761,0 L 225,0 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c05-cut-16-bare" d="M 300,75 L 375,75 L 375,63.91 L 370.018,59.559 L 362.295,52.865 L 354.65,46.331 L 347.096,40.013 L 339.646,33.962 L 332.313,28.233 L 325.111,22.88 L 318.052,17.955 L 311.149,13.513 L 304.417,9.608 L 300,7.372 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c06-cut-16-bare" d="M 375,75 L 387.694,75 L 385.643,73.215 L 377.805,66.36 L 375,63.91 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c11-cut-16-bare" d="M 825,75 L 825,63.91 L 822.195,66.36 L 814.357,73.215 L 812.306,75 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c12-cut-16-bare" d="M 825,75 L 900,75 L 900,7.372 L 895.583,9.608 L 888.851,13.513 L 881.948,17.955 L 874.889,22.88 L 867.687,28.233 L 860.354,33.962 L 852.904,40.013 L 845.35,46.331 L 837.705,52.865 L 829.982,59.559 L 825,63.91 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c13-cut-16-bare" d="M 900,75 L 975,75 L 975,0 L 926.239,0 L 920.553,0.42 L 914.631,1.644 L 908.487,3.62 L 902.133,6.292 L 900,7.372 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r01-c14-16-bare" x="975" y="0" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r01-c15-16-bare" x="1050" y="0" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c16-cut-16-bare" d="M 1200,26.239 L 1199.97,24.952 L 1199.87,23.667 L 1199.72,22.389 L 1199.5,21.12 L 1199.21,19.863 L 1198.87,18.622 L 1198.47,17.399 L 1198,16.198 L 1197.48,15.02 L 1196.9,13.87 L 1196.27,12.749 L 1195.58,11.661 L 1194.84,10.608 L 1194.04,9.593 L 1193.2,8.618 L 1192.32,7.685 L 1191.38,6.797 L 1190.41,5.956 L 1189.39,5.164 L 1188.34,4.422 L 1187.25,3.733 L 1186.13,3.098 L 1184.98,2.519 L 1183.8,1.997 L 1182.6,1.534 L 1181.38,1.13 L 1180.14,0.786 L 1178.88,0.504 L 1177.61,0.284 L 1176.33,0.126 L 1175.05,0.032 L 1173.76,0 L 1125,0 L 1125,75 L 1200,75 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-02-16-bare">
+        <rect id="square-r02-c01-16-bare" x="0" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c02-16-bare" x="75" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c03-16-bare" x="150" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c04-16-bare" x="225" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c05-16-bare" x="300" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c06-cut-16-bare" d="M 375,75 L 375,150 L 450,150 L 450,124.432 L 448.62,123.55 L 440.845,118.197 L 433.015,112.468 L 425.145,106.417 L 417.247,100.099 L 409.335,93.565 L 401.421,86.871 L 393.52,80.07 L 387.694,75 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c07-cut-16-bare" d="M 450,150 L 525,150 L 525,146.43 L 507.305,146.43 L 500.434,146.01 L 493.405,144.786 L 486.229,142.81 L 478.92,140.138 L 471.492,136.822 L 463.957,132.917 L 456.329,128.475 L 450,124.432 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c08-cut-16-bare" d="M 525,150 L 600,150 L 600,146.43 L 525,146.43 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c09-cut-16-bare" d="M 600,150 L 675,150 L 675,146.43 L 600,146.43 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c10-cut-16-bare" d="M 675,150 L 750,150 L 750,124.432 L 743.671,128.475 L 736.043,132.917 L 728.508,136.822 L 721.08,140.138 L 713.771,142.81 L 706.595,144.786 L 699.566,146.01 L 692.695,146.43 L 675,146.43 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c11-cut-16-bare" d="M 750,150 L 825,150 L 825,75 L 812.306,75 L 806.48,80.07 L 798.579,86.871 L 790.665,93.565 L 782.753,100.099 L 774.855,106.417 L 766.985,112.468 L 759.155,118.197 L 751.38,123.55 L 750,124.432 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c12-16-bare" x="825" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c13-16-bare" x="900" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c14-16-bare" x="975" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c15-16-bare" x="1050" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c16-16-bare" x="1125" y="75" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-03-16-bare">
+        <rect id="square-r03-c01-16-bare" x="0" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c02-16-bare" x="75" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c03-16-bare" x="150" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c04-16-bare" x="225" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c05-16-bare" x="300" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c06-16-bare" x="375" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c07-16-bare" x="450" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c08-16-bare" x="525" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c09-16-bare" x="600" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c10-16-bare" x="675" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c11-16-bare" x="750" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c12-16-bare" x="825" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c13-16-bare" x="900" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c14-16-bare" x="975" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c15-16-bare" x="1050" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c16-16-bare" x="1125" y="150" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-04-16-bare">
+        <rect id="square-r04-c01-16-bare" x="0" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c02-16-bare" x="75" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c03-16-bare" x="150" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c04-16-bare" x="225" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c05-16-bare" x="300" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c06-16-bare" x="375" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c07-16-bare" x="450" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c08-16-bare" x="525" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c09-16-bare" x="600" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c10-16-bare" x="675" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c11-16-bare" x="750" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c12-16-bare" x="825" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c13-16-bare" x="900" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c14-16-bare" x="975" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c15-16-bare" x="1050" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r04-c16-16-bare" x="1125" y="225" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-05-16-bare">
+        <rect id="square-r05-c01-16-bare" x="0" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c02-16-bare" x="75" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c03-16-bare" x="150" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c04-16-bare" x="225" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c05-16-bare" x="300" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c06-16-bare" x="375" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c07-16-bare" x="450" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c08-16-bare" x="525" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c09-16-bare" x="600" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c10-16-bare" x="675" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c11-16-bare" x="750" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c12-16-bare" x="825" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c13-16-bare" x="900" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c14-16-bare" x="975" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c15-16-bare" x="1050" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r05-c16-16-bare" x="1125" y="300" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-06-16-bare">
+        <rect id="square-r06-c01-16-bare" x="0" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c02-16-bare" x="75" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c03-16-bare" x="150" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c04-16-bare" x="225" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c05-16-bare" x="300" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c06-16-bare" x="375" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c07-16-bare" x="450" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c08-16-bare" x="525" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c09-16-bare" x="600" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c10-16-bare" x="675" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c11-16-bare" x="750" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c12-16-bare" x="825" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c13-16-bare" x="900" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c14-16-bare" x="975" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c15-16-bare" x="1050" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r06-c16-16-bare" x="1125" y="375" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-07-16-bare">
+        <rect id="square-r07-c01-16-bare" x="0" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c02-16-bare" x="75" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c03-16-bare" x="150" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c04-16-bare" x="225" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c05-cut-16-bare" d="M 375,450 L 300,450 L 300,525 L 302.096,525 L 302.44,524.226 L 303,523.112 L 303.615,522.027 L 304.282,520.973 L 305,519.953 L 305.768,518.97 L 306.582,518.026 L 307.442,517.122 L 308.346,516.262 L 309.29,515.448 L 310.273,514.68 L 311.293,513.962 L 312.347,513.295 L 313.432,512.68 L 314.546,512.12 L 315.686,511.614 L 316.85,511.165 L 318.034,510.774 L 319.236,510.442 L 320.453,510.168 L 321.682,509.955 L 322.919,509.802 L 324.163,509.711 L 325.41,509.68 L 375,509.68 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c06-cut-16-bare" d="M 450,450 L 375,450 L 375,509.68 L 450,509.68 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c07-cut-16-bare" d="M 525,525 L 525,450 L 450,450 L 450,509.68 L 479.16,509.68 L 483.453,509.939 L 487.487,510.694 L 491.279,511.913 L 494.845,513.561 L 498.204,515.606 L 501.373,518.015 L 504.369,520.755 L 507.209,523.793 L 508.197,525 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c08-16-bare" x="525" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c09-16-bare" x="600" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c10-cut-16-bare" d="M 750,450 L 675,450 L 675,525 L 691.803,525 L 692.791,523.793 L 695.631,520.755 L 698.627,518.015 L 701.796,515.606 L 705.155,513.561 L 708.721,511.913 L 712.513,510.694 L 716.547,509.939 L 720.84,509.68 L 750,509.68 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c11-cut-16-bare" d="M 825,450 L 750,450 L 750,509.68 L 825,509.68 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r07-c12-cut-16-bare" d="M 900,525 L 900,450 L 825,450 L 825,509.68 L 874.59,509.68 L 875.837,509.711 L 877.081,509.802 L 878.318,509.955 L 879.547,510.168 L 880.764,510.442 L 881.966,510.774 L 883.15,511.165 L 884.314,511.614 L 885.454,512.12 L 886.568,512.68 L 887.653,513.295 L 888.707,513.962 L 889.727,514.68 L 890.71,515.448 L 891.654,516.262 L 892.558,517.122 L 893.418,518.026 L 894.232,518.97 L 895,519.953 L 895.718,520.973 L 896.385,522.027 L 897,523.112 L 897.56,524.226 L 897.904,525 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c13-16-bare" x="900" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c14-16-bare" x="975" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c15-16-bare" x="1050" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r07-c16-16-bare" x="1125" y="450" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-08-16-bare">
+        <rect id="square-r08-c01-16-bare" x="0" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c02-16-bare" x="75" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c03-16-bare" x="150" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c04-16-bare" x="225" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c05-cut-16-bare" d="M 300,525 L 300,535.09 L 300.031,533.843 L 300.122,532.599 L 300.275,531.362 L 300.488,530.133 L 300.762,528.916 L 301.094,527.714 L 301.485,526.53 L 301.934,525.366 L 302.096,525 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c07-cut-16-bare" d="M 525,525 L 508.197,525 L 509.91,527.095 L 512.491,530.628 L 514.968,534.36 L 517.358,538.258 L 519.679,542.288 L 521.948,546.417 L 524.183,550.612 L 525,552.17 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c08-cut-16-bare" d="M 600,525 L 525,525 L 525,552.17 L 528.617,559.068 L 530.852,563.263 L 533.121,567.392 L 535.442,571.422 L 537.832,575.32 L 540.309,579.052 L 542.89,582.585 L 545.591,585.888 L 548.431,588.925 L 551.427,591.665 L 554.596,594.074 L 557.955,596.119 L 561.521,597.767 L 565.313,598.986 L 569.347,599.741 L 573.64,600 L 600,600 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c09-cut-16-bare" d="M 675,525 L 600,525 L 600,600 L 626.36,600 L 630.653,599.741 L 634.687,598.986 L 638.479,597.767 L 642.045,596.119 L 645.404,594.074 L 648.573,591.665 L 651.569,588.925 L 654.409,585.888 L 657.11,582.585 L 659.691,579.052 L 662.168,575.32 L 664.558,571.422 L 666.879,567.392 L 669.148,563.263 L 671.383,559.068 L 675,552.17 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c10-cut-16-bare" d="M 675,525 L 675,552.17 L 675.817,550.612 L 678.052,546.417 L 680.321,542.288 L 682.642,538.258 L 685.032,534.36 L 687.509,530.628 L 690.09,527.095 L 691.803,525 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r08-c12-cut-16-bare" d="M 900,525 L 897.904,525 L 898.066,525.366 L 898.515,526.53 L 898.906,527.714 L 899.238,528.916 L 899.512,530.133 L 899.725,531.362 L 899.878,532.599 L 899.969,533.843 L 900,535.09 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c13-16-bare" x="900" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c14-16-bare" x="975" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c15-16-bare" x="1050" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r08-c16-16-bare" x="1125" y="525" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-09-16-bare">
+        <rect id="square-r09-c01-16-bare" x="0" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c02-16-bare" x="75" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c03-16-bare" x="150" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c04-16-bare" x="225" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c13-16-bare" x="900" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c14-16-bare" x="975" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c15-16-bare" x="1050" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r09-c16-16-bare" x="1125" y="600" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-10-16-bare">
+        <rect id="square-r10-c01-16-bare" x="0" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c02-16-bare" x="75" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c03-16-bare" x="150" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c04-16-bare" x="225" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c13-16-bare" x="900" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c14-16-bare" x="975" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c15-16-bare" x="1050" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r10-c16-16-bare" x="1125" y="675" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-11-16-bare">
+        <rect id="square-r11-c01-16-bare" x="0" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c02-16-bare" x="75" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c03-16-bare" x="150" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c04-16-bare" x="225" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c13-16-bare" x="900" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c14-16-bare" x="975" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c15-16-bare" x="1050" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r11-c16-16-bare" x="1125" y="750" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-12-16-bare">
+        <rect id="square-r12-c01-16-bare" x="0" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c02-16-bare" x="75" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c03-16-bare" x="150" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c04-16-bare" x="225" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c13-16-bare" x="900" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c14-16-bare" x="975" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c15-16-bare" x="1050" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r12-c16-16-bare" x="1125" y="825" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-13-16-bare">
+        <rect id="square-r13-c01-16-bare" x="0" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c02-16-bare" x="75" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c03-16-bare" x="150" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c04-16-bare" x="225" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c13-16-bare" x="900" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c14-16-bare" x="975" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c15-16-bare" x="1050" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r13-c16-16-bare" x="1125" y="900" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-14-16-bare">
+        <rect id="square-r14-c01-16-bare" x="0" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c02-16-bare" x="75" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c03-16-bare" x="150" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c04-16-bare" x="225" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c13-16-bare" x="900" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c14-16-bare" x="975" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c15-16-bare" x="1050" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r14-c16-16-bare" x="1125" y="975" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-15-16-bare">
+        <rect id="square-r15-c01-16-bare" x="0" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c02-16-bare" x="75" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c03-16-bare" x="150" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c04-16-bare" x="225" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c13-16-bare" x="900" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c14-16-bare" x="975" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c15-16-bare" x="1050" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r15-c16-16-bare" x="1125" y="1050" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-16-16-bare">
+        <path id="square-r16-c01-cut-16-bare" d="M 75,1125 L 0,1125 L 0,1173.76 L 0.032,1175.05 L 0.126,1176.33 L 0.284,1177.61 L 0.504,1178.88 L 0.786,1180.14 L 1.13,1181.38 L 1.534,1182.6 L 1.997,1183.8 L 2.519,1184.98 L 3.098,1186.13 L 3.733,1187.25 L 4.422,1188.34 L 5.164,1189.39 L 5.956,1190.41 L 6.797,1191.38 L 7.685,1192.32 L 8.618,1193.2 L 9.593,1194.04 L 10.608,1194.84 L 11.661,1195.58 L 12.749,1196.27 L 13.87,1196.9 L 15.02,1197.48 L 16.198,1198 L 17.399,1198.47 L 18.622,1198.87 L 19.863,1199.21 L 21.12,1199.5 L 22.389,1199.72 L 23.667,1199.87 L 24.952,1199.97 L 26.239,1200 L 75,1200 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r16-c02-16-bare" x="75" y="1125" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r16-c03-16-bare" x="150" y="1125" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r16-c04-cut-16-bare" d="M 300,1125 L 225,1125 L 225,1200 L 273.761,1200 L 275.048,1199.97 L 276.333,1199.87 L 277.611,1199.72 L 278.88,1199.5 L 280.137,1199.21 L 281.378,1198.87 L 282.601,1198.47 L 283.802,1198 L 284.98,1197.48 L 286.13,1196.9 L 287.251,1196.27 L 288.339,1195.58 L 289.392,1194.84 L 290.407,1194.04 L 291.382,1193.2 L 292.315,1192.32 L 293.203,1191.38 L 294.044,1190.41 L 294.836,1189.39 L 295.578,1188.34 L 296.267,1187.25 L 296.902,1186.13 L 297.481,1184.98 L 298.003,1183.8 L 298.466,1182.6 L 298.87,1181.38 L 299.214,1180.14 L 299.496,1178.88 L 299.716,1177.61 L 299.874,1176.33 L 299.968,1175.05 L 300,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r16-c13-cut-16-bare" d="M 975,1125 L 900,1125 L 900,1173.76 L 900.032,1175.05 L 900.126,1176.33 L 900.284,1177.61 L 900.504,1178.88 L 900.786,1180.14 L 901.13,1181.38 L 901.534,1182.6 L 901.997,1183.8 L 902.519,1184.98 L 903.098,1186.13 L 903.733,1187.25 L 904.422,1188.34 L 905.164,1189.39 L 905.956,1190.41 L 906.797,1191.38 L 907.685,1192.32 L 908.618,1193.2 L 909.593,1194.04 L 910.608,1194.84 L 911.661,1195.58 L 912.749,1196.27 L 913.87,1196.9 L 915.02,1197.48 L 916.198,1198 L 917.399,1198.47 L 918.622,1198.87 L 919.863,1199.21 L 921.12,1199.5 L 922.389,1199.72 L 923.667,1199.87 L 924.952,1199.97 L 926.239,1200 L 975,1200 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r16-c14-16-bare" x="975" y="1125" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r16-c15-16-bare" x="1050" y="1125" width="75" height="75" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r16-c16-cut-16-bare" d="M 1200,1125 L 1125,1125 L 1125,1200 L 1173.76,1200 L 1175.05,1199.97 L 1176.33,1199.87 L 1177.61,1199.72 L 1178.88,1199.5 L 1180.14,1199.21 L 1181.38,1198.87 L 1182.6,1198.47 L 1183.8,1198 L 1184.98,1197.48 L 1186.13,1196.9 L 1187.25,1196.27 L 1188.34,1195.58 L 1189.39,1194.84 L 1190.41,1194.04 L 1191.38,1193.2 L 1192.32,1192.32 L 1193.2,1191.38 L 1194.04,1190.41 L 1194.84,1189.39 L 1195.58,1188.34 L 1196.27,1187.25 L 1196.9,1186.13 L 1197.48,1184.98 L 1198,1183.8 L 1198.47,1182.6 L 1198.87,1181.38 L 1199.21,1180.14 L 1199.5,1178.88 L 1199.72,1177.61 L 1199.87,1176.33 L 1199.97,1175.05 L 1200,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+    </g>
+  </g>
+  <metadata
+     id="metadata-conical-m-16-bare-slate"><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo5OGRkY2ZhNS1iZTYwLTQwYmItODJhYS1hYjhjNWMzZjAyMWIAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaI5hC+/oBzgdqeus6y1AgP0AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDphZmI5YmU2OS03ODUwLTQ5ZWMtOWFhZS1jOWMwYmUxNmFhZDhscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNotfq1+5mLeUwwWBT9V6ofrAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggTAh+f2RoaqIU84ihHlHov10Cs+XGi5GT4xGXoxdatkOkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaKmROU7NNleV8H9cGKjh7o4AAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIPQw21xJrd3RIYJvGUt+NpAiYgn0UT93YBBREJofNP93ZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GbfwZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjk4ZGRjZmE1LWJlNjAtNDBiYi04MmFhLWFiOGM1YzNmMDIxYi9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjRmZjcwMTA5LWJmZTgtNGZiYi04YTI4LTdmZDU4NjgwNTA3OHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCBMCH5/ZGhqohTziKEeUei/XQKz5caLkZPjEZejF1q2Q6JjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg4KgYhTmMt75wry/hNZDU6K6Uev4QQtPcXq1qOP/zSOSiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggXfv/QVuLFMM6a52zHGA6Ab4DwPOeddzs5nyd3QeNUmp0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQN3dUzFMn8MRko/r/P84tWBeMYKbG5O5khRz9tqqUwnSNpPGY9Xenxvmq1vLTg/bwxodvuNbvjvoKtcCglxtCRc=</c2pa:manifest>
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Conical Monolith M 16 x 16 bare slate (MONOLITH Edition - v1.1)</dc:title>
+        <dc:date>2026-10-26</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:language>en</dc:language>
+        <dc:description>The Conical Monolith M on a 16 by 16 grid of 75 px cells in the slate skin, the tiled M without pieces: 156 whole tiles, 30 cut to the outline. Built by assets/generator/conical_m.py from the letter's parameters; the system is described in assets/brand/CONICAL_MONOLITH_SYSTEM.md.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>MONOLITH</rdf:li>
+            <rdf:li>brand</rdf:li>
+            <rdf:li>logo</rdf:li>
+            <rdf:li>tiled M</rdf:li>
+            <rdf:li>chess</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

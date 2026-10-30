@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+✒ Metadata
+    - Title: MONOLITH Loading Screen 02 Tile Wave (Slate)
+    - File Name: loading-02-tile-wave.svg
+    - Relative Path: assets/mockups/loading-02-tile-wave.svg
+    - Artifact Type: mockup
+    - Version: 2.0.0
+    - Date: 10/26/2026
+    - Update: Monday, October 26, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt
+      on the official 4 x 4 Conical M Dennis chose (monolith-logo.svg and
+      monolith-emblem.svg).
+    - 1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Fable 5.1] — First
+      version, on the logo concepts that the Conical M replaced.
+
+✒ Description:
+    Loading screen built on the official logo, the 4 x 4 Conical M without
+    pieces. Its twelve tiles arrive in a diagonal wave from the top-left
+    corner, each scaling up from its centre with a slight overshoot; a
+    hairline bar under the tagline runs in the accent.
+
+✒ Key Features:
+    - Tiles: scale 0.35 to 1 with fade and overshoot, delay by (x + y)
+      across the mark, 1.2 s spread
+    - Bar: hairline track and accent fill scaling from the left over 2.6 s
+    - Palette: Slate (as drawn: one slate, black mortar)
+
+✒ Id Convention:
+    Every element and group carries a descriptive id,
+    component-subcomponent-panel: mark holds mark-tiles and mark-pieces; a
+    tile is mark-square-rNN-cNN (-cut for one the outline crosses), counted
+    from the top left of the 4 x 4 grid; a piece is mark-piece-<side>-<kind>
+    holding its -contour and -face paths, sides named by faces (White is
+    boxwood-faced). On a study sheet the panel suffix is the palette's key.
+    Series are zero-padded so they sort in Inkscape's Objects panel. The
+    mark's matrix sits on the mark group, so every animated tile and piece is
+    transform-free and its CSS animation never fights the geometry.
+
+✒ Other Important Information:
+    - Mark: the official 4 x 4 Conical M (assets/monolith-logo.svg,
+      monolith-emblem.svg), built by assets/generator/conical_m.py; pieces
+      from assets/chess-pieces.svg stamped verbatim
+    - Palette roles: ground, ground-2, ink, ink-2, accent, tile-light,
+      tile-dark, mortar, white-face, white-contour, black-face,
+      black-contour
+    - Source of truth: assets/generator/build_mockups.py emits this file;
+      edit the script, not the SVG, and port any Inkscape hand pass back
+      into it
+    - XML note: an SVG header cannot carry the standard's closing dash rule,
+      because a double hyphen is illegal inside an XML comment
+-->
+
+<svg
+   width="1600"
+   height="1000"
+   viewBox="0 0 1600 1000"
+   version="1.1"
+   id="svg-loading-02-tile-wave"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="loading-02-tile-wave.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:c2pa="http://c2pa.org/manifest">
+  <title
+     id="title-loading-02-tile-wave">MONOLITH Loading Screen 02 Tile Wave (Slate)</title>
+  <sodipodi:namedview
+     id="namedview-loading-02-tile-wave"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showborder="false"
+     inkscape:zoom="0.35"
+     inkscape:cx="800"
+     inkscape:cy="500"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg-loading-02-tile-wave" />
+  <defs
+     id="defs-loading-02-tile-wave">
+    <radialGradient id="ground-lift-gradient" cx="0.5" cy="0.45" r="0.6">
+      <stop id="ground-lift-stop-01" offset="0" style="stop-color:#1f2126;stop-opacity:1" />
+      <stop id="ground-lift-stop-02" offset="1" style="stop-color:#1f2126;stop-opacity:0" />
+    </radialGradient>
+    <style id="anim-css" type="text/css">
+      .tile { animation: tile-in 0.6s cubic-bezier(0.34, 1.46, 0.64, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+      .bar-fill { animation: grow linear both; transform-box: fill-box; transform-origin: 0 50%; }
+      @keyframes tile-in { from { opacity: 0; transform: scale(0.35); } to { opacity: 1; transform: none; } }
+      @keyframes grow { from { transform: scaleX(0); } to { transform: none; } }
+    
+    </style>
+  </defs>
+  <g id="ground">
+    <rect id="ground-fill" x="0" y="0" width="1600" height="1000" style="fill:#17181c;stroke:none" />
+    <rect id="ground-lift" x="0" y="0" width="1600" height="1000" style="fill:url(#ground-lift-gradient);stroke:none" />
+  </g>
+  <g id="mark" transform="matrix(0.333333,0.000000,0.000000,0.333333,600.0000,110.0000)">
+    <g id="mark-tiles">
+      <path id="mark-square-r01-c01-cut" d="M 300,300 L 300,7.372 L 297.867,6.292 L 291.513,3.62 L 285.369,1.644 L 279.447,0.42 L 273.761,0 L 26.239,0 L 24.952,0.032 L 23.667,0.126 L 22.389,0.284 L 21.12,0.504 L 19.863,0.786 L 18.622,1.13 L 17.399,1.534 L 16.198,1.997 L 15.02,2.519 L 13.87,3.098 L 12.749,3.733 L 11.661,4.422 L 10.608,5.164 L 9.593,5.956 L 8.618,6.797 L 7.685,7.685 L 6.797,8.618 L 5.956,9.593 L 5.164,10.608 L 4.422,11.661 L 3.733,12.749 L 3.098,13.87 L 2.519,15.02 L 1.997,16.198 L 1.534,17.399 L 1.13,18.622 L 0.786,19.863 L 0.504,21.12 L 0.284,22.389 L 0.126,23.667 L 0.032,24.952 L 0,26.239 L 0,300 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.25s" class="tile" />
+      <path id="mark-square-r01-c02-cut" d="M 300,300 L 600,300 L 600,146.43 L 507.305,146.43 L 500.434,146.01 L 493.405,144.786 L 486.229,142.81 L 478.92,140.138 L 471.492,136.822 L 463.957,132.917 L 456.329,128.475 L 448.62,123.55 L 440.845,118.197 L 433.015,112.468 L 425.145,106.417 L 417.247,100.099 L 409.335,93.565 L 401.421,86.871 L 393.52,80.07 L 385.643,73.215 L 377.805,66.36 L 370.018,59.559 L 362.295,52.865 L 354.65,46.331 L 347.096,40.013 L 339.646,33.962 L 332.313,28.233 L 325.111,22.88 L 318.052,17.955 L 311.149,13.513 L 304.417,9.608 L 300,7.372 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.40s" class="tile" />
+      <path id="mark-square-r01-c03-cut" d="M 600,300 L 900,300 L 900,7.372 L 895.583,9.608 L 888.851,13.513 L 881.948,17.955 L 874.889,22.88 L 867.687,28.233 L 860.354,33.962 L 852.904,40.013 L 845.35,46.331 L 837.705,52.865 L 829.982,59.559 L 822.195,66.36 L 814.357,73.215 L 806.48,80.07 L 798.579,86.871 L 790.665,93.565 L 782.753,100.099 L 774.855,106.417 L 766.985,112.468 L 759.155,118.197 L 751.38,123.55 L 743.671,128.475 L 736.043,132.917 L 728.508,136.822 L 721.08,140.138 L 713.771,142.81 L 706.595,144.786 L 699.566,146.01 L 692.695,146.43 L 600,146.43 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.55s" class="tile" />
+      <path id="mark-square-r01-c04-cut" d="M 1200,26.239 L 1199.97,24.952 L 1199.87,23.667 L 1199.72,22.389 L 1199.5,21.12 L 1199.21,19.863 L 1198.87,18.622 L 1198.47,17.399 L 1198,16.198 L 1197.48,15.02 L 1196.9,13.87 L 1196.27,12.749 L 1195.58,11.661 L 1194.84,10.608 L 1194.04,9.593 L 1193.2,8.618 L 1192.32,7.685 L 1191.38,6.797 L 1190.41,5.956 L 1189.39,5.164 L 1188.34,4.422 L 1187.25,3.733 L 1186.13,3.098 L 1184.98,2.519 L 1183.8,1.997 L 1182.6,1.534 L 1181.38,1.13 L 1180.14,0.786 L 1178.88,0.504 L 1177.61,0.284 L 1176.33,0.126 L 1175.05,0.032 L 1173.76,0 L 926.239,0 L 920.553,0.42 L 914.631,1.644 L 908.487,3.62 L 902.133,6.292 L 900,7.372 L 900,300 L 1200,300 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.70s" class="tile" />
+      <path id="mark-square-r02-c01" d="M 0,300 H 300 V 600 H 0 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.40s" class="tile" />
+      <path id="mark-square-r02-c02-cut" d="M 600,300 L 300,300 L 300,535.09 L 300.031,533.843 L 300.122,532.599 L 300.275,531.362 L 300.488,530.133 L 300.762,528.916 L 301.094,527.714 L 301.485,526.53 L 301.934,525.366 L 302.44,524.226 L 303,523.112 L 303.615,522.027 L 304.282,520.973 L 305,519.953 L 305.768,518.97 L 306.582,518.026 L 307.442,517.122 L 308.346,516.262 L 309.29,515.448 L 310.273,514.68 L 311.293,513.962 L 312.347,513.295 L 313.432,512.68 L 314.546,512.12 L 315.686,511.614 L 316.85,511.165 L 318.034,510.774 L 319.236,510.442 L 320.453,510.168 L 321.682,509.955 L 322.919,509.802 L 324.163,509.711 L 325.41,509.68 L 479.16,509.68 L 483.453,509.939 L 487.487,510.694 L 491.279,511.913 L 494.845,513.561 L 498.204,515.606 L 501.373,518.015 L 504.369,520.755 L 507.209,523.793 L 509.91,527.095 L 512.491,530.628 L 514.968,534.36 L 517.358,538.258 L 519.679,542.288 L 521.948,546.417 L 524.183,550.612 L 528.617,559.068 L 530.852,563.263 L 533.121,567.392 L 535.442,571.422 L 537.832,575.32 L 540.309,579.052 L 542.89,582.585 L 545.591,585.888 L 548.431,588.925 L 551.427,591.665 L 554.596,594.074 L 557.955,596.119 L 561.521,597.767 L 565.313,598.986 L 569.347,599.741 L 573.64,600 L 600,600 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.55s" class="tile" />
+      <path id="mark-square-r02-c03-cut" d="M 900,300 L 600,300 L 600,600 L 626.36,600 L 630.653,599.741 L 634.687,598.986 L 638.479,597.767 L 642.045,596.119 L 645.404,594.074 L 648.573,591.665 L 651.569,588.925 L 654.409,585.888 L 657.11,582.585 L 659.691,579.052 L 662.168,575.32 L 664.558,571.422 L 666.879,567.392 L 669.148,563.263 L 671.383,559.068 L 675.817,550.612 L 678.052,546.417 L 680.321,542.288 L 682.642,538.258 L 685.032,534.36 L 687.509,530.628 L 690.09,527.095 L 692.791,523.793 L 695.631,520.755 L 698.627,518.015 L 701.796,515.606 L 705.155,513.561 L 708.721,511.913 L 712.513,510.694 L 716.547,509.939 L 720.84,509.68 L 874.59,509.68 L 875.837,509.711 L 877.081,509.802 L 878.318,509.955 L 879.547,510.168 L 880.764,510.442 L 881.966,510.774 L 883.15,511.165 L 884.314,511.614 L 885.454,512.12 L 886.568,512.68 L 887.653,513.295 L 888.707,513.962 L 889.727,514.68 L 890.71,515.448 L 891.654,516.262 L 892.558,517.122 L 893.418,518.026 L 894.232,518.97 L 895,519.953 L 895.718,520.973 L 896.385,522.027 L 897,523.112 L 897.56,524.226 L 898.066,525.366 L 898.515,526.53 L 898.906,527.714 L 899.238,528.916 L 899.512,530.133 L 899.725,531.362 L 899.878,532.599 L 899.969,533.843 L 900,535.09 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.70s" class="tile" />
+      <path id="mark-square-r02-c04" d="M 900,300 H 1200 V 600 H 900 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.85s" class="tile" />
+      <path id="mark-square-r03-c01" d="M 0,600 H 300 V 900 H 0 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.55s" class="tile" />
+      <path id="mark-square-r03-c04" d="M 900,600 H 1200 V 900 H 900 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:1.00s" class="tile" />
+      <path id="mark-square-r04-c01-cut" d="M 300,900 L 0,900 L 0,1173.76 L 0.032,1175.05 L 0.126,1176.33 L 0.284,1177.61 L 0.504,1178.88 L 0.786,1180.14 L 1.13,1181.38 L 1.534,1182.6 L 1.997,1183.8 L 2.519,1184.98 L 3.098,1186.13 L 3.733,1187.25 L 4.422,1188.34 L 5.164,1189.39 L 5.956,1190.41 L 6.797,1191.38 L 7.685,1192.32 L 8.618,1193.2 L 9.593,1194.04 L 10.608,1194.84 L 11.661,1195.58 L 12.749,1196.27 L 13.87,1196.9 L 15.02,1197.48 L 16.198,1198 L 17.399,1198.47 L 18.622,1198.87 L 19.863,1199.21 L 21.12,1199.5 L 22.389,1199.72 L 23.667,1199.87 L 24.952,1199.97 L 26.239,1200 L 273.761,1200 L 275.048,1199.97 L 276.333,1199.87 L 277.611,1199.72 L 278.88,1199.5 L 280.137,1199.21 L 281.378,1198.87 L 282.601,1198.47 L 283.802,1198 L 284.98,1197.48 L 286.13,1196.9 L 287.251,1196.27 L 288.339,1195.58 L 289.392,1194.84 L 290.407,1194.04 L 291.382,1193.2 L 292.315,1192.32 L 293.203,1191.38 L 294.044,1190.41 L 294.836,1189.39 L 295.578,1188.34 L 296.267,1187.25 L 296.902,1186.13 L 297.481,1184.98 L 298.003,1183.8 L 298.466,1182.6 L 298.87,1181.38 L 299.214,1180.14 L 299.496,1178.88 L 299.716,1177.61 L 299.874,1176.33 L 299.968,1175.05 L 300,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:0.70s" class="tile" />
+      <path id="mark-square-r04-c04-cut" d="M 1200,900 L 900,900 L 900,1173.76 L 900.032,1175.05 L 900.126,1176.33 L 900.284,1177.61 L 900.504,1178.88 L 900.786,1180.14 L 901.13,1181.38 L 901.534,1182.6 L 901.997,1183.8 L 902.519,1184.98 L 903.098,1186.13 L 903.733,1187.25 L 904.422,1188.34 L 905.164,1189.39 L 905.956,1190.41 L 906.797,1191.38 L 907.685,1192.32 L 908.618,1193.2 L 909.593,1194.04 L 910.608,1194.84 L 911.661,1195.58 L 912.749,1196.27 L 913.87,1196.9 L 915.02,1197.48 L 916.198,1198 L 917.399,1198.47 L 918.622,1198.87 L 919.863,1199.21 L 921.12,1199.5 L 922.389,1199.72 L 923.667,1199.87 L 924.952,1199.97 L 926.239,1200 L 1173.76,1200 L 1175.05,1199.97 L 1176.33,1199.87 L 1177.61,1199.72 L 1178.88,1199.5 L 1180.14,1199.21 L 1181.38,1198.87 L 1182.6,1198.47 L 1183.8,1198 L 1184.98,1197.48 L 1186.13,1196.9 L 1187.25,1196.27 L 1188.34,1195.58 L 1189.39,1194.84 L 1190.41,1194.04 L 1191.38,1193.2 L 1192.32,1192.32 L 1193.2,1191.38 L 1194.04,1190.41 L 1194.84,1189.39 L 1195.58,1188.34 L 1196.27,1187.25 L 1196.9,1186.13 L 1197.48,1184.98 L 1198,1183.8 L 1198.47,1182.6 L 1198.87,1181.38 L 1199.21,1180.14 L 1199.5,1178.88 L 1199.72,1177.61 L 1199.87,1176.33 L 1199.97,1175.05 L 1200,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:3;stroke-linejoin:round;paint-order:markers fill stroke;animation-delay:1.15s" class="tile" />
+    </g>
+  </g>
+  <g id="copy">
+    <text id="copy-wordmark" x="800" y="625.62" style="font-family:Inter, 'Segoe UI', system-ui, sans-serif;font-size:44px;font-weight:600;fill:#e8e6df;stroke:none;text-anchor:middle;letter-spacing:18.48px" xml:space="preserve">MONOLITH</text>
+    <text id="copy-tagline" x="800" y="666.97" style="font-family:Inter, 'Segoe UI', system-ui, sans-serif;font-size:14px;font-weight:500;fill:#9a9b9f;stroke:none;text-anchor:middle;letter-spacing:5.04px" xml:space="preserve">MARBLE VS. OBSIDIAN  ·  GOTHIC CATHEDRAL</text>
+    <g id="bar">
+      <rect id="bar-track" x="620" y="760" width="360" height="2" style="fill:#303133;stroke:none" />
+      <rect id="bar-fill" x="620" y="760" width="360" height="2" style="fill:#d9b84a;stroke:none;animation-duration:2.60s;animation-delay:0.20s" class="bar-fill" />
+    </g>
+    <text id="copy-status" x="800" y="814.615" style="font-family:'JetBrains Mono', 'Cascadia Mono', Consolas, 'DejaVu Sans Mono', monospace;font-size:13px;font-weight:400;fill:#9a9b9f;stroke:none;text-anchor:middle" xml:space="preserve">compiling shaders  ·  hdr · bloom · mirror floor</text>
+  </g>
+  <g id="version">
+    <rect id="version-fill" x="1468" y="946" width="92" height="28" style="fill:#1f2126;stroke:none" rx="6" ry="6" />
+    <text id="version-label" x="1514" y="964.26" style="font-family:'JetBrains Mono', 'Cascadia Mono', Consolas, 'DejaVu Sans Mono', monospace;font-size:12px;font-weight:400;fill:#9a9b9f;stroke:none;text-anchor:middle" xml:space="preserve">v2.12.0</text>
+  </g>
+  <metadata
+     id="metadata-loading-02-tile-wave"><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTplYjllYjU4ZS0xNjIxLTQ5NTEtOWI4Ni0zZWU4YTViMDFlOWEAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaErA6IYLnohoIP6aqgH+bBAAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo0OTVlYzZkMi05NjI0LTRiMjMtYWZiMS02M2Q4N2M4YWE2OTZscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoljAudYp3yeNSje7EqCv9ZwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFgg6alVc0PDywhVC2+BDTpsCkWen+3X1VJu6DwGHQ8W3lykZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaCbpXD63falMz9R6KAIsm48AAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIPXWuTzuklhPRNjc9eizo6S6y6QLX5Uyqc7vpc43DVn6ZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GT7VZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmViOWViNThlLTE2MjEtNDk1MS05Yjg2LTNlZThhNWIwMWU5YS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjlhYjNkODQwLTUxNTMtNDE2MC05Y2ZmLTBkMGI3MzZmNzRmYnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDpqVVzQ8PLCFULb4ENOmwKRZ6f7dfVUm7oPAYdDxbeXKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggRm+YcgPbtxilCDwOQXYOnK0ThZqEumjDKGdV0wMkFZmiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggvgt8sDW/OFvKvryqkdc+YZ76RYF4ov/6cytT8MIAW1F0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQOPDFdvEPdifje+LPkpB880POMNE+U6Jh9RYx1WCgCN7+MoiRpiiuMyTJ+DGq0zKtl2ZX4QESqz7ZlSN9UodwRQ=</c2pa:manifest>
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>MONOLITH Loading Screen 02 Tile Wave (Slate)</dc:title>
+        <dc:date>2026-10-26</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:language>en</dc:language>
+        <dc:description>Loading screen built on the official logo, the 4 x 4 Conical M without pieces. Its twelve tiles arrive in a diagonal wave from the top-left corner, each scaling up from its centre with a slight overshoot; a hairline bar under the tagline runs in the accent.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>MONOLITH</rdf:li>
+            <rdf:li>loading screen</rdf:li>
+            <rdf:li>logo</rdf:li>
+            <rdf:li>animation</rdf:li>
+            <rdf:li>chess</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

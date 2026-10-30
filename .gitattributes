@@ -1,0 +1,50 @@
+# ✒ Metadata
+#     - Title: Git Attributes (MONOLITH Edition - v1.0)
+#     - File Name: .gitattributes
+#     - Relative Path: .gitattributes
+#     - Artifact Type: config
+#     - Version: 1.0.0
+#     - Date: 10/30/2026
+#     - Update: Friday, October 30, 2026
+#     - Author: Dennis 'dendogg' Smaltz
+#     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+#     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+#
+# ✒ Changelog:
+#     - 1.0.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+#       release, with the repository's first commit: text files keep LF line
+#       endings in the repository and the working copy, and the models,
+#       engine, sounds and images are stored as binary.
+#
+# ✒ Description:
+#     How Git treats the project's files. Every text file is written with LF
+#     endings, and this keeps them that way on every machine, whatever the
+#     local core.autocrlf setting, so a checkout never rewrites the page's
+#     sources with CRLF.
+#
+# ✒ Key Features:
+#     - text=auto eol=lf: text files are normalised to LF and checked out as
+#       LF, on Windows as elsewhere.
+#     - The engine's WebAssembly, the .glb and .blend models, the sounds and
+#       the images are marked binary: never converted, never diffed as text.
+#     - The vendored engine script keeps its bytes as shipped (-text).
+#
+# ✒ Other Important Information:
+#     - Dependencies: Git.
+#     - Compatible platforms: any Git client.
+#     - After changing a rule here, `git add --renormalize .` applies it to
+#       files already tracked.
+#
+# ---------
+
+* text=auto eol=lf
+
+*.wasm binary
+*.glb binary
+*.blend binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.mp3 binary
+
+engine/stockfish-19-lite-single.js -text

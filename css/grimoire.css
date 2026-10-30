@@ -1,0 +1,118 @@
+/*
+✒ Metadata
+    - Title: Grimoire Styles (MONOLITH Edition - v1.0)
+    - File Name: grimoire.css
+    - Relative Path: css/grimoire.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.2
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
+      release audit Dennis asked for: a selector for a class no page uses
+      (.gr-cat-dot) and [hidden] rules the base rule in css/tokens.css
+      already covers are gone.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The Grimoire tab: the searchable index of terms, the category chips and
+    the article view with its three viewpoints (in a game, in analysis,
+    inside the engine).
+
+✒ Key Features:
+    - The search field and the category chips with their counts.
+    - The term index, with matches marked.
+    - The article: definition, the three viewpoints, where it is in
+      MONOLITH, an example and related terms.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 7 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* ---------- Grimoire: the reference tab, and term cards anywhere ---------- */
+[data-cat]{--gc:var(--md-on-surface-var)}
+[data-cat="rules"]{--gc:#E8C377}[data-cat="notation"]{--gc:#A3BDE3}[data-cat="tactics"]{--gc:#ED7F83}[data-cat="eval"]{--gc:#2CC8D8}
+[data-cat="engine"]{--gc:#ABB5C3}[data-cat="analysis"]{--gc:#9FD8B0}[data-cat="testing"]{--gc:#E8A93A}[data-cat="interface"]{--gc:#C3B7D6}
+.gr-index{display:flex;flex-direction:column;gap:12px}
+.gr-search{display:flex;align-items:center;gap:10px;height:44px;padding:0 10px 0 12px;border:1px solid var(--md-outline);border-radius:var(--r-ctl);background:var(--md-surface-2);transition:border-color .15s}
+.gr-search:focus-within{border-color:var(--md-primary)}
+.gr-search svg{width:20px;height:20px;flex:none;fill:var(--md-on-surface-var)}
+.gr-search input{flex:1;min-width:0;height:100%;border:0;background:transparent;outline:none;font-size:14px}
+.gr-search input::placeholder{color:var(--md-on-surface-var)}
+.gr-search input::-webkit-search-cancel-button{filter:grayscale(1) opacity(.6)}
+.gr-search kbd{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border:1px solid var(--md-outline-var);border-bottom-width:2px;border-radius:4px;font:400 11px var(--font-mono);color:var(--md-on-surface-var)}
+.gr-search:focus-within kbd{visibility:hidden}
+.gr-cats{display:flex;flex-wrap:wrap;gap:6px}
+.gr-cat{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:transparent;font-size:12px;font-weight:500;color:var(--md-on-surface-var);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.gr-cat::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gc);flex:none}
+.gr-cat[data-cat="all"]::before{display:none}
+.gr-cat small{font:400 10.5px var(--font-mono);opacity:.75}
+.gr-cat:hover{color:var(--md-on-surface);border-color:var(--md-outline)}
+.gr-cat[aria-checked="true"]{background:var(--md-secondary-container);color:var(--md-on-secondary-container);border-color:transparent}
+.gr-cat:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.gr-count{font-size:12px;color:var(--md-on-surface-var);margin-top:-2px}
+.gr-list{display:flex;flex-direction:column;margin:0 -8px}
+.gr-letter{position:sticky;top:0;z-index:1;padding:10px 8px 4px;background:var(--md-surface-1);font:600 11px/1 var(--font-mono);letter-spacing:.1em;color:var(--md-primary);border-bottom:1px solid var(--md-outline-var)}
+.gr-item{display:flex;flex-direction:column;gap:3px;width:100%;padding:10px 8px;border:0;border-bottom:1px solid var(--md-outline-var);border-radius:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer;transition:background .12s}
+.gr-item:hover{background:rgba(235,230,240,.05)}
+.gr-item:focus-visible{outline:2px solid var(--md-primary);outline-offset:-2px}
+.gr-it-top{display:flex;align-items:baseline;gap:8px;min-width:0}
+.gr-it-top b{font-weight:500;font-size:14px;color:var(--md-on-surface)}
+.gr-it-cat{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gc)}
+.gr-item p{font-size:12.5px;line-height:1.45;color:var(--md-on-surface-var);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gr-item mark{background:transparent;color:var(--md-primary);font-weight:600}
+.gr-none{padding:16px 8px;font-size:13px;color:var(--md-on-surface-var)}
+.gr-article{display:flex;flex-direction:column;gap:16px;min-width:0}
+.gr-a-nav{display:flex;align-items:center;gap:2px;margin:-8px -8px -6px -12px}
+.gr-a-nav .grow{flex:1}
+.gr-a-nav .icon-btn{width:36px;height:36px}
+.gr-a-head{display:flex;flex-direction:column;gap:6px}
+.gr-a-head h3{font-size:28px;font-weight:400;line-height:1.12;outline:none;overflow-wrap:anywhere}
+.gr-cat-chip{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gc)}
+.gr-cat-chip::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--gc);flex:none}
+.gr-cat-chip:empty{display:none}
+.gr-aka{font-size:12.5px;color:var(--md-on-surface-var)}
+.gr-aka:empty{display:none}
+.gr-def{font-size:15.5px;line-height:1.55;color:var(--md-on-surface);padding-left:14px;border-left:2px solid var(--gc)}
+.gr-views{display:flex;flex-direction:column;gap:8px}
+.gr-view{display:grid;grid-template-columns:22px minmax(0,1fr);gap:3px 12px;padding:12px 14px;border-radius:var(--r-card);background:var(--md-surface-2);border:1px solid var(--md-outline-var)}
+.gr-view svg{grid-row:1 / span 2;width:20px;height:20px;margin-top:1px;fill:var(--md-on-surface-var)}
+.gr-view h4,.gr-where h4,.gr-example h4,.gr-see h4{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
+.gr-view p{font-size:13.5px;line-height:1.52;color:var(--md-on-surface)}
+.gr-where,.gr-example,.gr-see{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.gr-where p{font-size:13.5px;line-height:1.5}
+.gr-example p{align-self:stretch;padding:10px 12px;border-radius:var(--r-ctl);background:var(--md-surface-2);font:400 12.5px/1.55 var(--font-mono);color:var(--md-on-surface);overflow-wrap:anywhere}
+.gr-see-list{display:flex;flex-wrap:wrap;gap:6px}
+.gr-see-list button{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:transparent;font-size:12.5px;color:var(--md-on-surface);cursor:pointer}
+.gr-see-list button::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gc);flex:none}
+.gr-see-list button:hover{border-color:var(--md-outline);background:rgba(235,230,240,.05)}
+:root[data-tab="grimoire"] .moves-card{display:none}
+@media (min-width:1280px){:root[data-tab="grimoire"]{--panel-w:460px}}
+:root[data-skin="monolith"] .gr-letter{font-family:var(--font-tele);color:var(--mo-ink2);background:var(--mo-panel);border-bottom-color:var(--mo-rule)}
+:root[data-skin="monolith"] .gr-item{border-bottom-color:var(--mo-rule)}
+:root[data-skin="monolith"] .gr-item:hover{background:var(--mo-raised)}
+:root[data-skin="monolith"] .gr-item mark{color:var(--mo-cyan)}
+:root[data-skin="monolith"] .gr-a-head h3{font-family:var(--font-ui-mo);font-weight:500;font-size:26px;letter-spacing:-.01em}
+:root[data-skin="monolith"] .gr-view{background:var(--mo-well);border-color:var(--mo-rule)}
+:root[data-skin="monolith"] .gr-example p{background:var(--mo-well);font-family:var(--font-tele)}
+:root[data-skin="monolith"] .gr-search{background:var(--mo-well);border-color:var(--mo-rule)}
+:root[data-skin="monolith"] .gr-search:focus-within{border-color:var(--mo-steel)}
+:root[data-skin="monolith"] .gr-cat{border-radius:2px;font-family:var(--font-ui-mo)}
+:root[data-skin="monolith"] .gr-cat[aria-checked="true"]{background:var(--mo-raised);color:var(--mo-ink);box-shadow:inset 0 -2px 0 var(--mo-ink)}

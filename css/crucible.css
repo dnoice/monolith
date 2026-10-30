@@ -1,0 +1,102 @@
+/*
+✒ Metadata
+    - Title: Crucible Styles (MONOLITH Edition - v1.0)
+    - File Name: crucible.css
+    - Relative Path: css/crucible.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.1
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
+      Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    The Crucible tab: the deck that covers the stage, the game board card
+    and the pane beside it. The Hive's long description gets its own line
+    under the title and legend.
+
+✒ Key Features:
+    - The deck over the stage: its sections and canvases, the Hive and its
+      legend.
+    - The board card for an expanded Crucible game.
+    - The pane: the verdict, the result matrix, the Elo interval bar, the
+      pentanomial bars, the anomaly list, the configuration grid with
+      checked number fields, and the progress bar.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 4 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* Crucible: deck over the stage, board card, pane */
+.deck{position:absolute;inset:0;z-index:4;display:grid;grid-template-rows:minmax(190px,40%) minmax(0,1fr);gap:1px;background:var(--mo-rule);overflow:hidden}
+.deck-sec{display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0;padding:10px var(--gutter-r) 12px 16px;background:var(--mo-panel)}
+.deck-sec canvas{flex:1;min-height:0;width:100%;display:block}
+.deck-hive{overflow:auto;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent}
+.deck-hive canvas{flex:none;cursor:pointer}
+.hive-legend{display:flex;align-items:center;gap:10px;font:400 10.5px var(--font-tele);color:var(--mo-ink3);flex-wrap:wrap}
+.hive-legend i{display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:-1px;border:1.5px solid var(--mo-ivory)}
+.hive-legend i.d{border-color:var(--mo-slate)}.hive-legend i.l{border-color:var(--mo-steel)}.hive-legend i.a{border-color:var(--mo-crimson)}
+.deck-sec > .mo-head{flex:none}
+/* the Hive's long description takes its own line under the title and legend instead of
+   squeezing between them */
+#hive-sub{order:9;flex-basis:100%}
+.board-card{position:absolute;left:var(--gutter-l);top:14px;z-index:2;display:flex;flex-direction:column;gap:4px;max-width:min(330px,calc(100% - 32px));padding:10px 12px;background:var(--mo-panel);border:1px solid var(--mo-rule);border-radius:3px;font-size:12.5px;color:var(--mo-ink2);font-variant-numeric:tabular-nums}
+.board-card b{color:var(--mo-ink);font-weight:500}
+.board-card .mv-big{font-size:20px;font-weight:600;color:var(--mo-crimson)}
+.board-card .ink{color:var(--mo-ink)}
+.cr-verdict{display:flex;flex-direction:column;gap:3px}
+.cr-verdict b{font:400 19px/1.2 var(--font-struct);letter-spacing:.06em;color:var(--md-on-surface)}
+.cr-verdict span{font-size:12.5px;color:var(--md-on-surface-var);font-variant-numeric:tabular-nums}
+.matrix{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.matrix th{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);text-align:left;padding:5px 6px}
+.matrix td{padding:6px;border-top:1px solid var(--mo-rule);color:var(--mo-ink2)}
+.matrix td.v{color:var(--md-on-surface)}
+.matrix td.diff{background:var(--mo-raised);box-shadow:inset 0 0 0 1px #3A4352;color:var(--md-on-surface)}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;margin:0;font-size:12.5px}
+.kv dt{color:var(--md-on-surface-var)}
+.kv dd{margin:0;text-align:right;font-family:var(--font-tele);font-size:12px;color:var(--md-on-surface)}
+.cr-elo{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cr-elo b{font-size:28px;font-weight:500;line-height:1}
+.cr-elo span{font-size:12px;color:var(--md-on-surface-var)}
+.ci-bar{position:relative;height:12px;margin:2px 0;background:linear-gradient(180deg,#0A0D11,var(--mo-well));border:1px solid var(--mo-rule);border-radius:6px}
+.ci-bar i{position:absolute;top:2px;bottom:2px;border-radius:4px;background:linear-gradient(90deg,rgba(85,98,117,.6),rgba(171,181,195,.9) 50%,rgba(85,98,117,.6));box-shadow:0 0 0 1px rgba(171,181,195,.16)}
+.ci-bar b{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:1px;background:var(--mo-ink);box-shadow:0 0 6px rgba(227,231,238,.4)}
+.ci-bar u{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--mo-ink3)}
+.ci-scale{display:flex;justify-content:space-between;font:400 10px var(--font-tele);color:var(--mo-ink3)}
+.penta{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:end;height:110px}
+.penta > div{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;height:100%;text-align:center;font:400 11px var(--font-tele);color:var(--md-on-surface)}
+.penta > div > span{font:500 12px var(--font-tele);color:var(--mo-ink);font-variant-numeric:tabular-nums}
+.penta i{display:block;width:min(48px,100%);min-height:2px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#7C8899,var(--mo-slate) 68%,#3D4757);box-shadow:inset 0 1px 0 rgba(255,255,255,.14);transition:height .5s var(--ease-std)}
+.penta > div.top i{background:linear-gradient(180deg,#CDD4DE,#8E99A9 68%,#5B6778)}
+.penta small{align-self:stretch;padding-top:4px;border-top:1px solid var(--mo-rule);font-size:10px;color:var(--mo-ink3)}
+.anoms{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
+.anoms button{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;min-height:36px;padding:4px 8px;border:0;border-bottom:1px solid var(--mo-rule);background:transparent;color:var(--md-on-surface);font:400 12px var(--font-tele);font-variant-numeric:tabular-nums;text-align:left;cursor:pointer;transition:background .12s}
+.anoms button:hover,.anoms button.on{background:var(--mo-raised)}
+.anoms button.on{box-shadow:inset 2px 0 0 var(--mo-crimson)}
+.anoms .jump{color:var(--mo-crimson)}
+.anoms .ply{color:var(--mo-ink3)}
+.cfg-grid{display:grid;grid-template-columns:auto minmax(0,1fr) 92px;gap:8px 8px;align-items:center}
+.cfg-grid > b{font:400 11px var(--font-tele);color:var(--md-on-surface-var)}
+.cfg-grid .select,.cfg-grid input{min-width:0;width:100%}
+.num-in{height:40px;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px;font-family:var(--font-tele);font-size:13px}
+.num-in:invalid{border-color:var(--md-error)}
+.cr-progress{height:4px;background:var(--mo-well);border:1px solid var(--mo-rule)}
+.cr-progress i{display:block;height:100%;background:var(--mo-steel);transition:width .3s}

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+✒ Metadata
+    - Title: MONOLITH Logo (MONOLITH Edition - v1.0)
+    - File Name: monolith-logo.svg
+    - Relative Path: assets/monolith-logo.svg
+    - Artifact Type: illustration
+    - Version: 1.0.1
+    - Date: 10/26/2026
+    - Update: Monday, October 26, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
+      asked for the logo in the web app's header: the page's app bar carries
+      it now, written in by tools/build-emblem.mjs, so its path and its
+      board-logo group stay put.
+    - 1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
+      made the 4 x 4 Conical M the official logo; first build, from the
+      system.
+
+✒ Description:
+    MONOLITH's official logo, chosen by Dennis on 10/26/2026: the Conical M
+    cut into a four by four grid of slate tiles with black mortar, no pieces.
+    The letter is his (measured from conical-monolith-brand-kit.svg and
+    written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); this file is the
+    system's rendering of it at 1200 px, and the emblem is the same mark with
+    his twelve pieces standing on it. It is the source of the page's app bar
+    logo: tools/build-emblem.mjs writes it into index.html, reading its
+    board-logo group.
+
+✒ Key Features:
+    - Canvas 1200 x 1200; the Conical M edge to edge on a 4 x 4 grid of 300
+      px cells: 4 whole tiles, 8 cut to the outline
+    - Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per
+      1200 (paint-order markers fill stroke), as Dennis draws the grout
+    - One flat layer: groups only, no Inkscape layers
+    - Regenerate by running assets/generator/conical_m.py; its official
+      target rebuilds just the two marks
+
+✒ Id Convention:
+    component-subcomponent-panel, the panel suffix last: board-<panel> holds
+    board-row-NN-<panel>, and each row its tiles, square-rNN-cNN-<panel>
+    counted from the top left, -cut before the suffix for a tile the outline
+    crosses, plinth-rNN-cNN-<panel> for a merged block under a piece;
+    pieces-<panel> holds pieces-white-<panel> and pieces-black-<panel>, and
+    they hold piece-<side>-<kind>[-NN]-<panel>, each its -contour- and -face-
+    path. Sides are named by their faces: White is boxwood-faced. A
+    construction panel holds outline-<panel> and grid-<panel> with its
+    verticals and horizontals.
+
+✒ Other Important Information:
+    - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
+    - Official: the 4 x 4 Conical M is the MONOLITH mark; every mock-up
+      under assets/mockups is built on this file's geometry
+    - Source of truth: assets/generator/conical_m.py emits this file; edit
+      the script or its parameters, not the SVG, then rerun it
+    - XML note: an SVG header cannot carry the standard's closing dash rule,
+      because a double hyphen is illegal inside an XML comment
+-->
+
+<svg
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   version="1.1"
+   id="svg-monolith-logo"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="monolith-logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title-monolith-logo">MONOLITH Logo (MONOLITH Edition - v1.0)</title>
+  <sodipodi:namedview
+     id="namedview-monolith-logo"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showborder="false"
+     inkscape:zoom="0.35"
+     inkscape:cx="600"
+     inkscape:cy="600"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg-monolith-logo" />
+  <defs
+     id="defs-monolith-logo">
+  </defs>
+  <g id="logo-monolith">
+    <g id="board-logo">
+      <g id="board-row-01-logo">
+        <path id="square-r01-c01-cut-logo" d="M 300,300 L 300,7.372 L 297.867,6.292 L 291.513,3.62 L 285.369,1.644 L 279.447,0.42 L 273.761,0 L 26.239,0 L 24.952,0.032 L 23.667,0.126 L 22.389,0.284 L 21.12,0.504 L 19.863,0.786 L 18.622,1.13 L 17.399,1.534 L 16.198,1.997 L 15.02,2.519 L 13.87,3.098 L 12.749,3.733 L 11.661,4.422 L 10.608,5.164 L 9.593,5.956 L 8.618,6.797 L 7.685,7.685 L 6.797,8.618 L 5.956,9.593 L 5.164,10.608 L 4.422,11.661 L 3.733,12.749 L 3.098,13.87 L 2.519,15.02 L 1.997,16.198 L 1.534,17.399 L 1.13,18.622 L 0.786,19.863 L 0.504,21.12 L 0.284,22.389 L 0.126,23.667 L 0.032,24.952 L 0,26.239 L 0,300 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c02-cut-logo" d="M 300,300 L 600,300 L 600,146.43 L 507.305,146.43 L 500.434,146.01 L 493.405,144.786 L 486.229,142.81 L 478.92,140.138 L 471.492,136.822 L 463.957,132.917 L 456.329,128.475 L 448.62,123.55 L 440.845,118.197 L 433.015,112.468 L 425.145,106.417 L 417.247,100.099 L 409.335,93.565 L 401.421,86.871 L 393.52,80.07 L 385.643,73.215 L 377.805,66.36 L 370.018,59.559 L 362.295,52.865 L 354.65,46.331 L 347.096,40.013 L 339.646,33.962 L 332.313,28.233 L 325.111,22.88 L 318.052,17.955 L 311.149,13.513 L 304.417,9.608 L 300,7.372 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c03-cut-logo" d="M 600,300 L 900,300 L 900,7.372 L 895.583,9.608 L 888.851,13.513 L 881.948,17.955 L 874.889,22.88 L 867.687,28.233 L 860.354,33.962 L 852.904,40.013 L 845.35,46.331 L 837.705,52.865 L 829.982,59.559 L 822.195,66.36 L 814.357,73.215 L 806.48,80.07 L 798.579,86.871 L 790.665,93.565 L 782.753,100.099 L 774.855,106.417 L 766.985,112.468 L 759.155,118.197 L 751.38,123.55 L 743.671,128.475 L 736.043,132.917 L 728.508,136.822 L 721.08,140.138 L 713.771,142.81 L 706.595,144.786 L 699.566,146.01 L 692.695,146.43 L 600,146.43 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r01-c04-cut-logo" d="M 1200,26.239 L 1199.97,24.952 L 1199.87,23.667 L 1199.72,22.389 L 1199.5,21.12 L 1199.21,19.863 L 1198.87,18.622 L 1198.47,17.399 L 1198,16.198 L 1197.48,15.02 L 1196.9,13.87 L 1196.27,12.749 L 1195.58,11.661 L 1194.84,10.608 L 1194.04,9.593 L 1193.2,8.618 L 1192.32,7.685 L 1191.38,6.797 L 1190.41,5.956 L 1189.39,5.164 L 1188.34,4.422 L 1187.25,3.733 L 1186.13,3.098 L 1184.98,2.519 L 1183.8,1.997 L 1182.6,1.534 L 1181.38,1.13 L 1180.14,0.786 L 1178.88,0.504 L 1177.61,0.284 L 1176.33,0.126 L 1175.05,0.032 L 1173.76,0 L 926.239,0 L 920.553,0.42 L 914.631,1.644 L 908.487,3.62 L 902.133,6.292 L 900,7.372 L 900,300 L 1200,300 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-02-logo">
+        <rect id="square-r02-c01-logo" x="0" y="300" width="300" height="300" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c02-cut-logo" d="M 600,300 L 300,300 L 300,535.09 L 300.031,533.843 L 300.122,532.599 L 300.275,531.362 L 300.488,530.133 L 300.762,528.916 L 301.094,527.714 L 301.485,526.53 L 301.934,525.366 L 302.44,524.226 L 303,523.112 L 303.615,522.027 L 304.282,520.973 L 305,519.953 L 305.768,518.97 L 306.582,518.026 L 307.442,517.122 L 308.346,516.262 L 309.29,515.448 L 310.273,514.68 L 311.293,513.962 L 312.347,513.295 L 313.432,512.68 L 314.546,512.12 L 315.686,511.614 L 316.85,511.165 L 318.034,510.774 L 319.236,510.442 L 320.453,510.168 L 321.682,509.955 L 322.919,509.802 L 324.163,509.711 L 325.41,509.68 L 479.16,509.68 L 483.453,509.939 L 487.487,510.694 L 491.279,511.913 L 494.845,513.561 L 498.204,515.606 L 501.373,518.015 L 504.369,520.755 L 507.209,523.793 L 509.91,527.095 L 512.491,530.628 L 514.968,534.36 L 517.358,538.258 L 519.679,542.288 L 521.948,546.417 L 524.183,550.612 L 528.617,559.068 L 530.852,563.263 L 533.121,567.392 L 535.442,571.422 L 537.832,575.32 L 540.309,579.052 L 542.89,582.585 L 545.591,585.888 L 548.431,588.925 L 551.427,591.665 L 554.596,594.074 L 557.955,596.119 L 561.521,597.767 L 565.313,598.986 L 569.347,599.741 L 573.64,600 L 600,600 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r02-c03-cut-logo" d="M 900,300 L 600,300 L 600,600 L 626.36,600 L 630.653,599.741 L 634.687,598.986 L 638.479,597.767 L 642.045,596.119 L 645.404,594.074 L 648.573,591.665 L 651.569,588.925 L 654.409,585.888 L 657.11,582.585 L 659.691,579.052 L 662.168,575.32 L 664.558,571.422 L 666.879,567.392 L 669.148,563.263 L 671.383,559.068 L 675.817,550.612 L 678.052,546.417 L 680.321,542.288 L 682.642,538.258 L 685.032,534.36 L 687.509,530.628 L 690.09,527.095 L 692.791,523.793 L 695.631,520.755 L 698.627,518.015 L 701.796,515.606 L 705.155,513.561 L 708.721,511.913 L 712.513,510.694 L 716.547,509.939 L 720.84,509.68 L 874.59,509.68 L 875.837,509.711 L 877.081,509.802 L 878.318,509.955 L 879.547,510.168 L 880.764,510.442 L 881.966,510.774 L 883.15,511.165 L 884.314,511.614 L 885.454,512.12 L 886.568,512.68 L 887.653,513.295 L 888.707,513.962 L 889.727,514.68 L 890.71,515.448 L 891.654,516.262 L 892.558,517.122 L 893.418,518.026 L 894.232,518.97 L 895,519.953 L 895.718,520.973 L 896.385,522.027 L 897,523.112 L 897.56,524.226 L 898.066,525.366 L 898.515,526.53 L 898.906,527.714 L 899.238,528.916 L 899.512,530.133 L 899.725,531.362 L 899.878,532.599 L 899.969,533.843 L 900,535.09 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r02-c04-logo" x="900" y="300" width="300" height="300" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-03-logo">
+        <rect id="square-r03-c01-logo" x="0" y="600" width="300" height="300" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <rect id="square-r03-c04-logo" x="900" y="600" width="300" height="300" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+      <g id="board-row-04-logo">
+        <path id="square-r04-c01-cut-logo" d="M 300,900 L 0,900 L 0,1173.76 L 0.032,1175.05 L 0.126,1176.33 L 0.284,1177.61 L 0.504,1178.88 L 0.786,1180.14 L 1.13,1181.38 L 1.534,1182.6 L 1.997,1183.8 L 2.519,1184.98 L 3.098,1186.13 L 3.733,1187.25 L 4.422,1188.34 L 5.164,1189.39 L 5.956,1190.41 L 6.797,1191.38 L 7.685,1192.32 L 8.618,1193.2 L 9.593,1194.04 L 10.608,1194.84 L 11.661,1195.58 L 12.749,1196.27 L 13.87,1196.9 L 15.02,1197.48 L 16.198,1198 L 17.399,1198.47 L 18.622,1198.87 L 19.863,1199.21 L 21.12,1199.5 L 22.389,1199.72 L 23.667,1199.87 L 24.952,1199.97 L 26.239,1200 L 273.761,1200 L 275.048,1199.97 L 276.333,1199.87 L 277.611,1199.72 L 278.88,1199.5 L 280.137,1199.21 L 281.378,1198.87 L 282.601,1198.47 L 283.802,1198 L 284.98,1197.48 L 286.13,1196.9 L 287.251,1196.27 L 288.339,1195.58 L 289.392,1194.84 L 290.407,1194.04 L 291.382,1193.2 L 292.315,1192.32 L 293.203,1191.38 L 294.044,1190.41 L 294.836,1189.39 L 295.578,1188.34 L 296.267,1187.25 L 296.902,1186.13 L 297.481,1184.98 L 298.003,1183.8 L 298.466,1182.6 L 298.87,1181.38 L 299.214,1180.14 L 299.496,1178.88 L 299.716,1177.61 L 299.874,1176.33 L 299.968,1175.05 L 300,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+        <path id="square-r04-c04-cut-logo" d="M 1200,900 L 900,900 L 900,1173.76 L 900.032,1175.05 L 900.126,1176.33 L 900.284,1177.61 L 900.504,1178.88 L 900.786,1180.14 L 901.13,1181.38 L 901.534,1182.6 L 901.997,1183.8 L 902.519,1184.98 L 903.098,1186.13 L 903.733,1187.25 L 904.422,1188.34 L 905.164,1189.39 L 905.956,1190.41 L 906.797,1191.38 L 907.685,1192.32 L 908.618,1193.2 L 909.593,1194.04 L 910.608,1194.84 L 911.661,1195.58 L 912.749,1196.27 L 913.87,1196.9 L 915.02,1197.48 L 916.198,1198 L 917.399,1198.47 L 918.622,1198.87 L 919.863,1199.21 L 921.12,1199.5 L 922.389,1199.72 L 923.667,1199.87 L 924.952,1199.97 L 926.239,1200 L 1173.76,1200 L 1175.05,1199.97 L 1176.33,1199.87 L 1177.61,1199.72 L 1178.88,1199.5 L 1180.14,1199.21 L 1181.38,1198.87 L 1182.6,1198.47 L 1183.8,1198 L 1184.98,1197.48 L 1186.13,1196.9 L 1187.25,1196.27 L 1188.34,1195.58 L 1189.39,1194.84 L 1190.41,1194.04 L 1191.38,1193.2 L 1192.32,1192.32 L 1193.2,1191.38 L 1194.04,1190.41 L 1194.84,1189.39 L 1195.58,1188.34 L 1196.27,1187.25 L 1196.9,1186.13 L 1197.48,1184.98 L 1198,1183.8 L 1198.47,1182.6 L 1198.87,1181.38 L 1199.21,1180.14 L 1199.5,1178.88 L 1199.72,1177.61 L 1199.87,1176.33 L 1199.97,1175.05 L 1200,1173.76 Z" style="fill:#6f8a91;stroke:#000000;stroke-width:1;stroke-linejoin:round;paint-order:markers fill stroke" />
+      </g>
+    </g>
+  </g>
+  <metadata
+     id="metadata-monolith-logo">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>MONOLITH Logo (MONOLITH Edition - v1.0)</dc:title>
+        <dc:date>2026-10-26</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:language>en</dc:language>
+        <dc:description>MONOLITH's official logo, chosen by Dennis on 10/26/2026: the Conical M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is his (measured from conical-monolith-brand-kit.svg and written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); this file is the system's rendering of it at 1200 px, and the emblem is the same mark with his twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>MONOLITH</rdf:li>
+            <rdf:li>logo</rdf:li>
+            <rdf:li>brand</rdf:li>
+            <rdf:li>tiled M</rdf:li>
+            <rdf:li>chess</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

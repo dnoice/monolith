@@ -1,0 +1,72 @@
+/*
+✒ Metadata
+    - Title: Term Styles (MONOLITH Edition - v1.0)
+    - File Name: terms.css
+    - Relative Path: css/terms.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.2
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
+      release audit Dennis asked for: a [hidden] rule the base rule in
+      css/tokens.css already covers is gone.
+    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      release as its own file: split out of wizards-chess.html 2.4.0 when
+      Dennis asked for a proper separation of concerns.
+
+✒ Description:
+    A Grimoire term wherever it appears on screen: a quiet dotted underline,
+    and the card a click or Enter opens. Badges keep their own look.
+
+✒ Key Features:
+    - The dotted underline for a term in running text, with hover, open and
+      focus states.
+    - The term card: title and category chip, close button, definition, the
+      viewpoints and a foot with the link into the Grimoire.
+    - Badges that are terms keep their badge look; the card has a MONOLITH
+      variant.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 9 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* A term on screen: a quiet dotted underline; a click (or Enter) opens its card. Badges keep
+   their frame instead of an underline. */
+[data-term]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 42%,transparent);border-radius:2px;transition:color .12s,text-decoration-color .12s}
+[data-term]:hover,[data-term][aria-expanded="true"]{color:var(--md-on-surface);text-decoration-color:currentColor}
+[data-term]:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.badge[data-term]{text-decoration:none}
+.badge[data-term]:hover{border-color:var(--mo-slate);color:var(--mo-ink2)}
+.term-pop{position:fixed;z-index:18;left:0;top:0;width:min(344px,calc(100vw - 24px));max-height:min(72vh,560px);overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px 16px 10px;border-radius:12px;background:var(--md-surface-3);border:1px solid var(--md-outline);box-shadow:0 2px 6px rgba(0,0,0,.3),0 18px 44px rgba(0,0,0,.5);color:var(--md-on-surface);scrollbar-width:thin}
+.term-pop.in{animation:pal-in .14s cubic-bezier(.2,0,0,1)}
+.tp-head{display:flex;align-items:center;gap:8px;min-width:0}
+.tp-head b{font-size:16px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.tp-head .gr-cat-chip{order:2;margin-left:auto}
+.tp-close{order:3;width:30px;height:30px;margin:-6px -10px -6px 0;flex:none}
+.tp-close svg{width:18px;height:18px}
+.tp-def{font-size:13.5px;line-height:1.5}
+.tp-views{display:flex;flex-direction:column;gap:7px}
+.tp-views:empty{display:none}
+.tp-v{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;font-size:12.5px;line-height:1.45;color:var(--md-on-surface-var)}
+.tp-v b{padding-top:2px;font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface)}
+.tp-v span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tp-foot{display:flex;justify-content:flex-end;margin:-2px -10px -2px 0}
+.tp-foot .btn svg{width:16px;height:16px}
+:root[data-skin="monolith"] .term-pop{border-radius:6px;background:linear-gradient(180deg,rgba(27,33,42,.94),rgba(18,22,28,.96));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-color:rgba(171,181,195,.24)}
+:root[data-skin="monolith"] .tp-head b{font-family:var(--font-ui-mo)}

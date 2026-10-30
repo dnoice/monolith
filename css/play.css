@@ -1,0 +1,154 @@
+/*
+✒ Metadata
+    - Title: Play Cards (MONOLITH Edition - v1.0)
+    - File Name: play.css
+    - Relative Path: css/play.css
+    - Artifact Type: stylesheet
+    - Version: 1.0.3
+    - Date: 10/24/2026
+    - Update: Saturday, October 24, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      with the project: Wizard's Chess is now MONOLITH, the name Dennis
+      chose, and this header names the page by its file in the repository,
+      index.html.
+    - 1.0.2 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
+      release audit Dennis asked for: rules for classes no page uses
+      (.card-rule, .card-sub) and [hidden] rules the base rule in
+      css/tokens.css already covers are gone.
+    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      match strip, which Dennis found disjointed before a game: only a
+      number takes the larger size, and a side the die will pick shows
+      half marble, half obsidian.
+    Earlier entries: see CHANGELOG.md (moved entries)
+
+✒ Description:
+    The Play pane as cards (Dennis, 10/22/2026), and the match strip in the
+    app bar that names who is playing, the level and whose move it is.
+
+✒ Key Features:
+    - Cards: head, aside, rule and sub-text, with switch rows and the level
+      inside a card.
+    - Engine lines as a disclosure inside a card.
+    - The status card: the turn banner, the move and the opening's name.
+    - The match strip: players, level, move number, status and the last
+      move, in one line of the app bar.
+    - Narrow widths: at 1380, 1240 and 1080 px the strip drops its small
+      labels, then the last move, then the players and title.
+
+✒ Usage Instructions:
+    Linked from index.html, stylesheet 6 of 12. The sheets are one cascade
+    cut at its section breaks, so they load in that order and a later sheet
+    may refine an earlier one.
+
+✒ Other Important Information:
+    - Dependencies: the tokens in css/tokens.css (custom properties), the
+      markup of index.html, and the class names the modules under js/ set.
+    - Compatible platforms: current Chrome, Edge, Firefox and Safari.
+---------
+*/
+/* ---------- cards: the Play pane's hierarchy (Dennis, 10/22/2026) ----------
+   Every block on Play is a card with its own head: an icon, a title, and on the right the value
+   or state that block is about (the level's name, the engine's status). The turn card carries
+   the moves you make most (Hint, Undo); New game and Resign sit apart at the foot. Group titles
+   elsewhere end in a hairline, so a section starts visibly instead of floating. */
+.kicker{font:600 11px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--md-primary)}
+.pane-head .kicker + h2{margin-top:4px}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;margin:0;padding:14px 16px 16px;border-radius:var(--r-card);background:var(--md-surface-2);border:1px solid var(--md-outline-var)}
+.card-head{display:flex;align-items:center;gap:10px;min-height:24px;min-width:0}
+.card-head > svg{width:18px;height:18px;flex:none;fill:currentColor;color:var(--md-primary)}
+.card-head h3{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--md-on-surface);white-space:nowrap}
+.card-aside{margin-left:auto;min-width:0;text-align:right;font-size:12.5px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-aside.level-name{font-weight:600;font-size:13px;color:var(--md-primary)}
+.card .switch-row{min-height:40px}
+.sr-label{font-size:14px;color:var(--md-on-surface)}
+.card .level{gap:0}
+.card .engine-foot{gap:7px;font-size:11.5px}
+.head-switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--md-on-surface-var);overflow:visible}
+.switch.small{width:40px;height:24px}
+.switch.small::before{left:4px;width:12px;height:12px}
+.switch.small:checked::before{left:18px;width:16px;height:16px}
+.engine-lines{margin:0 -16px -6px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
+.engine-lines > summary{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;list-style:none;border-radius:4px}
+.engine-lines > summary::-webkit-details-marker{display:none}
+.engine-lines > summary::before{content:'';flex:none;width:7px;height:7px;margin:0 3px 3px 1px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(-45deg);transition:transform .15s var(--ease-std)}
+.engine-lines[open] > summary::before{transform:rotate(45deg);margin-bottom:5px}
+.engine-lines > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.el-title{font-size:13px;font-weight:500;color:var(--md-on-surface)}
+.engine-lines .engine-foot{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.el-body{display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
+:root[data-skin="monolith"] .engine-lines{border-top-color:var(--mo-rule)}
+.status-card{gap:14px;padding-top:16px}
+.status-card .turn-banner{padding:0;border:0;border-radius:0;background:none}
+.turn-banner{display:flex;align-items:center;gap:12px;min-width:0}
+.turn-text{min-width:0;flex:1}
+.turn-move{flex:none;align-self:flex-start;padding:3px 9px;border-radius:var(--r-pill);background:var(--md-surface-3);font:500 11px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--md-on-surface-var);white-space:nowrap}
+.turn-move:empty{display:none}
+.turn-opening{display:flex;align-items:baseline;gap:8px;margin:-4px 0 0;min-width:0;font-size:12.5px;color:var(--md-on-surface-var)}
+.to-eco{flex:none;font:500 11px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--md-secondary)}
+.to-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card-actions .btn{width:100%}
+.calc-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.calc-row .btn{flex:1 1 auto}
+.calc-lines{font-size:12.5px;color:var(--md-on-surface-var);margin-left:4px}
+.calc-row .select{height:40px}
+.game-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:-4px}
+.game-actions .btn{width:100%;height:36px;font-size:13px}
+.group-title:not(summary){display:flex;align-items:center;gap:10px}
+.group-title:not(summary)::after{content:'';flex:1;height:1px;background:var(--md-outline-var)}
+:root[data-skin="monolith"] .kicker{font:400 10px/1 var(--font-tele);letter-spacing:.16em;color:var(--mo-ink3)}
+:root[data-skin="monolith"] .card{background:var(--mo-well);border-color:var(--mo-rule)}
+:root[data-skin="monolith"] .card-head > svg{color:var(--mo-steel)}
+:root[data-skin="monolith"] .card-head h3{font:400 10px/1.2 var(--font-struct);letter-spacing:.2em;color:var(--mo-ink2)}
+:root[data-skin="monolith"] .card-aside.level-name{color:var(--mo-ink);font-weight:500}
+:root[data-skin="monolith"] .turn-move{background:var(--mo-raised);font-family:var(--font-tele);color:var(--mo-ink2);border-radius:2px}
+:root[data-skin="monolith"] .to-eco{font-family:var(--font-tele);color:var(--mo-steel)}
+:root[data-skin="monolith"] .turn-opening{color:var(--mo-ink2)}
+
+/* ---------- the match strip in the app bar (Dennis, 10/22/2026) ----------
+   What the stage is showing, in one pill: the players with the side to move ringed, the move
+   number and what is happening now (to move, thinking, check, the result), and the last move.
+   Analyze and Crucible put their own title first instead of the players. Before a game it shows
+   the game Start game will begin, as the Play tab's choices change, and that it has not started
+   (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
+   Only a number takes the larger size. It narrows as the bar does: the levels and the last move
+   go first, then the players; phones leave it to the panel. */
+.matchbar{flex:2;min-width:0;display:flex;justify-content:center}
+.mb-pill{display:inline-flex;align-items:stretch;min-width:0;max-width:100%;height:38px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:var(--md-surface-2);overflow:hidden}
+.matchbar[data-empty] .mb-pill{display:none}
+.mb-seg{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:0 14px;white-space:nowrap;font-size:13px}
+.mb-seg + .mb-seg{border-left:1px solid var(--md-outline-var)}
+.mb-k{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
+.mb-seg b{font-weight:500;color:var(--md-on-surface);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.mb-s{color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis}
+.mb-s.check{color:var(--md-error)}
+.mb-s.think{color:var(--md-secondary)}
+.mb-s.done{color:var(--md-primary)}
+.mb-p{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.mb-p small{font-size:11.5px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis}
+.mb-vs{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
+.mb-dot{width:11px;height:11px;flex:none;border-radius:50%;border:1px solid var(--md-outline);transition:box-shadow .2s var(--ease-std)}
+.mb-dot.w{background:var(--md-marble)}
+.mb-dot.b{background:var(--md-obsidian)}
+.mb-p.on .mb-dot{box-shadow:0 0 0 2px var(--md-surface-2),0 0 0 3.5px var(--md-primary)}
+.mb-p.on b{color:var(--md-primary)}
+.mb-move b.num{font-size:15px}
+/* before a game whose side the die picks, neither dot is a colour yet */
+.mb-players.by-die .mb-dot{background:linear-gradient(90deg,var(--md-marble) 50%,var(--md-obsidian) 50%)}
+:root[data-skin="monolith"] .mb-pill{background:var(--mo-well);border-color:var(--mo-rule)}
+:root[data-skin="monolith"] .mb-seg + .mb-seg{border-left-color:var(--mo-rule)}
+:root[data-skin="monolith"] .mb-k,:root[data-skin="monolith"] .mb-vs{font:400 10px/1 var(--font-tele);letter-spacing:.12em;color:var(--mo-ink3)}
+:root[data-skin="monolith"] .mb-seg{font-family:var(--font-ui-mo)}
+:root[data-skin="monolith"] .mb-dot.b{border-color:var(--mo-steel)}
+:root[data-skin="monolith"] .mb-p.on .mb-dot{box-shadow:0 0 0 2px var(--mo-well),0 0 0 3.5px var(--mo-ink)}
+:root[data-skin="monolith"] .mb-p.on b{color:var(--mo-ink)}
+:root[data-skin="monolith"] .mb-s.think{color:var(--mo-cyan)}
+:root[data-skin="monolith"] .mb-s.done{color:var(--mo-ink)}
+@media (max-width:1380px){.mb-p small{display:none}}
+@media (max-width:1240px){.mb-last{display:none}}
+@media (max-width:1080px){.mb-players,.mb-title{display:none}}
