@@ -70,8 +70,8 @@ import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
   autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo, goLive,
-  openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, undo,
-  viewedPly
+  openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, turning,
+  undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
@@ -166,7 +166,7 @@ export function init() {
     // the game on your turn; otherwise, as a click would, a line on the board the game does not own
     e.preventDefault(); ensureAudio();
     const tryIt = !canMoveNow() && (explore.on || (prefs.explore !== false && exploreAvailable()));
-    if (!canMoveNow() && !tryIt) return;
+    if ((!canMoveNow() && !tryIt) || turning) return;
     const inp = $('#move-input'), r = parseTyped(tryIt ? boardState() : cur(), inp.value);
     if (!r) return;
     if (r.error) { snack(r.error); return; }

@@ -238,7 +238,7 @@ export const draftLine = () => draft.from && sandbox() && explore.moves.length ?
 export function setExplorePref(on) { prefs.explore = on; savePrefs(); if (!on && explore.on) exploreEnd(); else render(); }
 function exploreStart() {
   const base = underlyingState();
-  Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] });
+  Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] }); draft.from = false;   // a new line is not yet one to play from
   deselect(); placePieces(base);   // fresh pieces: an ended game's poses don't carry into the line
 }
 /* replace: put the underlying board's pieces back (Back, Undo past the start); without it the
