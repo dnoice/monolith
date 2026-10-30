@@ -137,6 +137,12 @@
 .syn-hold{font:400 10.5px var(--font-tele);color:var(--mo-amber)}
 .syn-chip small{display:inline-block;min-width:4.6ch;text-align:right}
 :root[data-moves-sized] .moves-card{max-height:75%;min-height:110px}
+/* Nothing to list yet (no game, no line tried; js/ui/panels.js sets data-idle): the card folds to
+   its title and the line that says so, whatever height it was dragged to, so the pane above keeps
+   the room (before a game, Start game). Controls that cannot act yet go with it; the move box
+   comes back as soon as it takes a move. */
+:root .moves-card[data-idle]{height:auto;min-height:0}
+.moves-card[data-idle] .moves-head .icon-btn,.moves-card[data-idle] #split-moves,.moves-card[data-idle] .move-entry:has(input:disabled){display:none}
 /* The move list reads as a sheet docked under the panel rather than more content under the
    panel's scrollbar (Dennis, 10/22/2026): a soft lift above its top edge, where its splitter's
    grip sits, and slim scrollbars on both. */
