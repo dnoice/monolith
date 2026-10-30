@@ -173,6 +173,9 @@
 .setup-from .help{margin-top:-6px}
 .setup-from .row{margin:-6px 0 -6px -10px}
 :root[data-skin="monolith"] .from-line{font-family:var(--font-tele)}
+/* on a phone the chip's line takes its first row and Undo, Reset and Play from here the second;
+   beside three buttons the line was squeezed to nothing and the chip grew into a blob */
+@media (max-width:899px){#explore-chip:has(> #btn-explore-play:not([hidden])){flex-wrap:wrap;justify-content:center;row-gap:4px;border-radius:var(--r-card);padding:8px 6px 6px}#explore-chip:has(> #btn-explore-play:not([hidden])) > span{flex:1 0 100%;margin:0;padding-inline:8px}}
 
 /* ---------- Start game within reach (2.18.0) ----------
    The setup is taller than the panel at most sizes and Start game is its last line, so the action
