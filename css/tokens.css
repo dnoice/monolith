@@ -170,6 +170,6 @@ body{margin:0;background:var(--md-surface);color:var(--md-on-surface);font-famil
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
-h1,h2,h3,p{margin:0}
+h1,h2,h3,h4,p{margin:0}
 #app{height:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:64px minmax(0,1fr) auto}
 .appbar,.rail,.panel,.moves-card,#dock,#telemetry,.player,.btn,.seg,.side-card,.turn-banner,.cand,.preset{transition:background-color .45s var(--ease-std),border-color .45s var(--ease-std),color .45s var(--ease-std)}

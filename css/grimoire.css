@@ -93,7 +93,7 @@
 .gr-def{font-size:15.5px;line-height:1.55;color:var(--md-on-surface);padding-left:14px;border-left:2px solid var(--gc)}
 .gr-views{display:flex;flex-direction:column;gap:8px}
 .gr-view{display:grid;grid-template-columns:22px minmax(0,1fr);gap:3px 12px;padding:12px 14px;border-radius:var(--r-card);background:var(--md-surface-2);border:1px solid var(--md-outline-var)}
-.gr-view svg{grid-row:1 / span 2;width:20px;height:20px;margin-top:1px;fill:var(--md-on-surface-var)}
+.gr-view svg{grid-row:1 / span 2;width:20px;height:20px;margin-top:-2px;fill:var(--md-on-surface-var)}
 .gr-view h4,.gr-where h4,.gr-example h4,.gr-see h4{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
 .gr-view p{font-size:13.5px;line-height:1.52;color:var(--md-on-surface)}
 .gr-where,.gr-example,.gr-see{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
