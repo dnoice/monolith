@@ -150,7 +150,7 @@ const PAL_GROUPS = [
   ['About', [':version']]
 ];
 const palGroupOf = c => { const g = PAL_GROUPS.find(([, l]) => l.includes(c.cmd)); return g ? g[0] : 'More'; };
-const PAL_KEYS = { ':field': ['F'], ':vectors': ['V'], ':xray': ['X'] };
+const PAL_KEYS = { ':field': ['F'], ':vectors': ['V'], ':xray': ['X'], ':flip': ['F'], ':undo': ['U'], ':hint': ['H'] };
 function palFen(arg) {
   if (!arg) { setTab('position'); setPosView('setup'); setTimeout(() => $('#fen').focus(), 0); return; }
   const r = Chess.parseFen(arg);

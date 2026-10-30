@@ -252,7 +252,7 @@ function renderStageInstruments(st, sharp, rec) {
     const k = b.dataset.layer, onK = k === 'xray' ? (xr.sticky || xr.held) : prefs.mo[k];
     b.setAttribute('aria-pressed', String(!!onK));
   }
-  $('#xray-mode').textContent = xr.sticky ? '· on' : '· hold Space';
+  $('#xray-mode').textContent = xr.sticky ? (tapOnly() ? '· tap a square' : '· on') : tapOnly() ? '' : '· hold Space';
   // WDL ribbon (White's view)
   const wdl = l1 ? Monolith.wdlWhite(l1.wdl, st.turn) : null, ribbon = $('#wdl');
   ribbon.hidden = !wdl; $('#wdl-none').hidden = !!wdl || !l1;
@@ -303,7 +303,8 @@ function renderStageInstruments(st, sharp, rec) {
 function xrayTarget(st) {
   if (!(xr.held || xr.sticky)) return -1;
   if (xr.hover >= 0) return xr.hover;
-  const m = app.view === null ? game.moves[game.moves.length - 1] : app.view > 0 ? game.moves[app.view - 1] : null;
+  if (xr.pin >= 0) return xr.pin;
+  const m =app.view === null ? game.moves[game.moves.length - 1] : app.view > 0 ? game.moves[app.view - 1] : null;
   return m && game.states.includes(st) ? m.to : (an.field ? an.field.best.to : -1);
 }
 /* The X-Ray readout, docked beside the board (see the CSS note at .xray-chip): the square, the
@@ -341,7 +342,7 @@ export function renderXray(st) {
   const head = el('div', 'xr-head');
   el('span', 'xr-title', 'X-Ray', head).dataset.term = 'tactical-xray';
   el('span', 'xr-sq', Chess.sqName(sq), head);
-  el('span', 'xr-mode', xr.sticky ? 'on · X turns it off' : 'held · Space', head);
+  el('span', 'xr-mode', xr.sticky ? (tapOnly() ? 'on · tap a square' : 'on · X turns it off') : 'held · Space', head);
   const g = el('div', 'xr-gauge'), bar = el('i', '', undefined, g); bar.style.setProperty('--xg', `${((best ? 1 : share || 0) * 100).toFixed(1)}%`);
   const gl = el('span', '', best ? 'best move' : share === null ? (F ? 'no move lands' : 'scoring…') : `${Monolith.fmtPct(share)} lost`, g);
   if (!best && share !== null) gl.dataset.term = 'expected-score';
@@ -370,7 +371,9 @@ export function renderXray(st) {
    is rebuilt, the stage's from the renderer) and does nothing until the camera, the square or a
    size has changed. */
 const xrProj = new THREE.Vector3(), xrSize = new THREE.Vector2(), xrChip = { w: 224, h: 200, key: '' };
-let narrowMQ = null; // made on first use
+let narrowMQ = null, hoverMQ = null; // made on first use
+// a screen with no hover (a phone, a tablet): the X-Ray is aimed by a tap, not held under Space
+const tapOnly = () => (hoverMQ || (hoverMQ = matchMedia('(hover: none)'))).matches;
 export function placeXrayChip(sq) {
   const chip = $('#xray-chip'); if (chip.hidden) return;
   if ((narrowMQ || (narrowMQ = matchMedia('(max-width: 899px)'))).matches) { chip.classList.remove('right'); xrChip.key = ''; return; }

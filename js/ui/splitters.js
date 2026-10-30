@@ -59,7 +59,7 @@ import { app } from '../app/store.js';
 import { $, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { hideSnack } from './snackbar.js';
 import { deselect } from '../game/board-ui.js';
-import { goLive, showView, viewedPly } from '../game/flow.js';
+import { explore, goLive, showView, viewedPly } from '../game/flow.js';
 import { an, xr } from './analyze.js';
 import { clearScrub, renderAnalyze, renderSyn } from './analyze-view.js';
 import { cr } from './crucible.js';
@@ -168,18 +168,41 @@ export function init() {
     const opt = gfxRow(sel.dataset.gfx).opts[+sel.value]; if (opt) setGfxOption(sel.dataset.gfx, opt[0]);
   });
   for (const b of document.querySelectorAll('[data-pillars]')) b.addEventListener('click', () => setPillarsPref(b.dataset.pillars));
-  // keyboard: palette anywhere; Space holds the X-Ray; F V X toggle the layers; review with arrows
-  document.addEventListener('keyup', e => { if (e.code === 'Space' && xr.held) { xr.held = false; renderAnalyze(); } });
+  // keyboard: palette anywhere; Space holds the X-Ray; F V X toggle the layers; F U H on Play;
+  // review with arrows
+  // the keyup that ends a held X-Ray is spent too, or the button under the focus would be pressed
+  document.addEventListener('keyup', e => { if (e.code === 'Space' && xr.held) { e.preventDefault(); xr.held = false; renderAnalyze(); } });
   window.addEventListener('blur', () => { if (xr.held) { xr.held = false; renderAnalyze(); } });
+  // a mouse click leaves no focus on Go infinite or a layer toggle, so Space (the X-Ray) never
+  // presses them again (a Space on Go stopped the search); keyboard focus stays where it was put
+  for (const b of document.querySelectorAll('#btn-go,.layer-btn')) b.addEventListener('pointerup', e => { if (e.pointerType === 'mouse') requestAnimationFrame(() => b.blur()); });
+  // a tap on the board while the X-Ray is on chooses its square (touch has no hover to aim it)
+  $('#stage').addEventListener('pointerdown', e => { xr.touch = e.pointerType === 'touch'; }, true);
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && !e.altKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); pal_.open ? closePalette() : openPalette(); return; }
     if (pal_.open) return;
     // a widget that handled the key itself (the Set up board editor, the heartbeat strip) keeps it
-    if (e.defaultPrevented || e.target.closest('input,textarea,select,[role="radiogroup"],[role="tablist"],[role="application"]')) return;
+    if (e.defaultPrevented) return;
+    /* Space for the X-Ray and / for the Grimoire's search come before the guard below: a click on
+       the rail leaves the focus in it (a tablist), and the keys were lost until the next click
+       elsewhere. Each keeps its own guard: a field, a term (Space opens its card) or another
+       control the key belongs to. */
+    if (prefs.tab === 'analyze' && e.code === 'Space' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,summary,a,[contenteditable],[role="radiogroup"],[role="application"],[data-term]') && (!e.target.closest('button,[tabindex]') || e.target.closest('.nav-item,.pv-row'))) {
+      e.preventDefault(); if (!xr.held) { xr.held = true; renderAnalyze(); } return;
+    }
+    if (prefs.tab === 'grimoire' && e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,[contenteditable]')) { e.preventDefault(); if (gr.id) grBack(); $('#gr-q').focus(); return; }
+    if (e.target.closest('input,textarea,select,[role="radiogroup"],[role="tablist"],[role="application"]')) return;
     if (e.key === 'Escape') { deselect(); hideSnack(); if (an.pin) clearScrub(); return; }
-    if (prefs.tab === 'grimoire' && e.key === '/' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); if (gr.id) grBack(); $('#gr-q').focus(); return; }
+    /* Play: F flips the board, U takes back and H asks for a hint, each by pressing its own button,
+       which knows when it may run (and what Flip does in a game that turns the board itself);
+       Ctrl or ⌘ Z takes back too. On Analyze F is the Field, so these keep to Play (F also to
+       Position, where the board is the same). */
+    if ((prefs.tab === 'play' || prefs.tab === 'position') && !e.altKey && !e.repeat) {
+      const k = e.key.toLowerCase(), mod = e.ctrlKey || e.metaKey;
+      const act = mod ? (k === 'z' && !e.shiftKey && prefs.tab === 'play' ? 'undo' : null) : k === 'f' ? 'flip' : prefs.tab === 'play' ? { u: 'undo', h: 'hint' }[k] : null;
+      if (act) { e.preventDefault(); $(act === 'undo' && explore.on ? '#btn-explore-undo' : `#btn-${act}`).click(); return; }
+    }
     if (prefs.tab === 'analyze' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      if (e.code === 'Space' && !e.target.closest('button,a,summary,[tabindex]')) { e.preventDefault(); if (!xr.held) { xr.held = true; renderAnalyze(); } return; }
       const k = { f: 'field', v: 'vectors', x: 'xray' }[e.key.toLowerCase()];
       if (k && !e.repeat) { e.preventDefault(); layerToggle(k); return; }
     }

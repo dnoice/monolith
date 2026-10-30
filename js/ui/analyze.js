@@ -96,7 +96,7 @@ export const an = {
   lines: [], stats: {}, stream: [], field: null, fieldProg: null, walk: null, walkProg: null, focus: -1, scrub: null, pin: null, meta: null,
   rec: null, recState: 'idle', recErr: '', recPromise: null, ver: 0
 };
-export const xr = { held: false, sticky: false, hover: -1 };
+export const xr = { held: false, sticky: false, hover: -1, pin: -1, touch: false };   // pin: the square a tap chose
 let anTimer = 0;
 const anTouch = () => { an.ver++; if (!anTimer) anTimer = setTimeout(() => { anTimer = 0; renderAnalyze(); }, an.status === 'searching' ? 180 : 60); };
 function ensureAnalysisEngines() {
@@ -129,7 +129,7 @@ export function anSync(force = false) {
   ensureAnalysisEngines(); getRecorded();
   const st = explore.on ? exploreState() : shown(), idx = stateIndex(st), key = posCmdFor(st);
   if (!force && key === an.key) return;
-  const gen = ++an.gen;
+  const gen = ++an.gen; xr.pin = -1;   // a square chosen by a tap belongs to the position it was chosen in
   Object.assign(an, { key, st, idx, synLines: null, synWalk: null, synKey: '', source: null, status: 'idle', reason: '', infinite: false, stopAsked: false, lines: [], stats: {}, stream: [], field: null, fieldProg: null, walk: null, walkProg: null, focus: -1, meta: null });
   clearScrub();
   if (deep) deep.abort(); if (fieldEng) fieldEng.abort();

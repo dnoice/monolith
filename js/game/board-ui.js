@@ -257,6 +257,9 @@ function clickableAt(sq) {
   return isTarget(sq) || !!(p && p.c === cur().turn);
 }
 export function onSquare(sq) {
+  // with the X-Ray on in Analyze, a tap chooses its square (touch has no hover to aim it; a second
+  // tap on it lets it go); a mouse click still moves pieces while the X-Ray follows the pointer
+  if (prefs.tab === 'analyze' && (xr.sticky || xr.held) && xr.touch) { xr.pin = xr.pin === sq ? -1 : sq; renderXray(an.st || shown()); return; }
   if (explore.on || (prefs.explore && exploreAvailable())) return exploreSquare(sq);
   const tryIt = { label: 'Move pieces', act: () => { setExplorePref(true); exploreSquare(sq); } };
   if (boardOverride) { snack('This board shows a Crucible game. Your game waits on the Play tab.', [tryIt, { label: 'Play tab', act: () => setTab('play') }]); return; }
