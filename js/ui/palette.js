@@ -69,22 +69,25 @@ import { applyPrefs, canMoveNow, game, render, shown } from '../app/state.js';
 import { hideSnack, snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
-import { explore, exploreEnd, openSetup, setExplorePref, setOrientation, undo } from '../game/flow.js';
+import { explore, exploreEnd, openSetup, setExplorePref, undo } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, coachOn, giveHint } from '../coach/notes.js';
 import { an, anGoToggle, anStopSearch, loadReference, xr } from './analyze.js';
 import { renderAnalyze } from './analyze-view.js';
 import { cr, crConfigError, crStartLive, crStopLive } from './crucible.js';
 import { boardOverride, crLeaveBoard } from './crucible-board.js';
-import { grFind, grOpen, grSearch } from './grimoire.js';
+import { grFind, grLand, grOpen, grSearch } from './grimoire.js';
 import { setTab, setWorldPref } from './nav.js';
 import { openInSetup, setPosView } from './position.js';
+import { study, studyStart, studyUpNext } from './studies.js';
 import { setPillarsPref } from '../scene/pillars.js';
 
 /* =====================================================================================
    Command Palette: glass, one at a time, Ctrl K (⌘K on Apple keyboards). Commands are typed
-   with a colon; matching is by prefix, then substring, then subsequence, then description.
-   A command that cannot run right now stays listed with the reason, and Enter on it says so.
+   with a colon, or found by an everyday word (PAL_WORDS); matching is by prefix, then those
+   words, then substring, subsequence and description, and a word no command knows is looked up
+   in the Grimoire. A command that cannot run right now stays listed with the reason, and Enter on
+   it says so.
    ===================================================================================== */
 let IS_MAC; // set in init()
 const yes = () => true;
@@ -108,7 +111,7 @@ const COMMANDS = [
   { cmd: ':sprt stop', desc: 'Stop the live Crucible run', run: () => crStopLive('user'), when: () => !!(cr.live && cr.live.running) || 'No live run is playing' },
   { cmd: ':recorded', desc: 'Open the recorded gauntlet in Crucible', run: () => { cr.src = 'recorded'; prefs.cr.src = 'recorded'; savePrefs(); cr.view = 'deck'; crLeaveBoard(); setTab('crucible'); render(); }, when: yes },
   { cmd: ':new', desc: 'New game setup', run: openSetup, when: yes },
-  { cmd: ':flip', desc: 'Invert the board', run: () => setOrientation(Chess.other(app.orient)), when: yes },
+  { cmd: ':flip', desc: 'Flip board: the other side at the bottom', run: () => $('#btn-flip').click(), when: yes },
   { cmd: ':fen', arg: true, desc: 'Paste a FEN after the command to open it in Set up; with nothing after it, opens Set up', run: arg => palFen(arg), when: yes },
   { cmd: ':copy fen', desc: 'Copy the FEN of the position shown', run: () => { try { navigator.clipboard.writeText(Chess.fen(boardOverride ? boardOverride.state : shown())).then(() => snack('FEN copied to the clipboard.'), () => snack('The clipboard is blocked here.')); } catch (e) { snack('The clipboard is blocked here.'); } }, when: yes },
   { cmd: ':hint', desc: 'A hint on your turn, one step at a time: a nudge, the piece, the move', run: () => { setTab('play'); giveHint(); }, when: () => (app.hint && !app.hint.pending) || (canMoveNow() && engine.ready) || (!app.started ? 'Start a game first' : !engine.ready ? 'The engine is still loading' : 'Not your turn at the live position') },
@@ -136,6 +139,17 @@ const COMMANDS = [
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
   { cmd: ':explore', desc: 'Move pieces on any board on or off (Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
+  /* learn: Settings, Position and Help */
+  { cmd: ':legal', desc: 'Show legal moves on or off', run: () => { prefs.legal = !prefs.legal; savePrefs(); render(); snack(prefs.legal ? 'Show legal moves: on.' : 'Show legal moves: off.'); }, when: yes },
+  { cmd: ':coords', desc: 'Board coordinates on or off', run: () => { prefs.coords = !prefs.coords; savePrefs(); applyPrefs(); render(); snack(prefs.coords ? 'Board coordinates: on.' : 'Board coordinates: off.'); }, when: yes },
+  ...[['normal', 'cinematic', 'Cinematic', 'every move and ceremony at full length'], ['fast', 'brisk', 'Brisk', 'moves and ceremonies in about half the time'], ['minimal', 'minimal', 'Minimal', 'quick moves, the heavier effects left out']]
+    .map(([k, w, label, what]) => ({ cmd: `:animation ${w}`, desc: `Animation: ${label}, ${what}`, run: () => { prefs.speed = k; savePrefs(); applyPrefs(); render(); snack(`Animation: ${label}.`); }, when: yes })),
+  ...[['once', 'until used', 'Until used', 'each one goes once you have done what it says'], ['always', 'always', 'Always', 'they stay on screen'], ['off', 'off', 'Off', 'status messages such as check still show']]
+    .map(([k, w, label, what]) => ({ cmd: `:tips ${w}`, desc: `Tips: ${label}, ${what}`, run: () => { prefs.tips = k; savePrefs(); render(); snack(`Tips: ${label}.`); }, when: yes })),
+  { cmd: ':keys', desc: 'Keys and mouse: every shortcut (Settings)', run: () => { setTab('settings'); requestAnimationFrame(() => grLand('#set-keys')); }, when: yes },
+  { cmd: ':study', desc: 'Start the next study, Up next on Position', run: () => { const s = studyUpNext(study.cat) || studyUpNext(); setTab('position'); setPosView('studies'); studyStart(s); }, when: () => !!studyUpNext() || 'Every study is solved' },
+  { cmd: ':read', desc: 'Read the board you see: material, structure and rules (Position)', run: () => { setTab('position'); setPosView('read'); }, when: yes },
+  { cmd: ':setup', desc: 'Set up the board you see, to edit and play (Position)', run: () => { setTab('position'); openInSetup(null, { flip: app.orient === 'b', say: 'The board you see is set up. Edit it, then Play this position.' }); }, when: yes },
   { cmd: ':version', desc: 'Which release this copy is', run: () => snack(`MONOLITH ${APP_VERSION}, released ${APP_DATE}.`), when: yes }
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
@@ -143,14 +157,39 @@ const PAL_GROUPS = [
   ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference']],
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
   ['Game', [':new', ':hint', ':undo', ':coach', ':calc', ':eval', ':explore', ':explore back']],
-  ['Board', [':flip', ':fen', ':copy fen', ':reset view']],
+  ['Board', [':flip', ':legal', ':coords', ':fen', ':copy fen', ':reset view']],
+  ['Position', [':study', ':read', ':setup']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],
   ['Grimoire', [':define']],
-  ['World, graphics and sound', [':world auto', ':world cathedral', ':world monolith', ':pillars monoliths', ':pillars classic', ':pillars modern', ':quality auto', ':quality ultra', ':quality high', ':quality medium', ':quality low', ':quality minimal', ':sound']],
-  ['About', [':version']]
+  ['Sound and motion', [':sound', ':animation cinematic', ':animation brisk', ':animation minimal']],
+  ['World and graphics', [':world auto', ':world cathedral', ':world monolith', ':pillars monoliths', ':pillars classic', ':pillars modern', ':quality auto', ':quality ultra', ':quality high', ':quality medium', ':quality low', ':quality minimal']],
+  ['Help', [':tips until used', ':tips always', ':tips off', ':keys', ':version']]
 ];
 const palGroupOf = c => { const g = PAL_GROUPS.find(([, l]) => l.includes(c.cmd)); return g ? g[0] : 'More'; };
 const PAL_KEYS = { ':field': ['F'], ':vectors': ['V'], ':xray': ['X'] };
+/* With nothing typed, the groups for the tab in view come first (Settings in its own cards' order);
+   Analyze and Crucible keep the order their users know. */
+const TAB_GROUPS = { play: ['Game', 'Board'], position: ['Position', 'Game', 'Board'], grimoire: ['Grimoire', 'Go to'], settings: ['Game', 'Board', 'Sound and motion', 'World and graphics', 'Help'] };
+const palGroups = () => { const first = TAB_GROUPS[prefs.tab] || []; return [...first.map(n => PAL_GROUPS.find(([g]) => g === n)).filter(Boolean), ...PAL_GROUPS.filter(([g]) => !first.includes(g))]; };
+/* Everyday words for a command, the ones a player types before knowing its name. A family of
+   commands (:quality, :world, :animation, :tips …) shares its first word's list; a command may
+   also carry its own (words). */
+const PAL_WORDS = {
+  ':new': ['new game', 'start', 'start game', 'restart', 'game', 'friend', 'computer', 'stockfish', 'two players'],
+  ':undo': ['take back', 'takeback', 'back'], ':hint': ['clue', 'help', 'suggest', 'best move'],
+  ':coach': ['comments', 'feedback', 'notes'], ':calc': ['candidates', 'best moves', 'engine lines', 'arrows'], ':eval': ['evaluation', 'evaluation bar', 'score'],
+  ':explore': ['try moves', 'what if', 'sandbox'],
+  ':flip': ['turn', 'turn board', 'rotate', 'orientation', 'black side', 'switch sides'], ':reset view': ['camera', 'view', 'zoom', 'recenter'],
+  ':legal': ['legal moves', 'moves', 'dots', 'highlights'], ':coords': ['coordinates', 'labels', 'files', 'ranks'],
+  ':fen': ['paste', 'import', 'load', 'position'], ':copy fen': ['copy', 'clipboard', 'export', 'share'],
+  ':study': ['studies', 'puzzle', 'puzzles', 'lesson', 'practice', 'learn', 'training'], ':read': ['material', 'structure', 'pawns'], ':setup': ['set up', 'editor', 'edit board', 'custom position'],
+  ':sound': ['mute', 'audio', 'volume', 'quiet'], ':animation': ['speed', 'motion', 'fast', 'slow'],
+  ':quality': ['graphics', 'performance', 'fps', 'lag', 'slow'], ':world': ['theme', 'skin', 'look', 'scene'], ':pillars': ['columns', 'models'],
+  ':tips': ['tutorial', 'help'], ':keys': ['shortcuts', 'keyboard', 'controls', 'mouse', 'help'],
+  ':define': ['glossary', 'dictionary', 'term', 'what is', 'meaning'], ':grimoire': ['reference', 'glossary', 'dictionary'],
+  ':settings': ['preferences', 'options'], ':version': ['about', 'release']
+};
+const palWords = c => c.words || PAL_WORDS[c.cmd] || PAL_WORDS[c.cmd.split(' ')[0]] || [];
 function palFen(arg) {
   if (!arg) { setTab('position'); setPosView('setup'); setTimeout(() => $('#fen').focus(), 0); return; }
   const r = Chess.parseFen(arg);
@@ -161,12 +200,16 @@ function palFen(arg) {
 export const pal_ = { open: false, items: [], sel: 0, back: null, arg: '' };
 function palScore(c, q) {
   if (!q) return 1;
-  const s = c.cmd.slice(1).toLowerCase();
+  const s = c.cmd.slice(1).toLowerCase(), words = palWords(c);
   if (s.startsWith(q)) return 100 - s.length;
+  if (words.includes(q)) return 70;
   if (s.includes(q)) return 60 - s.indexOf(q);
+  if (words.some(w => w.startsWith(q))) return 50;
   let i = 0; for (const ch of s) if (ch === q[i]) i++;
   if (i === q.length) return 30;
-  return c.desc.toLowerCase().includes(q) ? 10 : 0;
+  // last, every word typed somewhere in what the command says or is called
+  const text = [s, c.desc, ...words].join(' ').toLowerCase();
+  return text.includes(q) ? 10 : q.split(/\s+/).every(w => text.includes(w)) ? 5 : 0;
 }
 function palRender() {
   const raw = $('#pal-input').value, q0 = raw.trim().replace(/^:/, '').toLowerCase();
@@ -174,11 +217,13 @@ function palRender() {
   pal_.arg = argM ? argM[2].trim() : '';
   const grouped = !q0 && !argM;
   pal_.items = argM ? COMMANDS.filter(c => c.cmd === `:${argM[1].toLowerCase()}`)
-    : grouped ? PAL_GROUPS.flatMap(([, l]) => l.map(k => COMMANDS.find(c => c.cmd === k)).filter(Boolean)).concat(COMMANDS.filter(c => palGroupOf(c) === 'More'))
+    : grouped ? palGroups().flatMap(([, l]) => l.map(k => COMMANDS.find(c => c.cmd === k)).filter(Boolean)).concat(COMMANDS.filter(c => palGroupOf(c) === 'More'))
     : COMMANDS.map(c => ({ c, s: palScore(c, q0) })).filter(x => x.s > 0).sort((a, b) => b.s - a.s).map(x => x.c);
+  // a word no command knows may be a term: the Grimoire's entry is offered rather than nothing
+  if (!argM && q0 && !pal_.items.length && grFind(q0)) { pal_.arg = raw.trim(); pal_.items = COMMANDS.filter(c => c.cmd === ':define'); }
   pal_.sel = Math.max(0, Math.min(pal_.sel, pal_.items.length - 1));
   const list = $('#pal-list'); list.innerHTML = '';
-  if (!pal_.items.length) { const e = document.createElement('li'); e.className = 'pal-empty'; e.textContent = 'No command matches. Try :go, :flip or :fen.'; list.appendChild(e); }
+  if (!pal_.items.length) { const e = document.createElement('li'); e.className = 'pal-empty'; e.textContent = 'No command matches. Try :new, :flip or :define.'; list.appendChild(e); }
   let group = '';
   pal_.items.forEach((c, i) => {
     if (grouped && palGroupOf(c) !== group) { group = palGroupOf(c); const h = document.createElement('li'); h.className = 'pal-group'; h.setAttribute('role', 'presentation'); h.textContent = group; list.appendChild(h); }

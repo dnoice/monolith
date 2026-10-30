@@ -95,7 +95,7 @@ const GR_AT = {
   hint: '#btn-hint', resignation: '#btn-resign', coach: '#coach', 'calculate-moves': '#btn-calc', 'best-line': '#eval-switch', 'eval-bar': '#eval-switch', evaluation: '#eval-switch',
   'skill-levels': '#level, #level-live', 'uci-elo': '#level, #level-live'
 };
-function grLand(sel) {
+export function grLand(sel) {
   const t = [...document.querySelectorAll(sel)].find(el => !el.closest('[hidden]')); if (!t) return;
   const d = t.closest('details'); if (d && !d.open) d.open = true;   // the Coach card's engine lines
   if (!t.getClientRects().length) return;
