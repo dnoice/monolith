@@ -78,8 +78,9 @@
 .board-card .bc-more{display:flex;flex-direction:column;gap:4px}
 .board-card .bc-more > summary{font-size:12px;color:var(--mo-ink3);min-height:18px}
 .board-card .bc-line{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* the board's top band clears the closed card (14 + about 106 + 8 px): read by the stage's camera fit */
-:root[data-tab="crucible"] #stage{--safe-t:128px;--safe-r:12px;--safe-b:12px;--safe-l:12px}
+/* the board's top band clears the closed card (14 + about 106 + 8 px): set on the canvas, where the
+   stage's camera fit reads its bands (on #stage it never reached a canvas that sets its own) */
+:root[data-tab="crucible"] #scene{--safe-t:128px;--safe-r:12px;--safe-b:12px;--safe-l:12px}
 .cr-verdict{display:flex;flex-direction:column;gap:3px}
 .cr-verdict b{font:400 19px/1.2 var(--font-struct);letter-spacing:.06em;color:var(--md-on-surface)}
 .cr-verdict span{font-size:12.5px;color:var(--md-on-surface-var);font-variant-numeric:tabular-nums}
