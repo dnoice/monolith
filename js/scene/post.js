@@ -166,25 +166,47 @@ const HazeShader = {
    stair-steps two or four pixels deep along every column standing in front of the lit haze. Each
    pixel now takes only the texels whose rays ended where its own does (the full-resolution depth
    against the distance each texel stored), blended as before, and the nearest of the four where
-   none does; across flat surfaces all four agree, so the dust stays as smooth as it was. */
+   none does; across flat surfaces all four agree, so the dust stays as smooth as it was.
+   The depth is one sample a pixel while the scene under it is multisampled, so a pixel on the
+   silhouette is partly column and partly wall but took one surface's haze: a hard one-pixel stair
+   along the anti-aliased edge. There the pixel takes both surfaces' haze, mixed by how much of it
+   each covers, read from the scene's own colour between its neighbours on either side. */
 const HazeComposite = {
-  uniforms: { tDiffuse: { value: null }, tHaze: { value: null }, tDepth: { value: null }, uHazeSize: { value: new THREE.Vector2(1, 1) }, uProjInv: { value: new THREE.Matrix4() }, uMaxDist: { value: 42 } },
+  uniforms: { tDiffuse: { value: null }, tHaze: { value: null }, tDepth: { value: null }, uHazeSize: { value: new THREE.Vector2(1, 1) }, uPx: { value: new THREE.Vector2(1, 1) }, uProjInv: { value: new THREE.Matrix4() }, uMaxDist: { value: 42 } },
   vertexShader: OutputShader.vertexShader,
   fragmentShader: `uniform sampler2D tDiffuse, tHaze, tDepth;
-    uniform vec2 uHazeSize; uniform mat4 uProjInv; uniform float uMaxDist;
+    uniform vec2 uHazeSize, uPx; uniform mat4 uProjInv; uniform float uMaxDist;
     varying vec2 vUv;
-    void main() {
-      float d = texture2D(tDepth, vUv).x;
-      vec4 vp = uProjInv * vec4(vUv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0);
-      float r = d >= 0.99999 ? uMaxDist : min(length(vp.xyz / vp.w), uMaxDist);
-      vec2 p = vUv * uHazeSize - 0.5, f = fract(p), t = (floor(p) + 0.5) / uHazeSize, o = 1.0 / uHazeSize;
-      vec4 h0 = texture2D(tHaze, t), h1 = texture2D(tHaze, t + vec2(o.x, 0.0)), h2 = texture2D(tHaze, t + vec2(0.0, o.y)), h3 = texture2D(tHaze, t + o);
-      vec4 e = abs(vec4(h0.a, h1.a, h2.a, h3.a) - r) / r;
-      vec4 w = vec4((1.0 - f.x) * (1.0 - f.y), f.x * (1.0 - f.y), (1.0 - f.x) * f.y, f.x * f.y) * step(e, vec4(0.1));
+    vec4 h0, h1, h2, h3, bw;
+    float range(vec2 uv) {
+      float d = texture2D(tDepth, uv).x;
+      vec4 vp = uProjInv * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0);
+      return d >= 0.99999 ? uMaxDist : min(length(vp.xyz / vp.w), uMaxDist);
+    }
+    // the haze of the surface at distance r: the texels whose rays ended there, or the nearest
+    vec3 hazeAt(float r) {
+      vec4 e = abs(vec4(h0.a, h1.a, h2.a, h3.a) - r) / r, w = bw * step(e, vec4(0.1));
       float s = w.x + w.y + w.z + w.w, m = min(min(e.x, e.y), min(e.z, e.w));
-      vec3 hz = s > 1e-4 ? (h0.rgb * w.x + h1.rgb * w.y + h2.rgb * w.z + h3.rgb * w.w) / s
+      return s > 1e-4 ? (h0.rgb * w.x + h1.rgb * w.y + h2.rgb * w.z + h3.rgb * w.w) / s
         : m == e.x ? h0.rgb : m == e.y ? h1.rgb : m == e.z ? h2.rgb : h3.rgb;
-      gl_FragColor = vec4(texture2D(tDiffuse, vUv).rgb + hz, 1.0);
+    }
+    void main() {
+      vec2 p = vUv * uHazeSize - 0.5, f = fract(p), t = (floor(p) + 0.5) / uHazeSize, o = 1.0 / uHazeSize;
+      h0 = texture2D(tHaze, t); h1 = texture2D(tHaze, t + vec2(o.x, 0.0)); h2 = texture2D(tHaze, t + vec2(0.0, o.y)); h3 = texture2D(tHaze, t + o);
+      bw = vec4((1.0 - f.x) * (1.0 - f.y), f.x * (1.0 - f.y), (1.0 - f.x) * f.y, f.x * f.y);
+      float r = range(vUv);
+      vec3 c = texture2D(tDiffuse, vUv).rgb, hz = hazeAt(r);
+      // on a silhouette: the neighbour farthest off in depth is across it, the opposite one is this side
+      vec4 n = vec4(range(vUv - vec2(uPx.x, 0.0)), range(vUv + vec2(uPx.x, 0.0)), range(vUv - vec2(0.0, uPx.y)), range(vUv + vec2(0.0, uPx.y)));
+      vec4 g = abs(n - r) / min(n, vec4(r));
+      float k = max(max(g.x, g.y), max(g.z, g.w));
+      if (k > 0.1) {
+        vec2 dir = k == g.x ? vec2(-uPx.x, 0.0) : k == g.y ? vec2(uPx.x, 0.0) : k == g.z ? vec2(0.0, -uPx.y) : vec2(0.0, uPx.y);
+        float rq = k == g.x ? n.x : k == g.y ? n.y : k == g.z ? n.z : n.w;
+        vec3 cp = texture2D(tDiffuse, vUv - dir).rgb, dq = texture2D(tDiffuse, vUv + dir).rgb - cp;
+        hz = mix(hz, hazeAt(rq), clamp(dot(c - cp, dq) / max(dot(dq, dq), 1e-6), 0.0, 1.0));
+      }
+      gl_FragColor = vec4(c + hz, 1.0);
     }`
 };
 /* What the haze sees of the world, blended by the world transition (see setWorld). */
@@ -251,7 +273,7 @@ export function init() {
       this.depthRT = new THREE.WebGLRenderTarget(fw, fh); this.depthRT.texture.name = 'rt-haze-depth';
       this.depthRT.depthTexture = new THREE.DepthTexture(fw, fh); this.depthRT.depthTexture.type = THREE.UnsignedIntType;
       this.hazeRT = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter }); this.hazeRT.texture.name = 'rt-haze';
-      this.fw = fw; this.fh = fh; this.w = w; this.h = h; this.comp.uniforms.uHazeSize.value.set(w, h);
+      this.fw = fw; this.fh = fh; this.w = w; this.h = h; this.comp.uniforms.uHazeSize.value.set(w, h); this.comp.uniforms.uPx.value.set(1 / fw, 1 / fh);
     }
     setSize(w, h) { const sw = Math.max(1, Math.round(w * this.scale)), sh = Math.max(1, Math.round(h * this.scale)); if (w !== this.fw || h !== this.fh || sw !== this.w || sh !== this.h) this.makeTargets(w, h, sw, sh); }
     render(r, writeBuffer, readBuffer) {
