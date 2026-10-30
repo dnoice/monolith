@@ -393,8 +393,12 @@ function beatMoveText(gm, p) {
   const san = (gm.moves || [])[p - 1] || '', num = Math.ceil(p / 2);
   return `${num}${p % 2 ? '.' : '…'} ${san}`;
 }
+let beatRetry = 0;
 export function drawBeat() {
   const cv = $('#beat-canvas'); if ($('#beat').hidden) return;
+  // the dock is opened later in the same render: draw once it has a size (on phones nothing else
+  // redrew it, and the strip stayed blank)
+  if (!cv.offsetWidth) { if (!beatRetry) beatRetry = requestAnimationFrame(() => { beatRetry = 0; if (cv.offsetWidth) drawBeat(); }); return; }
   const { g, w, h } = fitCanvas(cv), gm = boardOverride && boardOverride.game; g.clearRect(0, 0, w, h);
   if (!gm) return;
   const M = beatModel(gm), { ev, op, total } = M, G = beatGeom(w, h, total), { L, R, T, H, sw } = G;

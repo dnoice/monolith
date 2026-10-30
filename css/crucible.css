@@ -74,7 +74,7 @@
 /* two rows: the game and its anomaly's move (or result); where you are, and the way back */
 .board-card .bc-head{display:flex;align-items:baseline;gap:12px}
 .board-card .bc-res{font:500 15px/1 var(--font-tele);color:var(--mo-ink)}
-.board-card .bc-foot{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.board-card .bc-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 14px}
 .board-card .bc-more{display:flex;flex-direction:column;gap:4px}
 .board-card .bc-more > summary{font-size:12px;color:var(--mo-ink3);min-height:18px}
 .board-card .bc-line{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
