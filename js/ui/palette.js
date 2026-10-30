@@ -72,7 +72,7 @@ import { resultFor } from '../game/play.js';
 import { explore, exploreEnd, openSetup, setExplorePref, setOrientation, undo } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, coachOn, giveHint } from '../coach/notes.js';
-import { an, anGoToggle, anStopSearch, loadReference, xr } from './analyze.js';
+import { an, anGoToggle, anStopSearch, loadForAnalysis, loadReference, xr } from './analyze.js';
 import { renderAnalyze, setBadgesPref } from './analyze-view.js';
 import { cr, crConfigError, crStartLive, crStopLive } from './crucible.js';
 import { boardOverride, crLeaveBoard } from './crucible-board.js';
@@ -155,6 +155,12 @@ const PAL_GROUPS = [
 const palGroupOf = c => { const g = PAL_GROUPS.find(([, l]) => l.includes(c.cmd)); return g ? g[0] : 'More'; };
 const PAL_KEYS = { ':field': ['F'], ':vectors': ['V'], ':xray': ['X'], ':flip': ['F'], ':undo': ['U'], ':hint': ['H'] };
 function palFen(arg) {
+  // in Analyze a FEN is analysed where it is (its Load section); elsewhere it starts a game (Position)
+  if (prefs.tab === 'analyze') {
+    $('#an-load').open = true; if (arg) $('#an-load-text').value = arg;
+    if (!arg) setTimeout(() => $('#an-load-text').focus(), 0); else { const err = loadForAnalysis(arg); if (err) snack(err); }
+    return;
+  }
   if (!arg) { setTab('position'); setPosView('setup'); setTimeout(() => $('#fen').focus(), 0); return; }
   const r = Chess.parseFen(arg);
   if (r.error) { snack(r.error); return; }

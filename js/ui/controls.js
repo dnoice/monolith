@@ -75,7 +75,7 @@ import {
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
 import { parseTyped } from '../game/input.js';
-import { an, anGoToggle, anSync, loadReference } from './analyze.js';
+import { an, anGoToggle, anSync, loadForAnalysis, loadReference } from './analyze.js';
 import { renderAnalyze, setBadgesPref, syncBadges } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
 import { boardOverride, crExpand, crLeaveBoard, crStep } from './crucible-board.js';
@@ -165,6 +165,9 @@ export function init() {
   $('#opt-field').addEventListener('change', e => optSave('fieldDepth', +e.target.value));
   $('#opt-walk').addEventListener('change', e => optSave('walkDepth', +e.target.value));
   $('#btn-reference').addEventListener('click', loadReference);
+  // Load: a pasted FEN, analysed here; Enter loads it (Shift Enter keeps a new line)
+  $('#btn-an-load').addEventListener('click', () => loadForAnalysis($('#an-load-text').value));
+  $('#an-load-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); loadForAnalysis(e.target.value); } });
   $('#set-badges').addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));
   syncBadges();   // the badges written in the page take the saved form too
   // Crucible controls
