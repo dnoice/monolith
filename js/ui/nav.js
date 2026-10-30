@@ -96,7 +96,7 @@ export function setTab(id) {
   prefs.tab = id; savePrefs();
   for (const n of NAV) { const on = n.id === id, b = $(`#nav-${n.id}`); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; $(`#pane-${n.id}`).hidden = !on; }
   document.documentElement.dataset.tab = id;
-  applyLayoutSizes();   // sizes are per destination
+  applyLayoutSizes();   // sizes are per destination, the panel's width per world
   // leaving a MONOLITH workspace puts its instruments away; a live Crucible run keeps playing
   if (prev === 'analyze' && id !== 'analyze') anStop();
   if (prev === 'crucible' && id !== 'crucible') { crLeaveBoard(); $('#board-card').hidden = true; }
@@ -109,4 +109,4 @@ export function setTab(id) {
   render();
   if (id !== 'analyze' && id !== 'crucible' && prev !== id) refreshAnalysis();
 }
-export function setWorldPref(w) { prefs.world = w; savePrefs(); setWorld(desiredWorld(), true); render(); }
+export function setWorldPref(w) { prefs.world = w; savePrefs(); setWorld(desiredWorld(), true); applyLayoutSizes(); render(); }

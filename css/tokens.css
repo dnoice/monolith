@@ -89,6 +89,8 @@
   --ease-std:cubic-bezier(.2,0,0,1);
   --rail-w:88px;
   --panel-w:368px;
+  --panel-min:280px;
+  --stage-min:480px;
   --r-pill:999px;
   --r-card:16px;
   --r-ctl:12px;
@@ -150,6 +152,14 @@
   --r-card:4px;
   --r-ctl:3px;
 }
+/* One panel width per world, so a tab switch inside a world never moves the stage's edge; the
+   width changes only with the world, under the transition's veil. The Grimoire keeps the world
+   it opens in, and so its width. */
+@media (min-width:1280px){:root{--panel-w:400px}:root[data-skin="monolith"]{--panel-w:440px}}
+/* 900-1199 px (an iPad held sideways): a slimmer rail, and the stage takes up to 60% of the
+   width, so the board gets a stage nearer square than tall. The panel gives way only down to
+   344 px, the narrowest the Play setup reads whole at ('Friend, same screen'). */
+@media (max-width:1199px){:root{--rail-w:72px;--stage-min:max(480px,60vw);--panel-min:344px}}
 html,body{height:100%}
 body{margin:0;background:var(--md-surface);color:var(--md-on-surface);font-family:var(--font-body);font-size:14px;line-height:1.45;overflow:hidden;-webkit-tap-highlight-color:transparent}
 *,*::before,*::after{box-sizing:border-box}
