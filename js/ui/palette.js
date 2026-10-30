@@ -69,7 +69,7 @@ import { applyPrefs, canMoveNow, game, render, shown } from '../app/state.js';
 import { hideSnack, snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
-import { explore, exploreEnd, openSetup, setExplorePref, setOrientation, undo } from '../game/flow.js';
+import { explore, exploreEnd, openSetup, setAutoFlip, setExplorePref, setOrientation, undo } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, coachOn, giveHint } from '../coach/notes.js';
 import { an, anGoToggle, anStopSearch, loadReference, xr } from './analyze.js';
@@ -136,7 +136,9 @@ const COMMANDS = [
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
   { cmd: ':explore', desc: 'Move pieces on any board on or off (Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
-  { cmd: ':version', desc: 'Which release this copy is', run: () => snack(`MONOLITH ${APP_VERSION}, released ${APP_DATE}.`), when: yes }
+  { cmd: ':version', desc: 'Which release this copy is', run: () => snack(`MONOLITH ${APP_VERSION}, released ${APP_DATE}.`), when: yes },
+  /* play: auto-flip, free board, PGN, draw */
+  { cmd: ':autoflip', desc: 'Turn the board for each player on or off (friend games on one screen)', run: () => { setAutoFlip(prefs.autoFlip === false); snack(prefs.autoFlip ? 'Turn the board for each player: on.' : 'Turn the board for each player: off.'); }, when: yes }
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
 const PAL_GROUPS = [
@@ -144,6 +146,7 @@ const PAL_GROUPS = [
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
   ['Game', [':new', ':hint', ':undo', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':fen', ':copy fen', ':reset view']],
+  ['Two players', [':autoflip']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],
   ['Grimoire', [':define']],
   ['World, graphics and sound', [':world auto', ':world cathedral', ':world monolith', ':pillars monoliths', ':pillars classic', ':pillars modern', ':quality auto', ':quality ultra', ':quality high', ':quality medium', ':quality low', ':quality minimal', ':sound']],

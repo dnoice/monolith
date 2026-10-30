@@ -294,9 +294,14 @@ export function init() {
       radio($('#opp-cpu'), cpu); radio($('#opp-human'), !cpu);
       $('#opp-cpu').disabled = engine.failed;
       $('#opp-help').textContent = cpu ? (engine.failed ? engine.status : 'Stockfish plays the other side.') : 'Two people take turns on this screen. Marble always moves first.';
-      $('#side-legend').textContent = cpu ? 'Your pieces' : 'Side at the bottom of the board';
+      // two players with the board turning for each of them: there is no side at the bottom to choose
+      const turns = !cpu && prefs.autoFlip !== false;
+      setText($('#setup-intro-text'), cpu ? 'Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.'
+        : turns ? 'Pick your opponent. On one screen the board turns to whoever is to move.' : 'Pick your opponent and the side at the bottom. Flip board turns it at any time.');
+      $('#side-legend').textContent = cpu ? 'Your pieces' : turns ? 'Board' : 'Side at the bottom of the board';
+      $('#setup-autoflip-row').hidden = cpu; $('#setup-autoflip').checked = turns; $('.side-cards').hidden = turns;
       for (const s of ['w', 'b', 'r']) { radio($(`#side-${s}`), draft.choice === s); $(`#side-${s}`).disabled = app.rolling; }
-      if (!app.rolling) $('#side-help').textContent = draft.choice === 'r'
+      if (!app.rolling) $('#side-help').textContent = turns ? 'The board turns to whoever is to move. Marble moves first.' : draft.choice === 'r'
         ? (cpu ? 'The die decides when you press Start game: odd for marble, even for obsidian.' : 'The die decides which side sits at the bottom: odd for marble, even for obsidian.')
         : cpu ? `You play ${SIDE[draft.choice].toLowerCase()} (${SIDE_COLOR[draft.choice]}) and ${draft.choice === 'w' ? 'make the first move' : 'Stockfish opens the game'}.`
               : `${SIDE[draft.choice]} sits at the bottom. Use Flip board at any time.`;
@@ -346,6 +351,10 @@ export function init() {
     $('#btn-resign').disabled = !!r || app.busy;
     // strength can change mid-game; Stockfish reads the level when it starts each move
     $('#live-level-group').hidden = !cpu || !!sc;   // a study plays at its own strength
+    // two players: the board's turn for each of them, switched here where it is used
+    const bd = !cpu && !sc && !game.title, turns = prefs.autoFlip !== false;
+    $('#board-group').hidden = !bd;
+    if (bd) { $('#live-autoflip').checked = turns; setText($('#board-help'), turns ? 'After each move, the side to move comes to the bottom. Flip board turns it for this move only.' : 'The board stays where it is. Flip board turns it.'); }
     if (cpu) {
       $('#level-live').value = match.level; $('#live-level-out').textContent = L.name;
       $('#live-level-help').textContent = `Level ${match.level} of 8. ${L.blurb}${levelNote(match.level)}${app.cpuThinking ? ' A change applies from Stockfish\'s next move.' : ''}`;
@@ -411,6 +420,7 @@ export function init() {
   // Settings
   onRender(() => {
     $('#set-sound').checked = prefs.sound; $('#set-legal').checked = prefs.legal; $('#set-explore').checked = prefs.explore !== false; $('#set-coords').checked = prefs.coords;
+    $('#set-autoflip').checked = prefs.autoFlip !== false;
     for (const b of document.querySelectorAll('[data-speed]')) radio(b, b.dataset.speed === prefs.speed);
     for (const b of document.querySelectorAll('[data-tips]')) radio(b, b.dataset.tips === prefs.tips);
     const learnedCount = TIP_IDS.filter(id => prefs.learned[id]).length;

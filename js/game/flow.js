@@ -91,15 +91,35 @@ import { study, studyStart, userSetup } from '../ui/studies.js';
    is undone against the scenery, and the farther it was, the longer the turn takes, so the
    scenery never whips past. A newer flip takes over from one still running. */
 let flipGen = 0;
-export function setOrientation(side, animate = true) {
+export let turning = false;   // the board is turning: clicks on it wait (board-ui.js), and #stage.turning hides the cards
+// a turn asked for (Flip board, a new game, the side preview) outranks one still waiting for its beat (autoOrient)
+export function setOrientation(side, animate = true) { autoGen++; turnBoard(side, animate); }
+function turnBoard(side, animate) {
   app.orient = side;
   const target = side === 'w' ? 0 : PI, wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
   const d = wrap(target - cam.theta), orbit = wrap(cam.theta - worldYaw), dy = d + orbit;
-  const from = cam.theta, y0 = worldYaw, gen = ++flipGen;
-  if (!animate || (Math.abs(d) < 0.01 && Math.abs(orbit) < 0.01)) { cam.theta = target; setWorldYaw(target); render(); return; }
-  tween(0.75 + Math.max(0, Math.abs(orbit) - 0.6) * 0.55, e => { if (gen !== flipGen) return; cam.theta = from + d * e; setWorldYaw(y0 + dy * e); });
+  const from = cam.theta, y0 = worldYaw, gen = ++flipGen, settle = () => { turning = false; $('#stage').classList.remove('turning'); };
+  if (!animate || (Math.abs(d) < 0.01 && Math.abs(orbit) < 0.01)) { cam.theta = target; setWorldYaw(target); settle(); render(); return; }
+  /* the cards swap sides at once (they follow app.orient), so they are out of sight while the
+     board turns and come back with it settled */
+  turning = true; $('#stage').classList.add('turning');
+  tween(0.75 + Math.max(0, Math.abs(orbit) - 0.6) * 0.55, e => { if (gen !== flipGen) return; cam.theta = from + d * e; setWorldYaw(y0 + dy * e); }).then(() => { if (gen === flipGen) settle(); });
   render();
 }
+/* Turn the board for each player (2.18.0, on by default: friends on one screen were flipping by
+   hand every move). In a game between two people, a beat after a move lands, the side to move
+   comes to the bottom; under Minimal or reduced motion it is a cut. The side always comes from
+   the position (cur().turn), never from match.human, which a hotseat game still sets. Stepping
+   through earlier moves leaves the board still, and Back to live turns it again; Flip board
+   holds for the move on the board, and the next move turns it again. */
+let autoGen = 0;
+export const autoFlipOn = () => app.started && match.opponent === 'human' && !study.cur && !game.title && prefs.autoFlip !== false;
+export function autoOrient(beat = true) {
+  const g = ++autoGen, still = reduceMotion || prefs.speed === 'minimal';
+  const go = () => { if (g === autoGen && autoFlipOn() && !game.result && app.view === null && !explore.on && !boardOverride && cur().turn !== app.orient) turnBoard(cur().turn, !still); };
+  if (beat) setTimeout(go, still ? 300 : 400 * app.SPEED + 100); else go();
+}
+export function setAutoFlip(on) { prefs.autoFlip = on; savePrefs(); if (on) autoOrient(false); render(); }
 const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
 export function showFace(n) { [...$('#die').children].forEach((pip, i) => { pip.style.opacity = PIPS[n].includes(i) ? 1 : 0; }); }
 /* Random side: the die in the Random card tumbles and settles; odd gives marble, even obsidian. */
@@ -135,12 +155,14 @@ export function startGame(startState, opts = null) {
     game.states = [startState || Chess.newGame()]; game.moves = []; game.sans = []; game.title = null;
     game.result = resultFor(cur()); app.lastMove = null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
     clearFragments(); placePieces(cur()); app.started = true; app.setupOpen = false;
-    setOrientation(side);
+    setOrientation(autoFlipOn() ? cur().turn : side);   // a set-up position may have Obsidian to move
     app.busy = true; render();
     const g0 = ceremonyGen;   // a newer game owns `busy` once it starts
     dealIn().then(() => { if (g0 !== ceremonyGen) return; app.busy = false; render(); refreshAnalysis(); maybeComputerMove(); coachKick(); });
   };
-  if (opts) begin(opts.side); else if (draft.choice === 'r') rollDie(begin); else begin(draft.choice);
+  // with the board turning for each player the die decides nothing in a friend game
+  const turns = draft.opponent === 'human' && prefs.autoFlip !== false;
+  if (opts) begin(opts.side); else if (draft.choice === 'r' && !turns) rollDie(begin); else begin(draft.choice === 'r' ? 'w' : draft.choice);
 }
 export function rematch() {
   if (study.cur) { studyStart(study.cur.s); return; }   // a study's rematch is the study again
@@ -159,7 +181,7 @@ export function undo() {
   while (game.states.length > 1 && (popped === 0 || (match.opponent === 'cpu' && cur().turn !== match.human))) { game.states.pop(); game.moves.pop(); game.sans.pop(); popped++; }
   game.result = null; deselect(); app.hint = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
-  placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick();
+  placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
 }
 export function resign() {
   if (!app.started || game.result) return;
@@ -186,7 +208,7 @@ export function goLive() {
   hideSnack('promotion');
   app.view = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
-  placePieces(cur()); restPose(game.result); render(); refreshAnalysis(); maybeComputerMove();
+  placePieces(cur()); restPose(game.result); render(); refreshAnalysis(); maybeComputerMove(); autoOrient(false);
 }
 export const viewedPly = () => app.view === null ? game.states.length - 1 : app.view;
 

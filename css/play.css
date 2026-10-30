@@ -152,3 +152,10 @@
 @media (max-width:1380px){.mb-p small{display:none}}
 @media (max-width:1240px){.mb-last{display:none}}
 @media (max-width:1080px){.mb-players,.mb-title{display:none}}
+
+/* ---------- the board turning for each player (2.18.0) ----------
+   The players' cards follow the side at the bottom, so they swap the moment a flip starts; while
+   the board turns they are out of sight, and they come back with it settled. A cut (Minimal,
+   reduced motion) never hides them. */
+.player{transition:border-color .25s,box-shadow .25s,opacity .25s}
+#stage.turning .player{opacity:0;transition:none}

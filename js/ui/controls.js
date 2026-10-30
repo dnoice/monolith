@@ -69,8 +69,8 @@ import { engine } from '../game/engine.js';
 import { deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  exploreEnd, exploreUndo, goLive, openSetup, rematch, resign, setExplorePref, setOrientation, showView,
-  startGame, undo, viewedPly
+  autoFlipOn, autoOrient, exploreEnd, exploreUndo, goLive, openSetup, rematch, resign, setAutoFlip,
+  setExplorePref, setOrientation, showView, startGame, undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
@@ -96,7 +96,7 @@ export function init() {
   $('#opp-human').addEventListener('click', () => { draft.opponent = 'human'; render(); });
   for (const s of ['w', 'b', 'r']) $(`#side-${s}`).addEventListener('click', () => {
     draft.choice = s;
-    if (!app.started && s !== 'r') setOrientation(s);   // preview: the chosen pieces swing to the bottom
+    if (!app.started && s !== 'r' && !(draft.opponent === 'human' && prefs.autoFlip !== false)) setOrientation(s);   // preview: the chosen pieces swing to the bottom
     render();
   });
   // arrow keys move between radio options in a group
@@ -110,7 +110,7 @@ export function init() {
     match.level = draft.level = prefs.level = +e.target.value; savePrefs(); render();
   });
   $('#btn-start').addEventListener('click', () => { ensureAudio(); startGame(); });
-  $('#btn-setup-cancel').addEventListener('click', () => { app.setupOpen = false; if (!app.started) return; if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human); render(); });
+  $('#btn-setup-cancel').addEventListener('click', () => { app.setupOpen = false; if (!app.started) return; if (autoFlipOn()) autoOrient(false); else if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human); render(); });
   $('#btn-new').addEventListener('click', openSetup);
   $('#btn-new-2').addEventListener('click', openSetup);
   $('#btn-rematch').addEventListener('click', rematch);
@@ -128,6 +128,7 @@ export function init() {
   $('#set-sound').addEventListener('change', e => { ensureAudio(); prefs.sound = e.target.checked; savePrefs(); applyPrefs(); render(); });
   $('#set-legal').addEventListener('change', e => { prefs.legal = e.target.checked; savePrefs(); render(); });
   $('#set-explore').addEventListener('change', e => setExplorePref(e.target.checked));
+  for (const id of ['#set-autoflip', '#setup-autoflip', '#live-autoflip']) $(id).addEventListener('change', e => setAutoFlip(e.target.checked));
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });

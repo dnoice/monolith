@@ -64,7 +64,7 @@ import { cam } from '../scene/camera.js';
 import { applyPrefs, cur, draft, game, match, render } from './state.js';
 import { engine } from '../game/engine.js';
 import { restPose } from '../game/ceremony.js';
-import { showFace } from '../game/flow.js';
+import { autoFlipOn, showFace } from '../game/flow.js';
 import { applyWorldMix, desiredWorld, setWorld, WORLD } from '../scene/worlds.js';
 import { buildTelemetry } from '../ui/telemetry.js';
 import { setTab } from '../ui/nav.js';
@@ -92,6 +92,8 @@ export function start(data) {
     app.orient = data.orient === 'b' ? 'b' : 'w';
     const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
   }
+  // two players with the board turning: the side to move sits at the bottom, even if the page went during the beat before a turn
+  if (autoFlipOn() && !game.result) app.orient = cur().turn;
   cam.theta = app.orient === 'w' ? 0 : PI; setWorldYaw(cam.theta);
   showFace(5);
   buildTelemetry();

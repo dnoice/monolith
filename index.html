@@ -427,7 +427,7 @@
         <!-- PLAY -->
         <section class="pane" id="pane-play" role="tabpanel" aria-labelledby="nav-play">
           <div class="pane" id="setup">
-            <header class="pane-head"><span class="kicker">Play</span><h2>New game</h2><p data-tip="setup-intro">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
+            <header class="pane-head"><span class="kicker">Play</span><h2>New game</h2><p data-tip="setup-intro" id="setup-intro-text">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
             <section class="card" role="group" aria-labelledby="opp-title">
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><h3 id="opp-title">Opponent</h3></header>
               <div class="seg" role="radiogroup" aria-label="Opponent">
@@ -438,6 +438,7 @@
             </section>
             <section class="card" role="group" aria-labelledby="side-legend">
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3.2 3.2 0 0 0-2 5.7C8.7 8.4 8 9.6 8 11h2l-1.2 6h6.4L14 11h2c0-1.4-.7-2.6-2-3.3A3.2 3.2 0 0 0 12 2zM6 19v3h12v-3z"/></svg><h3 id="side-legend">Your pieces</h3></header>
+              <div class="switch-row" id="setup-autoflip-row" hidden><label for="setup-autoflip"><span class="sr-label">Turn the board for each player</span></label><input type="checkbox" class="switch" role="switch" id="setup-autoflip" aria-describedby="side-help"></div>
               <div class="side-cards" role="radiogroup" aria-labelledby="side-legend">
                 <button class="side-card" role="radio" id="side-w" data-side="w"><span class="avatar w"><svg class="king-icon" viewBox="0 0 24 24" aria-hidden="true"><rect class="king-icon-cross-upright" x="11.1" y="2.6" width="1.8" height="4.4" rx=".3"/><rect class="king-icon-cross-arm" x="9.9" y="3.8" width="4.2" height="1.7" rx=".3"/><path class="king-icon-crown" d="M8.3 11C8.3 8.6 9.9 7.2 12 7.2S15.7 8.6 15.7 11Z"/><rect class="king-icon-collar" x="8" y="11.5" width="8" height="1.5" rx=".75"/><path class="king-icon-body" d="M9.6 13.4H14.4L15.9 18.8H8.1Z"/><rect class="king-icon-base" x="6.6" y="19.3" width="10.8" height="2.1" rx="1.05"/></svg></span><b>Marble</b><small>White · moves first</small></button>
                 <button class="side-card" role="radio" id="side-b" data-side="b"><span class="avatar b"><svg class="king-icon" viewBox="0 0 24 24" aria-hidden="true"><rect class="king-icon-cross-upright" x="11.1" y="2.6" width="1.8" height="4.4" rx=".3"/><rect class="king-icon-cross-arm" x="9.9" y="3.8" width="4.2" height="1.7" rx=".3"/><path class="king-icon-crown" d="M8.3 11C8.3 8.6 9.9 7.2 12 7.2S15.7 8.6 15.7 11Z"/><rect class="king-icon-collar" x="8" y="11.5" width="8" height="1.5" rx=".75"/><path class="king-icon-body" d="M9.6 13.4H14.4L15.9 18.8H8.1Z"/><rect class="king-icon-base" x="6.6" y="19.3" width="10.8" height="2.1" rx="1.05"/></svg></span><b>Obsidian</b><small>Black · moves second</small></button>
@@ -483,6 +484,10 @@
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83z"/></svg><h3 id="ll-title"><span data-term="skill-levels">Computer strength</span></h3><output class="card-aside level-name" id="live-level-out" for="level-live"></output></header>
               <div class="level"><input type="range" id="level-live" min="1" max="8" step="1" aria-labelledby="ll-title" aria-describedby="live-level-help"></div>
               <p class="help" id="live-level-help"></p>
+            </section>
+            <section class="card" id="board-group" aria-labelledby="bd-title" hidden>
+              <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 21 3 16.5l4.5-4.5 1.4 1.4L6.8 15.5H17v2H6.8l2.1 2.1zM16.5 12 21 7.5 16.5 3l-1.4 1.4 2.1 2.1H7v2h10.2l-2.1 2.1z"/></svg><h3 id="bd-title">Board</h3><label class="card-aside head-switch" for="live-autoflip" title="Turn the board for each player: after each move, the side to move comes to the bottom"><span>Turns each move</span><input type="checkbox" class="switch small" role="switch" id="live-autoflip" aria-label="Turn the board for each player" aria-describedby="board-help"></label></header>
+              <p class="help" id="board-help"></p>
             </section>
             <div class="game-actions">
               <button class="btn outlined" id="btn-new"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New game</button>
@@ -755,6 +760,7 @@
             <div class="switch-row"><label for="set-sound">Sound<span>Moves, captures and check</span></label><input type="checkbox" class="switch" role="switch" id="set-sound"></div>
             <div class="switch-row"><label for="set-legal">Show legal moves<span>Dots and rings when a piece is selected</span></label><input type="checkbox" class="switch" role="switch" id="set-legal"></div>
             <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
+            <div class="switch-row"><label for="set-autoflip">Turn the board for each player<span>Friend games on one screen: after each move, the side to move comes to the bottom</span></label><input type="checkbox" class="switch" role="switch" id="set-autoflip"></div>
             <div class="switch-row"><label for="set-coords">Board coordinates<span>Files a–h and ranks 1–8 on the frame</span></label><input type="checkbox" class="switch" role="switch" id="set-coords"></div>
           </div>
           <div class="group"><div class="group-title">World</div>

@@ -68,7 +68,7 @@ import { snack } from '../ui/snackbar.js';
 import { askPromotion, playMove } from './play.js';
 import {
   explore, exploreAvailable, exploreCheck, exploreSquare, exploreState, goLive, setExplorePref,
-  underlyingState
+  turning, underlyingState
 } from './flow.js';
 import { markerMono, pal } from '../scene/worlds.js';
 import { an, xr } from '../ui/analyze.js';
@@ -245,7 +245,7 @@ function setHover(sq, clickable = false) {
   if (!stage.classList.contains('dragging')) stage.style.cursor = sq >= 0 && clickable ? 'pointer' : '';
 }
 function clickableAt(sq) {
-  if (sq < 0) return false;
+  if (sq < 0 || turning) return false;   // the board is turning to the other side: a square under the pointer is still moving
   if (explore.on || (prefs.explore && exploreAvailable())) {
     if (app.busy) return false; const st = explore.on ? exploreState() : underlyingState(), p = st.board[sq];
     return isTarget(sq) || !!(p && p.c === st.turn);
@@ -257,6 +257,7 @@ function clickableAt(sq) {
   return isTarget(sq) || !!(p && p.c === cur().turn);
 }
 export function onSquare(sq) {
+  if (turning) return;
   if (explore.on || (prefs.explore && exploreAvailable())) return exploreSquare(sq);
   const tryIt = { label: 'Move pieces', act: () => { setExplorePref(true); exploreSquare(sq); } };
   if (boardOverride) { snack('This board shows a Crucible game. Your game waits on the Play tab.', [tryIt, { label: 'Play tab', act: () => setTab('play') }]); return; }

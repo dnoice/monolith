@@ -91,7 +91,7 @@ export function init() {
   $('#about-version').textContent = `MONOLITH ${APP_VERSION}, released ${APP_DATE}.`;
   reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   app.SPEED = reduceMotion ? 0.3 : 1;
-  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
+  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, autoFlip: true, coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
   prefs = Object.assign({}, DEFAULTS, (() => { try { const v = JSON.parse(localStorage.getItem(PREF_KEY) ?? localStorage.getItem(OLD_PREF_KEY)); return isObj(v) ? v : {}; } catch (e) { return {}; } })());
   /* Saved values are repaired, not trusted: storage can hold a value from an older release, or one
      edited by hand, and one bad value must never stop the page from starting (a level of 0 or a
