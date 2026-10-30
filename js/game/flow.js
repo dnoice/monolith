@@ -151,7 +151,7 @@ export function openSetup() {
   app.setupOpen = true; setTab('play'); render();
 }
 export function undo() {
-  if (app.busy || game.states.length < 2 || !app.started) return;
+  if (app.busy || game.states.length < 2 || !app.started || boardOverride) return;
   if (app.view !== null) goLive();
   engine.abort(); app.cpuThinking = false; hideSnack();
   // against the computer, undo returns to your last turn (its reply and your move)
@@ -173,8 +173,10 @@ export function resign() {
 }
 
 /* ---------- review: step through the game without changing it ---------- */
+/* While a Crucible game is on the board (boardOverride) the review, Live and Undo leave the Play
+   game alone: they would place its pieces over that game's. The Moves card steps that game then. */
 export function showView(idx) {
-  if (app.busy) return;
+  if (app.busy || boardOverride) return;
   hideSnack('promotion');
   if (idx >= game.states.length - 1) return goLive();
   app.view = Math.max(0, idx); deselect();
@@ -182,7 +184,7 @@ export function showView(idx) {
   placePieces(shown()); render(); refreshAnalysis();
 }
 export function goLive() {
-  if (app.busy) return;
+  if (app.busy || boardOverride) return;
   hideSnack('promotion');
   app.view = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;

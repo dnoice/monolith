@@ -91,7 +91,7 @@ import { coach, coachMark, coachOn, coachSides } from '../coach/notes.js';
 import { an, anSync } from './analyze.js';
 import { renderAnalyze } from './analyze-view.js';
 import { cr, crModel, pad2 } from './crucible.js';
-import { boardOverride } from './crucible-board.js';
+import { boardOverride, renderCrMoves } from './crucible-board.js';
 import { renderCrucible } from './crucible-view.js';
 import { buildSystemSheet } from './system-sheet.js';
 import { study } from './studies.js';
@@ -443,6 +443,7 @@ export function init() {
 
   // Moves card
   onRender(() => {
+    if (boardOverride) return renderCrMoves();   // a Crucible game on the board lists its own moves
     const list = $('#moves'), vp = viewedPly();
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
     const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp]), () => {

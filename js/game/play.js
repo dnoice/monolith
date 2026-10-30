@@ -62,7 +62,7 @@
 */
 import { app } from '../app/store.js';
 import { PI } from '../app/base.js';
-import { boardGen, buildPiece, PIECE_NAMES, pieceAt, piecesGroup, sqPos } from '../scene/board.js';
+import { boardGen, buildPiece, PIECE_NAMES, pieceAt, piecesGroup, placePieces, sqPos } from '../scene/board.js';
 import { animAttack, animMove, easeInOut, easeOut, tween, wait } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
 import { canMoveNow, cpuSide, cur, game, isCpuTurn, learn, match, render, SIDE } from '../app/state.js';
@@ -73,20 +73,29 @@ import { celebrate, checkShudder, promotionFlash } from './ceremony.js';
 import { refreshAnalysis } from './lines.js';
 import { coachKick } from '../coach/notes.js';
 import { studyAfterMove, studyScripted } from '../ui/studies.js';
+import { boardOverride } from '../ui/crucible-board.js';
 
 /* ---------- playing moves ---------- */
 export async function playMove(mv) {
   app.busy = true; const st = cur(), rec = game.states; deselect(); hideSnack(); app.hint = null;
   const next = Chess.apply(st, mv), san = Chess.san(st, mv, next);
-  await animateBoardMove(st, mv, `promoted-${String(game.states.length).padStart(3, '0')}`, () => {
-    if (st.turn !== cpuSide()) { learn('select'); if (mv.castle) learn('castle'); }   // the player has done it
-    render();
-  });
+  /* A Crucible game on the board (boardOverride) owns its pieces: a reply that lands meanwhile is
+     recorded without moving them, and the Play board is placed again when that game closes. A
+     move whose animation fails still counts, and its pieces are placed below: `busy` left set
+     froze the game at "Waiting for the reply". */
+  let failed = false;
+  if (!boardOverride) try {
+    await animateBoardMove(st, mv, `promoted-${String(game.states.length).padStart(3, '0')}`, () => {
+      if (st.turn !== cpuSide()) { learn('select'); if (mv.castle) learn('castle'); }   // the player has done it
+      render();
+    });
+  } catch (e) { failed = true; console.error(e); }
   /* A new game (or a loaded one) replaced the record while the pieces moved: the move belonged to
      the old game, and whoever replaced it now owns the board and `busy`. */
   if (game.states !== rec || cur() !== st) return;
   game.states.push(next); game.moves.push(mv); game.sans.push(san); app.lastMove = { from: mv.from, to: mv.to };
   app.busy = false; app.fenDirty = false;
+  if (failed && !boardOverride) placePieces(next);
   afterMove(next);
 }
 /* The pieces' side of a move, shared by the game and by explored lines: lift the mover (and the

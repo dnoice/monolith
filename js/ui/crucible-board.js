@@ -86,7 +86,7 @@ export function crShowBoard() {
   const an_ = g.anomaly;
   if (an_ && cr.ply === an_.ply && g.mvs[an_.ply - 1]) { const c = g.mvs[an_.ply - 1]; const landed = st.board[c.to]; setVectors([{ from: c.from, to: c.to, color: INK.crimson, glow: 1.6, opacity: 0.95, radius: 0.036, reticle: true, name: 'crucible-anomaly-vector', landOn: landed ? landed.t : null }], g.states[an_.ply - 1]); }
   else setVectors([]);
-  showHighlights(); renderBoardCard(); drawBeat();
+  showHighlights(); renderBoardCard(); drawBeat(); renderCrMoves();
 }
 export function crLeaveBoard() {
   if (!boardOverride) return;
@@ -96,6 +96,38 @@ export function crLeaveBoard() {
 export function crStep(d) {
   const m = crModel(), g = m && m.games[cr.expanded]; if (!g) return;
   cr.ply = Math.max(0, Math.min(g.states.length - 1, cr.ply + d)); crShowBoard();
+}
+/* The Moves card lists the game on the board, numbered from its first move, with the ply in view
+   marked; a move goes there, and the card's steps walk this game (controls.js). The move box
+   rests: the Play game is not on the board, and moves tried here are explored by clicking a piece.
+   The list is rebuilt only when it changes, keeping the keyboard focus on the same move. */
+export function renderCrMoves() {
+  const g = boardOverride && boardOverride.game, list = $('#moves'); if (!g) return;
+  const sig = `cr ${g.index} ${g.moves.length} ${cr.ply}`;
+  if (list.dataset.sig !== sig) {
+    const a = document.activeElement, key = list.contains(a) && a.dataset.key;
+    list.dataset.sig = sig; list.innerHTML = '';
+    for (let i = 0; i < g.moves.length; i += 2) {
+      const n = document.createElement('span'); n.className = 'num'; n.textContent = `${i / 2 + 1}.`; list.appendChild(n);
+      for (const j of [i, i + 1]) {
+        const s = document.createElement('span');
+        if (g.moves[j]) {
+          s.className = 'mv' + (j + 1 === cr.ply ? ' cur' : ''); s.textContent = g.moves[j]; s.tabIndex = 0; s.setAttribute('role', 'button'); s.dataset.key = `m${j}`;
+          s.setAttribute('aria-label', `Show game ${g.index} after ${g.moves[j]}`);
+          const go = () => { cr.ply = j + 1; crShowBoard(); };
+          s.addEventListener('click', go); s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        }
+        list.appendChild(s);
+      }
+    }
+    if (key) { const t = list.querySelector(`[data-key="${key}"]`); if (t) t.focus({ preventScroll: true }); }
+    // the move in view is kept visible by scrolling the list itself, never the panel
+    const c = list.querySelector('.cur');
+    if (c) { const r = c.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; }
+  }
+  const last = g.states.length - 1;
+  $('#nav-first').disabled = $('#nav-prev').disabled = cr.ply <= 0; $('#nav-next').disabled = $('#nav-last').disabled = cr.ply >= last;
+  const inp = $('#move-input'); inp.disabled = true; inp.placeholder = 'Click a piece to try a move';
 }
 export function renderBoardCard() {
   const card = $('#board-card'), g = boardOverride && boardOverride.game;

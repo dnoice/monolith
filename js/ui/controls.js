@@ -78,7 +78,7 @@ import { parseTyped } from '../game/input.js';
 import { an, anGoToggle, anSync, loadReference } from './analyze.js';
 import { renderAnalyze } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
-import { crExpand, crLeaveBoard } from './crucible-board.js';
+import { boardOverride, crExpand, crLeaveBoard, crStep } from './crucible-board.js';
 import { drawHive, hiveGeom, hiveIndexAt, renderCrucible } from './crucible-view.js';
 import { layerToggle } from './palette.js';
 import { buildNav } from './nav.js';
@@ -181,6 +181,9 @@ export function init() {
   $('#btn-cr-run').addEventListener('click', crStartLive);
   $('#btn-cr-stop').addEventListener('click', () => crStopLive('user'));
   $('#btn-cr-copy').addEventListener('click', crCopyJson);
+  // with a Crucible game on the board the Moves card's steps walk that game (showView and goLive
+  // leave the Play game alone then)
+  for (const [id, d] of [['#nav-first', -Infinity], ['#nav-prev', -1], ['#nav-next', 1], ['#nav-last', Infinity]]) $(id).addEventListener('click', () => { if (boardOverride) crStep(d); });
   hive = $('#hive');
   hive.addEventListener('pointermove', e => { const r = hive.getBoundingClientRect(), i = hiveIndexAt(e.clientX - r.left, e.clientY - r.top); if (i !== cr.hover) { cr.hover = i; hive.style.cursor = i >= 0 ? 'pointer' : ''; drawHive(); } });
   hive.addEventListener('pointerleave', () => { if (cr.hover !== -1) { cr.hover = -1; drawHive(); } });

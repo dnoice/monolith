@@ -61,6 +61,7 @@ import { prefs, reduceMotion, savePrefs } from './base.js';
 import { lblE, lblN, lblS, lblW } from '../scene/board.js';
 import { showHighlights } from '../game/board-ui.js';
 import { exploreCheck } from '../game/flow.js';
+import { boardOverride } from '../ui/crucible-board.js';
 import { snapshot } from './snapshot.js';
 
 /* =====================================================================================
@@ -108,7 +109,9 @@ export const cur = () => game.states[game.states.length - 1];
 export const shown = () => app.view === null ? cur() : game.states[app.view];
 export const cpuSide = () => match.opponent === 'cpu' ? Chess.other(match.human) : null;
 export const isCpuTurn = () => app.started && match.opponent === 'cpu' && cur().turn !== match.human;
-export const canMoveNow = () => app.started && app.view === null && !app.busy && !game.result && !app.cpuThinking && !app.rolling && !isCpuTurn();
+// never while a Crucible game is on the board: its pieces are not the game's (a move typed there
+// ran the Play game's move against them and froze it)
+export const canMoveNow = () => app.started && app.view === null && !app.busy && !game.result && !app.cpuThinking && !app.rolling && !isCpuTurn() && !boardOverride;
 
 /* ---------- render registry ---------- */
 export const renderers = [];
