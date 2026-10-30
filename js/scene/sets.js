@@ -223,7 +223,11 @@ export function init() {
   floor = mesh('floor-nave', new THREE.PlaneGeometry(60, 80), MAT.floor, set, false, true);
   floor.rotation.x = -PI / 2; floor.position.set(0, -0.45, -8);
   cathPlinth = mesh('plinth-board', new THREE.BoxGeometry(9.4, 0.36, 9.4), MAT.plinth, set, true, true); cathPlinth.position.y = -0.28;
-  geoShaft = new THREE.CylinderGeometry(0.42, 0.46, colTop - floorY - 0.9, 20);
+  /* 64 sides, not 20 (Dennis, 10/30/2026: the pillars did not hold their shape as the camera
+     turned): a 20-sided shaft's outline sits up to 5 mm inside the round one and jumps from edge to
+     edge as the view turns, two to three pixels at a nearby column; at 64 it stays within a third of
+     a pixel. One geometry serves all fourteen shafts, so the cost is a few thousand triangles. */
+  geoShaft = new THREE.CylinderGeometry(0.42, 0.46, colTop - floorY - 0.9, 64);
   geoCap = new THREE.BoxGeometry(1.3, 0.45, 1.3); geoBase = new THREE.BoxGeometry(1.3, 0.45, 1.3);
   geoArcade = new THREE.ExtrudeGeometry(archOutline(2.5, 0.32, 0.25), { depth: 0.36, bevelEnabled: false });
   geoRib = new THREE.ExtrudeGeometry(archOutline(colX, 0.34, 0.2), { depth: 0.3, bevelEnabled: false });
