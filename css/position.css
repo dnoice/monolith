@@ -78,7 +78,6 @@
 }
 [data-scat]{--sc:var(--md-on-surface-var)}
 [data-scat="all"]{--sc:var(--md-primary)}[data-scat="mates"]{--sc:#E8C377}[data-scat="patterns"]{--sc:#ED7F83}[data-scat="tactics"]{--sc:#2CC8D8}[data-scat="endgames"]{--sc:#9FD8B0}[data-scat="setups"]{--sc:#A3BDE3}
-@media (min-width:1280px){:root[data-tab="position"]{--panel-w:400px}}
 /* what scrolls into view (a focused control) stops below the sticky view switch */
 :root[data-tab="position"] .panes,:root[data-tab="position"] .panel{scroll-padding-top:64px}
 

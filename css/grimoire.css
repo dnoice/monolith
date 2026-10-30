@@ -107,7 +107,6 @@
 .gr-see-list button::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gc);flex:none}
 .gr-see-list button:hover{border-color:var(--md-outline);background:rgba(235,230,240,.05)}
 :root[data-tab="grimoire"] .moves-card{display:none}
-@media (min-width:1280px){:root[data-tab="grimoire"]{--panel-w:460px}}
 :root[data-skin="monolith"] .gr-letter{font-family:var(--font-tele);color:var(--mo-ink2);background:var(--mo-panel);border-bottom-color:var(--mo-rule)}
 :root[data-skin="monolith"] .gr-item{border-bottom-color:var(--mo-rule)}
 :root[data-skin="monolith"] .gr-item:hover{background:var(--mo-raised)}
