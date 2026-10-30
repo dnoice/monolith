@@ -51,7 +51,7 @@
       not load from file://.
 ---------
 */
-import { $, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, prefs, savePrefs } from '../app/base.js';
 import { learn, render, renderers, TIP_IDS } from '../app/state.js';
 import { deselect } from '../game/board-ui.js';
 import { refreshAnalysis } from '../game/lines.js';
@@ -88,11 +88,16 @@ export function buildNav() {
     const n = NAV[(i + d + NAV.length) % NAV.length]; setTab(n.id); $(`#nav-${n.id}`).focus();
   });
 }
+/* Every pane scrolls in the same element (panelScroller()), so each one's place is kept here when
+   it is left and given back when it opens again: a pane opens at its own top, or where it was
+   left, never partway down because the last pane was. */
+const paneScroll = {};
 export function setTab(id) {
   if (!NAV.some(n => n.id === id)) id = 'play';
-  const prev = prefs.tab;
+  const prev = prefs.tab, sc = panelScroller();
   // a panel's intro has been read once the player moves on to another panel
   if (prev !== id && TIP_IDS.includes(`${prev}-intro`)) learn(`${prev}-intro`);
+  if (prev !== id) paneScroll[prev] = sc.scrollTop;
   prefs.tab = id; savePrefs();
   for (const n of NAV) { const on = n.id === id, b = $(`#nav-${n.id}`); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; $(`#pane-${n.id}`).hidden = !on; }
   document.documentElement.dataset.tab = id;
@@ -107,6 +112,9 @@ export function setTab(id) {
   if (id === 'grimoire' && prev !== id) grRender();
   if (prev !== id) { termClose(false); hideSnack('promotion'); }
   render();
+  /* once the pane is drawn at its world's width; a pane that comes back shorter than it was left
+     (Analyze, whose lines refill with the new search) opens as far down as it now reaches */
+  if (prev !== id) sc.scrollTop = paneScroll[id] || 0;
   if (id !== 'analyze' && id !== 'crucible' && prev !== id) refreshAnalysis();
 }
 export function setWorldPref(w) { prefs.world = w; savePrefs(); setWorld(desiredWorld(), true); applyLayoutSizes(); render(); }
