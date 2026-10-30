@@ -142,7 +142,8 @@ function rollDie(done) {
    saved game settings, which the next ordinary game goes back to. line: { states, moves, sans }, a
    game begun part-way with its moves kept (Play from here, a loaded PGN), so the move list, Undo,
    the captures, the opening's name and repetitions all have its history; a line from the free
-   board (free) is already standing on the board, so it is not dealt in. */
+   board (free) is already standing on the board, so it is not dealt in, and a record that says
+   how the game ended (result) ends it there. */
 export function startGame(startState, opts = null, line = null) {
   learn('start'); learn('setup-intro');
   rollGen++; app.rolling = false;   // a roll still tumbling for an earlier start is dropped
@@ -157,7 +158,7 @@ export function startGame(startState, opts = null, line = null) {
     app.rolling = false; match.human = side;
     game.states = line ? line.states.slice() : [startState || Chess.newGame()]; game.moves = line ? line.moves.slice() : []; game.sans = line ? line.sans.slice() : []; game.title = null;
     const lm = game.moves[game.moves.length - 1];
-    game.result = resultFor(cur()); app.lastMove = lm ? { from: lm.from, to: lm.to } : null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+    game.result = resultFor(cur()) || (line && line.result) || null; app.lastMove = lm ? { from: lm.from, to: lm.to } : null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
     draft.from = false; exploreEnd(false);
     clearFragments(); placePieces(cur()); app.started = true; app.setupOpen = false;
     if (prefs.tab === 'play') panelScroller().scrollTop = 0;   // the game's pane opens at its top, not where Start game was

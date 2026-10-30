@@ -76,6 +76,7 @@ import {
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
 import { parseTyped } from '../game/input.js';
+import { copyFen, copyPgn, downloadPgn, loadPgn } from '../game/pgn.js';
 import { an, anGoToggle, anSync, loadReference } from './analyze.js';
 import { renderAnalyze } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
@@ -142,6 +143,12 @@ export function init() {
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
   // the free board's line becomes the start of a game: the setup opens on it, Start game begins there
+  // the game record: PGN out (copy, a file) and in (the setup's Load a game), the FEN of the board
+  $('#btn-pgn-copy').addEventListener('click', copyPgn);
+  $('#btn-pgn-save').addEventListener('click', downloadPgn);
+  $('#btn-fen-copy').addEventListener('click', copyFen);
+  $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
+  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
   $('#btn-explore-play').addEventListener('click', () => { draft.from = true; openSetup(); panelScroller().scrollTop = 0; });
   $('#btn-from-clear').addEventListener('click', () => { draft.from = false; render(); });
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });

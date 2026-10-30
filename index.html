@@ -457,6 +457,14 @@
               <div class="level"><input type="range" id="level" min="1" max="8" step="1" aria-labelledby="level-title" aria-describedby="level-help"></div>
               <p class="help" id="level-help"></p>
             </section>
+            <details class="card pgn-load" id="pgn-load">
+              <summary class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg><h3 id="pgn-title">Load a game</h3><span class="card-aside">PGN or FEN</span></summary>
+              <div class="pgn-body">
+                <textarea class="pgn-box" id="pgn-box" rows="4" spellcheck="false" autocomplete="off" aria-labelledby="pgn-title" aria-describedby="pgn-note" placeholder="1. e4 e5 2. Nf3 Nc6 3. Bb5 a6"></textarea>
+                <p class="help" id="pgn-note">Paste a game in PGN, or a FEN. It goes on from its last move with the choices above.</p>
+                <div class="row end"><button class="btn tonal small" id="btn-pgn-load">Load game</button></div>
+              </div>
+            </details>
             <div class="row end"><button class="btn text" id="btn-setup-cancel">Back to current game</button><button class="btn filled" id="btn-start">Start game</button></div>
           </div>
 
@@ -498,6 +506,11 @@
             <div class="game-actions">
               <button class="btn outlined" id="btn-new"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New game</button>
               <button class="btn danger" id="btn-resign"><svg viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>Resign</button>
+            </div>
+            <div class="game-record" role="group" aria-label="Game record">
+              <button class="btn text small" id="btn-pgn-copy" title="Copy the game as PGN, for another site or app">Copy PGN</button>
+              <button class="btn text small" id="btn-pgn-save" title="Save the game as a .pgn file">Download PGN</button>
+              <button class="btn text small" id="btn-fen-copy" title="Copy the FEN of the position on the board">Copy FEN</button>
             </div>
           </div>
         </section>

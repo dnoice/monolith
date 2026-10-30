@@ -176,3 +176,19 @@
    padding, as the Position switch does at the top; on phones the panel scrolls, unpadded. */
 #setup > .row.end{position:sticky;bottom:-20px;z-index:2;margin-block:-12px -20px;padding:12px 0 32px;background:linear-gradient(to top,var(--md-surface-1) 72%,transparent)}
 @media (max-width:899px){#setup > .row.end{bottom:0;margin-bottom:-12px;padding-bottom:12px}}
+
+/* ---------- the game record (2.18.0) ----------
+   Load a game folds away under its head at the foot of the setup; the record's three text
+   buttons sit quietly under New game and Resign. A details element keeps the card's own flex
+   off, since its parts are not all flex items in every browser. */
+.pgn-load{display:block;scroll-margin-bottom:84px}
+.pgn-load > summary{list-style:none;cursor:pointer;border-radius:4px}
+.pgn-load > summary::-webkit-details-marker{display:none}
+.pgn-load > summary::after{content:'';flex:none;width:7px;height:7px;margin:0 4px 3px 2px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(45deg);transition:transform .15s var(--ease-std)}
+.pgn-load[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
+.pgn-load > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.pgn-body{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.pgn-box{width:100%;min-height:88px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-1);color:var(--md-on-surface);font:12.5px/1.5 var(--font-mono)}
+.pgn-box::placeholder{color:var(--md-on-surface-var)}
+.game-record{display:flex;flex-wrap:wrap;gap:2px 4px;margin:-12px 0 0 -10px}
+:root[data-skin="monolith"] .pgn-box{background:var(--mo-panel);border-color:var(--mo-rule);font-family:var(--font-tele)}
