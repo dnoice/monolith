@@ -299,8 +299,10 @@ export function init() {
   // Hive, cards, chips) scroll as pages do; the range and the step follow the fitted distance
   stage.addEventListener('wheel', e => { if (e.target !== canvas) return; e.preventDefault(); learn('orbit'); zoomTo(cam.dist + e.deltaY * 0.01 * fitDist() / 11.5); }, { passive: false });
   stage.addEventListener('touchstart', e => { if (e.touches.length === 2) ptr.pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }, { passive: true });
+  // a pinch that starts during a carry comes after a move the browser has already let go of, so
+  // it is cancelled only where it still can be (the canvas takes no panning anyway)
   stage.addEventListener('touchmove', e => {
-    if (e.touches.length === 2 && e.target === canvas) { e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomTo(cam.dist - (d - ptr.pinch) * 0.02 * fitDist() / 11.5); ptr.pinch = d; ptr.drag = true; }
+    if (e.touches.length === 2 && e.target === canvas) { if (e.cancelable) e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); zoomTo(cam.dist - (d - ptr.pinch) * 0.02 * fitDist() / 11.5); ptr.pinch = d; ptr.drag = true; }
   }, { passive: false });
   raycaster = new THREE.Raycaster(); boardPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); planeHit = new THREE.Vector3();
   fitCam = new THREE.PerspectiveCamera(camera.fov, 1, camera.near, camera.far); fitV = new THREE.Vector3();
