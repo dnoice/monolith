@@ -395,7 +395,7 @@ function ring(done, total, text, cls = '') {
   const s = svgEl('svg', { viewBox: '0 0 40 40', class: 'st-ring' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true' });
   s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'bg' }));
   if (total && done) { const pct = Math.round(100 * done / total); s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'fg', pathLength: 100, 'stroke-dasharray': `${pct} 100`, transform: 'rotate(-90 20 20)' })); }
-  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: text.length > 4 ? 'long' : '' }); t.textContent = text; s.appendChild(t);
+  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: text.length > 4 ? 'longer' : text.length > 3 ? 'long' : '' }); t.textContent = text; s.appendChild(t);
   return s;
 }
 const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';

@@ -211,7 +211,10 @@
 .st-ring .bg{fill:none;stroke:var(--md-surface-4);stroke-width:4}
 .st-ring .fg{fill:none;stroke:var(--sc);stroke-width:4;stroke-linecap:round;transition:stroke-dasharray .4s var(--ease-std)}
 .st-ring text{font:600 11px var(--font-mono);fill:var(--md-on-surface)}
+/* the count stays inside the ring's 28 inner units in either world's mono: three characters (0/3)
+   at 11, All's four (0/16) at 9.5 and its five (10/16) at 8 */
 .st-ring text.long{font-size:9.5px}
+.st-ring text.longer{font-size:8px}
 /* Set-ups count positions rather than progress, so their ring is dashed and never fills */
 .st-ring.free .bg{stroke-dasharray:3 4}
 .st-tile.done .st-ring .bg{stroke:color-mix(in srgb,var(--sc) 35%,transparent)}
