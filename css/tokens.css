@@ -94,6 +94,9 @@
   --r-pill:999px;
   --r-card:16px;
   --r-ctl:12px;
+  /* fields (the move box, selects, chips and rows inside a card) and tiles nested in a card */
+  --r-field:8px;
+  --r-inner:12px;
   /* MONOLITH solved stops (System Sheet, plate 03). Colour is semantic only: cyan optimal,
      amber volatility, crimson anomaly or refutation; structure is ink, steel and slate. */
   --mo-canvas:#0B0D10;
@@ -151,6 +154,8 @@
   --r-pill:3px;
   --r-card:4px;
   --r-ctl:3px;
+  --r-field:3px;
+  --r-inner:4px;
 }
 /* One panel width per world, so a tab switch inside a world never moves the stage's edge; the
    width changes only with the world, under the transition's veil. The Grimoire keeps the world
