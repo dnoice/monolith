@@ -181,11 +181,17 @@ export function renderAnalyze() {
   $('#go-label').textContent = searching && an.infinite ? 'Stop' : 'Go infinite';
   $('#ico-go').setAttribute('d', searching && an.infinite ? 'M6 6h12v12H6z' : 'M8 5v14l11-7z');
   go.title = searching && an.infinite ? 'Stop the search' : searching ? 'Keep searching without a time limit' : 'Search without a time limit';
-  $('#an-stopped').textContent = an.status === 'over' ? an.reason
-    : an.status === 'loading' ? 'engine loading…' : an.status === 'failed' ? 'engine unavailable'
-    : rec ? `stopped at ${an.meta.seconds.toFixed(1)} s (limit)`
-    : searching ? (an.infinite ? `searching · ${tSec.toFixed(1)} s` : `searching · limit ${prefs.mo.limit} s`)
-    : an.reason === 'user' ? `stopped by you at ${tSec.toFixed(1)} s` : an.reason === 'limit' ? `stopped at ${tSec.toFixed(1)} s (limit)` : '';
+  /* The search status in two parts, what is happening over its detail, so the break always falls
+     between them (one string wrapped wherever 21ch ran out, leaving 's' or '(limit)' alone); a
+     number keeps its unit by a no-break space. Rewritten only when it changes. */
+  const sec = x => `${x.toFixed(1)} s`;
+  const [stA, stB] = an.status === 'over' ? ['game over', String(an.reason).split('. ')[0].replace(/\.$/, '').toLowerCase()]
+    : an.status === 'loading' ? ['engine', 'loading…'] : an.status === 'failed' ? ['engine', 'unavailable']
+    : rec ? ['recorded', `${sec(an.meta.seconds)} · limit`]
+    : searching ? ['searching', an.infinite ? `${sec(tSec)} · infinite` : `limit ${prefs.mo.limit} s`]
+    : an.reason === 'user' ? ['stopped by you', `at ${sec(tSec)}`] : an.reason === 'limit' ? ['stopped', `at ${sec(tSec)} · limit`] : ['', ''];
+  const so = $('#an-stopped');
+  if (so.dataset.v !== `${stA}|${stB}`) { so.dataset.v = `${stA}|${stB}`; so.textContent = ''; if (stA) { const x = document.createElement('b'), y = document.createElement('span'); x.textContent = stA; y.textContent = stB; so.append(x, ' ', y); } }
   $('#an-badge-uci').textContent = `[SF: UCI info${recTag}]`;
   $('#st-depth').textContent = s.depth ? `${s.depth}/${s.seldepth || s.depth}` : '—';
   $('#st-nodes').textContent = Monolith.fmtCount(s.nodes);
@@ -196,7 +202,7 @@ export function renderAnalyze() {
   $('#st-time').textContent = s.time !== undefined ? `${tSec.toFixed(1)} s` : '—';
   const dTop = l1 ? l1.depth : 0;
   $('#an-badge-pv').textContent = `[SF: MultiPV ${lines.length || prefs.mo.multipv}${dTop ? ` · d${dTop}` : ''}${recTag}]`;
-  $('#pv-sub').textContent = lines.length ? 'White\'s view · graded by loss against line 1' : '';
+  $('#pv-sub').textContent = lines.length ? 'White\'s view · graded vs line 1' : '';
   // MultiPV table
   if (anDomVer !== an.ver) {
     anDomVer = an.ver;
@@ -442,8 +448,11 @@ export function renderSyn() {
     grid.append(idx, ev, bar, chips);
     if (i === 0 && W) {
       const lab = document.createElement('span'); lab.className = 'syn-lab'; lab.style.gridColumn = '1 / 4';
-      lab.textContent = (W.done && W.fork >= 0 ? `fork · ply ${W.fork + 1}` : an.walkProg ? `walking ${an.walkProg.at}/${an.walkProg.total}…` : 'fork walk') + (same < W.plies.length ? ' · an earlier line 1' : '');
+      // the label keeps to its three columns; that the walk followed an earlier line 1 is said by a
+      // quiet chip at the head of the row, where it fits on a phone too (it ran under the chips)
+      lab.textContent = W.done && W.fork >= 0 ? `fork · ply ${W.fork + 1}` : an.walkProg ? `walking ${an.walkProg.at}/${an.walkProg.total}…` : 'fork walk';
       const row = document.createElement('div'); row.className = 'syn-chips';
+      if (same < W.plies.length) { const e = document.createElement('span'); e.className = 'syn-chip gap'; e.textContent = 'earlier line 1'; e.title = 'The fork walk followed line 1 as it stood earlier; line 1 has changed since'; row.appendChild(e); }
       W.plies.forEach((p, k) => row.appendChild(chipFor('fork', k, p.alts[1].san[0], `${(p.gap * 100).toFixed(1)}%`, 'alt' + (W.fork === k && W.done ? ' fork' : ''))));
       grid.append(lab, row);
     }

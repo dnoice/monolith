@@ -100,7 +100,10 @@
 .an-id b{font-size:20px;font-weight:500;line-height:1.15}
 .an-id span{font-size:12px;color:var(--md-on-surface-var)}
 .an-go{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none;text-align:right}
-.an-go .help{font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3);max-width:21ch}
+/* the search status: what is happening over its detail, right-aligned under Go, each part on
+   one line (a lone 's' or '(limit)' used to wrap away from its number) */
+.an-go .help{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3);max-width:24ch}
+.an-go .help b{font-weight:500;color:var(--mo-ink2);white-space:nowrap}
 .mo-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 12px;margin:0;padding:12px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
 .mo-stats dt{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);margin-bottom:6px}
 .mo-stats dd{margin:0;font-size:16px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--mo-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -126,7 +129,9 @@
 .sharp{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:4px 18px;align-items:end}
 .sharp > div{display:flex;flex-direction:column;gap:4px;min-width:0}
 .sharp span{font-size:11.5px;color:var(--mo-ink3)}
-.sharp .sharp-chip{align-items:flex-end;text-align:right}
+/* the verdict chip and the halo note take their own row under the two numbers (the chip, wider
+   than its column, ran over the second number) */
+.sharp .sharp-chip{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px}
 .mo-big{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;color:var(--md-on-surface)}
 .mo-big.amber{color:var(--mo-amber)}
 .chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;border:1px solid var(--mo-rule);background:var(--mo-raised);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -202,7 +207,7 @@
 .syn-chip.instab small{color:var(--mo-amber)}
 .syn-chip.alt{color:var(--mo-ink2);background:transparent;border-style:dashed}
 .syn-chip.gap{cursor:default;background:transparent;border-color:transparent;color:var(--mo-ink3)}
-.syn-lab{font:400 10.5px var(--font-tele);color:var(--mo-ink3);white-space:nowrap}
+.syn-lab{font:400 10.5px var(--font-tele);color:var(--mo-ink3);white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .syn-notes{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--mo-ink3)}
 .syn-notes .amber{color:var(--mo-amber)}
 .syn-empty{font-size:12.5px;color:var(--mo-ink3);padding:4px 0}

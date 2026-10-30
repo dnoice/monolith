@@ -83,8 +83,9 @@ const Monolith = (() => {
   const sign = v => v > 0 ? '+' : v < 0 ? MINUS : '';
   const fmtScore = s => !s ? '—' : isMate(s) ? `#${s.mate < 0 ? MINUS : ''}${Math.abs(s.mate)}` : `${sign(s.cp)}${(Math.abs(s.cp) / 100).toFixed(2)}`;
   const fmtCp = cp => `${sign(cp)}${(Math.abs(cp) / 100).toFixed(2)}`;
-  const fmtPct = (x, d = 1) => x === null || x === undefined || !isFinite(x) ? '—' : `${(x * 100).toFixed(d)} %`;
-  const fmtCount = n => n === null || n === undefined ? '—' : n >= 1e9 ? `${(n / 1e9).toFixed(2)} G` : n >= 1e6 ? `${(n / 1e6).toFixed(2)} M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)} k` : String(Math.round(n));
+  // a number and its unit are joined by a no-break space, so a line never breaks between them
+  const fmtPct = (x, d = 1) => x === null || x === undefined || !isFinite(x) ? '—' : `${(x * 100).toFixed(d)} %`;
+  const fmtCount = n => n === null || n === undefined ? '—' : n >= 1e9 ? `${(n / 1e9).toFixed(2)} G` : n >= 1e6 ? `${(n / 1e6).toFixed(2)} M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)} k` : String(Math.round(n));
   /* WDL per mille from the side to move → White's view. */
   const wdlWhite = (wdl, turn) => !wdl ? null : turn === 'w' ? wdl.slice() : [wdl[2], wdl[1], wdl[0]];
 
