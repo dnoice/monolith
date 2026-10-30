@@ -180,13 +180,14 @@
 #explore-chip .btn{flex:none}
 /* The chips share the top band with the player card at its left and the orbit hint at its right,
    so they never reach either; a chip of plain text wraps rather than widen. On a narrow stage they
-   take a second row of the band, under the card. */
+   take a second row of the band, under the card, centred across the stage's width rather than
+   from its middle, which would let them wrap at half of it. */
 #stage > .stage-chip:not(.castle){max-width:calc(100% - 640px)}
 .stage-chip.plain:not(.castle){white-space:normal;text-align:center;text-wrap:balance}
-@container stage (max-width:1039px){#stage > .stage-chip:not(.castle){top:80px;max-width:calc(100% - 32px)}}
+@container stage (max-width:1039px){#stage > .stage-chip:not(.castle){top:80px;left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto;transform:none}}
 /* In Analyze the band holds the chips at its left and the layer toggles at its right; the phantom
    chip takes the same slot while a line is previewed, one chip at a time. */
-:root[data-tab="analyze"] :is(#review-chip,#explore-chip){top:8px;left:var(--gutter-l);transform:none;max-width:calc(100% - 380px)}
+:root[data-tab="analyze"] :is(#review-chip,#explore-chip){top:8px;left:var(--gutter-l);right:auto;margin-inline:0;transform:none;max-width:calc(100% - 380px)}
 /* on the Crucible's board the game card holds the band's left, so a line explored there is named at its right */
 :root[data-tab="crucible"] #stage > #explore-chip{top:14px;left:auto;right:var(--gutter-r);transform:none;max-width:calc(100% - 400px)}
 #stage:has(#phantom-chip:not([hidden])) #review-chip,#stage:has(#phantom-chip:not([hidden])) #explore-chip{visibility:hidden}
