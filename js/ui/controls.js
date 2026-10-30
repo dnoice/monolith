@@ -69,8 +69,8 @@ import { engine } from '../game/engine.js';
 import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo, goLive,
-  openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, turning,
+  analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo, goLive,
+  offerDraw, openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView, startGame, turning,
   undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
@@ -125,6 +125,9 @@ export function init() {
   $('#btn-new').addEventListener('click', openSetup);
   $('#btn-new-2').addEventListener('click', openSetup);
   $('#btn-rematch').addEventListener('click', rematch);
+  $('#btn-rematch-swap').addEventListener('click', () => rematch({ swap: true }));
+  $('#btn-analyze-game').addEventListener('click', analyzeGame);
+  $('#btn-draw').addEventListener('click', offerDraw);
   $('#btn-undo').addEventListener('click', undo);
   $('#btn-resign').addEventListener('click', resign);
   $('#btn-hint').addEventListener('click', giveHint);

@@ -97,8 +97,12 @@
 .calc-row .btn{flex:1 1 auto}
 .calc-lines{font-size:12.5px;color:var(--md-on-surface-var);margin-left:4px}
 .calc-row .select{height:40px}
-.game-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:-4px}
+.game-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-top:-4px}
 .game-actions .btn{width:100%;height:36px;font-size:13px}
+/* three actions (Draw, in a game between two players) in a narrow panel: the words without the icons */
+.game-actions{container-type:inline-size}
+.game-actions .btn{min-width:0;padding-inline:12px;white-space:nowrap}
+@container (max-width:400px){.game-actions:has(> #btn-draw:not([hidden])) .btn svg{display:none}}
 .group-title:not(summary){display:flex;align-items:center;gap:10px}
 .group-title:not(summary)::after{content:'';flex:1;height:1px;background:var(--md-outline-var)}
 :root[data-skin="monolith"] .kicker{font:400 10px/1 var(--font-tele);letter-spacing:.16em;color:var(--mo-ink3)}

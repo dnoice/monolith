@@ -77,7 +77,7 @@ import { deselect, rookSqOf, select } from './board-ui.js';
 import { animateBoardMove, askPromotion, maybeComputerMove, resultFor } from './play.js';
 import { celebrate, ceremonyGen, checkShudder, dealIn, restPose } from './ceremony.js';
 import { emptyCalc, refreshAnalysis } from './lines.js';
-import { coachKick } from '../coach/notes.js';
+import { coachKick, turningPly } from '../coach/notes.js';
 import { pad2 } from '../ui/crucible.js';
 import { boardOverride } from '../ui/crucible-board.js';
 import { setTab } from '../ui/nav.js';
@@ -171,9 +171,13 @@ export function startGame(startState, opts = null, line = null) {
   const turns = draft.opponent === 'human' && prefs.autoFlip !== false;
   if (opts) begin(opts.side); else if (draft.choice === 'r' && !turns) rollDie(begin); else begin(draft.choice === 'r' ? 'w' : draft.choice);
 }
-export function rematch() {
+/* opts.swap: the other side this time (Play obsidian), which the next game keeps as the choice. The
+   result card's Rematch passes its click event, which has no swap. */
+export function rematch(opts) {
   if (study.cur) { studyStart(study.cur.s); return; }   // a study's rematch is the study again
-  Object.assign(draft, userSetup()); setTab('play'); startGame();
+  Object.assign(draft, userSetup());
+  if (opts && opts.swap === true) draft.choice = Chess.other(match.human);
+  setTab('play'); startGame();
 }
 export function openSetup() {
   Object.assign(draft, userSetup());
@@ -189,6 +193,26 @@ export function undo() {
   game.result = null; deselect(); app.hint = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
   placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
+}
+/* A draw by agreement between two players on one screen: the side to move offers, the other side
+   answers. canOfferDraw() is true, or the reason it cannot be offered (a declaration, so the
+   palette's table can name it while the modules are still loading). */
+export function canOfferDraw() { return !app.started ? 'Start a game first' : game.result ? 'The game is over' : match.opponent !== 'human' || study.cur || game.title ? 'Two-player games only' : true; }
+export function offerDraw() {
+  if (canOfferDraw() !== true || app.busy) return;
+  const by = cur().turn, rec = game.states, n = rec.length;
+  snack(`${SIDE[by]} offers a draw. Does ${SIDE[Chess.other(by)].toLowerCase()} agree?`, [{ label: 'Keep playing', act: () => {} }, { label: 'Agree to a draw', filled: true, act: () => {
+    if (game.states !== rec || rec.length !== n || game.result) return;   // asked about a position the game has since left
+    game.result = { text: 'Draw agreed.', winner: null, agreed: true };
+    render(); celebrate(game.result); coachKick();
+  } }], true);
+}
+/* A finished game in Analyze: at its turning point when the Coach found one, else at the last
+   move (the final position of a mate or a stalemate has nothing left to search). */
+export function analyzeGame() {
+  if (!app.started) return;
+  const p = turningPly(), last = game.states.length - 1;
+  showView(p !== null ? p : resultFor(cur()) && last > 0 ? last - 1 : last); setTab('analyze');
 }
 export function resign() {
   if (!app.started || game.result) return;

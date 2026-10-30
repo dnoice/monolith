@@ -84,7 +84,9 @@ import {
 import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
-import { explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView, viewedPly } from '../game/flow.js';
+import {
+  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView, viewedPly
+} from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
 import { coach, coachMark, coachOn, coachSides } from '../coach/notes.js';
@@ -234,7 +236,8 @@ function coachNoteEl(n) {
   if (n.score) { const sc = document.createElement('span'); sc.className = 'cn-score'; sc.textContent = Monolith.fmtScore(n.score); sc.title = 'The engine\'s evaluation after this move, from White\'s side'; head.appendChild(sc); }
   li.appendChild(head);
   for (const [cls, text] of [['cn-text', n.text], ['cn-extra', n.extra], ['cn-maxim', n.maxim]]) if (text) { const p = document.createElement('p'); p.className = cls; p.textContent = text; li.appendChild(p); }
-  if (n.action) { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn text small cn-act'; b.dataset.key = `a${n.kind}${n.action.ply}`; b.textContent = n.action.label; b.addEventListener('click', () => showView(n.action.ply)); li.appendChild(b); }
+  // a note's actions: a move to show on this board, or (tab) the game opened in Analyze there
+  for (const a of n.actions || (n.action ? [n.action] : [])) { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn text small cn-act'; b.dataset.key = `a${n.kind}${a.ply}${a.tab || ''}`; b.textContent = a.label; b.addEventListener('click', () => a.tab === 'analyze' ? analyzeGame() : showView(a.ply)); li.appendChild(b); }
   return li;
 }
 
@@ -360,6 +363,10 @@ export function init() {
       $('#result').className = `result ${mood}`;
       $('#result-kicker').textContent = !r.winner ? 'Draw' : cpu ? (mood === 'win' ? 'Victory' : 'Defeat') : `${SIDE[r.winner]} wins`;
       $('#result-text').textContent = cpu || !r.winner ? r.text : r.text.split('. ')[0].replace(/\.?$/, '.');   // friend games: the kicker names the winner
+      // the other side next time, against the computer (or with the board staying put); a study has its own rematch
+      const swap = $('#btn-rematch-swap'), other = Chess.other(match.human);
+      swap.hidden = !!sc || !!game.title || (!cpu && autoFlipOn());
+      if (!swap.hidden) setText(swap, cpu ? `Play ${app.worldName === 'monolith' ? SIDE_COLOR[other] : SIDE[other].toLowerCase()}` : 'Switch sides');
     }
     const banner = $('#turn-banner'); banner.hidden = !!r;
     const c = cur().turn, av = banner.querySelector('.avatar'); av.className = `avatar ${c}`; if (!av.querySelector('.king-icon')) av.innerHTML = KING_ICON;
@@ -382,6 +389,7 @@ export function init() {
     $('#btn-hint').title = !showing ? 'A nudge first; press again for the piece, then the move' : app.hint.level < 3 ? 'One more step of help' : 'Hide the hint';
     $('#btn-undo').disabled = app.busy || game.states.length < 2;
     $('#btn-resign').disabled = !!r || app.busy;
+    $('#btn-draw').hidden = cpu || !!sc || !!game.title; $('#btn-draw').disabled = !!r || app.busy;   // a draw by agreement, two players on one screen
     // strength can change mid-game; Stockfish reads the level when it starts each move
     $('#live-level-group').hidden = !cpu || !!sc;   // a study plays at its own strength
     // two players: the board's turn for each of them, switched here where it is used
@@ -410,7 +418,7 @@ export function init() {
       items.push({ kind: 'idle', text: !coachSides().length ? 'The Coach comments on games you play here.' : E && E.failed ? 'The Coach\'s engine could not start here. Hints and the engine lines below still work.' : E && !E.ready ? 'The Coach is getting its engine ready…' : 'Play a move: the Coach reads each one and tells you what it does.' });
     }
     const shown_ = items.slice(0, 3);
-    const noteSig = n => [n.kind, n.cls, n.key, n.alert, n.chance, n.who, n.head, n.score && Monolith.fmtScore(n.score), n.text, n.extra, n.maxim, n.action && n.action.ply].join('|');
+    const noteSig = n => [n.kind, n.cls, n.key, n.alert, n.chance, n.who, n.head, n.score && Monolith.fmtScore(n.score), n.text, n.extra, n.maxim, (n.actions || [n.action]).filter(Boolean).map(a => a.ply + (a.tab || '')).join()].join('|');
     rebuildIf(feed, shown_.map(noteSig).join('\n'), () => { for (const it of shown_) feed.appendChild(coachNoteEl(it)); });
   });
   onRender(({ st }) => {

@@ -373,7 +373,13 @@ function coachEnd() {
   }
   if (turn) lines.push(voice('end.turn', { move: turn.m.head, loss: Monolith.fmtPct(turn.m.loss, 0) }, seed));
   else if (Object.keys(R).length) lines.push(voice('end.clean', {}, seed));
-  return { kind: 'end', text: voice(`end.${key}`, { result: r.text }, seed), extra: lines.join(' '), action: turn ? { label: `Show ${turn.m.head}`, ply: turn.i } : null };
+  // the turning point on this board, or in Analyze, where the engine shows what was better
+  return { kind: 'end', text: voice(`end.${key}`, { result: r.text }, seed), extra: lines.join(' '), actions: turn ? [{ label: `Show ${turn.m.head}`, ply: turn.i }, { label: 'Analyze it', ply: turn.i, tab: 'analyze' }] : null };
+}
+/* The ply of the finished game's turning point, as the Coach's review found it, or null. */
+export function turningPly() {
+  const n = coach.notes.get(game.states[game.states.length - 1]), a = n && n.end && n.end.actions;
+  return a ? a[0].ply : null;
 }
 /* The move-list mark for a graded move. */
 const COACH_MARK = { inaccuracy: '?!', mistake: '?', blunder: '??' };

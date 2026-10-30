@@ -167,7 +167,7 @@ function copyOut(text, what, refused) {
   };
   try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
 }
-export const copyPgn = () => copyOut(gamePgn(), 'PGN', 'This browser refused the copy. Download PGN saves the game as a file instead.');
+export function copyPgn() { copyOut(gamePgn(), 'PGN', 'This browser refused the copy. Download PGN saves the game as a file instead.'); }
 export function copyFen() { const f = Chess.fen(boardState()); copyOut(f, 'FEN', `This browser refused the copy. The FEN: ${f}`); }
 export function downloadPgn() {
   const url = URL.createObjectURL(new Blob([gamePgn()], { type: 'application/x-chess-pgn' })), a = document.createElement('a');
