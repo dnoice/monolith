@@ -136,9 +136,23 @@
 #stage{grid-area:stage;position:relative;min-width:0;min-height:0;background:var(--stage-bg);overflow:hidden}
 #stage.dragging{cursor:grabbing}
 #stage canvas{display:block;width:100%;height:100%}
+/* Safe bands: the strips along the stage's edges where its overlays live. The camera fits the board
+   inside what they leave (scene/camera.js reads them from the canvas, and refits when the
+   destination, the world or the evaluation bar changes), so no card, chip or hint ever sits on the
+   board's coordinates or its pieces. Everywhere but Analyze and the Crucible: the player cards'
+   rows at the top and the foot, the chips and the orbit hint in the top one (a second row of it on
+   a narrow stage) and Reset view in the foot. The board's projection is wide and low, so on almost
+   any stage its width binds and the top and foot bands cost it nothing. */
+#stage{container:stage/inline-size}
+#scene{touch-action:none;--safe-t:130px;--safe-r:12px;--safe-b:80px;--safe-l:12px}
+#stage:has(#evalbar:not([hidden])) #scene{--safe-l:32px}
+/* The Crucible's board: its game card in the top band (Analyze's bands are in css/monolith.css) */
+:root[data-tab="crucible"] #scene{--safe-t:86px;--safe-b:12px}
 .player{position:absolute;left:calc(var(--gutter-l) + 22px);display:flex;align-items:center;gap:12px;min-width:0;max-width:min(420px,calc(100% - 64px));padding:8px 14px 8px 8px;border-radius:var(--r-card);background:rgba(28,26,32,.78);border:1px solid var(--md-outline-var);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,box-shadow .25s}
 .player.top{top:14px}
 .player.bottom{bottom:14px}
+/* Analyze names the position in the match strip and the Synaptic PV, so its board has no cards */
+:root[data-tab="analyze"] .player{display:none}
 .player.active{border-color:var(--md-primary);box-shadow:0 0 0 1px var(--md-primary),0 6px 20px rgba(0,0,0,.35)}
 .avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;border:1px solid var(--md-outline);overflow:hidden}
 .avatar .king-icon{width:68%;height:68%;display:block;fill:currentColor}
@@ -164,15 +178,39 @@
 #explore-chip{max-width:calc(100% - 32px);gap:6px}
 #explore-chip > span{min-width:0;overflow:hidden;text-overflow:ellipsis;margin-right:4px}
 #explore-chip .btn{flex:none}
-/* In Analyze the layer toggles hold the top edge and the WDL note its right side, so the review
-   and explore chips drop below the toggles and stay clear of the note; the phantom chip takes
-   the same slot while a line is previewed, one chip at a time. */
-:root[data-tab="analyze"] #review-chip,:root[data-tab="analyze"] #explore-chip{top:54px;max-width:max(300px,calc(100% - 440px))}
+/* The chips share the top band with the player card at its left and the orbit hint at its right,
+   so they never reach either; a chip of plain text wraps rather than widen. On a narrow stage they
+   take a second row of the band, under the card. */
+#stage > .stage-chip:not(.castle){max-width:calc(100% - 640px)}
+.stage-chip.plain:not(.castle){white-space:normal;text-align:center;text-wrap:balance}
+@container stage (max-width:1039px){#stage > .stage-chip:not(.castle){top:80px;max-width:calc(100% - 32px)}}
+/* In Analyze the band holds the chips at its left and the layer toggles at its right; the phantom
+   chip takes the same slot while a line is previewed, one chip at a time. */
+:root[data-tab="analyze"] :is(#review-chip,#explore-chip){top:8px;left:var(--gutter-l);transform:none;max-width:calc(100% - 380px)}
+/* on the Crucible's board the game card holds the band's left, so a line explored there is named at its right */
+:root[data-tab="crucible"] #stage > #explore-chip{top:14px;left:auto;right:var(--gutter-r);transform:none;max-width:calc(100% - 400px)}
 #stage:has(#phantom-chip:not([hidden])) #review-chip,#stage:has(#phantom-chip:not([hidden])) #explore-chip{visibility:hidden}
-.stage-chip.castle{top:auto;bottom:76px;background:#24344f;color:#d9e6fb;border:1px solid #a9c4ea}
+/* The castling chip sits in the foot band between the cards' row and Reset view; where the stage is
+   too narrow for both, the player's own card gives way while the chip is up (it is about that
+   player's king). */
+.stage-chip.castle{top:auto;bottom:24px;max-width:calc(100% - 32px);white-space:normal;text-wrap:balance;background:#24344f;color:#d9e6fb;border:1px solid #a9c4ea}
+@container stage (max-width:1039px){#stage:has(#castle-chip:not([hidden])) .player.bottom{visibility:hidden}}
 .stage-chip.castle svg{width:18px;height:18px;fill:currentColor;flex:none}
 .stage-chip.castle b{color:#ffffff;font-weight:700}
-.stage-hint{position:absolute;right:var(--gutter-r);bottom:16px;font-size:12px;color:var(--md-on-surface-var);background:rgba(20,18,23,.62);padding:4px 10px;border-radius:999px;pointer-events:none}
+/* The orbit hint in the top band's right corner, beside the board's narrow far edge; it names the
+   gestures of the pointer at hand */
+.stage-hint{position:absolute;right:var(--gutter-r);top:14px;font-size:12px;color:var(--md-on-surface-var);background:rgba(20,18,23,.62);padding:4px 10px;border-radius:999px;pointer-events:none}
+.for-touch{display:none}
+@media (hover:none) and (pointer:coarse){.stage-hint .for-mouse{display:none}.stage-hint .for-touch{display:inline}}
+@container stage (max-width:699px){.stage-hint{display:none}}
+/* Reset view on the stage, in the foot band's right corner, while the view is turned off the
+   world's own pose by hand (scene/camera.js) */
+.stage-reset{position:absolute;z-index:2;right:var(--gutter-r);bottom:27px;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px 0 9px;border:1px solid var(--md-outline-var);border-radius:999px;background:rgba(28,26,32,.78);color:var(--md-on-surface);font-size:12.5px;font-weight:500;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.stage-reset svg{width:16px;height:16px;fill:currentColor;flex:none}
+.stage-reset:hover{background:rgba(48,44,54,.86)}
+.stage-reset:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.stage-reset[hidden],#stage:has(#deck:not([hidden])) .stage-reset{display:none}
+:root[data-tab="analyze"] .stage-reset{bottom:14px}
 .evalbar{position:absolute;left:var(--gutter-l);top:14px;bottom:14px;width:10px;border-radius:5px;background:var(--md-obsidian);border:1px solid var(--md-outline);overflow:hidden}
 .evalbar-fill{position:absolute;left:0;right:0;bottom:0;height:50%;background:var(--md-marble);transition:height .4s var(--ease-std)}
 .evalbar.flipped .evalbar-fill{bottom:auto;top:0}

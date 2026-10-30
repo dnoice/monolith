@@ -369,7 +369,8 @@
       <div class="stage-chip" id="explore-chip" hidden><span id="explore-text">Exploring</span><button class="btn text" id="btn-explore-undo">Undo</button><button class="btn filled" id="btn-explore-back">Back</button></div>
       <div class="stage-chip plain castle" id="castle-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21h14v-2H5v2zM6 18h12l-1-7h2V4h-3v2h-2V4h-2v2H10V4H8v2H6V4H3v7h2z"/></svg><span id="castle-text"></span></div>
       <div class="stage-chip plain" id="setup-chip" data-tip="start" hidden>Choose your game on the Play tab, then press Start game</div>
-      <div class="stage-hint" data-tip="orbit">Middle-drag to orbit · scroll to zoom</div>
+      <div class="stage-hint" data-tip="orbit"><span class="for-mouse">Drag the board to orbit · scroll to zoom</span><span class="for-touch">Drag the board to orbit · pinch to zoom</span></div>
+      <button class="stage-reset" id="stage-reset" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>Reset view</button>
       <div class="layer-toggles" id="layer-toggles" hidden role="group" aria-label="Board layers">
         <button class="layer-btn" data-layer="field" aria-pressed="true" title="Root move-value field (F)">Field</button>
         <button class="layer-btn" data-layer="vectors" aria-pressed="true" title="Ballistic vectors of the engine lines (V)">Vectors</button>
@@ -807,8 +808,8 @@
           </div>
           <div class="group"><div class="group-title">Controls</div>
             <dl class="keys">
-              <dt>Left click</dt><dd>Select a piece, then a square</dd>
-              <dt>Middle drag</dt><dd>Orbit the camera (one finger on touch)</dd>
+              <dt>Click or drag</dt><dd>Move a piece: click it, then a square, or drag it there</dd>
+              <dt>Drag the board</dt><dd>Orbit the camera (middle drag too; one finger on touch)</dd>
               <dt>Wheel</dt><dd>Zoom (pinch on touch)</dd>
               <dt>← →</dt><dd>Step through the moves</dd>
               <dt>Home End</dt><dd>First position, live position</dd>
