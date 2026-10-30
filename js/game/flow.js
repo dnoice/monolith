@@ -265,6 +265,7 @@ function exploreStart() {
   const base = underlyingState();
   Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] }); draft.from = false;   // a new line is not yet one to play from
   deselect(); placePieces(base);   // fresh pieces: an ended game's poses don't carry into the line
+  render();   // the chip, the cards and the move list say so from the first click, not the first move
 }
 /* replace: put the underlying board's pieces back (Back, Undo past the start); without it the
    caller that changed the board underneath has placed them already. */
