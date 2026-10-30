@@ -89,14 +89,15 @@ export function updateCamera(t) {
 /* ---------- fitting the board to the stage ----------
    The board's whole footprint (the frame, its coordinates and the pieces of the starting position
    with their tallest standing anywhere they could start, from either side) fits the stage inside
-   its safe bands: the --safe-t/r/b/l the stylesheet sets on the stage for the overlays of each
+   its safe bands: the --safe-t/r/b/l the stylesheet sets on the canvas for the overlays of each
    destination. The fit is the smallest distance at which the projected footprint fits the safe
    rect; then a pan in image space centres it on the stage, or as near the centre as the bands
-   allow, so the near rank, which looms larger, never pushes the far one off. It is measured at the world's pose, square to the
-   board, never at a view turned by hand, so orbiting never refits; a zoom by hand is kept as a
-   share of the fit when the stage changes. Measured on a resize and a change of destination or
-   world only: about 24 × 600 projections. The fog thins as the fit draws the camera back, so the
-   board reads as it does at the world's own distance (scene/worlds.js). */
+   allow, so the near rank, which looms larger, never pushes the far one off. It is measured at
+   the world's pose, square to the board, never at a view turned by hand, so orbiting never
+   refits; a zoom by hand is kept as a share of the fit when the stage changes. Measured on a
+   resize and a change of destination, world or evaluation bar only: about 24 × 600 projections.
+   The fog thins as the fit draws the camera back, so the board reads as it does at the world's
+   own distance (scene/worlds.js). */
 let FOOT = null; // built on the first fit, from pieces made for it
 let fitCam, fitV; // set in init()
 function footprint() {
@@ -303,7 +304,10 @@ export function init() {
   }, { passive: false });
   raycaster = new THREE.Raycaster(); boardPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); planeHit = new THREE.Vector3();
   fitCam = new THREE.PerspectiveCamera(camera.fov, 1, camera.near, camera.far); fitV = new THREE.Vector3();
-  // each destination and world has its own bands and pose: refit when either changes, even when
-  // the stage keeps its size (resizes refit from app/loop.js)
-  new MutationObserver(fitCamera).observe(document.documentElement, { attributes: true, attributeFilter: ['data-tab', 'data-skin'] });
+  // each destination and world has its own bands and pose, and the evaluation bar widens the left
+  // band: refit when any of them changes, even when the stage keeps its size (resizes refit from
+  // app/loop.js); the renderers set these on every render, so only a real change counts
+  const refit = rs => { if (rs.some(r => r.oldValue !== r.target.getAttribute(r.attributeName))) fitCamera(); };
+  new MutationObserver(refit).observe(document.documentElement, { attributes: true, attributeOldValue: true, attributeFilter: ['data-tab', 'data-skin'] });
+  new MutationObserver(refit).observe($('#evalbar'), { attributes: true, attributeOldValue: true, attributeFilter: ['hidden'] });
 }

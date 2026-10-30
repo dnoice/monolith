@@ -200,7 +200,7 @@
 /* The orbit hint in the top band's right corner, beside the board's narrow far edge; it names the
    gestures of the pointer at hand */
 .stage-hint{position:absolute;right:var(--gutter-r);top:14px;font-size:12px;color:var(--md-on-surface-var);background:rgba(20,18,23,.62);padding:4px 10px;border-radius:999px;pointer-events:none}
-.for-touch{display:none}
+.stage-hint .for-touch{display:none}
 @media (hover:none) and (pointer:coarse){.stage-hint .for-mouse{display:none}.stage-hint .for-touch{display:inline}}
 @container stage (max-width:699px){.stage-hint{display:none}}
 /* Reset view on the stage, in the foot band's right corner, while the view is turned off the
@@ -210,7 +210,12 @@
 .stage-reset:hover{background:rgba(48,44,54,.86)}
 .stage-reset:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .stage-reset[hidden],#stage:has(#deck:not([hidden])) .stage-reset{display:none}
+/* Analyze keeps it at the foot of its right band, the Crucible's board in its top band beside an
+   explored line's chip; where a band is narrow it is the icon alone */
 :root[data-tab="analyze"] .stage-reset{bottom:14px}
+:root[data-tab="crucible"] .stage-reset{top:14px;bottom:auto}
+:root[data-tab="crucible"] #stage:has(#stage-reset:not([hidden])) > #explore-chip{right:calc(var(--gutter-r) + 128px)}
+@container stage (max-width:759px){:root[data-tab="analyze"] .stage-reset{width:30px;padding:0;justify-content:center}:root[data-tab="analyze"] .stage-reset span{display:none}}
 .evalbar{position:absolute;left:var(--gutter-l);top:14px;bottom:14px;width:10px;border-radius:5px;background:var(--md-obsidian);border:1px solid var(--md-outline);overflow:hidden}
 .evalbar-fill{position:absolute;left:0;right:0;bottom:0;height:50%;background:var(--md-marble);transition:height .4s var(--ease-std)}
 .evalbar.flipped .evalbar-fill{bottom:auto;top:0}
