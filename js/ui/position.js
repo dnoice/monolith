@@ -391,11 +391,11 @@ function levelDots(n) {
   for (let i = 1; i <= 3; i++) lv.appendChild(h('i', i <= n ? 'on' : ''));
   return lv;
 }
-function ring(done, total, text) {
-  const s = svgEl('svg', { viewBox: '0 0 40 40', class: 'st-ring', 'aria-hidden': 'true' });
+function ring(done, total, text, cls = '') {
+  const s = svgEl('svg', { viewBox: '0 0 40 40', class: 'st-ring' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true' });
   s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'bg' }));
   if (total && done) { const pct = Math.round(100 * done / total); s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'fg', pathLength: 100, 'stroke-dasharray': `${pct} 100`, transform: 'rotate(-90 20 20)' })); }
-  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central' }); t.textContent = text; s.appendChild(t);
+  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: text.length > 4 ? 'long' : '' }); t.textContent = text; s.appendChild(t);
   return s;
 }
 const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
@@ -407,7 +407,15 @@ export function studyOpen(id) {
   study.sel = id ? studyById.get(id) || null : null;
   if (!was && study.sel && sc) pos.gridScroll = sc.scrollTop;
   pos.libKey = ''; renderLibrary();
-  if (study.sel) { if (sc) sc.scrollTop = 0; setTimeout(() => $('#st-d-title').focus({ preventScroll: true }), 0); }
+  if (study.sel) {
+    if (sc) {
+      sc.scrollTop = 0;
+      // a short panel (a phone's) opens at the card instead, so the title and Start show under the switch
+      const r = sc.getBoundingClientRect();
+      if ($('#st-start').getBoundingClientRect().bottom > r.bottom) sc.scrollTop += $('#pos-studies').getBoundingClientRect().top - r.top - $('#pos-switch').offsetHeight - 8;
+    }
+    setTimeout(() => $('#st-d-title').focus({ preventScroll: true }), 0);
+  }
   else if (was && sc) sc.scrollTop = pos.gridScroll || 0;
 }
 /* The studies shown in the grid (and paged in the detail view): the category chosen. */
@@ -431,7 +439,7 @@ function drawTiles() {
     const b = h('button', 'st-tile'); b.type = 'button'; b.setAttribute('role', 'radio'); b.dataset.scat = k; b.dataset.k = k;
     b.setAttribute('aria-checked', String(k === study.cat));
     const n = STUDIES.list.filter(s => k === 'all' || s.cat === k).length;
-    if (k === 'setups') { b.appendChild(ring(0, 0, String(n))); b.setAttribute('aria-label', `${label}: ${plural(n, 'position')} to play freely`); }
+    if (k === 'setups') { b.appendChild(ring(0, 0, String(n), 'free')); b.setAttribute('aria-label', `${label}: ${plural(n, 'position')} to play freely`); }
     else { const p = studyProgress(k); b.appendChild(ring(p.done, p.total, `${p.done}/${p.total}`)); b.setAttribute('aria-label', `${label}: ${p.done} of ${p.total} solved`); if (p.total && p.done === p.total) b.classList.add('done'); }
     b.appendChild(h('span', 'st-tile-l', label));
     b.addEventListener('click', () => { const had = document.activeElement === b; study.cat = k; study.sel = null; pos.libKey = ''; renderLibrary(); if (had) $(`#st-cats [data-k="${k}"]`).focus(); });
@@ -539,7 +547,9 @@ function renderStudyLive() {
   $('#sl-solution').hidden = !c.shown; if (c.shown) $('#sl-solution').textContent = studyLineSan(s);
   // once the study is over, only Restart and Next matter
   $('#study-live .card-actions').hidden = (hb.hidden && rv.hidden) || c.state !== 'playing';
-  $('#sl-next').textContent = c.state === 'solved' ? 'Next study' : 'Skip to the next';
+  // Next study is the call once it is solved; until then skipping stays as quiet as Restart and End
+  const nx = $('#sl-next'); nx.textContent = c.state === 'solved' ? 'Next study' : 'Skip to the next';
+  nx.classList.toggle('filled', c.state === 'solved'); nx.classList.toggle('text', c.state !== 'solved');
 }
 /* The goal, drawn: the moves to find (puzzles), the moves against par (mates), the pawn's road
    to the last rank (queening), the moves still to hold (holds). */

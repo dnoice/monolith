@@ -160,6 +160,8 @@ function studyTakeBack(c, st, tries = 0) {
   if (study.cur !== c || c.reject !== st) return;
   if (app.busy && tries < 40) { setTimeout(() => studyTakeBack(c, st, tries + 1), 150); return; }
   c.reject = null; if (cur() === st) undo();
+  // the rejection stays in the card on the position it went back to, until the next move speaks
+  if (study.cur === c && c.msg && c.msgKind === 'bad') { c.msgAt = cur(); render(); }
 }
 async function studyCheckpoint(c, idx, n) {
   c.checking = true; studySay(c, studyText('checking', { n }), 'wait'); render();
