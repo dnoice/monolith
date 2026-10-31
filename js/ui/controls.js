@@ -59,21 +59,23 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, savePrefs } from '../app/base.js';
 import { resetView } from '../scene/camera.js';
 import { ensureAudio } from '../app/sound.js';
-import { applyPrefs, canMoveNow, cur, draft, match, render } from '../app/state.js';
+import { applyPrefs, canMoveNow, cur, draft, game, match, render } from '../app/state.js';
 import { snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
-import { deselect } from '../game/board-ui.js';
+import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  exploreEnd, exploreUndo, goLive, openSetup, rematch, resign, setExplorePref, setOrientation, showView,
-  startGame, undo, viewedPly
+  analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo,
+  goLive, offerDraw, openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView,
+  startGame, turning, undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
 import { parseTyped } from '../game/input.js';
+import { copyFen, copyPgn, downloadPgn, loadPgn } from '../game/pgn.js';
 import { an, anGoToggle, anSync, loadForAnalysis, loadReference } from './analyze.js';
 import { renderAnalyze, setBadgesPref, syncBadges } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
@@ -95,7 +97,7 @@ export function init() {
   $('#opp-human').addEventListener('click', () => { draft.opponent = 'human'; render(); });
   for (const s of ['w', 'b', 'r']) $(`#side-${s}`).addEventListener('click', () => {
     draft.choice = s;
-    if (!app.started && s !== 'r') setOrientation(s);   // preview: the chosen pieces swing to the bottom
+    if (!app.started && s !== 'r' && !(draft.opponent === 'human' && prefs.autoFlip !== false)) setOrientation(s);   // preview: the chosen pieces swing to the bottom
     render();
   });
   // arrow keys move between radio options in a group
@@ -108,11 +110,23 @@ export function init() {
   $('#level-live').addEventListener('input', e => {
     match.level = draft.level = prefs.level = +e.target.value; savePrefs(); render();
   });
-  $('#btn-start').addEventListener('click', () => { ensureAudio(); startGame(); });
-  $('#btn-setup-cancel').addEventListener('click', () => { app.setupOpen = false; if (!app.started) return; if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human); render(); });
+  $('#btn-start').addEventListener('click', () => {
+    ensureAudio(); const go = () => startGame(null, null, draftLine());
+    // a game still being played ends only when asked, as a study or a loaded position asks first
+    if (app.started && game.sans.length && !game.result) snack('Start a new game? The current one ends.', [{ label: 'Keep playing', act: () => {} }, { label: 'Start', filled: true, act: go }], true);
+    else go();
+  });
+  $('#btn-setup-cancel').addEventListener('click', () => {
+    app.setupOpen = false; draft.from = false; if (!app.started) return;
+    if (autoFlipOn()) autoOrient(false); else if (app.orient !== match.human && match.opponent === 'cpu') setOrientation(match.human);
+    render(); panelScroller().scrollTop = 0;   // the game's pane opens at its top, where the turn card is
+  });
   $('#btn-new').addEventListener('click', openSetup);
   $('#btn-new-2').addEventListener('click', openSetup);
   $('#btn-rematch').addEventListener('click', rematch);
+  $('#btn-rematch-swap').addEventListener('click', () => rematch({ swap: true }));
+  $('#btn-analyze-game').addEventListener('click', analyzeGame);
+  $('#btn-draw').addEventListener('click', offerDraw);
   $('#btn-undo').addEventListener('click', undo);
   $('#btn-resign').addEventListener('click', resign);
   $('#btn-hint').addEventListener('click', giveHint);
@@ -126,8 +140,18 @@ export function init() {
   $('#set-sound').addEventListener('change', e => { ensureAudio(); prefs.sound = e.target.checked; savePrefs(); applyPrefs(); render(); });
   $('#set-legal').addEventListener('change', e => { prefs.legal = e.target.checked; savePrefs(); render(); });
   $('#set-explore').addEventListener('change', e => setExplorePref(e.target.checked));
+  for (const id of ['#set-autoflip', '#setup-autoflip', '#live-autoflip']) $(id).addEventListener('change', e => setAutoFlip(e.target.checked));
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
+  // the free board's line becomes the start of a game: the setup opens on it, Start game begins there
+  $('#btn-explore-play').addEventListener('click', () => { draft.from = true; openSetup(); });
+  $('#btn-from-clear').addEventListener('click', () => { draft.from = false; render(); });
+  // the game record: PGN out (copy, a file) and in (the setup's Load a game), the FEN of the board
+  $('#btn-pgn-copy').addEventListener('click', copyPgn);
+  $('#btn-pgn-save').addEventListener('click', downloadPgn);
+  $('#btn-fen-copy').addEventListener('click', copyFen);
+  $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
+  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
@@ -142,16 +166,19 @@ export function init() {
   });
   $('#lines').addEventListener('change', e => { prefs.lines = Math.max(1, Math.min(5, +e.target.value || 3)); savePrefs(); });
   $('#btn-calc').addEventListener('click', calculateMoves);
-  $('#nav-first').addEventListener('click', () => showView(0));
-  $('#nav-prev').addEventListener('click', () => showView(viewedPly() - 1));
+  $('#nav-first').addEventListener('click', () => sandbox() ? exploreEnd() : showView(0));
+  $('#nav-prev').addEventListener('click', () => sandbox() ? exploreUndo() : showView(viewedPly() - 1));
   $('#nav-next').addEventListener('click', () => showView(viewedPly() + 1));
   $('#nav-last').addEventListener('click', goLive);
   $('#move-form').addEventListener('submit', e => {
-    e.preventDefault(); ensureAudio(); if (!canMoveNow()) return;
-    const inp = $('#move-input'), r = parseTyped(cur(), inp.value);
+    // the game on your turn; otherwise, as a click would, a line on the board the game does not own
+    e.preventDefault(); ensureAudio();
+    const tryIt = !canMoveNow() && (explore.on || (prefs.explore !== false && exploreAvailable()));
+    if ((!canMoveNow() && !tryIt) || turning) return;
+    const inp = $('#move-input'), r = parseTyped(tryIt ? boardState() : cur(), inp.value);
     if (!r) return;
     if (r.error) { snack(r.error); return; }
-    inp.value = ''; deselect(); playMove(r);
+    inp.value = ''; deselect(); if (tryIt) exploreTyped(r); else playMove(r);
   });
   // Analyze controls
   for (const b of document.querySelectorAll('[data-layer]')) b.addEventListener('click', () => layerToggle(b.dataset.layer));

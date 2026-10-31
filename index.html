@@ -370,7 +370,7 @@
       <div class="player top" id="player-top" aria-live="polite"><span class="avatar"></span><span class="pinfo"><span class="pname"><span class="pn"></span><span class="psub"></span></span><span class="pcap"></span></span><span class="pstate"></span></div>
       <div class="player bottom" id="player-bottom" aria-live="polite"><span class="avatar"></span><span class="pinfo"><span class="pname"><span class="pn"></span><span class="psub"></span></span><span class="pcap"></span></span><span class="pstate"></span></div>
       <div class="stage-chip" id="review-chip" hidden><span id="review-text">Viewing an earlier move</span><button class="btn filled" id="btn-live">Back to live</button></div>
-      <div class="stage-chip" id="explore-chip" hidden><span id="explore-text">Exploring</span><button class="btn text" id="btn-explore-undo">Undo</button><button class="btn filled" id="btn-explore-back">Back</button></div>
+      <div class="stage-chip" id="explore-chip" hidden><span id="explore-text">Exploring</span><button class="btn text" id="btn-explore-undo">Undo</button><button class="btn filled" id="btn-explore-back">Back</button><button class="btn filled" id="btn-explore-play" hidden>Play from here</button></div>
       <div class="stage-chip plain castle" id="castle-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21h14v-2H5v2zM6 18h12l-1-7h2V4h-3v2h-2V4h-2v2H10V4H8v2H6V4H3v7h2z"/></svg><span id="castle-text"></span></div>
       <div class="stage-chip plain" id="setup-chip" data-tip="start" hidden>Choose your game on the Play tab, then press Start game</div>
       <div class="stage-hint" data-tip="orbit"><span class="for-mouse">Drag the board to orbit · scroll to zoom</span><span class="for-touch">Drag the board to orbit · pinch to zoom</span></div>
@@ -433,7 +433,13 @@
         <!-- PLAY -->
         <section class="pane" id="pane-play" role="tabpanel" aria-labelledby="nav-play">
           <div class="pane" id="setup">
-            <header class="pane-head"><span class="kicker">Play</span><h2>New game</h2><p data-tip="setup-intro">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
+            <header class="pane-head"><span class="kicker">Play</span><h2 id="setup-title">New game</h2><p data-tip="setup-intro" id="setup-intro-text">Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.</p></header>
+            <section class="card setup-from" id="setup-from" aria-labelledby="from-title" hidden>
+              <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8 20H4v-4h4v4zm0-6H4v-4h4v4zm0-6H4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4z"/></svg><h3 id="from-title">From the free board</h3></header>
+              <p class="from-line" id="from-line"></p>
+              <p class="help" id="from-help"></p>
+              <div class="row"><button class="btn text small" id="btn-from-clear">From the start instead</button></div>
+            </section>
             <section class="card" role="group" aria-labelledby="opp-title">
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><h3 id="opp-title">Opponent</h3></header>
               <div class="seg" role="radiogroup" aria-label="Opponent">
@@ -444,6 +450,7 @@
             </section>
             <section class="card" role="group" aria-labelledby="side-legend">
               <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3.2 3.2 0 0 0-2 5.7C8.7 8.4 8 9.6 8 11h2l-1.2 6h6.4L14 11h2c0-1.4-.7-2.6-2-3.3A3.2 3.2 0 0 0 12 2zM6 19v3h12v-3z"/></svg><h3 id="side-legend">Your pieces</h3></header>
+              <div class="switch-row" id="setup-autoflip-row" hidden><label for="setup-autoflip"><span class="sr-label">Turn the board for each player</span></label><input type="checkbox" class="switch" role="switch" id="setup-autoflip" aria-describedby="side-help"></div>
               <div class="side-cards" role="radiogroup" aria-labelledby="side-legend">
                 <button class="side-card" role="radio" id="side-w" data-side="w"><span class="avatar w"><svg class="king-icon" viewBox="0 0 24 24" aria-hidden="true"><rect class="king-icon-cross-upright" x="11.1" y="2.6" width="1.8" height="4.4" rx=".3"/><rect class="king-icon-cross-arm" x="9.9" y="3.8" width="4.2" height="1.7" rx=".3"/><path class="king-icon-crown" d="M8.3 11C8.3 8.6 9.9 7.2 12 7.2S15.7 8.6 15.7 11Z"/><rect class="king-icon-collar" x="8" y="11.5" width="8" height="1.5" rx=".75"/><path class="king-icon-body" d="M9.6 13.4H14.4L15.9 18.8H8.1Z"/><rect class="king-icon-base" x="6.6" y="19.3" width="10.8" height="2.1" rx="1.05"/></svg></span><b>Marble</b><small>White · moves first</small></button>
                 <button class="side-card" role="radio" id="side-b" data-side="b"><span class="avatar b"><svg class="king-icon" viewBox="0 0 24 24" aria-hidden="true"><rect class="king-icon-cross-upright" x="11.1" y="2.6" width="1.8" height="4.4" rx=".3"/><rect class="king-icon-cross-arm" x="9.9" y="3.8" width="4.2" height="1.7" rx=".3"/><path class="king-icon-crown" d="M8.3 11C8.3 8.6 9.9 7.2 12 7.2S15.7 8.6 15.7 11Z"/><rect class="king-icon-collar" x="8" y="11.5" width="8" height="1.5" rx=".75"/><path class="king-icon-body" d="M9.6 13.4H14.4L15.9 18.8H8.1Z"/><rect class="king-icon-base" x="6.6" y="19.3" width="10.8" height="2.1" rx="1.05"/></svg></span><b>Obsidian</b><small>Black · moves second</small></button>
@@ -456,12 +463,20 @@
               <div class="level"><input type="range" id="level" min="1" max="8" step="1" aria-labelledby="level-title" aria-describedby="level-help"></div>
               <p class="help" id="level-help"></p>
             </section>
+            <details class="card pgn-load" id="pgn-load">
+              <summary class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z"/></svg><h3 id="pgn-title">Load a game</h3><span class="card-aside">PGN or FEN</span></summary>
+              <div class="pgn-body">
+                <textarea class="pgn-box" id="pgn-box" rows="4" spellcheck="false" autocomplete="off" aria-labelledby="pgn-title" aria-describedby="pgn-note" placeholder="1. e4 e5 2. Nf3 Nc6 3. Bb5 a6"></textarea>
+                <p class="help" id="pgn-note">Paste a game in PGN, or a FEN. It goes on from its last move with the choices above.</p>
+                <div class="row end"><button class="btn tonal small" id="btn-pgn-load">Load game</button></div>
+              </div>
+            </details>
             <div class="row end"><button class="btn text" id="btn-setup-cancel">Back to current game</button><button class="btn filled" id="btn-start">Start game</button></div>
           </div>
 
           <div class="pane" id="ingame" hidden>
             <header class="pane-head"><span class="kicker" id="game-kicker">In play</span><h2 id="game-title"></h2><p id="game-sub"></p></header>
-            <div class="result" id="result" hidden><span class="result-kicker" id="result-kicker"></span><b id="result-text"></b><div class="row"><button class="btn filled small" id="btn-rematch">Rematch</button><button class="btn outlined small" id="btn-new-2">New game</button></div></div>
+            <div class="result" id="result" hidden><span class="result-kicker" id="result-kicker"></span><b id="result-text"></b><div class="row"><button class="btn filled small" id="btn-rematch">Rematch</button><button class="btn tonal small" id="btn-rematch-swap" hidden>Switch sides</button><button class="btn outlined small" id="btn-new-2">New game</button><button class="btn text small" id="btn-analyze-game" title="Open this game in Analyze, at its turning point">Analyze game</button></div></div>
             <section class="card status-card" id="turn-card" aria-label="Turn">
               <div class="turn-banner" id="turn-banner"><span class="avatar"></span><div class="turn-text"><b id="turn-title"></b><span id="turn-sub"></span></div><span class="turn-move" id="turn-move"></span></div>
               <p class="turn-opening" id="turn-opening" hidden><span class="to-eco" data-term="eco" id="to-eco"></span><span class="to-name" id="to-name"></span></p>
@@ -490,9 +505,19 @@
               <div class="level"><input type="range" id="level-live" min="1" max="8" step="1" aria-labelledby="ll-title" aria-describedby="live-level-help"></div>
               <p class="help" id="live-level-help"></p>
             </section>
+            <section class="card" id="board-group" aria-labelledby="bd-title" hidden>
+              <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 21 3 16.5l4.5-4.5 1.4 1.4L6.8 15.5H17v2H6.8l2.1 2.1zM16.5 12 21 7.5 16.5 3l-1.4 1.4 2.1 2.1H7v2h10.2l-2.1 2.1z"/></svg><h3 id="bd-title">Board</h3><label class="card-aside head-switch" for="live-autoflip" title="Turn the board for each player: after each move, the side to move comes to the bottom"><span>Turns each move</span><input type="checkbox" class="switch small" role="switch" id="live-autoflip" aria-label="Turn the board for each player" aria-describedby="board-help"></label></header>
+              <p class="help" id="board-help"></p>
+            </section>
             <div class="game-actions">
               <button class="btn outlined" id="btn-new"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New game</button>
+              <button class="btn outlined" id="btn-draw" hidden title="Offer a draw: the other player agrees or plays on"><svg viewBox="0 0 24 24"><path d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/></svg>Draw</button>
               <button class="btn danger" id="btn-resign"><svg viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>Resign</button>
+            </div>
+            <div class="game-record" role="group" aria-label="Game record">
+              <button class="btn text small" id="btn-pgn-copy" title="Copy the game as PGN, for another site or app">Copy PGN</button>
+              <button class="btn text small" id="btn-pgn-save" title="Save the game as a .pgn file">Download PGN</button>
+              <button class="btn text small" id="btn-fen-copy" title="Copy the FEN of the position on the board">Copy FEN</button>
             </div>
           </div>
         </section>
@@ -767,7 +792,8 @@
           <div class="group">
             <div class="switch-row"><label for="set-sound">Sound<span>Moves, captures and check</span></label><input type="checkbox" class="switch" role="switch" id="set-sound"></div>
             <div class="switch-row"><label for="set-legal">Show legal moves<span>Dots and rings when a piece is selected</span></label><input type="checkbox" class="switch" role="switch" id="set-legal"></div>
-            <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
+            <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves before a game, on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
+            <div class="switch-row"><label for="set-autoflip">Turn the board for each player<span>Friend games on one screen: after each move, the side to move comes to the bottom</span></label><input type="checkbox" class="switch" role="switch" id="set-autoflip"></div>
             <div class="switch-row"><label for="set-coords">Board coordinates<span>Files a–h and ranks 1–8 on the frame</span></label><input type="checkbox" class="switch" role="switch" id="set-coords"></div>
           </div>
           <div class="group"><div class="group-title">World</div>
@@ -858,8 +884,8 @@
         </div>
         <div class="moves" id="moves"></div>
         <form class="move-entry" id="move-form" autocomplete="off">
-          <label for="move-input">Type a move such as e2e4, or e7e8q to promote</label>
-          <input id="move-input" placeholder="e2e4, Nf3 or O-O" maxlength="5" spellcheck="false">
+          <label for="move-input">Type a move such as e2e4 or e7e8q, or in SAN such as Nf3 or exd8=Q</label>
+          <input id="move-input" placeholder="e2e4, Nf3 or O-O" maxlength="10" spellcheck="false">
           <button class="btn tonal" type="submit">Play</button>
         </form>
       </section>

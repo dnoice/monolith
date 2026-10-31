@@ -68,7 +68,7 @@ import { snack } from '../ui/snackbar.js';
 import { askPromotion, playMove } from './play.js';
 import {
   explore, exploreAvailable, exploreCheck, exploreSquare, exploreState, goLive, setExplorePref,
-  underlyingState
+  turning, underlyingState
 } from './flow.js';
 import { markerMono, pal } from '../scene/worlds.js';
 import { an, xr } from '../ui/analyze.js';
@@ -245,13 +245,13 @@ function setHover(sq, clickable = false) {
   if (!stage.classList.contains('dragging')) stage.style.cursor = sq >= 0 && clickable ? (grabbable(sq) ? 'grab' : 'pointer') : '';
 }
 function clickableAt(sq) {
-  if (sq < 0) return false;
+  if (sq < 0 || turning) return false;   // the board is turning to the other side: a square under the pointer is still moving
   if (explore.on || (prefs.explore && exploreAvailable())) {
     if (app.busy) return false; const st = explore.on ? exploreState() : underlyingState(), p = st.board[sq];
     return isTarget(sq) || !!(p && p.c === st.turn);
   }
   if (boardOverride) return false;
-  if (!app.started) return true;                       // a click explains how to start (nudgeStart)
+  if (!app.started) return true;                       // with Move pieces off, a click explains how to start (nudgeStart)
   if (!canMoveNow()) return false;
   const p = cur().board[sq];
   return isTarget(sq) || !!(p && p.c === cur().turn);
@@ -265,13 +265,14 @@ export function grabbable(sq) {
   return !!(p && p.c === st.turn);
 }
 export function onSquare(sq) {
+  if (turning) return;
   // with the X-Ray on in Analyze, a tap chooses its square (touch has no hover to aim it; a second
   // tap on it lets it go); a mouse click still moves pieces while the X-Ray follows the pointer
   if (prefs.tab === 'analyze' && (xr.sticky || xr.held) && xr.touch) { xr.pin = xr.pin === sq ? -1 : sq; renderXray(an.st || shown()); return; }
   if (explore.on || (prefs.explore && exploreAvailable())) return exploreSquare(sq);
   const tryIt = { label: 'Move pieces', act: () => { setExplorePref(true); exploreSquare(sq); } };
   if (boardOverride) { snack('This board shows a Crucible game. Your game waits on the Play tab.', [tryIt, { label: 'Play tab', act: () => setTab('play') }]); return; }
-  if (!app.started) { nudgeStart(); return; }
+  if (!app.started) { nudgeStart(tryIt); return; }
   if (app.view !== null) { snack('You are looking at an earlier move.', [tryIt, { label: 'Back to live', filled: true, act: goLive }]); return; }
   if (game.result) { snack('The game is over.', [tryIt]); return; }
   if (!canMoveNow()) return;
@@ -285,10 +286,12 @@ export function onSquare(sq) {
   if (p && p.c === st.turn) { if (app.selected === sq) deselect(); else { deselect(); select(sq); } }
   else deselect();
 }
-function nudgeStart() {
-  setTab('play');
+/* Before a game with Move pieces on any board off: say how to start, and leave the tab alone (a
+   click on Analyze or Position used to throw the visitor to Play). */
+function nudgeStart(tryIt) {
+  if (prefs.tab !== 'play') { snack('No game yet.', [tryIt, { label: 'Play tab', act: () => setTab('play') }]); return; }
   const b = $('#btn-start'); b.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { duration: 380, easing: 'cubic-bezier(.2,0,0,1)' });
-  snack('Press Start game to begin.');
+  snack('Press Start game to begin.', [tryIt]);
 }
 
 /* ---------- setup: run once, in order, by js/main.js ---------- */

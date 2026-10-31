@@ -69,7 +69,11 @@ import { applyPrefs, canMoveNow, game, render, shown } from '../app/state.js';
 import { hideSnack, snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
-import { explore, exploreEnd, openSetup, setExplorePref, setOrientation, undo } from '../game/flow.js';
+import {
+  analyzeGame, canOfferDraw, explore, exploreEnd, offerDraw, openSetup, setAutoFlip, setExplorePref, setOrientation,
+  undo
+} from '../game/flow.js';
+import { copyPgn, downloadPgn, openPgnLoad } from '../game/pgn.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, coachOn, giveHint } from '../coach/notes.js';
 import { an, anGoToggle, anStopSearch, loadForAnalysis, loadReference, xr } from './analyze.js';
@@ -139,7 +143,14 @@ const COMMANDS = [
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
   { cmd: ':explore', desc: 'Move pieces on any board on or off (Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
-  { cmd: ':version', desc: 'Which release this copy is', run: () => snack(`MONOLITH ${APP_VERSION}, released ${APP_DATE}.`), when: yes }
+  { cmd: ':version', desc: 'Which release this copy is', run: () => snack(`MONOLITH ${APP_VERSION}, released ${APP_DATE}.`), when: yes },
+  /* play: auto-flip, free board, PGN, draw */
+  { cmd: ':autoflip', desc: 'Turn the board for each player on or off (friend games on one screen)', run: () => { setAutoFlip(prefs.autoFlip === false); snack(prefs.autoFlip ? 'Turn the board for each player: on.' : 'Turn the board for each player: off.'); }, when: yes },
+  { cmd: ':copy pgn', desc: 'Copy the game as PGN, for another site or app (explored lines are not part of it)', run: copyPgn, when: () => app.started || 'No game yet' },
+  { cmd: ':download pgn', desc: 'Save the game as a .pgn file', run: downloadPgn, when: () => app.started || 'No game yet' },
+  { cmd: ':load pgn', desc: 'Paste a game in PGN (or a FEN) to review it or play on from it', run: openPgnLoad, when: yes },
+  { cmd: ':draw', desc: 'Offer a draw (two players on one screen)', run: offerDraw, when: canOfferDraw },
+  { cmd: ':review', desc: 'Open the finished game in Analyze, at its turning point', run: analyzeGame, when: () => (app.started && !!game.result) || 'No finished game' }
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
 const PAL_GROUPS = [
@@ -147,6 +158,8 @@ const PAL_GROUPS = [
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
   ['Game', [':new', ':hint', ':undo', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':fen', ':copy fen', ':reset view']],
+  ['Two players', [':autoflip', ':draw']],
+  ['Game record', [':copy pgn', ':download pgn', ':load pgn', ':review']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],
   ['Grimoire', [':define']],
   ['World, graphics and sound', [':world auto', ':world cathedral', ':world monolith', ':pillars monoliths', ':pillars classic', ':pillars modern', ':quality auto', ':quality ultra', ':quality high', ':quality medium', ':quality low', ':quality minimal', ':sound']],

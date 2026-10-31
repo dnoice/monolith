@@ -84,7 +84,10 @@ import {
 import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
-import { explore, exploreLine, exploreOrigin, showView, viewedPly } from '../game/flow.js';
+import {
+  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView,
+  viewedPly
+} from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
 import { coach, coachMark, coachOn, coachSides } from '../coach/notes.js';
@@ -133,6 +136,7 @@ function capturedBy(st, c) {
   return { glyphs, adv: mine - theirs };
 }
 function playerName(c) {
+  if (sandbox()) return { name: app.worldName === 'monolith' ? (c === 'w' ? 'White' : 'Black') : SIDE[c], sub: 'Free board' };
   if (app.started && game.title && game.title.players) return { name: game.title.players[c], sub: c === 'w' ? 'White' : 'Black' };
   const opp = app.started ? match.opponent : draft.opponent, human = app.started ? match.human : (draft.choice === 'r' ? null : draft.choice);
   if (opp === 'cpu') {
@@ -176,6 +180,11 @@ export function renderMatchbar() {
     title = ['Crucible', m ? `${m.config.A.name} vs ${m.config.B.name}` : cr.src === 'recorded' ? 'Recorded run' : 'Live run'];
     move = [m && m.mode === 'fixed' ? 'Pairs' : 'SPRT', m ? `${games} games` : '—', m ? (m.verdict ? `${m.verdict} accepted` : m.running ? 'running' : '') : '', m && m.verdict ? 'done' : m && m.running ? 'think' : ''];
     if (cr.view === 'board' && boardOverride && boardOverride.game) last = ['Game', `#${pad2(boardOverride.game.index)}`, `ply ${boardOverride.ply}`];
+  } else if (sandbox()) {
+    // before a game, moves tried on the free board
+    const st = boardState();
+    title = ['Free board', exploreLine(4) || 'Starting position'];
+    move = ['Move', String(st.fullmove), `${sideName(st.turn)} to move`];
   } else if (!app.started) {
     // before a game: the game Start game will begin, from the Play tab's choices as they change
     const cpu = draft.opponent === 'cpu', die = cpu && draft.choice === 'r', L = LEVELS[draft.level - 1];
@@ -234,8 +243,20 @@ function coachNoteEl(n) {
   if (n.score) { const sc = document.createElement('span'); sc.className = 'cn-score'; sc.textContent = Monolith.fmtScore(n.score); sc.title = 'The engine\'s evaluation after this move, from White\'s side'; head.appendChild(sc); }
   li.appendChild(head);
   for (const [cls, text] of [['cn-text', n.text], ['cn-extra', n.extra], ['cn-maxim', n.maxim]]) if (text) { const p = document.createElement('p'); p.className = cls; p.textContent = text; li.appendChild(p); }
-  if (n.action) { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn text small cn-act'; b.dataset.key = `a${n.kind}${n.action.ply}`; b.textContent = n.action.label; b.addEventListener('click', () => showView(n.action.ply)); li.appendChild(b); }
+  // a note's actions: a move to show on this board, or (tab) the game opened in Analyze there
+  for (const a of n.actions || (n.action ? [n.action] : [])) { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn text small cn-act'; b.dataset.key = `a${n.kind}${a.ply}${a.tab || ''}`; b.textContent = a.label; b.addEventListener('click', () => a.tab === 'analyze' ? analyzeGame() : showView(a.ply)); li.appendChild(b); }
   return li;
+}
+
+/* The free board's line in the move list, numbered as the game's are; it is not a record to step
+   through, so its moves are plain text, the last one marked. */
+function freeMoves(list) {
+  const sans = explore.sans;
+  if (!sans.length) { const e = document.createElement('span'); e.className = 'empty'; e.textContent = 'Try a move on the board; the moves show here.'; list.appendChild(e); return; }
+  for (let i = 0; i < sans.length; i += 2) {
+    const n = document.createElement('span'); n.className = 'num'; n.textContent = `${Math.floor(i / 2) + explore.base.fullmove}.`; list.appendChild(n);
+    for (const j of [i, i + 1]) { const m = document.createElement('span'); if (sans[j]) { m.className = 'mv tried' + (j === sans.length - 1 ? ' cur' : ''); m.textContent = sans[j]; } list.appendChild(m); }
+  }
 }
 
 /* ---------- setup: run once, in order, by js/main.js ---------- */
@@ -253,31 +274,43 @@ export function init() {
   onRender(() => { for (const el of document.querySelectorAll('[data-tip]')) if (el.id !== 'setup-chip') el.hidden = !tip(el.dataset.tip); });
   onRender(({ st, live }) => {
     const sides = { bottom: app.orient, top: Chess.other(app.orient) };
+    const ex = explore.on, bs = ex ? boardState() : st;   // an explored line (the free board too) is what the cards describe
     for (const pos of ['top', 'bottom']) {
-      const c = sides[pos], el = $(`#player-${pos}`), info = playerName(c), cap = capturedBy(st, c);
+      const c = sides[pos], el = $(`#player-${pos}`), info = playerName(c), cap = capturedBy(bs, c);
       el.querySelector('.avatar').className = `avatar ${c}`; if (!el.querySelector('.avatar .king-icon')) el.querySelector('.avatar').innerHTML = KING_ICON;
       el.querySelector('.pn').textContent = info.name; el.querySelector('.psub').textContent = info.sub;
       const capEl = el.querySelector('.pcap'); capEl.textContent = cap.glyphs;
       if (cap.adv > 0) { const a = document.createElement('span'); a.className = 'adv'; a.textContent = `+${cap.adv}`; capEl.appendChild(a); }
       const state = el.querySelector('.pstate'); let txt = '', cls = 'pstate';
-      const r = live ? game.result : resultFor(st);
-      if (app.started && r) { if (r.winner === c) { txt = 'Won'; cls += ' won'; } else if (!r.winner) txt = 'Draw'; else txt = r.resigned === c ? 'Resigned' : 'Lost'; }
-      else if (app.started && st.turn === c) {
-        if (live && app.cpuThinking && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
-        else if (Chess.inCheck(st)) { txt = 'Check'; cls += ' check'; }
-        else txt = live ? 'To move' : 'Moved next';
+      const r = ex ? resultFor(bs) : live ? game.result : resultFor(st), on = app.started || ex;
+      if (on && r) { if (r.winner === c) { txt = 'Won'; cls += ' won'; } else if (!r.winner) txt = 'Draw'; else txt = r.resigned === c ? 'Resigned' : 'Lost'; }
+      else if (on && bs.turn === c) {
+        if (live && !ex && app.cpuThinking && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
+        else if (Chess.inCheck(bs)) { txt = 'Check'; cls += ' check'; }
+        else txt = live || ex ? 'To move' : 'Moved next';
         if (!cls.includes('think') && !cls.includes('check')) cls += ' turn';
       }
       state.textContent = txt; state.className = cls;
-      el.classList.toggle('active', app.started && !r && st.turn === c);
+      el.classList.toggle('active', on && !r && bs.turn === c);
     }
     const mo = prefs.tab === 'analyze' || prefs.tab === 'crucible';
     for (const pos of ['top', 'bottom']) $(`#player-${pos}`).hidden = prefs.tab === 'crucible';
     $('#review-chip').hidden = app.view === null || prefs.tab === 'crucible' || explore.on;
     $('#explore-chip').hidden = !explore.on;
-    if (explore.on) { $('#explore-text').textContent = `Exploring from ${exploreOrigin()} · ${explore.moves.length ? exploreLine() : 'pick a move'}`; $('#btn-explore-undo').disabled = app.busy; }
+    if (explore.on) {
+      // the free board before a game: Back is a reset, and Play from here makes the line a game
+      const sb = sandbox(), back = $('#btn-explore-back');
+      $('#explore-text').textContent = sb ? `Free board · ${explore.moves.length ? exploreLine() : 'pick a move'}` : `Exploring from ${exploreOrigin()} · ${explore.moves.length ? exploreLine() : 'pick a move'}`;
+      $('#btn-explore-undo').disabled = app.busy;
+      setText(back, sb ? 'Reset' : 'Back'); back.className = sb ? 'btn text' : 'btn filled';
+      $('#btn-explore-play').hidden = !sb || !explore.moves.length;
+    }
     if (app.view !== null) $('#review-text').textContent = app.view === 0 ? 'Viewing the starting position' : `Viewing move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
     $('#setup-chip').hidden = app.started || app.view !== null || !tip('start') || mo || explore.on;
+    // before a game the board itself is the invitation (Move pieces on any board)
+    if (!$('#setup-chip').hidden) setText($('#setup-chip'), prefs.explore !== false
+      ? (prefs.tab === 'play' ? 'Try a move on the board, or start a game' : 'Try a move on the board, or start a game on the Play tab')
+      : (prefs.tab === 'play' ? 'Choose your game, then press Start game' : 'Choose your game on the Play tab, then press Start game'));
     for (const el of document.querySelectorAll('.stage-hint')) if (mo) el.hidden = true;
     renderEvalOnly();
     drawArrows();
@@ -297,14 +330,23 @@ export function init() {
     $('#setup').hidden = !showSetup; $('#ingame').hidden = showSetup;
     if (showSetup) {
       const cpu = draft.opponent === 'cpu';
+      // Play from here: the game begins from the free board's line, its moves kept
+      const from = !!(draft.from && sandbox() && explore.moves.length);
+      $('#setup-from').hidden = !from; setText($('#setup-title'), from ? 'New game from this position' : 'New game');
+      if (from) { setText($('#from-line'), exploreLine(12)); setText($('#from-help'), `${SIDE[exploreState().turn]} to move. The game keeps these moves, so Undo can take them back.`); }
       radio($('#opp-cpu'), cpu); radio($('#opp-human'), !cpu);
       $('#opp-cpu').disabled = engine.failed;
       $('#opp-help').textContent = cpu ? (engine.failed ? engine.status : 'Stockfish plays the other side.') : 'Two people take turns on this screen. Marble always moves first.';
-      $('#side-legend').textContent = cpu ? 'Your pieces' : 'Side at the bottom of the board';
+      // two players with the board turning for each of them: there is no side at the bottom to choose
+      const turns = !cpu && prefs.autoFlip !== false;
+      setText($('#setup-intro-text'), cpu ? 'Pick your opponent and your pieces. Your pieces sit at the bottom of the board for the whole game.'
+        : turns ? 'Pick your opponent. On one screen the board turns to whoever is to move.' : 'Pick your opponent and the side at the bottom. Flip board turns it at any time.');
+      $('#side-legend').textContent = cpu ? 'Your pieces' : turns ? 'Board' : 'Side at the bottom of the board';
+      $('#setup-autoflip-row').hidden = cpu; $('#setup-autoflip').checked = turns; $('.side-cards').hidden = turns;
       for (const s of ['w', 'b', 'r']) { radio($(`#side-${s}`), draft.choice === s); $(`#side-${s}`).disabled = app.rolling; }
-      if (!app.rolling) $('#side-help').textContent = draft.choice === 'r'
+      if (!app.rolling) $('#side-help').textContent = turns ? 'The board turns to whoever is to move. Marble moves first.' : draft.choice === 'r'
         ? (cpu ? 'The die decides when you press Start game: odd for marble, even for obsidian.' : 'The die decides which side sits at the bottom: odd for marble, even for obsidian.')
-        : cpu ? `You play ${SIDE[draft.choice].toLowerCase()} (${SIDE_COLOR[draft.choice]}) and ${draft.choice === 'w' ? 'make the first move' : 'Stockfish opens the game'}.`
+        : cpu ? `You play ${SIDE[draft.choice].toLowerCase()} (${SIDE_COLOR[draft.choice]}) and ${from ? (draft.choice === exploreState().turn ? 'move next' : 'Stockfish moves next') : draft.choice === 'w' ? 'make the first move' : 'Stockfish opens the game'}.`
               : `${SIDE[draft.choice]} sits at the bottom. Use Flip board at any time.`;
       $('#level-group').hidden = !cpu;
       const L = LEVELS[draft.level - 1];
@@ -312,7 +354,7 @@ export function init() {
       $('#level-help').textContent = `Level ${draft.level} of 8. ${L.blurb}${levelNote(draft.level)}`;
       $('#btn-setup-cancel').hidden = !app.started;
       $('#btn-start').disabled = app.rolling || (cpu && !engine.ready);   // a failed engine leaves friend games only
-      $('#btn-start').textContent = app.rolling ? 'Rolling…' : (cpu && !engine.ready && !engine.failed) ? 'Loading engine…' : 'Start game';
+      $('#btn-start').textContent = app.rolling ? 'Rolling…' : (cpu && !engine.ready && !engine.failed) ? 'Loading engine…' : app.started && game.sans.length && !game.result ? 'Start new game' : 'Start game';
       return;
     }
     const cpu = match.opponent === 'cpu', L = LEVELS[match.level - 1];
@@ -328,6 +370,10 @@ export function init() {
       $('#result').className = `result ${mood}`;
       $('#result-kicker').textContent = !r.winner ? 'Draw' : cpu ? (mood === 'win' ? 'Victory' : 'Defeat') : `${SIDE[r.winner]} wins`;
       $('#result-text').textContent = cpu || !r.winner ? r.text : r.text.split('. ')[0].replace(/\.?$/, '.');   // friend games: the kicker names the winner
+      // the other side next time, against the computer (or with the board staying put); a study has its own rematch
+      const swap = $('#btn-rematch-swap'), other = Chess.other(match.human);
+      swap.hidden = !!sc || !!game.title || (!cpu && autoFlipOn());
+      if (!swap.hidden) setText(swap, cpu ? `Play ${app.worldName === 'monolith' ? SIDE_COLOR[other] : SIDE[other].toLowerCase()}` : 'Switch sides');
     }
     const banner = $('#turn-banner'); banner.hidden = !!r;
     const c = cur().turn, av = banner.querySelector('.avatar'); av.className = `avatar ${c}`; if (!av.querySelector('.king-icon')) av.innerHTML = KING_ICON;
@@ -350,8 +396,13 @@ export function init() {
     $('#btn-hint').title = !showing ? 'A nudge first; press again for the piece, then the move' : app.hint.level < 3 ? 'One more step of help' : 'Hide the hint';
     $('#btn-undo').disabled = app.busy || game.states.length < 2;
     $('#btn-resign').disabled = !!r || app.busy;
+    $('#btn-draw').hidden = cpu || !!sc || !!game.title; $('#btn-draw').disabled = !!r || app.busy;   // a draw by agreement, two players on one screen
     // strength can change mid-game; Stockfish reads the level when it starts each move
     $('#live-level-group').hidden = !cpu || !!sc;   // a study plays at its own strength
+    // two players: the board's turn for each of them, switched here where it is used
+    const bd = !cpu && !sc && !game.title, turns = prefs.autoFlip !== false;
+    $('#board-group').hidden = !bd;
+    if (bd) { $('#live-autoflip').checked = turns; setText($('#board-help'), turns ? 'After each move, the side to move comes to the bottom. Flip board turns it for this move only.' : 'The board stays where it is. Flip board turns it.'); }
     if (cpu) {
       $('#level-live').value = match.level; $('#live-level-out').textContent = L.name;
       $('#live-level-help').textContent = `Level ${match.level} of 8. ${L.blurb}${levelNote(match.level)}${app.cpuThinking ? ' A change applies from Stockfish\'s next move.' : ''}`;
@@ -374,7 +425,7 @@ export function init() {
       items.push({ kind: 'idle', text: !coachSides().length ? 'The Coach comments on games you play here.' : E && E.failed ? 'The Coach\'s engine could not start here. Hints and the engine lines below still work.' : E && !E.ready ? 'The Coach is getting its engine ready…' : 'Play a move: the Coach reads each one and tells you what it does.' });
     }
     const shown_ = items.slice(0, 3);
-    const noteSig = n => [n.kind, n.cls, n.key, n.alert, n.chance, n.who, n.head, n.score && Monolith.fmtScore(n.score), n.text, n.extra, n.maxim, n.action && n.action.ply].join('|');
+    const noteSig = n => [n.kind, n.cls, n.key, n.alert, n.chance, n.who, n.head, n.score && Monolith.fmtScore(n.score), n.text, n.extra, n.maxim, (n.actions || [n.action]).filter(Boolean).map(a => a.ply + (a.tab || '')).join()].join('|');
     rebuildIf(feed, shown_.map(noteSig).join('\n'), () => { for (const it of shown_) feed.appendChild(coachNoteEl(it)); });
   });
   onRender(({ st }) => {
@@ -417,6 +468,7 @@ export function init() {
   // Settings
   onRender(() => {
     $('#set-sound').checked = prefs.sound; $('#set-legal').checked = prefs.legal; $('#set-explore').checked = prefs.explore !== false; $('#set-coords').checked = prefs.coords;
+    $('#set-autoflip').checked = prefs.autoFlip !== false;
     for (const b of document.querySelectorAll('[data-speed]')) radio(b, b.dataset.speed === prefs.speed);
     for (const b of document.querySelectorAll('[data-tips]')) radio(b, b.dataset.tips === prefs.tips);
     const learnedCount = TIP_IDS.filter(id => prefs.learned[id]).length;
@@ -451,10 +503,11 @@ export function init() {
   // Moves card
   onRender(() => {
     if (boardOverride) return renderCrMoves();   // a Crucible game on the board lists its own moves
-    const list = $('#moves'), vp = viewedPly();
+    const list = $('#moves'), vp = viewedPly(), sb = sandbox(), tryOn = prefs.explore !== false;
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
-    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp]), () => {
-    if (!game.sans.length) { const e = document.createElement('span'); e.className = 'empty'; e.textContent = app.started ? 'No moves yet.' : 'Moves appear here once the game starts.'; list.appendChild(e); }
+    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp, sb && explore.sans, tryOn]), () => {
+    if (sb) return freeMoves(list);
+    if (!game.sans.length) { const e = document.createElement('span'); e.className = 'empty'; e.textContent = app.started ? 'No moves yet.' : tryOn ? 'Try a move on the board; the moves show here.' : 'Moves appear here once the game starts.'; list.appendChild(e); }
     for (let i = 0; i < game.sans.length; i += 2) {
       const n = document.createElement('span'); n.className = 'num'; n.textContent = `${Math.floor(i / 2) + game.states[0].fullmove}.`; list.appendChild(n);
       for (const j of [i, i + 1]) {
@@ -477,13 +530,15 @@ export function init() {
     const curEl = rebuilt && list.querySelector('.cur');
     if (curEl) { const r = curEl.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; }
     const at = vp, last = game.states.length - 1;
-    $('#nav-first').disabled = at === 0 || app.busy; $('#nav-prev').disabled = at === 0 || app.busy;
-    $('#nav-next').disabled = at >= last || app.busy; $('#nav-last').disabled = at >= last || app.busy;
-    $('#move-input').disabled = !canMoveNow();
-    $('#move-input').placeholder = canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
-    // the box's Play button goes with its input; with nothing to list (no game, no line tried, no
-    // Crucible game on the board) the card folds to its head (css/workspace.css)
-    $('#move-form button').disabled = $('#move-input').disabled;
+    // on the free board First resets the line and Previous takes a move back; there is nothing ahead
+    $('#nav-first').disabled = (!sb && at === 0) || app.busy; $('#nav-prev').disabled = (!sb && at === 0) || app.busy;
+    $('#nav-next').disabled = sb || at >= last || app.busy; $('#nav-last').disabled = sb || at >= last || app.busy;
+    // a typed move goes where a click would: the game on your turn, else a line on a board the game does not own
+    const typeTry = !canMoveNow() && (explore.on || (tryOn && exploreAvailable()));
+    $('#move-input').disabled = $('#move-form button').disabled = !canMoveNow() && !typeTry;
+    $('#move-input').placeholder = canMoveNow() ? 'e2e4, Nf3 or O-O' : typeTry ? 'Try a move: e4, Nf3' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
+    // with nothing to list (no game, no line tried, no Crucible game on the board) the card folds
+    // to its head (css/workspace.css)
     $('.moves-card').toggleAttribute('data-idle', !app.started && !explore.on && !boardOverride);
   });
 }

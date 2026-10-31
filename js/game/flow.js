@@ -64,20 +64,20 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { setWorldYaw, worldYaw } from '../scene/sets.js';
 import { clearFragments, placePieces } from '../scene/board.js';
 import { cam } from '../scene/camera.js';
 import { tween } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
-import { cur, draft, game, learn, match, render, shown, SIDE, SIDE_COLOR } from '../app/state.js';
+import { cur, draft, game, learn, match, render, shown, SIDE } from '../app/state.js';
 import { hideSnack, snack } from '../ui/snackbar.js';
 import { engine } from './engine.js';
 import { deselect, rookSqOf, select } from './board-ui.js';
 import { animateBoardMove, askPromotion, maybeComputerMove, resultFor } from './play.js';
 import { celebrate, ceremonyGen, checkShudder, dealIn, restPose } from './ceremony.js';
 import { emptyCalc, refreshAnalysis } from './lines.js';
-import { coachKick } from '../coach/notes.js';
+import { coachKick, turningPly } from '../coach/notes.js';
 import { pad2 } from '../ui/crucible.js';
 import { boardOverride } from '../ui/crucible-board.js';
 import { setTab } from '../ui/nav.js';
@@ -91,15 +91,35 @@ import { study, studyStart, userSetup } from '../ui/studies.js';
    is undone against the scenery, and the farther it was, the longer the turn takes, so the
    scenery never whips past. A newer flip takes over from one still running. */
 let flipGen = 0;
-export function setOrientation(side, animate = true) {
+export let turning = false;   // the board is turning: clicks on it wait (board-ui.js), and #stage.turning hides the cards
+// a turn asked for (Flip board, a new game, the side preview) outranks one still waiting for its beat (autoOrient)
+export function setOrientation(side, animate = true) { autoGen++; turnBoard(side, animate); }
+function turnBoard(side, animate) {
   app.orient = side;
   const target = side === 'w' ? 0 : PI, wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
   const d = wrap(target - cam.theta), orbit = wrap(cam.theta - worldYaw), dy = d + orbit;
-  const from = cam.theta, y0 = worldYaw, gen = ++flipGen;
-  if (!animate || (Math.abs(d) < 0.01 && Math.abs(orbit) < 0.01)) { cam.theta = target; setWorldYaw(target); render(); return; }
-  tween(0.75 + Math.max(0, Math.abs(orbit) - 0.6) * 0.55, e => { if (gen !== flipGen) return; cam.theta = from + d * e; setWorldYaw(y0 + dy * e); });
+  const from = cam.theta, y0 = worldYaw, gen = ++flipGen, settle = () => { turning = false; $('#stage').classList.remove('turning'); };
+  if (!animate || (Math.abs(d) < 0.01 && Math.abs(orbit) < 0.01)) { cam.theta = target; setWorldYaw(target); settle(); render(); return; }
+  /* the cards swap sides at once (they follow app.orient), so they are out of sight while the
+     board turns and come back with it settled */
+  turning = true; $('#stage').classList.add('turning');
+  tween(0.75 + Math.max(0, Math.abs(orbit) - 0.6) * 0.55, e => { if (gen !== flipGen) return; cam.theta = from + d * e; setWorldYaw(y0 + dy * e); }).then(() => { if (gen === flipGen) settle(); });
   render();
 }
+/* Turn the board for each player (2.18.0, on by default: friends on one screen were flipping by
+   hand every move). In a game between two people, a beat after a move lands, the side to move
+   comes to the bottom; under Minimal or reduced motion it is a cut. The side always comes from
+   the position (cur().turn), never from match.human, which a hotseat game still sets. Stepping
+   through earlier moves leaves the board still, and Back to live turns it again; Flip board
+   holds for the move on the board, and the next move turns it again. */
+let autoGen = 0;
+export const autoFlipOn = () => app.started && match.opponent === 'human' && !study.cur && !game.title && prefs.autoFlip !== false;
+export function autoOrient(beat = true) {
+  const g = ++autoGen, still = reduceMotion || prefs.speed === 'minimal';
+  const go = () => { if (g === autoGen && autoFlipOn() && !game.result && app.view === null && !explore.on && !boardOverride && cur().turn !== app.orient) turnBoard(cur().turn, !still); };
+  if (beat) setTimeout(go, still ? 300 : 400 * app.SPEED + 100); else go();
+}
+export function setAutoFlip(on) { prefs.autoFlip = on; savePrefs(); if (on) autoOrient(false); render(); }
 const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
 export function showFace(n) { [...$('#die').children].forEach((pip, i) => { pip.style.opacity = PIPS[n].includes(i) ? 1 : 0; }); }
 /* Random side: the die in the Random card tumbles and settles; odd gives marble, even obsidian. */
@@ -119,8 +139,12 @@ function rollDie(done) {
   spin();
 }
 /* opts (a study): { opponent, side, level, study } set this game's match without touching the
-   saved game settings, which the next ordinary game goes back to. */
-export function startGame(startState, opts = null) {
+   saved game settings, which the next ordinary game goes back to. line: { states, moves, sans }, a
+   game begun part-way with its moves kept (Play from here, a loaded PGN), so the move list, Undo,
+   the captures, the opening's name and repetitions all have its history; a line from the free
+   board (free) is already standing on the board, so it is not dealt in, and a record that says
+   how the game ended (result) ends it there. */
+export function startGame(startState, opts = null, line = null) {
   learn('start'); learn('setup-intro');
   rollGen++; app.rolling = false;   // a roll still tumbling for an earlier start is dropped
   engine.abort(); app.cpuThinking = false; hideSnack(); deselect();
@@ -132,23 +156,32 @@ export function startGame(startState, opts = null) {
   study.cur = opts && opts.study ? opts.study : null;
   const begin = side => {
     app.rolling = false; match.human = side;
-    game.states = [startState || Chess.newGame()]; game.moves = []; game.sans = []; game.title = null;
-    game.result = resultFor(cur()); app.lastMove = null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+    game.states = line ? line.states.slice() : [startState || Chess.newGame()]; game.moves = line ? line.moves.slice() : []; game.sans = line ? line.sans.slice() : []; game.title = null;
+    const lm = game.moves[game.moves.length - 1];
+    game.result = resultFor(cur()) || (line && line.result) || null; app.lastMove = lm ? { from: lm.from, to: lm.to } : null; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+    draft.from = false; exploreEnd(false);
     clearFragments(); placePieces(cur()); app.started = true; app.setupOpen = false;
-    setOrientation(side);
+    if (prefs.tab === 'play') panelScroller().scrollTop = 0;   // the game's pane opens at its top, not where Start game was
+    setOrientation(autoFlipOn() ? cur().turn : side);   // a set-up position may have Obsidian to move
     app.busy = true; render();
     const g0 = ceremonyGen;   // a newer game owns `busy` once it starts
-    dealIn().then(() => { if (g0 !== ceremonyGen) return; app.busy = false; render(); refreshAnalysis(); maybeComputerMove(); coachKick(); });
+    (line && line.free ? Promise.resolve() : dealIn()).then(() => { if (g0 !== ceremonyGen) return; app.busy = false; render(); refreshAnalysis(); maybeComputerMove(); coachKick(); });
   };
-  if (opts) begin(opts.side); else if (draft.choice === 'r') rollDie(begin); else begin(draft.choice);
+  // with the board turning for each player the die decides nothing in a friend game
+  const turns = draft.opponent === 'human' && prefs.autoFlip !== false;
+  if (opts) begin(opts.side); else if (draft.choice === 'r' && !turns) rollDie(begin); else begin(draft.choice === 'r' ? 'w' : draft.choice);
 }
-export function rematch() {
+/* opts.swap: the other side this time (Play obsidian), which the next game keeps as the choice. The
+   result card's Rematch passes its click event, which has no swap. */
+export function rematch(opts) {
   if (study.cur) { studyStart(study.cur.s); return; }   // a study's rematch is the study again
-  Object.assign(draft, userSetup()); setTab('play'); startGame();
+  Object.assign(draft, userSetup());
+  if (opts && opts.swap === true) draft.choice = Chess.other(match.human);
+  setTab('play'); startGame();
 }
 export function openSetup() {
   Object.assign(draft, userSetup());
-  app.setupOpen = true; setTab('play'); render();
+  app.setupOpen = true; setTab('play'); render(); panelScroller().scrollTop = 0;
 }
 export function undo() {
   if (app.busy || game.states.length < 2 || !app.started || boardOverride) return;
@@ -159,7 +192,27 @@ export function undo() {
   while (game.states.length > 1 && (popped === 0 || (match.opponent === 'cpu' && cur().turn !== match.human))) { game.states.pop(); game.moves.pop(); game.sans.pop(); popped++; }
   game.result = null; deselect(); app.hint = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
-  placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick();
+  placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
+}
+/* A draw by agreement between two players on one screen: the side to move offers, the other side
+   answers. canOfferDraw() is true, or the reason it cannot be offered (a declaration, so the
+   palette's table can name it while the modules are still loading). */
+export function canOfferDraw() { return !app.started ? 'Start a game first' : game.result ? 'The game is over' : match.opponent !== 'human' || study.cur || game.title ? 'Two-player games only' : true; }
+export function offerDraw() {
+  if (canOfferDraw() !== true || app.busy) return;
+  const by = cur().turn, rec = game.states, n = rec.length;
+  snack(`${SIDE[by]} offers a draw. Does ${SIDE[Chess.other(by)].toLowerCase()} agree?`, [{ label: 'Keep playing', act: () => {} }, { label: 'Agree to a draw', filled: true, act: () => {
+    if (game.states !== rec || rec.length !== n || game.result) return;   // asked about a position the game has since left
+    game.result = { text: 'Draw agreed.', winner: null, agreed: true };
+    render(); celebrate(game.result); coachKick();
+  } }], true);
+}
+/* A finished game in Analyze: at its turning point when the Coach found one, else at the last
+   move (the final position of a mate or a stalemate has nothing left to search). */
+export function analyzeGame() {
+  if (!app.started) return;
+  const p = turningPly(), last = game.states.length - 1;
+  showView(p !== null ? p : resultFor(cur()) && last > 0 ? last - 1 : last); setTab('analyze');
 }
 export function resign() {
   if (!app.started || game.result) return;
@@ -188,7 +241,7 @@ export function goLive() {
   hideSnack('promotion');
   app.view = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
-  placePieces(cur()); restPose(game.result); render(); refreshAnalysis(); maybeComputerMove();
+  placePieces(cur()); restPose(game.result); render(); refreshAnalysis(); maybeComputerMove(); autoOrient(false);
 }
 export const viewedPly = () => app.view === null ? game.states.length - 1 : app.view;
 
@@ -203,19 +256,25 @@ export const viewedPly = () => app.view === null ? game.states.length - 1 : app.
 export const explore = { on: false, base: null, states: [], moves: [], sans: [] };
 export const exploreState = () => explore.states[explore.states.length - 1];
 export const underlyingState = () => boardOverride ? boardOverride.state : shown();
-export const exploreAvailable = () => !!boardOverride || (app.started && (app.view !== null || !!game.result));
+/* Before any game the board is free (2.18.0): both sides move in turn from the starting position
+   on every tab, and Play from here turns the line into a game. */
+export const exploreAvailable = () => !!boardOverride || !app.started || app.view !== null || !!game.result;
+export const sandbox = () => explore.on && !app.started && !boardOverride;
+// Play from here: the free board's line as it stands when Start game is pressed (draft.from marks the choice)
+export const draftLine = () => draft.from && sandbox() && explore.moves.length ? { states: explore.states.slice(), moves: explore.moves.slice(), sans: explore.sans.slice(), free: true } : null;
 export function setExplorePref(on) { prefs.explore = on; savePrefs(); if (!on && explore.on) exploreEnd(); else render(); }
 function exploreStart() {
   const base = underlyingState();
-  Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] });
+  Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] }); draft.from = false;   // a new line is not yet one to play from
   deselect(); placePieces(base);   // fresh pieces: an ended game's poses don't carry into the line
+  render();   // the chip, the cards and the move list say so from the first click, not the first move
 }
 /* replace: put the underlying board's pieces back (Back, Undo past the start); without it the
    caller that changed the board underneath has placed them already. */
 export function exploreEnd(replace = true) {
   if (!explore.on) return;
   Object.assign(explore, { on: false, base: null, states: [], moves: [], sans: [] });
-  app.selected = -1; app.legalFor = [];
+  app.selected = -1; app.legalFor = []; draft.from = false;   // a reset free board takes Play from here with it
   if (replace) { placePieces(underlyingState()); if (!boardOverride && app.view === null) restPose(game.result); hideSnack(); render(); refreshAnalysis(); }
 }
 export function exploreUndo() {
@@ -241,7 +300,8 @@ export function exploreSquare(sq) {
   if (app.busy) return;
   if (!explore.on) {
     const st0 = underlyingState(), p0 = st0.board[sq];
-    if (!p0 || p0.c !== st0.turn) { snack(Chess.allLegal(st0).length ? `${SIDE_COLOR[st0.turn] === 'white' ? 'White' : 'Black'} is to move here: pick one of its pieces to try a move.` : 'No legal moves in this position.'); return; }
+    const who = app.worldName === 'monolith' ? (st0.turn === 'w' ? 'White' : 'Black') : SIDE[st0.turn];
+    if (!p0 || p0.c !== st0.turn) { snack(Chess.allLegal(st0).length ? `${who} is to move here: pick one of its pieces to try a move.` : 'No legal moves in this position.'); return; }
     exploreStart();
   }
   const st = exploreState(), p = st.board[sq];
@@ -252,6 +312,8 @@ export function exploreSquare(sq) {
   if (p && p.c === st.turn) { if (app.selected === sq) deselect(); else { deselect(); select(sq); } }
   else deselect();
 }
+// a typed move (the move box) into the line, starting one from the board on screen if need be
+export function exploreTyped(mv) { if (app.busy || turning) return; if (!explore.on) exploreStart(); return exploreMove(mv); }
 async function exploreMove(mv) {
   if (!explore.on) return;
   app.busy = true; const st = exploreState(); deselect(); hideSnack();
@@ -274,6 +336,7 @@ export function exploreLine(max = 6) {
   return out.length > max ? '… ' + out.slice(-max).join(' ') : out.join(' ');
 }
 export function exploreOrigin() {
+  if (!boardOverride && !app.started) return 'the starting position';
   if (boardOverride && boardOverride.game) return `game #${pad2(boardOverride.game.index)}, ply ${boardOverride.ply}`;
   if (app.view !== null) return app.view === 0 ? 'the starting position' : `move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
   return 'the final position';

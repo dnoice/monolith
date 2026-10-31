@@ -95,8 +95,12 @@
 .calc-row .btn{flex:1 1 auto}
 .calc-lines{font-size:12.5px;color:var(--md-on-surface-var);margin-left:4px}
 .calc-row .select{height:40px}
-.game-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:-4px}
+.game-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-top:-4px}
 .game-actions .btn{width:100%;height:36px;font-size:13px}
+/* three actions (Draw, in a game between two players) in a narrow panel: the words without the icons */
+.game-actions{container-type:inline-size}
+.game-actions .btn{min-width:0;padding-inline:12px;white-space:nowrap}
+@container (max-width:400px){.game-actions:has(> #btn-draw:not([hidden])) .btn svg{display:none}}
 .group-title:not(summary){display:flex;align-items:center;gap:10px}
 .group-title:not(summary)::after{content:'';flex:1;height:1px;background:var(--md-outline-var)}
 :root[data-skin="monolith"] .card{background:var(--mo-well);border-color:var(--mo-rule)}
@@ -154,3 +158,46 @@
 @media (max-width:1380px){.mb-p small{display:none}}
 @media (max-width:1240px){.mb-last{display:none}}
 @media (max-width:1080px){.mb-players,.mb-title{display:none}}
+
+/* ---------- the board turning for each player (2.18.0) ----------
+   The players' cards follow the side at the bottom, so they swap the moment a flip starts; while
+   the board turns they are out of sight, and they come back with it settled. A cut (Minimal,
+   reduced motion) never hides them. */
+.player{transition:border-color .25s,box-shadow .25s,opacity .25s}
+#stage.turning .player{opacity:0;transition:none}
+
+/* ---------- the free board before a game (2.18.0) ----------
+   Its moves in the list are a line being tried, not a record to step through; Play from here
+   opens the setup on it, with the line in the card at the top. */
+.mv.tried{cursor:default}
+.mv.tried:not(.cur):hover{background:none}
+.from-line{margin:0;font:500 13px/1.5 var(--font-mono);color:var(--md-on-surface);overflow-wrap:anywhere}
+.setup-from .help{margin-top:-6px}
+.setup-from .row{margin:-6px 0 -6px -10px}
+:root[data-skin="monolith"] .from-line{font-family:var(--font-tele)}
+/* on a phone the chip's line takes its first row and Undo, Reset and Play from here the second;
+   beside three buttons the line was squeezed to nothing and the chip grew into a blob */
+@media (max-width:899px){#explore-chip:has(> #btn-explore-play:not([hidden])){flex-wrap:wrap;justify-content:center;row-gap:4px;border-radius:var(--r-card);padding:8px 6px 6px}#explore-chip:has(> #btn-explore-play:not([hidden])) > span{flex:1 0 100%;margin:0;padding-inline:8px}}
+
+/* ---------- Start game within reach (2.18.0) ----------
+   The setup is taller than the panel at most sizes and Start game is its last line, so the action
+   row holds at the foot of the pane while the cards scroll under it. -20px cancels the panes'
+   padding, as the Position switch does at the top; on phones the panel scrolls, unpadded. */
+#setup > .row.end{position:sticky;bottom:-20px;z-index:2;margin-block:-12px -20px;padding:12px 0 32px;background:linear-gradient(to top,var(--md-surface-1) 72%,transparent)}
+@media (max-width:899px){#setup > .row.end{bottom:0;margin-bottom:-12px;padding-bottom:12px}}
+
+/* ---------- the game record (2.18.0) ----------
+   Load a game folds away under its head at the foot of the setup; the record's three text
+   buttons sit quietly under New game and Resign. A details element keeps the card's own flex
+   off, since its parts are not all flex items in every browser. */
+.pgn-load{display:block;scroll-margin-bottom:84px}
+.pgn-load > summary{list-style:none;cursor:pointer;border-radius:4px}
+.pgn-load > summary::-webkit-details-marker{display:none}
+.pgn-load > summary::after{content:'';flex:none;width:7px;height:7px;margin:0 4px 3px 2px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(45deg);transition:transform .15s var(--ease-std)}
+.pgn-load[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
+.pgn-load > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.pgn-body{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.pgn-box{width:100%;min-height:88px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-1);color:var(--md-on-surface);font:12.5px/1.5 var(--font-mono)}
+.pgn-box::placeholder{color:var(--md-on-surface-var)}
+.game-record{display:flex;flex-wrap:wrap;gap:2px 4px;margin:-12px 0 0 -10px}
+:root[data-skin="monolith"] .pgn-box{background:var(--mo-panel);border-color:var(--mo-rule);font-family:var(--font-tele)}

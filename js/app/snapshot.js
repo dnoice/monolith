@@ -63,8 +63,9 @@ import { post } from '../scene/post.js';
 import { cam } from '../scene/camera.js';
 import { applyPrefs, cur, draft, game, match, render } from './state.js';
 import { engine } from '../game/engine.js';
+import { resultFor } from '../game/play.js';
 import { restPose } from '../game/ceremony.js';
-import { showFace } from '../game/flow.js';
+import { autoFlipOn, showFace } from '../game/flow.js';
 import { applyWorldMix, desiredWorld, setWorld, WORLD } from '../scene/worlds.js';
 import { buildTelemetry } from '../ui/telemetry.js';
 import { setTab } from '../ui/nav.js';
@@ -72,6 +73,47 @@ import { setTab } from '../ui/nav.js';
 /* ---------- viewer hot-update snapshot ---------- */
 export function snapshot() {
   try { window.claude?.hot?.snapshot?.(() => ({ v: 2, states: game.states, moves: game.moves, sans: game.sans, result: game.result, title: game.title || null, started: app.started, match: Object.assign({}, match), draft: Object.assign({}, draft), setupOpen: app.setupOpen, orient: app.orient, theta: cam.theta })); } catch (e) {}
+  saveGame();
+}
+
+/* ---------- the game kept in this browser (2.18.0) ----------
+   A reload, a closed tab or a lost GPU process used to throw the game away. The game on the board
+   is kept in localStorage as its start position and its moves (FEN and UCI, a few hundred bytes),
+   written when it changes: the signature keeps a render that changed nothing from writing. A
+   study is not kept (its scripted replies cannot be rebuilt), nor an explored line or the free
+   board; with no game the key goes. */
+const GAME_KEY = 'monolith-game-v1';
+let savedSig = '';   // '' at load, so the first render (before start() reads the key) leaves it alone
+function saveGame() {
+  const sig = !app.started || match.study ? '' : [game.states.length, Chess.fen(game.states[0]), game.result && game.result.text, match.opponent, match.choice, match.human, match.level, app.orient, game.title && game.title.name].join('|');
+  if (sig === savedSig) return;
+  savedSig = sig;
+  try {
+    if (!sig) localStorage.removeItem(GAME_KEY);
+    else localStorage.setItem(GAME_KEY, JSON.stringify({ v: 1, fen: Chess.fen(game.states[0]), uci: game.moves.map(Chess.toUci), result: game.result, title: game.title || null,
+      match: { opponent: match.opponent, choice: match.choice, human: match.human, level: match.level }, orient: app.orient }));
+  } catch (e) {}
+}
+/* The kept game back on the board. Like the saved preferences, what storage holds is repaired, not
+   trusted: the moves replay from the start position and stop at the first that is not legal there
+   (the result then comes from the position), and every setting keeps to its choices. */
+function loadGame() {
+  let d; try { d = JSON.parse(localStorage.getItem(GAME_KEY)); } catch (e) { return false; }
+  if (!d || d.v !== 1 || typeof d.fen !== 'string' || !Array.isArray(d.uci)) return false;
+  const r = Chess.parseFen(d.fen); if (r.error) return false;
+  const states = [r.state], moves = [], sans = [];
+  for (const u of d.uci) {
+    const st = states[states.length - 1], mv = typeof u === 'string' ? Chess.fromUci(st, u) : null; if (!mv) break;
+    const nx = Chess.apply(st, mv); moves.push(mv); sans.push(Chess.san(st, mv, nx)); states.push(nx);
+  }
+  const m = d.match && typeof d.match === 'object' ? d.match : {}, side = c => c === 'b' ? 'b' : 'w', res = d.result;
+  Object.assign(game, { states, moves, sans, title: d.title && typeof d.title.name === 'string' ? d.title : null });
+  game.result = moves.length === d.uci.length && res && typeof res.text === 'string' && [null, 'w', 'b'].includes(res.winner) ? res : resultFor(cur());
+  Object.assign(match, { opponent: m.opponent === 'human' ? 'human' : 'cpu', choice: ['w', 'b', 'r'].includes(m.choice) ? m.choice : 'w', human: side(m.human),
+    level: Number.isInteger(m.level) && m.level >= 1 && m.level <= LEVELS.length ? m.level : prefs.level, study: false });
+  app.started = true; app.setupOpen = false; app.orient = side(d.orient);
+  const lm = moves[moves.length - 1]; app.lastMove = lm ? { from: lm.from, to: lm.to } : null;
+  return true;
 }
 /* A snapshot is the page's own, taken before a hot update; one whose game record does not have
    the shape this version reads (from another version, or damaged) is set aside whole rather than
@@ -91,7 +133,9 @@ export function start(data) {
     if (data.match) Object.assign(match, data.match); if (data.draft) Object.assign(draft, data.draft);
     app.orient = data.orient === 'b' ? 'b' : 'w';
     const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
-  }
+  } else loadGame();   // no hot update: the game this browser kept, if there is one
+  // two players with the board turning: the side to move sits at the bottom, even if the page went during the beat before a turn
+  if (autoFlipOn() && !game.result) app.orient = cur().turn;
   cam.theta = app.orient === 'w' ? 0 : PI; setWorldYaw(cam.theta);
   showFace(5);
   buildTelemetry();

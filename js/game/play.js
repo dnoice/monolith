@@ -74,7 +74,7 @@ import { refreshAnalysis } from './lines.js';
 import { coachKick } from '../coach/notes.js';
 import { studyAfterMove, studyScripted } from '../ui/studies.js';
 import { boardOverride } from '../ui/crucible-board.js';
-import { explore, exploreEnd } from './flow.js';
+import { autoOrient, explore, exploreEnd } from './flow.js';
 
 /* ---------- playing moves ---------- */
 export async function playMove(mv) {
@@ -178,7 +178,7 @@ function afterMove(next) {
   game.result = resultFor(next);
   studyAfterMove();
   if (!game.result && Chess.inCheck(next)) { sound.chime(); checkShudder(Chess.kingSq(next.board, next.turn)); }
-  render();
+  render(); autoOrient();   // two players on one screen: the board turns to the side to move, a beat after the move lands
   if (game.result) celebrate(game.result);   // the result card in the Play panel carries Rematch
   refreshAnalysis();
   maybeComputerMove();
