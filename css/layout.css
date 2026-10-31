@@ -106,7 +106,7 @@
 .brand small{display:block;font-size:11px;line-height:1.2;font-weight:400;letter-spacing:.6px;text-transform:uppercase;color:var(--md-on-surface-var)}
 /* The app's actions: the command palette, Flip board and Sound, and the release chip. One set of
    elements that js/ui/nav.js places, at the foot of the rail from 900 px up and at the app bar's
-   end below that; in the bar they keep a row, the palette's key named beside it. */
+   end below that, in a row. */
 .app-actions{display:flex;gap:8px;align-items:center}
 
 /* ---------- shared controls: state layers, ripples, focus ---------- */

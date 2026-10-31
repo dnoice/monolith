@@ -117,9 +117,12 @@
    Analyze and Crucible put their own title first instead of the players. Before a game it shows
    the game Start game will begin, as the Play tab's choices change, and that it has not started
    (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
-   Only a number takes the larger size. It narrows as the bar does: the levels and the last move
-   go first, then the players; phones leave it to the panel. It stands at the bar's end, where
-   the actions were before they moved to the rail (Dennis, 10/30/2026).
+   Only a number takes the larger size. It stands at the bar's end, where the actions were before
+   they moved to the rail (Dennis, 10/30/2026), and has their room: it narrows as the bar does, the
+   levels going under 1100 px and the last move under 1000, while the players or the title stay
+   at every desktop width (its widest, the Crucible's board with both engines named, is 700 px;
+   the room beside the brand is the width less about 345, so from 1000 to 1045 px and at 900 the
+   Crucible's title is shortened to fit); phones leave it to the panel.
    Every segment sets its words on one baseline (Dennis, 10/30/2026: the labels, the values and
    the larger numbers sat at their own heights, up to 2 px apart, each centred by its box): a
    segment is a row of baseline-aligned cells whose row is centred in the pill, with a strut the
@@ -164,9 +167,8 @@
 :root[data-skin="monolith"] .mb-p.on b{color:var(--mo-ink)}
 :root[data-skin="monolith"] .mb-s.think{color:var(--mo-cyan)}
 :root[data-skin="monolith"] .mb-s.done{color:var(--mo-ink)}
-@media (max-width:1380px){.mb-p small{display:none}}
-@media (max-width:1240px){.mb-last{display:none}}
-@media (max-width:1080px){.mb-players,.mb-title{display:none}}
+@media (max-width:1099px){.mb-p small{display:none}}
+@media (max-width:999px){.mb-last{display:none}}
 
 /* ---------- the board turning for each player (2.18.0) ----------
    The players' cards follow the side at the bottom, so they swap the moment a flip starts; while
