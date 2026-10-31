@@ -553,7 +553,7 @@ export function init() {
     // (Explore in Analyze), the game on your turn, else a line on a board the game does not own
     const typeTry = explore.on || analyzeExplores() || (!canMoveNow() && tryOn && exploreAvailable());
     $('#move-input').disabled = $('#move-form button').disabled = !canMoveNow() && !typeTry;
-    $('#move-input').placeholder = typeTry ? 'Try a move: e4, Nf3' : canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
+    $('#move-input').placeholder = typeTry ? 'Try a move: e4, Nf3' : canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : drawJudging() ? 'Stockfish is considering your offer' : 'Waiting for the reply';
     // with nothing to list (no game, no line tried, no Crucible game on the board) the card folds
     // to its head (css/workspace.css)
     $('.moves-card').toggleAttribute('data-idle', !app.started && !explore.on && !boardOverride);
