@@ -68,12 +68,12 @@ import { PIECE_NAMES, sqPos } from '../scene/board.js';
 import { INK, PIECE_TOP, setField, setVectors, setXray } from '../scene/instruments.js';
 import { setPhantoms } from '../scene/phantoms.js';
 import { game, render, shown } from '../app/state.js';
-import { exploreAppend } from '../game/flow.js';
+import { consultable, consultedAt, CONSULT_DWELL_MS, exploreAppend, markConsult } from '../game/flow.js';
 import { boardState, lineQuality } from '../game/board-ui.js';
 import { PVAL, see } from '../coach/coach.js';
 import { cap1 } from '../coach/facts.js';
 import { materialOf, MIN, pct1, sanList, stmScore, whiteScore } from '../game/input.js';
-import { an, deep, fieldEng, xr } from './analyze.js';
+import { an, anEvalShown, deep, fieldEng, xr } from './analyze.js';
 import { termify } from './grimoire.js';
 import { renderMatchbar } from './panels.js';
 
@@ -192,9 +192,29 @@ function gradeLines(lines) {
   const grades = lineQuality(lines.map(l => l || null));
   return grades.map(q => q ? Object.assign({}, q, GRADE_MO[q.key]) : null);
 }
+/* Looking at the engine in a two-player game (js/game/flow.js markConsult): Analyze open on a live
+   two-player game, at the same position of its record, for CONSULT_DWELL_MS and with the engine's
+   evaluation on screen marks the side to move. Leaving the tab, a move, or a hidden page starts the
+   count again, so passing through the tab (the rail's arrow keys, a click on the way to another tab)
+   marks nothing. Run from every render of the tab, and by its own timer when nothing renders. */
+let consultOpen = null, consultTimer = 0;   // { rec, ply, t }: open on this position since t
+function consultWatch() {
+  const ply = game.states.length - 1;
+  if (prefs.tab !== 'analyze' || !consultable() || document.visibilityState === 'hidden' || consultedAt(ply)) { consultOpen = null; clearTimeout(consultTimer); consultTimer = 0; return; }
+  if (!consultOpen || consultOpen.rec !== game.states || consultOpen.ply !== ply) consultOpen = { rec: game.states, ply, t: performance.now() };
+  const left = CONSULT_DWELL_MS - (performance.now() - consultOpen.t);
+  if (left <= 0 && anEvalShown()) {
+    const k = consultOpen; consultOpen = null; clearTimeout(consultTimer); consultTimer = 0;
+    // outside the render that called this: the mark renders (and saves) itself
+    setTimeout(() => { if (k.rec === game.states && k.ply === game.states.length - 1 && anEvalShown()) markConsult(); }, 0);
+    return;
+  }
+  if (!consultTimer) consultTimer = setTimeout(() => { consultTimer = 0; consultWatch(); }, Math.max(250, left));
+}
 let anDomVer = -1;
 export function renderAnalyze() {
   const on = prefs.tab === 'analyze';
+  consultWatch();
   $('#layer-toggles').hidden = !on; $('#syn').hidden = !on;
   if (!on) { $('#wdl').hidden = true; $('#wdl-none').hidden = true; $('#field-legend').hidden = true; $('#xray-chip').hidden = true; $('#phantom-chip').hidden = true; return; }
   const st = an.st || shown(), rec = an.source === 'recorded', R = an.rec, recTag = rec ? ' · recorded' : '';

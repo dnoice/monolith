@@ -99,6 +99,8 @@ export const an = {
   rec: null, recState: 'idle', recErr: '', recPromise: null, ver: 0
 };
 export const xr = { held: false, sticky: false, hover: -1, pin: -1, touch: false };   // pin: the square a tap chose
+// the engine's evaluation is on screen: Analyze open with a scored line, live or recorded (js/game/flow.js markConsult)
+export const anEvalShown = () => prefs.tab === 'analyze' && (an.source === 'recorded' || an.lines.some(Boolean));
 let anTimer = 0;
 const anTouch = () => { an.ver++; if (!anTimer) anTimer = setTimeout(() => { anTimer = 0; renderAnalyze(); }, an.status === 'searching' ? 180 : 60); };
 function ensureAnalysisEngines() {

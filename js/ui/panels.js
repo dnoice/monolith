@@ -85,8 +85,8 @@ import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
 import {
-  analyzeExplores, analyzeGame, autoFlipOn, canOfferDraw, drawJudging, explore, exploreAvailable, exploreLine,
-  exploreOrigin, exploreState, sandbox, showView, viewedPly
+  analyzeExplores, analyzeGame, autoFlipOn, canOfferDraw, consultedAt, consultPlies, drawJudging, explore,
+  exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView, viewedPly
 } from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
@@ -516,7 +516,8 @@ export function init() {
     if (boardOverride) { renderCrMoves(); $('#move-form button').disabled = $('#move-input').disabled; $('.moves-card').removeAttribute('data-idle'); return; }
     const list = $('#moves'), vp = viewedPly(), sb = sandbox(), tryOn = prefs.explore !== false;
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
-    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp, sb && explore.sans, tryOn]), () => {
+    const used = consultPlies(), mono = app.worldName === 'monolith';   // moves made after using Analyze (a two-player game)
+    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, used, mono, vp, sb && explore.sans, tryOn]), () => {
     if (sb) return freeMoves(list);
     if (!game.sans.length) { const e = document.createElement('span'); e.className = 'empty'; e.textContent = app.started ? 'No moves yet.' : tryOn ? 'Try a move on the board; the moves show here.' : 'Moves appear here once the game starts.'; list.appendChild(e); }
     for (let i = 0; i < game.sans.length; i += 2) {
@@ -527,7 +528,10 @@ export function init() {
           s.className = 'mv' + (j + 1 === vp ? ' cur' : ''); s.textContent = game.sans[j]; s.tabIndex = 0; s.setAttribute('role', 'button'); s.dataset.key = `m${j}`;
           const mark = marks[j];
           if (mark) { const mk = document.createElement('sup'); mk.className = `mk mk-${mark === '!!' ? 'brilliant' : mark === '!' ? 'good' : mark === '?!' ? 'inaccuracy' : mark === '?' ? 'mistake' : 'blunder'}`; mk.textContent = mark; s.appendChild(mk); }
-          s.setAttribute('aria-label', `Show the position after ${game.sans[j]}${mark ? `, marked ${mark}` : ''}`);
+          // the side that played it used Analyze first: the Analyze icon, with who in its title
+          const who = consultedAt(j) ? (mono ? (game.states[j].turn === 'w' ? 'White' : 'Black') : SIDE[game.states[j].turn]) : '';
+          if (who) { const ub = document.createElement('span'); ub.className = 'mk-consult'; ub.title = `${who} looked at the engine (Analyze) before this move`; ub.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>'; s.appendChild(ub); }
+          s.setAttribute('aria-label', `Show the position after ${game.sans[j]}${mark ? `, marked ${mark}` : ''}${who ? `, ${who} used Analyze before it` : ''}`);
           const go = () => showView(j + 1);
           s.addEventListener('click', go); s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
         }

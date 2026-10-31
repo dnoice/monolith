@@ -169,6 +169,9 @@
 /* ---------- the free board before a game (2.18.0) ----------
    Its moves in the list are a line being tried, not a record to step through; Play from here
    opens the setup on it, with the line in the card at the top. */
+/* a move played after its side used Analyze in a two-player game (2.18.0): the Analyze icon */
+.mv .mk-consult{display:inline-block;width:12px;height:12px;margin-left:3px;vertical-align:-1px;color:var(--md-secondary)}
+.mv .mk-consult svg{display:block;width:100%;height:100%;fill:currentColor}
 .mv.tried{cursor:default}
 .mv.tried:not(.cur):hover{background:none}
 .from-line{margin:0;font:500 13px/1.5 var(--font-mono);color:var(--md-on-surface);overflow-wrap:anywhere}

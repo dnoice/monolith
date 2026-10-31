@@ -82,6 +82,7 @@ import { pad2 } from '../ui/crucible.js';
 import { boardOverride } from '../ui/crucible-board.js';
 import { setTab } from '../ui/nav.js';
 import { study, studyStart, userSetup } from '../ui/studies.js';
+import { anEvalShown } from '../ui/analyze.js';
 
 /* ---------- starting, ending and rewinding games ---------- */
 /* A flip turns the camera and the world rig together, the same way round, so the scenery holds
@@ -114,10 +115,12 @@ function turnBoard(side, animate) {
    holds for the move on the board, and the next move turns it again. */
 let autoGen = 0;
 export const autoFlipOn = () => app.started && match.opponent === 'human' && !study.cur && !game.title && prefs.autoFlip !== false;
+// the beat between a move landing and the board turning (ms); the notice at the handover keeps it too
+const autoBeat = () => reduceMotion || prefs.speed === 'minimal' ? 300 : 400 * app.SPEED + 100;
 export function autoOrient(beat = true) {
   const g = ++autoGen, still = reduceMotion || prefs.speed === 'minimal';
   const go = () => { if (g === autoGen && autoFlipOn() && !game.result && app.view === null && !explore.on && !boardOverride && cur().turn !== app.orient) turnBoard(cur().turn, !still); };
-  if (beat) setTimeout(go, still ? 300 : 400 * app.SPEED + 100); else go();
+  if (beat) setTimeout(go, autoBeat()); else go();
 }
 export function setAutoFlip(on) { prefs.autoFlip = on; savePrefs(); if (on) autoOrient(false); render(); }
 const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
@@ -190,6 +193,7 @@ export function undo() {
   // against the computer, undo returns to your last turn (its reply and your move)
   let popped = 0;
   while (game.states.length > 1 && (popped === 0 || (match.opponent === 'cpu' && cur().turn !== match.human))) { game.states.pop(); game.moves.pop(); game.sans.pop(); popped++; }
+  consultPrune();
   game.result = null; deselect(); app.hint = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
   placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
@@ -371,7 +375,7 @@ export function exploreAppend(from, seq) {
   if (app.busy || !seq.length || from !== (explore.on ? exploreState() : underlyingState())) return false;
   if (!explore.on) exploreStart();
   for (const x of seq) { explore.states.push(x.state); explore.moves.push(x.mv); explore.sans.push(x.san); }
-  deselect(); hideSnack(); placePieces(exploreState()); render(); refreshAnalysis();
+  deselect(); hideSnack(); consultOnLine(); placePieces(exploreState()); render(); refreshAnalysis();
   return true;
 }
 // called from render: the board the line started from has changed underneath it
@@ -403,6 +407,7 @@ async function exploreMove(mv) {
   explore.states.push(next); explore.moves.push(mv); explore.sans.push(san);
   app.busy = false;
   if (Chess.inCheck(next)) { sound.chime(); checkShudder(Chess.kingSq(next.board, next.turn)); }
+  consultOnLine();
   render(); refreshAnalysis();
 }
 /* "12… Nf6 13. e5": the explored moves numbered from the position they started in. */
@@ -420,4 +425,61 @@ export function exploreOrigin() {
   if (boardOverride && boardOverride.game) return `game #${pad2(boardOverride.game.index)}, ply ${boardOverride.ply}`;
   if (app.view !== null) return app.view === 0 ? 'the starting position' : `move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
   return game.result ? 'the final position' : 'the live position';
+}
+
+/* ---------- looking at the engine in a two-player game (2.18.0) ----------
+   Dennis: with two people on one screen, one of them using Analyze during the game is consulting
+   the engine, and the other is told. It counts for the side to move at the live position, and only
+   in a live two-player game: never a finished game, a game against the computer, the free board, a
+   study, a game loaded for analysis or a Crucible game on the board (consultable()).
+   The trigger, chosen so that passing through the tab marks nothing:
+   - Analyze open on the game for CONSULT_DWELL_MS with the engine's evaluation on screen, at any of
+     its positions (the live one, an earlier move, a line from it): consultWatch() in
+     js/ui/analyze-view.js. Crossing the rail with the arrow keys, or a click on the way to another
+     tab, takes less than that.
+   - At once: a move tried in a line from the live position (a click, a drag, a typed move, Play to
+     here), or a move played in the game from Analyze with its evaluation on screen.
+   The mark belongs to the position (its ply in the record) and lands on the move then played from
+   it: a badge in the move list, a comment in the PGN, kept through a reload (js/app/snapshot.js).
+   An undo keeps the mark of the position it returns to and drops those of positions it took away.
+   The other player is told at the handover: as the board turns to them, or as their turn starts
+   when the board does not turn. */
+export const CONSULT_DWELL_MS = 1500;
+const consults = new WeakMap();   // game.states → Set of plies whose side to move used Analyze there
+export const consultable = () => app.started && match.opponent === 'human' && !study.cur && !game.title && !game.result && !boardOverride;
+export const consultedAt = ply => { const s = consults.get(game.states); return !!s && s.has(ply); };
+export const consultPlies = () => [...(consults.get(game.states) || [])].sort((a, b) => a - b);
+// marks saved with a game (a reload, a hot update) back on its record, each a position it has
+export function setConsultPlies(list) {
+  const n = game.states.length, s = new Set((Array.isArray(list) ? list : []).filter(p => Number.isInteger(p) && p >= 0 && p < n));
+  if (s.size) consults.set(game.states, s); else consults.delete(game.states);
+}
+function consultPrune() { const s = consults.get(game.states); if (s) for (const p of [...s]) if (p > game.states.length - 1) s.delete(p); }
+const sideWord = c => app.worldName === 'monolith' ? (c === 'w' ? 'White' : 'Black') : SIDE[c];
+// marks the live position for its side to move, saying so once; quiet: the caller renders
+export function markConsult(quiet = false) {
+  if (!consultable()) return false;
+  const ply = game.states.length - 1, st = cur();
+  let s = consults.get(game.states); if (!s) consults.set(game.states, s = new Set());
+  if (s.has(ply)) return false;
+  s.add(ply);
+  snack(`${sideWord(st.turn)} used Analyze: their move ${st.fullmove} is marked, and ${sideWord(Chess.other(st.turn))} will be told.`);
+  if (!quiet) render();
+  return true;
+}
+// a move into a line from the live position
+function consultOnLine() { if (explore.on && !boardOverride && app.view === null && explore.base === cur()) markConsult(true); }
+// a move played in the game from Analyze with its evaluation on screen (js/game/play.js playMove)
+export function consultOnMove() { if (anEvalShown()) markConsult(true); }
+/* At the handover (js/game/play.js afterMove): the move just played carries a mark, so the player now
+   to move is told, as the board turns to them, or at once when it does not turn. A move that ended
+   the game has no handover; the badge and the PGN keep its mark. */
+export function consultHandover() {
+  const k = game.moves.length - 1;
+  if (k < 0 || game.result || !consultedAt(k) || match.opponent !== 'human' || study.cur || game.title) return;
+  const rec = game.states, n = rec.length, by = rec[k];
+  setTimeout(() => {
+    if (game.states !== rec || rec.length !== n || game.result) return;   // the game moved on meanwhile
+    snack(`${sideWord(by.turn)} used Analyze before their move ${by.fullmove}.`, [{ label: 'OK', act: () => {} }], true, 'consult');
+  }, autoFlipOn() ? autoBeat() : 0);
 }
