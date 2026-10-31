@@ -1,30 +1,27 @@
 /*
 ✒ Metadata
-    - Title: Worlds (MONOLITH Edition - v1.3)
+    - Title: Worlds (MONOLITH Edition - v1.4)
     - File Name: worlds.js
     - Relative Path: js/scene/worlds.js
     - Artifact Type: javascript
-    - Version: 1.3.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.4.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] —
+      worldFor(tab), exported: the world a destination opens in, which
+      desiredWorld() reads and the rail's crossfade checks (js/ui/nav.js).
     - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A world
       change eases to the fitted distance and pan, the fog thins with the
       fit (applyBackdrop(), exported), and the subtitle names the world.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: the veil of a world change clears
-      smoothly over its second half and starts from where an interrupted
-      change left it (it held dark, then snapped clear); worldSettled() says
-      when a change has finished; and a change warms the preview shaders
-      again.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -41,9 +38,11 @@
       world's own distance over the camera's fit (js/scene/camera.js), so
       the board reads the same at any stage size.
     - applyWorldMix(): the continuous blend between the worlds.
-    - setWorld() and desiredWorld(): the transition, and which world a tab
-      wants; the camera eases to the fit and pan read live, so a stage that
-      changes size on the way is still fitted at the end.
+    - setWorld() and desiredWorld(): the transition, and which world the
+      open tab wants; the camera eases to the fit and pan read live, so a
+      stage that changes size on the way is still fitted at the end.
+    - worldFor(tab): the world a destination opens in (the Grimoire keeps
+      the world it finds), which desiredWorld() reads for the open tab.
     - The app bar's subtitle (#brand-sub), set on each change: "Cathedral
       world · marble vs. obsidian", or "MONOLITH world · {engine family}
       instrument" (js/game/engine.js names the engine that loaded).

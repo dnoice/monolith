@@ -4,26 +4,24 @@
     - File Name: play.js
     - Relative Path: js/game/play.js
     - Artifact Type: javascript
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.1.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Its
+      comment and header say the engine's help where they said Analyze: the
+      handover now tells which kind the other player used (js/game/flow.js).
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A move
       ends a line over it, spares a Crucible game's pieces, lands if its
       animation fails; a friend game turns the board and flags Analyze use.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.2 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a move, or the computer's reply, that
-      finishes after an undo, a new game or a board change no longer lands
-      in the new position, and the promotion chooser belongs to the position
-      it was opened for.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -40,8 +38,8 @@
       its evaluation on screen, carries the Analyze mark (consultOnMove()).
     - afterMove(): the result, sounds, the Coach and the next turn; in a
       friend game the board then turns to the side to move, and that player
-      is told when the other used Analyze before the move (autoOrient() and
-      consultHandover() in js/game/flow.js).
+      is told which of the engine's help the other used before the move
+      (autoOrient() and consultHandover() in js/game/flow.js).
     - maybeComputerMove(): the engine's reply at the level's limits, with
       chooseMove for levels 1 to 5.
     - playLevel() and levelNote(): a level, adjusted when the engine has no

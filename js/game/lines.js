@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Evaluation Lines (MONOLITH Edition - v1.0)
+    - Title: Evaluation Lines (MONOLITH Edition - v1.1)
     - File Name: lines.js
     - Relative Path: js/game/lines.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — In a
+      two-player game calculateMoves() marks the side to move as having
+      used Calculate (markConsult('calc'), js/game/flow.js).
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -23,12 +26,16 @@
 ✒ Description:
     The evaluation bar and best line for the position on screen, and
     Calculate moves: the engine's MultiPV candidates drawn as ranked arrows.
+    In a game between two people on one screen, Calculate marks the side
+    to move as having used the engine's help.
 
 ✒ Key Features:
     - refreshAnalysis(): the evaluation bar and best line, for the position
       shown.
     - evalView(): the bar's state.
-    - calculateMoves(): MultiPV candidates as ranked arrows.
+    - calculateMoves(): MultiPV candidates as ranked arrows; in a live
+      two-player game it marks the side to move at the live position,
+      whatever position is shown (markConsult('calc') in js/game/flow.js).
     - scoreOf() and pvToSan().
 
 ✒ Usage Instructions:

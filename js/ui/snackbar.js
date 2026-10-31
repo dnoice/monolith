@@ -4,15 +4,18 @@
     - File Name: snackbar.js
     - Relative Path: js/ui/snackbar.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.0.3
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.3 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — snack()
+      keeps its kind on the element as data-kind, so css/media.css can put
+      the handover notice (kind 'consult') at the top of a phone's stage.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,17 +23,18 @@
       in the release audit Dennis asked for: a dismissed message's buttons
       are disabled at once, where before they stayed focusable while
       invisible (Tab and Enter could still run "Play it").
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    One message at a time at the foot of the stage, with optional actions;
-    it hides itself after a few seconds unless it is sticky.
+    One message at a time, with optional actions, at the foot of the stage
+    (on a phone the handover notice sits at its top); it hides itself after
+    a few seconds unless it is sticky.
 
 ✒ Key Features:
-    - snack(msg, actions, sticky).
-    - hideSnack().
+    - snack(msg, actions, sticky, kind): kind names a message that
+      something else may need to withdraw, and is kept on the element as
+      data-kind, so the stylesheet can place one kind apart.
+    - hideSnack(kind): hides the message, or only one of that kind.
     - Actions as text or filled buttons.
 
 ✒ Usage Instructions:

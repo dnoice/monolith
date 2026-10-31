@@ -4,24 +4,25 @@
     - File Name: state.js
     - Relative Path: js/app/state.js
     - Artifact Type: javascript
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.1.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — At the
+      Minimal speed applyPrefs() sets data-motion="minimal" on the root, so
+      the stylesheets still the panel's motion, as under reduced motion.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] —
       canMoveNow() is false while a Crucible game is on the board, and
       draft.from marks a game begun from the free board (Play from here).
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The app layer's core: the game record, the match being played, the words
@@ -40,7 +41,9 @@
     - Vocabulary: SIDE (Marble, Obsidian), SIDE_COLOR, GLYPH and the king
       icon.
     - Tips: tip(id) and learn(id), with the once, always and off modes.
-    - applyPrefs(): speed, sound and coordinates from the preferences.
+    - applyPrefs(): speed, sound and coordinates from the preferences; the
+      Minimal speed also sets data-motion="minimal" on the root, which the
+      stylesheets read to still the panel's motion.
     - onRender() and render(): the render registry.
 
 ✒ Usage Instructions:

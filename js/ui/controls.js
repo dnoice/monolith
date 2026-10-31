@@ -1,28 +1,29 @@
 /*
 ✒ Metadata
-    - Title: Controls (MONOLITH Edition - v1.2)
+    - Title: Controls (MONOLITH Edition - v1.3)
     - File Name: controls.js
     - Relative Path: js/ui/controls.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.3.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Every
+      panel disclosure opens as it was left (prefs.open; the Engine lines
+      flag is gone), Load a game followed down as it opens; Settings' index
+      brings a card's head to the top; the Moves head's fold button keeps
+      the move list to one row on a wide screen (prefs.movesStrip).
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Wires
       the free board, auto-flip, Draw, rematch on the other side, Analyze
       game, PGN, FEN, Reset view, the move box, Load and Explore in Analyze.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      Position tab's handlers (the FEN box, Load, Copy, the study card and
-      the library) moved to js/ui/position.js with the tab's redesign,
-      after Dennis found the tab awkward.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -40,18 +41,29 @@
       opens the setup on its line.
     - The game record: Copy PGN, Download PGN, Copy FEN and the setup's
       Load a game.
+    - The panel's disclosures (.panel details[id]): each opens as it was
+      left, from prefs.open, and is recorded there as it toggles; Engine
+      lines, never set, opens with the evaluation. Load a game, opened
+      (not only reopened as the page loads), comes clear of the Start game
+      row and is followed down while it grows.
     - The Moves card: its steps walk the game, the free board's line or a
       Crucible game on the board; the move box sends a typed move where a
       click would (the line on the board, a line from the live position in
-      Analyze, the game on your turn, else a new line), and on a phone opens
-      from its keyboard button.
+      Analyze, the game on your turn, else a new line), and in the one-row
+      strip opens from its keyboard button. The list is that strip
+      (data-strip) under 900 px, and on a wider screen when the head's fold
+      button says so (prefs.movesStrip); the move in view stays in sight,
+      scrolled in the list itself.
     - The Coach card's switches, engine lines and Calculate.
     - Analyze and Crucible settings, saved as they change; Analyze's Load
       and the short source badges; the Crucible deck's own Start run.
     - Settings: sound, legal moves, Move pieces, Explore in Analyze (one
       setting with the Explore switch on the Analyze board), coordinates,
       tips, speed and Reset view (also on the stage); Coach comments and
-      Evaluation bar run the Coach card's own switches.
+      Evaluation bar run the Coach card's own switches. The index under
+      Settings' title scrolls a card's head to the top of the panel
+      (smoothly, but not under reduced motion or Minimal) and gives the
+      card's title the focus.
     - Arrow keys in radio groups, and the Hive's pointer and keyboard
       handling.
 

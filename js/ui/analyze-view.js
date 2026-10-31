@@ -1,31 +1,29 @@
 /*
 ✒ Metadata
-    - Title: Analyze View (MONOLITH Edition - v1.2)
+    - Title: Analyze View (MONOLITH Edition - v1.3)
     - File Name: analyze-view.js
     - Relative Path: js/ui/analyze-view.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.3.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      search profile draws depth as a monotone curve over its own hash
+      strip on one time axis, with round ticks, the latest values marked,
+      a pointer or touch readout, and a canvas sized in device pixels by a
+      ResizeObserver; consultWatch() marks the Analyze kind of help.
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Play
       to here plays an engine line, badges have a short form, a tap aims the
       X-Ray; it shows the Explore switch and times the Analyze mark.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: the X-Ray readout reads no layout in
-      the frame loop and works nothing out until the view changes; the
-      engine lines are list items holding buttons; the fork walk marks line
-      1 only where it still follows the walk's trunk; and fitCanvas() keeps
-      a canvas within what every browser can allocate, so a long run's Hive
-      still draws.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -37,6 +35,14 @@
 ✒ Key Features:
     - renderAnalyze(): the whole tab from the model; the search status in
       two lines, what is happening over its detail.
+    - The search profile: depth over the search time as a monotone curve
+      (Fritsch–Carlson tangents, so it never overshoots a reported depth),
+      and under it, on the same time axis, the hash filling a strip of its
+      own; round depth and time ticks, the latest depth and hash marked at
+      the right, and a readout of the update nearest the pointer or a
+      finger. A ResizeObserver sizes the canvas in device pixels (at most
+      2×), so a draw reads no layout, and its label states the latest
+      values.
     - previewLine() and clearScrub(): a scrubbed ply shown on the board as
       phantoms.
     - renderSyn(): the Synaptic PV chips. Play to here on a pinned chip
@@ -49,7 +55,9 @@
       title saying where a move made here goes during a game.
     - consultWatch(): Analyze open for CONSULT_DWELL_MS (1.5 s) during a
       two-player game, with the evaluation on screen, marks the side to move
-      (markConsult(), js/game/flow.js); leaving the tab or a move resets it.
+      as having used Analyze (markConsult('analyze'), js/game/flow.js), a
+      hint or Calculate marked there not standing in for it; leaving the
+      tab or a move resets it.
     - setBadge(), badgeShort(), syncBadges() and setBadgesPref(): each
       source badge in its full or short form ([SF · rec]), the full text
       in a short badge's title.

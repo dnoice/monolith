@@ -1,27 +1,29 @@
 /*
 ✒ Metadata
-    - Title: Hot Snapshot (MONOLITH Edition - v1.1)
+    - Title: Hot Snapshot (MONOLITH Edition - v1.2)
     - File Name: snapshot.js
     - Relative Path: js/app/snapshot.js
     - Artifact Type: javascript
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      kept game and snapshot() hold each engine-help mark with its kinds
+      (consult: [{ ply, kinds }], a bare ply from 2.18.0 read as Analyze),
+      whether the evaluation bar has marked the game (consultBar) and the
+      wait after Stockfish declined a draw (drawWait).
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A game
       survives a reload (monolith-game-v1), replayed and repaired, the side
       to move below with auto-flip; it and snapshot() keep Analyze marks.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a hot-update snapshot whose game
-      record has a shape this version does not read is set aside whole.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -32,20 +34,24 @@
     called by the loop module.
 
 ✒ Key Features:
-    - snapshot(): the game's states, moves, result, Analyze marks, match and
-      draft, for the viewer to keep.
+    - snapshot(): the game's states, moves, result, engine-help marks, draw
+      wait, match and draft, for the viewer to keep.
     - The kept game (localStorage monolith-game-v1): the start FEN, the
-      moves in UCI, the result, title, match settings, orientation and a
-      two-player game's Analyze marks (consult: plies, js/game/flow.js),
-      written only when they change. A study is not kept, nor an explored
-      line or the free board; with no game the key is removed.
+      moves in UCI, the result, title, match settings, orientation, a
+      two-player game's engine-help marks (consult: [{ ply, kinds }], and
+      consultBar once the evaluation bar has marked the game;
+      js/game/flow.js) and the wait after Stockfish declined a draw
+      (drawWait), written only when they change. A study is not kept, nor
+      an explored line or the free board; with no game the key is removed.
     - start(data): restores a snapshot, or else the kept game, sets the
       camera and world, places the pieces, opens the saved tab and starts
       the engine. A hot-update snapshot wins over the kept game.
     - The kept game is repaired, not trusted: its moves replay from the
       start position and stop at the first that is not legal, every
-      setting keeps to its choices, and a mark only to a position the moves
-      reached; a finished game comes back finished.
+      setting keeps to its choices, a mark only to a position the moves
+      reached (a bare ply, saved by 2.18.0, reads as Analyze) and a draw
+      wait only as long as a decline gives; a finished game comes back
+      finished.
     - With the board turning for each player (autoFlipOn() in
       js/game/flow.js), the side to move starts at the bottom.
     - MONOLITH starts at its pose's angle; its distance is fitted to the

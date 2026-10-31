@@ -1,29 +1,29 @@
 /*
 ✒ Metadata
-    - Title: Game Flow (MONOLITH Edition - v1.1)
+    - Title: Game Flow (MONOLITH Edition - v1.2)
     - File Name: flow.js
     - Relative Path: js/game/flow.js
     - Artifact Type: javascript
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      engine's help in a two-player game has kinds (CONSULT_KINDS: a hint,
+      Calculate, the evaluation bar once a game, Analyze), each recorded and
+      named in the move list, the PGN and the handover; the wait after a
+      declined draw is kept through a reload (drawWaitAt(), setDrawWait()).
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Draws
       agreed, or judged by the computer on Dennis's ruling; the board turns
       per player; free board; startGame() lines; Analyze explores and marks.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.2 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a die roll, a resignation or an
-      Explore move that finishes after the game has moved on leaves it
-      alone; a new game, a view change and Explore's undo close an open
-      promotion chooser; clearing the fragments moved to js/scene/board.js.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -31,7 +31,8 @@
     exploring: moves tried on a board the game does not own, from any
     position on screen, or on the free board before any game. Draw offers
     are settled here, and in a game between two people on one screen the
-    board turns to the side to move and a side that used Analyze is marked.
+    board turns to the side to move and a side that used the engine's help
+    (Analyze, a hint, Calculate moves or the evaluation bar) is marked.
 
 ✒ Key Features:
     - startGame(), rematch(), openSetup(), undo() and resign(); a new game
@@ -50,7 +51,8 @@
       answered by the other player or by the computer at full strength. It
       accepts facing mate or a pawn or more worse (DRAW_WORSE_CP), and a
       level position (DRAW_LEVEL_CP) from move DRAW_FROM_MOVE; after a
-      decline the offer waits DRAW_RETRY_MOVES of your moves.
+      decline the offer waits DRAW_RETRY_MOVES of your moves, a wait kept
+      with the game through a reload (drawWaitAt() and setDrawWait()).
     - analyzeGame(): the game opened in Analyze at the Coach's turning
       point, else at its end.
     - showView() and goLive(): review an earlier move without changing the
@@ -64,12 +66,17 @@
       says whether a click or a typed move goes into a line.
     - The free board: before any game a line starts from the starting
       position (sandbox()), and draftLine() hands it to Play from here.
-    - The Analyze mark, two-player games only (consultable()): Analyze's
-      evaluation on screen for CONSULT_DWELL_MS, a line from the live
-      position or a move played from Analyze marks the side to move
-      (markConsult()); the move then played carries it (consultedAt()), the
-      other player is told (consultHandover()), and consultPlies() and
-      setConsultPlies() keep it through a reload.
+    - The engine-help mark, two-player games only (consultable()):
+      markConsult(kind, quiet) marks the side to move at the live position
+      with a kind of help (CONSULT_KINDS: hint, calc, eval, analyze), saying
+      so once for each kind. Analyze counts after CONSULT_DWELL_MS with its
+      evaluation on screen, or at once for a line from the live position or
+      a move played from Analyze; consultBar() marks the evaluation bar's
+      first showing, once a game. The move then played carries the kinds
+      (consultKinds(), consultedAt()), consultWords() names them for the
+      move list, the PGN and the other player (consultHandover()), and
+      consultRecord(), consultBarUsed() and setConsultPlies(list, bar) keep
+      them through a reload, a bare ply from 2.18.0 reading as Analyze.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup

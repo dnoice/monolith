@@ -1,27 +1,28 @@
 /*
 ✒ Metadata
-    - Title: Navigation (MONOLITH Edition - v1.2)
+    - Title: Navigation (MONOLITH Edition - v1.3)
     - File Name: nav.js
     - Relative Path: js/ui/nav.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.3.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
+      destination chosen in the rail crossfades the panes (railTo(), a view
+      transition; not with a world change, reduced motion or Minimal), and
+      an app action keeps the focus when the window crosses 900 px.
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Each
       pane keeps its scroll place, a World change sizes the panel at once,
       and the actions stand at the rail's foot (the app bar under 900 px).
     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.1.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: changing destinations closes an open
-      promotion chooser.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -35,10 +36,18 @@
     - placeActions(), run from buildNav(): the app's actions (#app-actions:
       the command palette, Flip board, Sound and the release chip) moved to
       the rail's foot, or to the app bar's end under 900 px (css/media.css),
-      whenever the width crosses it; a focused control gets the focus back.
+      whenever the width crosses it; a focused control gets the focus back,
+      and so does one that lost it because the narrow layout hid it before
+      the move (watchActionsFocus()).
     - setTab(): shows a destination and saves it, sizes the layout for it,
       puts Analyze's searches away on the way out, and lets the world
       follow; each pane opens at its own top, or where it was left.
+    - railTo(): a destination chosen in the rail, by a click or the arrow
+      keys, crossfades the panes with a view transition where the browser
+      has one (data-vt on the root while it runs; css/layout.css), but not
+      when the world changes with it, under reduced motion or the Minimal
+      speed; other callers of setTab() switch at once. Arrows pressed in
+      quick succession step on from the destination still to come.
     - setWorldPref(): the world setting, which applies that world's panel
       width at once. (The graphics setting is setQualityPref() in
       js/scene/quality.js.)
@@ -50,10 +59,11 @@
         import { setTab, setWorldPref } from '../ui/nav.js';
 
 ✒ Other Important Information:
-    - Dependencies: imports app/base.js, app/state.js, game/board-ui.js,
-      game/lines.js, scene/worlds.js, ui/analyze.js, ui/crucible.js,
-      ui/crucible-board.js, ui/grimoire.js, ui/splitters.js and
-      ui/snackbar.js.
+    - Dependencies: imports app/store.js, app/base.js, app/state.js,
+      game/board-ui.js, game/lines.js, scene/worlds.js, ui/analyze.js,
+      ui/crucible.js, ui/crucible-board.js, ui/grimoire.js, ui/splitters.js
+      and ui/snackbar.js.
+    - Shared state (js/app/store.js): reads app.worldName.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.
