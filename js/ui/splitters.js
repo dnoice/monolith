@@ -59,7 +59,7 @@ import { app } from '../app/store.js';
 import { $, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { hideSnack } from './snackbar.js';
 import { deselect } from '../game/board-ui.js';
-import { explore, goLive, showView, viewedPly } from '../game/flow.js';
+import { explore, goLive, sandbox, showView, viewedPly } from '../game/flow.js';
 import { an, xr } from './analyze.js';
 import { clearScrub, renderAnalyze, renderSyn } from './analyze-view.js';
 import { cr } from './crucible.js';
@@ -229,6 +229,9 @@ export function init() {
       if (e.key === 'Home') { cr.ply = 0; crShowBoard(); } else if (e.key === 'End') { cr.ply = g.states.length - 1; crShowBoard(); } else crStep(e.key === 'ArrowLeft' ? -1 : 1);
       return;
     }
+    // the free board before a game: ← takes a move back and Home resets the line, as the Moves
+    // card's buttons do there (they know when they may run)
+    if (sandbox() && (e.key === 'ArrowLeft' || e.key === 'Home')) { e.preventDefault(); $(e.key === 'Home' ? '#nav-first' : '#nav-prev').click(); return; }
     if (!app.started || app.busy) return;
     if (e.key === 'ArrowLeft') { e.preventDefault(); showView(viewedPly() - 1); }
     else if (e.key === 'ArrowRight') { e.preventDefault(); showView(viewedPly() + 1); }

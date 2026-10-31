@@ -282,9 +282,6 @@ export function init() {
   }, true);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && tp.anchor) { e.preventDefault(); e.stopPropagation(); termClose(true); return; }
-    /* / searches from anywhere on the Grimoire, the rail included (the page's own shortcuts leave a
-       tablist's keys alone), unless it is being typed into a field or the palette is open */
-    if (e.key === '/' && prefs.tab === 'grimoire' && !e.ctrlKey && !e.metaKey && !e.altKey && !(e.target.closest && e.target.closest('input,textarea,select,[contenteditable]')) && !$('#palette').classList.contains('show')) { e.preventDefault(); if (gr.id) grBack(); $('#gr-q').focus(); return; }
     const t = e.target.closest && e.target.closest('[data-term]');
     if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); termOpen(t, t.dataset.term, true); }
   }, true);
