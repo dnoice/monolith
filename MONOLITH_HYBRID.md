@@ -1,17 +1,21 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Hybrid Build Record (digiSpace Edition - v1.8)
+    - Title: MONOLITH Hybrid Build Record (digiSpace Edition - v1.9)
     - File Name: MONOLITH_HYBRID.md
     - Relative Path: MONOLITH_HYBRID.md
     - Artifact Type: docs
-    - Version: 1.8.2
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.9.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.9.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.19.0: the search profile's curve, hash strip and readout; the
+      matrix's differing fields as a highlight with a tick; the plates,
+      tokens and rulings are the project's own, under its MIT License.
     - 1.8.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.18.0: the cathedral is no longer called Gothic.
     - 1.8.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
@@ -91,7 +95,7 @@ and post-processed light on the real board.
 | Depth, nodes, NPS, hashfull, tbhits, time | Stats grid from the engine's own info lines | Analyze panel |
 | MultiPV table with WDL | Five lines, White's view, WDL bars, graded Best (cyan), Good (ink), Inaccurate (amber), Mistake (crimson); a row isolates its vector | Analyze panel |
 | Sharpness (MultiPV Dropoff), KNIFE-EDGE chip, halo threshold 10 % | Same numbers and chip, plus "N of M moves within 5 %" from the field | Analyze panel |
-| Search profile | Depth step trace with a node per completed depth, gradient hashfull area, from the info stream | Analyze panel, canvas |
+| Search profile | Depth as a monotone curve, and hashfull in a strip of its own under it on the same time axis, from the info stream; the latest values marked at the right, and a readout of depth, time and hash under the pointer or a tap | Analyze panel, canvas |
 | UCI options | Threads (fixed at 1, said so), Hash, MultiPV, UCI_ShowWDL, search limit, field and walk depths | Analyze panel |
 | Sub-surface move-value field and its legend | Ray-marched glow under the board, 22 % ceiling, cyan point light on the best square; legend with its badge | 3D board, stage |
 | Ballistic vectors, reticle, numbered markers | Each line's first move as the jump the piece would make, crown to target (or onto the crown it takes), tapered at launch, with travelling pulses (line 1 cyan and blooming, 2–5 steel), cone tips, sprite markers, a launch ring, cyan reticle | 3D board |
@@ -107,7 +111,7 @@ and post-processed light on the real board.
 | Plate element | In the hybrid | Where |
 | --- | --- | --- |
 | Match card (H1 ACCEPTED, LLR ≥ bound, pair, game, wall time) | Same, recomputed in the browser | Crucible panel |
-| UCI parameter matrix, differing fields raised | Same | Crucible panel |
+| UCI parameter matrix, differing fields raised | Same matrix; a differing field is a highlight with a tick at its left, so it does not read as an input | Crucible panel |
 | SPRT block | elo0 and elo1, alpha and beta, bounds, model, book, and the trace re-check | Crucible panel |
 | Result, A's view; pentanomial chart | Elo with 95 % interval and bar; W, D, L; pentanomial bars | Crucible panel |
 | Anomalies list | Same rule, re-checked; each row opens its game | Crucible panel |

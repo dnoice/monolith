@@ -6,15 +6,18 @@
     - File Name: relabel_sources.py
     - Relative Path: assets/generator/relabel_sources.py
     - Artifact Type: python
-    - Version: 2.0.1
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 2.0.2
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Header
+      only: the brand kit and the meter no longer carry C2PA manifests, so
+      Other Important Information no longer says it leaves theirs alone.
     - 2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The kit
       is brand/monolith-brand-kit.svg and its document's own ids (svg-,
       title-, defs-, metadata-, namedview-) follow the name: at Dennis's
@@ -69,7 +72,9 @@
       own labels and is shared with ChessWorkstation, so it is not touched;
       the logo, the emblem and everything under brand/variants and mockups
       are generated with their ids and are not sources
-    - Provenance manifests (c2pa) inside a file's metadata are left alone
+    - Content credentials: neither source carries a C2PA manifest since
+      10/31/2026; the labeller writes none and changes nothing inside a
+      file's metadata (the kit's metadata element takes only its id)
 ---------
 """
 

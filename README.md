@@ -1,17 +1,21 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH (digiSpace Edition - v1.8)
+    - Title: MONOLITH (digiSpace Edition - v1.9)
     - File Name: README.md
     - Relative Path: README.md
     - Artifact Type: docs
-    - Version: 1.8.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.9.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.9.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.19.0:
+      no screenshots until new ones are taken; every kind of engine help
+      marks a friend game's move; the draw's wait is kept; the loading
+      screen's tip is set on the screen; build-piece-models.py is in step.
     - 1.8.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.18.0:
       the free board, PGN, draws, Explore in Analyze, the Analyze mark, the
       app bar and rail, Settings, keys, phones, tools; the MONOLITH M.
@@ -103,7 +107,7 @@ scene (a sub-surface move-value field, ballistic vectors, the Tactical X-Ray, a 
 Crucible, a real SPRT match between two engine configurations. The world follows where you are, or
 stays where Settings puts it.
 
-Current release: **2.18.0** (10/30/2026). The version shows at the foot of the rail (under the
+Current release: **2.19.0** (10/31/2026). The version shows at the foot of the rail (under the
 wordmark on a screen under 900 px wide) and under Settings → Help and about.
 
 ## Running it
@@ -164,7 +168,7 @@ move.
 
 | Destination | World | What it does |
 | --- | --- | --- |
-| **Play** | Cathedral | A game against the computer at eight levels, adjustable mid-game, or against a friend. Choose marble or obsidian, or roll the die. Hint, Undo, Resign, the Coach and an end-of-game review with accuracy and the turning point. In a friend game the board turns to the side to move after each move (*Turn the board for each player*, on by default), and a move played after its side used Analyze is marked in the move list and the PGN, and the other player is told. Draw offers a draw: in a friend game the other player agrees or declines; against the computer, on your turn, Stockfish judges the position at full strength and accepts when it stands a pawn or more worse or faces mate, or from move 20 when the position is level, and otherwise plays on, and you can offer again five moves later. Copy PGN, Download PGN and Copy FEN write out the game; *Load a game* on the setup takes a pasted PGN or FEN and plays on from it. The result card offers Rematch, the other side (Play obsidian or Play marble against the computer, Switch sides in a friend game) and *Analyze game*, which opens the game in Analyze at its turning point. A game in progress, with its marks, is kept in this browser through a reload or a closed tab. |
+| **Play** | Cathedral | A game against the computer at eight levels, adjustable mid-game, or against a friend. Choose marble or obsidian, or roll the die. Hint, Undo, Resign, the Coach and an end-of-game review with accuracy and the turning point. In a friend game the board turns to the side to move after each move (*Turn the board for each player*, on by default), and a move played after its side used the engine's help (Analyze, a hint, Calculate moves, or the evaluation bar, which marks once a game) is marked in the move list and the PGN, which say which help it was, and the other player is told. Draw offers a draw: in a friend game the other player agrees or declines; against the computer, on your turn, Stockfish judges the position at full strength and accepts when it stands a pawn or more worse or faces mate, or from move 20 when the position is level, and otherwise plays on, and you can offer again five moves later, a wait kept through a reload. Copy PGN, Download PGN and Copy FEN write out the game; *Load a game* on the setup takes a pasted PGN or FEN and plays on from it. The result card offers Rematch, the other side (Play obsidian or Play marble against the computer, Switch sides in a friend game) and *Analyze game*, which opens the game in Analyze at its turning point. A game in progress, with its marks, is kept in this browser through a reload or a closed tab. |
 | **Analyze** | MONOLITH | Stockfish MultiPV with win/draw/loss to a time limit or *Go infinite*. Shows depth, nodes, NPS, hashfull, Sharpness, the root move-value field, vectors and the Tactical X-Ray. Scrubbing a line shows it on the board as holograms and ghosts, and *Play to here* on a pinned line plays it onto the board as an explored line. During a game, a move made on its board starts a line from the live position and leaves the game alone, unless the **Explore** switch on the board is off. **Load** takes a FEN or a PGN game and analyses it where it is, both sides moved by hand. A recorded Kasparov–Topalov run serves as a reference. |
 | **Crucible** | MONOLITH | A recorded engine gauntlet, replayed and re-checked: LLR trace, Elo with its interval, the pentanomial, anomalies. Any game opens on the 3D board with its heartbeat, and the Moves card steps through it. Live runs between two configurations play in the browser and export a results JSON. |
 | **Position** | Cathedral | Three views behind one switch. **Studies**: mates, patterns, tactics, endgames and set-ups, each checked with Stockfish. **Read**: the board as bars, piece rows, a phase meter and a structure map. **Set up**: a board editor tied both ways to a FEN field, and *Who plays it*: against Stockfish, on the side to move or the other, or both sides on this screen. Every diagram uses the house piece set. |
@@ -202,8 +206,9 @@ The page opens on the emblem, the MONOLITH M of slate squares carrying the house
 written square by square (in gold in the cathedral, in ink in MONOLITH), the board is built while
 it rests, the pieces are set down one by one, and a glint crosses it before it lifts. Beneath it
 a loading meter fills a segment for each step as it really finishes
-(the scripts, the board, the first frame, the pillar models, Stockfish), and a card turns over a tip
-about the page or a fact about chess every few seconds. It is already in the world the page opens
+(the scripts, the board, the first frame, the pillar models, Stockfish), and under the meter a tip
+about the page or a fact about chess, set in the screen's own type under a small heading between
+two fine rules, gives way to the next every few seconds. It is already in the world the page opens
 in, follows Settings → Animation (Brisk shortens it, Minimal keeps it still) and Tips (Off leaves
 only the facts), and a key or a click skips ahead.
 
@@ -327,7 +332,7 @@ Run these from the project folder: the `.mjs` and `.js` scripts with Node 18 or 
 | `tools/pack-models.mjs` | Wraps each `assets/models/*.glb` as `.glb.json` for hosts that will not serve `.glb`, such as the published page. Live Server does not need these files. |
 | `tools/verify-studies.mjs` | Checks every study against the vendored Stockfish 19, using the same dataset and rules engine the page loads. |
 | `tools/calibrate.js` | Plays the computer's levels against Stockfish's Elo-limited mode and estimates each level's rating. [CALIBRATION.md](CALIBRATION.md) has the recipes and how to read the results. |
-| `tools/build-piece-models.py` | A Blender 5.2 script, not a Node one: builds the game's 3D pieces as `.blend` files in `assets/models/` (one per piece, in marble and obsidian, and `pieces.blend` for the set) from the numbers `js/scene/board.js` builds them with. It keeps a file already there unless given `--force`. It is out of step with 2.18.0: the page now draws the knight's neck, head, muzzle, ears and mane as bowed blocks (`js/scene/board.js`) and gives obsidian a softer clearcoat (0.22 rough in `js/scene/materials.js`, where the script still writes 0.08), so the script stops at its check that `board.js` still says what it copies, and the `.blend` files show the earlier box knight. |
+| `tools/build-piece-models.py` | A Blender 5.2 script, not a Node one: builds the game's 3D pieces as `.blend` files in `assets/models/` (one per piece, in marble and obsidian, and `pieces.blend` for the set) from the numbers `js/scene/board.js` builds them with. It keeps a file already there unless given `--force`. Since 1.1.0 it builds what the page draws: the knight's neck, head, muzzle, ears and mane and the rook's merlons as `board.js`'s bowed blocks, and obsidian's clearcoat at 0.22 rough (`js/scene/materials.js`); its check that `board.js` still says what it copies passes. The `.blend` files in `assets/models/` were built before 1.1.0 and still hold the box knight, the box merlons and obsidian's 0.08 clearcoat until a Blender run with `--force` rebuilds them. |
 
 The marks themselves, the brand variants and the mock-ups are drawn by the Python generators in
 `assets/generator/` (Python 3.10 or later); `python assets/generator/build_all.py` rebuilds and audits
