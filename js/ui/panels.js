@@ -508,7 +508,7 @@ export function init() {
     const sbg = $('#set-badges'); if (sbg) sbg.checked = prefs.badges === 'short';
     for (const b of document.querySelectorAll('[data-pillars]')) radio(b, b.dataset.pillars === pillars.style);
     $('#pillars-help').textContent = (pillars.style === 'classic' ? 'A twisted Solomonic column between a fluted Doric and a plain Tuscan.' : pillars.style === 'modern' ? 'A Prism lit by spiralling cyan lines, between a ringed Halo and a bladed Fin.' : 'The stele, the rift and the spire, each made for its place.')
-      + ' Blender models, seen in MONOLITH.' +(pillars.status === 'loading' ? ' Loading…' : pillars.status === 'failed' ? ` ${pillars.failed.length === 1 ? 'One model' : 'Some models'} could not load here, so the built pillars stand in.` : '');
+      + ' Blender models, seen in MONOLITH.' + (pillars.status === 'loading' ? ' Loading…' : pillars.status === 'failed' ? ` ${pillars.failed.length === 1 ? 'One model' : 'Some models'} could not load here, so the built pillars stand in.` : '');
     // Graphics: Automatic, the level in use on the meter, and Fine-tune showing what it draws
     $('#set-gfx-auto').checked = prefs.quality === 'auto';
     for (const b of document.querySelectorAll('[data-quality]')) { radio(b, b.dataset.quality === app.tierKey); b.disabled = GFX_LEVELS[b.dataset.quality].set.hdr && !POST_OK; }
