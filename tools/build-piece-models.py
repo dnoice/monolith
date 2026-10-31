@@ -1,17 +1,23 @@
 """
 ✒ Metadata
-    - Title: Piece Models Builder (MONOLITH Edition - v1.0)
+    - Title: Piece Models Builder (MONOLITH Edition - v1.1)
     - File Name: build-piece-models.py
     - Relative Path: tools/build-piece-models.py
     - Artifact Type: python
-    - Version: 1.0.1
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.1.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Builds
+      what the page now draws: the knight's neck, head, muzzle, ears and
+      mane (n = 4.5) and the rook's merlons (n = 7) as block()'s
+      superellipsoids, read from board.js's calls and shaded with the
+      page's normals, and obsidian's clearcoat at 0.22 rough. The drift
+      guard checks block()'s own lines and passes against board.js again.
     - 1.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Header
       only: records that the page's pieces have moved on from these models
       (the knight's bowed blocks, obsidian's softer clearcoat) and that the
@@ -25,17 +31,20 @@
 ✒ Description:
     The page draws its 3D pieces in code (js/scene/board.js): five are a
     side profile turned on a lathe, the knight a turned base with six
-    blocks for its head. This Blender script builds the same pieces as
-    .blend files: the profiles, read from board.js at run time, through
-    three.js's own spline sampling (SplineCurve.getPoints at six points a
-    knot, uniform Catmull-Rom, the ends pulled onto the axis) and a Screw
-    modifier of the lathe's 40 steps; the boxes and spheres at the sizes
-    and places parts() writes out, checked against board.js's own lines
-    before anything is built, so a change there stops the build rather
-    than drifting from it. The marble and obsidian materials copy the
-    numbers of js/scene/materials.js and js/scene/worlds.js by hand
-    (nothing checks them), with a "world" value in each that moves every
-    number between the cathedral (0) and MONOLITH (1).
+    bowed blocks for its neck and head, and the rook's merlons are blocks
+    too. This Blender script builds the same pieces as .blend files: the
+    profiles, read from board.js at run time, through three.js's own
+    spline sampling (SplineCurve.getPoints at six points a knot, uniform
+    Catmull-Rom, the ends pulled onto the axis) and a Screw modifier of
+    the lathe's 40 steps; the blocks from board.js's block() calls, also
+    read at run time; the boxes and spheres at the sizes, and every part
+    at the place, that parts() writes out, checked against board.js's own
+    lines (block()'s among them) before anything is built, so a change
+    there stops the build rather than drifting from it. The marble and
+    obsidian materials copy the numbers of js/scene/materials.js and
+    js/scene/worlds.js by hand (nothing checks them), with a "world" value
+    in each that moves every number between the cathedral (0) and
+    MONOLITH (1).
 
 ✒ Key Features:
     - Files, organised as the pillar files in assets/models/ are:
@@ -49,10 +58,17 @@
     - Every model collection carries a glTF for MONOLITH exporter that
       writes piece-{name}-{wood}.glb beside the .blend, as if the piece
       stood at the origin, modifiers applied.
+    - Blocks as the page builds them (block_surface()): a 2 × 2 × 2 box's
+      faces cut into an even count of segments a side and pulled onto the
+      superellipsoid, at the size, exponent and step of each block() call
+      in board.js; one closed mesh whose faces share their edges, shaded
+      smooth with the surface's own normals set as custom normals.
     - Editable: the turned part is its profile, a line of vertices, under
       a live Screw modifier; the parts that repeat (merlons, pearls, ears)
       share one mesh each, and both woods share every mesh, the wood being
-      set on the object.
+      set on the object. A block's custom normals stay as they are when
+      its vertices move: clear them after reshaping one, and Blender
+      shades it from its faces.
     - The names are the page's: {piece}-{wood}-body, -base (the knight's
       turned part), -merlon-01 … -06, -pearl-01 … -06, -finial,
       -cross-upright, -cross-arm, -neck, -head, -muzzle, -ear-01, -ear-02,
@@ -80,25 +96,28 @@
 
 ✒ Other Important Information:
     - Dependencies: Blender 5.2 (bpy, bmesh, mathutils, the bundled glTF
-      add-on); js/scene/board.js, whose PROFILES, lathe() and buildPiece()
-      it reads; nothing else.
+      add-on); js/scene/board.js, whose PROFILES, lathe(), block(), its
+      calls and buildPiece() it reads; nothing else.
     - The page does not load these files: it still builds its pieces in
       code. They are sources for work in Blender and for a page that one
       day loads its pieces as models.
     - Checked against three.js r147 when written (10/24/2026): every
       exported piece's vertices matched the page's own, built by
       board.js's own lines, to 1.5e-7.
-    - Known gap (10/30/2026): the page's pieces have moved on from these
-      models, and the script has not followed. The page's knight draws its
-      neck, head, muzzle, ears and mane as block() shapes, boxes whose
-      faces bow out (a superellipsoid, n = 4, in the same bounds), where
-      parts() builds plain boxes; obsidian's clearcoat is 0.22 rough on
-      the page and 0.08 here (WORLD's coat_rough). The drift guard in
-      read_board() no longer finds the knight's five BoxGeometry lines in
-      board.js, so any run, even of the pawn alone, stops with "update
-      parts()" before it builds anything; in assets/models/,
-      piece-knight.blend and pieces.blend still hold the box knight, and
-      the built files the 0.08 coat.
+    - The blocks are checked without Blender only (10/31/2026): the
+      points and normals block_surface() gives match the page's own GEO
+      blocks to 1.3e-8 and 4.2e-8 (the page's are float32), with the same
+      triangle counts, each surface closed and facing out. No Blender run
+      has built them yet.
+    - Should Blender lack normals_split_custom_set_from_vertices(), a block
+      keeps the normals Blender makes from its faces, which lean up to
+      about 18° off the page's at the corners of the thinner parts, and
+      the run prints a line saying so.
+    - Known gap (10/31/2026): the .blend files in assets/models/ were
+      built before 1.1.0. piece-knight.blend and pieces.blend hold the box
+      knight, piece-rook.blend and pieces.blend the box merlons, and every
+      built file obsidian's 0.08 clearcoat, until a run with --force
+      rebuilds them.
     - Compatible platforms: Windows, macOS and Linux, wherever Blender 5.2
       runs.
 ---------
@@ -119,19 +138,32 @@ def read_board():
     prof = {k: base + json.loads(re.search(rf'\b{k}: BASE\.concat\((\[.*?\])\)', t).group(1)) for k in ('p', 'r', 'b', 'q', 'k', 'nBase')}
     segs = int(re.search(r'function lathe\(points, segs = (\d+)\)', t).group(1))
     mul = int(re.search(r'curve\.getPoints\(points\.length \* (\d+)\)', t).group(1))
-    # the parts below are written out from buildPiece(); stop if board.js no longer says the same
-    want = ['BoxGeometry(0.11, 0.14, 0.11)', 'SphereGeometry(0.05, 10, 10)', 'SphereGeometry(0.07, 12, 12)',
-            'BoxGeometry(0.06, 0.3, 0.06)', 'BoxGeometry(0.2, 0.06, 0.06)', 'BoxGeometry(0.26, 0.52, 0.22)',
-            'BoxGeometry(0.24, 0.24, 0.46)', 'BoxGeometry(0.18, 0.14, 0.16)', 'BoxGeometry(0.06, 0.14, 0.07)',
-            'BoxGeometry(0.08, 0.5, 0.14)', 'neck.position.set(0, 0.6, -0.02); neck.rotation.x = -0.32',
+    # the blocks: each GEO.{name} = block(w, h, d, n[, step]) call, the step defaulting as block()'s does
+    sig = re.search(r'function block\(w, h, d, n, step = ([\d.]+)\)', t)
+    if not sig: sys.exit('build-piece-models: js/scene/board.js no longer declares block(w, h, d, n, step = ...); update block_surface()')
+    blocks = {}
+    for name, args in re.findall(r'GEO\.(\w+) = block\(([^)]*)\)', t):
+        v = [float(x) for x in args.split(',')]
+        if len(v) not in (4, 5): sys.exit(f'build-piece-models: GEO.{name} = block({args}) is not block(w, h, d, n[, step])')
+        blocks[name] = tuple(v) if len(v) == 5 else tuple(v) + (float(sig.group(1)),)
+    lost = [b for b in ('neck', 'head', 'muzzle', 'ear', 'mane', 'merlon') if b not in blocks]
+    if lost: sys.exit('build-piece-models: js/scene/board.js no longer builds these parts with block(); update parts(): ' + ', '.join(lost))
+    # block()'s lines that block_surface() copies, and the parts written out from buildPiece();
+    # stop if board.js no longer says the same
+    want = ['seg = a.map(v => 2 * Math.max(2, Math.round(v / step)))', 'new THREE.BoxGeometry(2, 2, 2, seg[0], seg[1], seg[2])',
+            'const s = Math.pow(Math.abs(c[0]) ** n + Math.abs(c[1]) ** n + Math.abs(c[2]) ** n, -1 / n);',
+            'P.setXYZ(i, c[0] * s * a[0], c[1] * s * a[1], c[2] * s * a[2]);',
+            'const gx = Math.sign(c[0]) * Math.abs(c[0] * s) ** (n - 1) / a[0], gy = Math.sign(c[1]) * Math.abs(c[1] * s) ** (n - 1) / a[1], gz = Math.sign(c[2]) * Math.abs(c[2] * s) ** (n - 1) / a[2];',
+            'SphereGeometry(0.05, 10, 10)', 'SphereGeometry(0.07, 12, 12)',
+            'BoxGeometry(0.06, 0.3, 0.06)', 'BoxGeometry(0.2, 0.06, 0.06)', 'neck.position.set(0, 0.6, -0.02); neck.rotation.x = -0.32',
             'head.position.set(0, 0.86, 0.1); head.rotation.x = 0.18', 'muz.position.set(0, 0.76, 0.36); muz.rotation.x = 0.3',
             'e1.position.set(-0.07, 1.03, -0.02); e1.rotation.x = -0.3', 'e2.position.set(0.07, 1.03, -0.02); e2.rotation.x = -0.3',
             'mane.position.set(0, 0.6, -0.2); mane.rotation.x = -0.32', 'Math.cos(a) * 0.21, 0.91, Math.sin(a) * 0.21); m.rotation.y = -a',
             "part('finial', GEO.finial).position.y = 1.12", 'Math.cos(a) * 0.19, 1.29, Math.sin(a) * 0.19',
             "part('finial', GEO.finial).position.y = 1.38", 'GEO.crossV).position.y = 1.55', 'GEO.crossH).position.y = 1.6']
     gone = [w for w in want if w not in t]
-    if gone: sys.exit('build-piece-models: js/scene/board.js has changed where the parts are written out; update parts(): ' + '; '.join(gone))
-    return prof, segs, mul
+    if gone: sys.exit('build-piece-models: js/scene/board.js has changed where the parts are written out; update parts() or block_surface(): ' + '; '.join(gone))
+    return prof, segs, mul, blocks
 
 def _cr(t, p0, p1, p2, p3):   # three.js Interpolations.CatmullRom
     v0 = (p2 - p0) * 0.5; v1 = (p3 - p1) * 0.5; t2 = t * t; t3 = t * t2
@@ -148,13 +180,46 @@ def lathe_profile(pts, mul):
     for q in out: q[0] = max(q[0], 0)
     return out
 
+def block_surface(w, h, d, n, step):
+    """block() in js/scene/board.js: a 2 × 2 × 2 box's faces cut into an even count of segments
+    a side, each lattice point pulled in along its ray from the centre onto the superellipsoid
+    |x/a|^n + |y/b|^n + |z/c|^n = 1 (a, b, c the half sizes), with the surface's own normal there.
+    three.js keeps each face's grid apart; here the faces share the points along their edges.
+    Returns ({(i, j, k): (x, y, z)}, {(i, j, k): normal}, quads), in the page's axes, each quad
+    wound so its normal points outward."""
+    a = (w / 2, h / 2, d / 2)
+    seg = [2 * max(2, math.floor(v / step + 0.5)) for v in a]   # Math.round, not round()'s half to even
+    co = [[i * (2 / s) - 1 for i in range(s + 1)] for s in seg]  # BoxGeometry's ix * segmentWidth - widthHalf
+    pts, nrm, quads = {}, {}, []
+    def point(key):
+        if key not in pts:
+            c = [co[ax][key[ax]] for ax in range(3)]
+            s = (abs(c[0]) ** n + abs(c[1]) ** n + abs(c[2]) ** n) ** (-1 / n)
+            pts[key] = tuple(c[ax] * s * a[ax] for ax in range(3))
+            g = [math.copysign(abs(c[ax] * s) ** (n - 1), c[ax]) / a[ax] if c[ax] else 0.0 for ax in range(3)]
+            l = math.sqrt(sum(x * x for x in g)); nrm[key] = tuple(x / l for x in g)
+        return key
+    for ax in range(3):                      # the two faces square to each axis
+        u, v = [x for x in range(3) if x != ax]
+        along = -1 if ax == 1 else 1         # this corner order faces along u × v: +x, -y, +z
+        for side in (0, seg[ax]):
+            out = 1 if side else -1
+            for i in range(seg[u]):
+                for j in range(seg[v]):
+                    q = []
+                    for di, dj in ((0, 0), (1, 0), (1, 1), (0, 1)):
+                        key = [0, 0, 0]; key[ax] = side; key[u] = i + di; key[v] = j + dj; q.append(point(tuple(key)))
+                    quads.append(q if along == out else q[::-1])
+    return pts, nrm, quads
+
 def parts(kind):
-    """buildPiece()'s parts in the page's terms: (name, box or sphere, size, position, rotation x/y)."""
-    P = []
+    """buildPiece()'s parts in the page's terms: (name, box, block or sphere, size, position,
+    rotation x/y). A block's size is its block() call in board.js, (w, h, d, n, step)."""
+    P = []; B = BLOCKS
     if kind == 'r':
         for i in range(6):
             a = i * math.pi / 3
-            P.append((f'merlon-{i + 1:02d}', 'box', (0.11, 0.14, 0.11), (math.cos(a) * 0.21, 0.91, math.sin(a) * 0.21), (0, -a)))
+            P.append((f'merlon-{i + 1:02d}', 'block', B['merlon'], (math.cos(a) * 0.21, 0.91, math.sin(a) * 0.21), (0, -a)))
     if kind == 'b': P.append(('finial', 'sphere', (0.07, 12, 12), (0, 1.12, 0), (0, 0)))
     if kind == 'q':
         for i in range(6):
@@ -164,9 +229,9 @@ def parts(kind):
     if kind == 'k':
         P += [('cross-upright', 'box', (0.06, 0.3, 0.06), (0, 1.55, 0), (0, 0)), ('cross-arm', 'box', (0.2, 0.06, 0.06), (0, 1.6, 0), (0, 0))]
     if kind == 'n':
-        P += [('neck', 'box', (0.26, 0.52, 0.22), (0, 0.6, -0.02), (-0.32, 0)), ('head', 'box', (0.24, 0.24, 0.46), (0, 0.86, 0.1), (0.18, 0)),
-              ('muzzle', 'box', (0.18, 0.14, 0.16), (0, 0.76, 0.36), (0.3, 0)), ('ear-01', 'box', (0.06, 0.14, 0.07), (-0.07, 1.03, -0.02), (-0.3, 0)),
-              ('ear-02', 'box', (0.06, 0.14, 0.07), (0.07, 1.03, -0.02), (-0.3, 0)), ('mane', 'box', (0.08, 0.5, 0.14), (0, 0.6, -0.2), (-0.32, 0))]
+        P += [('neck', 'block', B['neck'], (0, 0.6, -0.02), (-0.32, 0)), ('head', 'block', B['head'], (0, 0.86, 0.1), (0.18, 0)),
+              ('muzzle', 'block', B['muzzle'], (0, 0.76, 0.36), (0.3, 0)), ('ear-01', 'block', B['ear'], (-0.07, 1.03, -0.02), (-0.3, 0)),
+              ('ear-02', 'block', B['ear'], (0.07, 1.03, -0.02), (-0.3, 0)), ('mane', 'block', B['mane'], (0, 0.6, -0.2), (-0.32, 0))]
     return P
 
 def t2b(v):   # the page's (x, y, z), Y up  ->  Blender's (x, -z, y), Z up
@@ -182,7 +247,7 @@ def srgb(h):  # a colour the page converts first (lin() in js/scene/renderer.js)
 
 WORLD = {   # WORLD.cathedral / WORLD.monolith: colour, roughness, clearcoat; and what stays the same
     'marble': {'cathedral': (0xe9e4da, 0.36, 0.45), 'monolith': (0xece8ef, 0.34, 0.42), 'coat_rough': 0.3, 'metal': 0.0},
-    'obsidian': {'cathedral': (0x15121a, 0.14, 1.0), 'monolith': (0x0f1318, 0.22, 0.7), 'coat_rough': 0.08, 'metal': 0.08},
+    'obsidian': {'cathedral': (0x15121a, 0.14, 1.0), 'monolith': (0x0f1318, 0.22, 0.7), 'coat_rough': 0.22, 'metal': 0.08},
 }
 
 def material(wood):
@@ -266,10 +331,23 @@ def profile_mesh(name, profile):
     for a, b in zip(vs, vs[1:]): bm.edges.new((a, b))
     bm.to_mesh(me); bm.free(); return me
 
-def box_mesh(name, size):   # BoxGeometry(x, y, z), in Blender's axes (x, z, y)
+def box_mesh(name, x, y, z):   # BoxGeometry(x, y, z), in Blender's axes (x, z, y)
     me = bpy.data.meshes.new(name); bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1.0)
-    for v in bm.verts: v.co = Vector((v.co.x * size[0], v.co.y * size[2], v.co.z * size[1]))
+    for v in bm.verts: v.co = Vector((v.co.x * x, v.co.y * z, v.co.z * y))
     bm.to_mesh(me); bm.free(); return me
+
+def block_mesh(name, w, h, d, n, step):
+    """block(w, h, d, n, step): one closed surface, shaded smooth with the page's own normals, the
+    superellipsoid's, as custom normals (Blender's from the faces lean up to about 18° off them
+    at the corners of the thinner parts)."""
+    pts, nrm, quads = block_surface(w, h, d, n, step)
+    me = bpy.data.meshes.new(name); bm = bmesh.new()
+    V = {k: bm.verts.new(t2b(p)) for k, p in pts.items()}   # t2b turns, not mirrors: the quads still face out
+    for q in quads: bm.faces.new([V[k] for k in q]).smooth = True
+    bm.to_mesh(me); bm.free()
+    try: me.normals_split_custom_set_from_vertices([tuple(t2b(nrm[k])) for k in pts])   # in the order the vertices were made
+    except (AttributeError, RuntimeError, TypeError) as e: print(f'build-piece-models: {name} keeps the normals Blender makes from its faces ({e})')
+    return me
 
 def sphere_mesh(name, r, wseg, hseg):   # SphereGeometry(r, w, h): smooth, its poles on the axis
     me = bpy.data.meshes.new(name); bm = bmesh.new(); bmesh.ops.create_uvsphere(bm, u_segments=wseg, v_segments=hseg, radius=r)
@@ -288,7 +366,7 @@ def meshes(kind, name):
     M = {turned: profile_mesh(f'piece-{name}-{turned}', lathe_profile(PROF['nBase' if kind == 'n' else kind], MUL))}
     for pname, shape, size, pos, rot in parts(kind):
         s = shared(kind, name, pname)
-        if s not in M: M[s] = box_mesh(f'piece-{name}-{s}', size) if shape == 'box' else sphere_mesh(f'piece-{name}-{s}', *size)
+        if s not in M: M[s] = {'box': box_mesh, 'block': block_mesh, 'sphere': sphere_mesh}[shape](f'piece-{name}-{s}', *size)
     return M
 
 def outward(obj):
@@ -410,7 +488,7 @@ if __name__ == '__main__':
     force = '--force' in args; args = [a for a in args if a != '--force']
     out = os.path.abspath(args[0]) if args and not args[0] in dict(NAMES).values() and args[0] != 'set' else os.path.join(REPO, 'assets', 'models')
     only = [a for a in args if a in dict(NAMES).values() or a == 'set'] or [n for _, n in NAMES] + ['set']
-    PROF, SEGS, MUL = read_board(); os.makedirs(out, exist_ok=True)
+    PROF, SEGS, MUL, BLOCKS = read_board(); os.makedirs(out, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix='piece-models-')
     try:
         for kind, name in NAMES:
