@@ -147,6 +147,14 @@
   #telemetry{display:none}
   #snackbar{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 }
+/* ---------- a tablet held upright (an iPad at 820x1180) ----------
+   The phone's column, stretched: a 472 px stage whose height held the board in, and cards 788 px
+   wide. The stage takes up to half the height (Analyze, with its dock and panel, keeps its share),
+   and the panel's cards a centred 680 px column. */
+@media (min-width:600px) and (max-width:899px) and (orientation:portrait){
+  :root:not([data-tab="analyze"]) .body{grid-template-rows:minmax(220px,min(52%,75vw)) auto minmax(0,1fr) auto}
+  .panes,.moves-card{padding-inline:max(var(--gutter-l),calc((100% - 680px) / 2))}
+}
 /* ---------- phones: Analyze's panel more than a porthole ----------
    The telemetry footer sat under the bottom bar, which moved up 25 px on entering MONOLITH, and it
    ran off the right edge; the engine card and the Crucible's pane carry its readings here. With
