@@ -4,14 +4,18 @@
     - File Name: build-piece-models.py
     - Relative Path: tools/build-piece-models.py
     - Artifact Type: python
-    - Version: 1.0.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Header
+      only: records that the page's pieces have moved on from these models
+      (the knight's bowed blocks, obsidian's softer clearcoat) and that the
+      drift guard now stops a rebuild until parts() and WORLD follow.
     - 1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
       release, for Dennis's request to have the game's 3D chess pieces as
       .blend files: builds the six pieces in Blender from the numbers the
@@ -20,15 +24,17 @@
 
 ✒ Description:
     The page draws its 3D pieces in code (js/scene/board.js): five are a
-    side profile turned on a lathe, the knight a turned base with six boxes
-    for its head. This Blender script builds the same pieces from that
-    file's own numbers, read from it at run time, so the .blend files and
-    the game cannot drift apart: the profile through three.js's own spline
-    sampling (SplineCurve.getPoints at six points a knot, uniform
-    Catmull-Rom, the ends pulled onto the axis) and a Screw modifier of the
-    lathe's 40 steps, the boxes and spheres at their sizes and places. The
-    marble and obsidian materials follow js/scene/materials.js and
-    js/scene/worlds.js, with a "world" value in each that moves every
+    side profile turned on a lathe, the knight a turned base with six
+    blocks for its head. This Blender script builds the same pieces as
+    .blend files: the profiles, read from board.js at run time, through
+    three.js's own spline sampling (SplineCurve.getPoints at six points a
+    knot, uniform Catmull-Rom, the ends pulled onto the axis) and a Screw
+    modifier of the lathe's 40 steps; the boxes and spheres at the sizes
+    and places parts() writes out, checked against board.js's own lines
+    before anything is built, so a change there stops the build rather
+    than drifting from it. The marble and obsidian materials copy the
+    numbers of js/scene/materials.js and js/scene/worlds.js by hand
+    (nothing checks them), with a "world" value in each that moves every
     number between the cathedral (0) and MONOLITH (1).
 
 ✒ Key Features:
@@ -82,6 +88,17 @@
     - Checked against three.js r147 when written (10/24/2026): every
       exported piece's vertices matched the page's own, built by
       board.js's own lines, to 1.5e-7.
+    - Known gap (10/30/2026): the page's pieces have moved on from these
+      models, and the script has not followed. The page's knight draws its
+      neck, head, muzzle, ears and mane as block() shapes, boxes whose
+      faces bow out (a superellipsoid, n = 4, in the same bounds), where
+      parts() builds plain boxes; obsidian's clearcoat is 0.22 rough on
+      the page and 0.08 here (WORLD's coat_rough). The drift guard in
+      read_board() no longer finds the knight's five BoxGeometry lines in
+      board.js, so any run, even of the pawn alone, stops with "update
+      parts()" before it builds anything; in assets/models/,
+      piece-knight.blend and pieces.blend still hold the box knight, and
+      the built files the 0.08 coat.
     - Compatible platforms: Windows, macOS and Linux, wherever Blender 5.2
       runs.
 ---------

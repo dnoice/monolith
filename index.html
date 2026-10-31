@@ -22,18 +22,12 @@
 
 ✒ Changelog:
     - 2.18.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      board fits the stage at any size, its overlays in bands clear of it;
-      a piece can be dragged to its square, and a left drag orbits. The
-      side panel keeps one width per world, and phones held sideways,
-      upright tablets and touch screens get layouts of their own. Before a
-      game the board is free, and Play from here makes a game of it; friend
-      games turn the board for each player; a game survives a reload,
-      copies, downloads and loads as PGN, and can end in an agreed draw.
-      Analyze loads a FEN or a PGN and plays a pinned line onto the board,
-      the Crucible gives its verdict in a sentence, Set up asks who plays,
-      Settings is five titled cards and the palette knows everyday words.
-      White's back rank arcs over the loading screen's emblem, and the
-      cathedral's columns keep clean edges against its light shafts.
+      board fits any stage and takes a dragged piece, with layouts for
+      phones held sideways, upright tablets and touch. The board is free
+      before a game; a game survives a reload, travels as PGN and takes a
+      draw offer, which Stockfish judges for itself; Analyze explores from
+      the live position and marks its use in friend games. The emblem is
+      the M of the wordmark, and the bar's actions sit at the rail's foot.
     - 2.17.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       Conical M Dennis made MONOLITH's official mark is on the page: his
       logo, the bare M of twelve slate squares, heads the app bar in place
@@ -61,10 +55,11 @@
     halo, a Synaptic PV scrubber with phantoms, and the Crucible, a real
     pentanomial SPRT between two engine configurations. Every board can be
     played on: before a game the board is free, and a Crucible game, an
-    earlier move or a finished game takes moves into a scratch line. The
-    world follows the destination, on one level of navigation. This file
-    is the page's markup; its styles are in css/ and its code in js/,
-    mapped in ARCHITECTURE.md.
+    earlier move, a finished game or, in Analyze, the live position of a
+    game takes moves into a scratch line. The world follows the
+    destination, on one level of navigation. This file is the page's
+    markup; its styles are in css/ and its code in js/, mapped in
+    ARCHITECTURE.md.
 
 ✒ Key Features:
     - Rules: full legal move generation (castling, en passant, promotion,
@@ -76,12 +71,18 @@
       apart; Start game kept at the pane's foot, asking before it ends a
       game. Friend games turn the board to the side to move a beat after
       each move (Turn the board for each player), and friends can agree a
-      draw. Before a game the board is free on every tab, both sides
-      moving in turn, and Play from here makes the line a game. A game in
-      progress survives a reload. Copy PGN, Download PGN and Copy FEN sit
-      under the game; Load a game on the setup takes a pasted PGN or FEN.
-      The result card offers the other side and Analyze game, which opens
-      the game in Analyze at the Coach's turning point.
+      draw; a side that looks at Analyze during the game has its move
+      marked (a badge in the move list, a comment in the PGN) and the
+      other player is told. Offered a draw on your turn, the computer
+      judges the position at full strength: it accepts when it stands a
+      pawn or more worse, faces mate, or is level from move 20, and
+      otherwise plays on, open to a new offer five moves later. Before a
+      game the board is free on every tab, both sides moving in turn, and
+      Play from here makes the line a game. A game in progress survives a
+      reload. Copy PGN, Download PGN and Copy FEN sit under the game; Load
+      a game on the setup takes a pasted PGN or FEN. The result card
+      offers the other side and Analyze game, which opens the game in
+      Analyze at the Coach's turning point.
     - Coach: a verdict on each of your moves against the engine's best
       (Book, Best to Blunder by expected score on chess.com's bands,
       Brilliant, lichess's mate rules) with what the move does and what the
@@ -117,11 +118,15 @@
       how it reads in a game, in analysis and in the engine, where it is,
       an example, related terms), searchable and by category; underlined
       terms anywhere open a short card; :define <term> from the palette.
-    - App bar: Dennis's logo, the Conical M, beside the name; the match
-      strip on the bar's centre line; the release chip, the palette, Flip
-      and Sound.
-    - Loading screen: Dennis's emblem, the Conical M of slate squares
-      carrying his house piece set, in the colours of the world the page
+    - App bar: the wordmark, the emblem standing as the M of MONOLITH in
+      the world's colours, over a subtitle naming the world (in MONOLITH,
+      the engine too); the match strip at the bar's end, every segment on
+      one baseline, narrowing with the bar (the levels go under 1100 px,
+      the last move under 1000) while the players or the tab's title stay.
+      The palette, Flip, Sound and the release chip sit at the foot of the
+      rail, and in the bar under 900 px.
+    - Loading screen: the emblem, the MONOLITH M of slate squares carrying
+      the house piece set, in the colours of the world the page
       opens in, taking its time: the M written square by square, the board
       built while it rests, the pieces set down in turn, a glint and a
       breath, then it lifts. Over it White's back rank, rook to rook, flies
@@ -195,9 +200,9 @@
       results JSON.
     - Settings: five titled cards under a Preferences kicker (Game, Board,
       Sound and motion, World and graphics, Help and about), among them
-      Coach comments, Evaluation bar, Turn the board for each player and
-      Short source badges; Keys and mouse and the MONOLITH system fold
-      away.
+      Coach comments, Evaluation bar, Turn the board for each player,
+      Explore in Analyze and Short source badges; Keys and mouse and the
+      MONOLITH system fold away.
     - Layout: drag handles on the dock (in Crucible, the heartbeat's
       height), the side panel and the move list, the panel's width saved
       per world and the others per destination; arrow keys step them,
@@ -208,7 +213,10 @@
     - Explore (Settings, on by default): move pieces before a game, on a
       Crucible game, an earlier move or a finished game; Undo and Back on
       the chip; the game and the record never change; Analyze follows the
-      explored position.
+      explored position. In Analyze a move at the live position of a game
+      starts a line too, and the game waits; the Explore switch on the
+      board, Settings → Explore in Analyze or :explore analyze turns that
+      off, and a move there on your turn is then played in the game.
     - Command Palette (Ctrl K, ⌘K on Apple keyboards) for the game, board,
       Analyze, Crucible, navigation, world, graphics and sound commands,
       found by everyday words too (take back, give up, mute), a word no
@@ -217,7 +225,7 @@
       game will begin; each tab's own title in Analyze and Crucible, and
       Analyze's evaluation from White's side); a telemetry footer where
       every readout carries its source badge, full or short, set aside on
-      screens under 600 px; a System sheet that measures the contrast
+      screens under 900 px; a System sheet that measures the contrast
       ledger in the browser.
     - Ceremony: pieces drop in, check shudders, promotion flashes, the
       losing king topples, the winner is crowned (draws: both kings bow).
@@ -247,8 +255,9 @@
     game. Analyze searches whatever position is shown, or a FEN or PGN game
     pasted into its Load section; Crucible opens the recorded run or starts
     a live one. Click a piece on any read-only board to try your own moves.
-    The palette (Ctrl K) opens anywhere and takes everyday words. The version
-    chip beside it is this file's Version; a lower number than the
+    The palette (Ctrl K, or its button at the foot of the rail, in the bar
+    under 900 px) opens anywhere and takes everyday words. The version
+    chip with it is this file's Version; a lower number than the
     published page's means this copy is behind. Drag the handles on the
     dock, panel and move list to size them. A dotted underline marks a
     term: click it for its card, or open the Grimoire tab (/ searches).
@@ -290,10 +299,11 @@
     - Files: css/ (the stylesheet, cut at its sections, linked in order);
       js/core (Chess, Monolith, LEVELS); js/data (the datasets); js/app,
       js/scene, js/game, js/coach and js/ui (the modules); js/main.js (the
-      boot); js/file-check.js (the note shown from disk); the loading
-      screen's emblem and its arc of White's back rank, and the app bar's
-      logo, inline in this file, written from assets/monolith-emblem.svg,
-      js/data/piece-set.js and assets/monolith-logo.svg by
+      boot); js/file-check.js (the note shown from disk); the emblem,
+      drawn once in a hidden sprite that the loading screen and the app
+      bar's wordmark both draw with <use>, and the loading screen's arc of
+      White's back rank, inline in this file, written from
+      assets/monolith-emblem.svg and js/data/piece-set.js by
       tools/build-emblem.mjs.
       ARCHITECTURE.md maps every file.
     - Datasets: COACH_VOICE (js/data/coach-voice.js), every line the Coach

@@ -12,9 +12,10 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Also
-      writes White's back rank for the loading screen's arc, from
-      js/data/piece-set.js or a fourth argument, between boot-arc markers.
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Writes
+      the emblem once, as a sprite that the loading screen and, on
+      Dennis's ruling, the wordmark's M draw with <use>, and no longer
+      reads the bare logo; adds White's back rank, the loading screen's arc.
     - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — For the
       Conical M, which Dennis made MONOLITH's official logo and emblem: a
       board of one tone (his slate tiles) is read as the darker squares, so
@@ -37,35 +38,48 @@
       loading screen shows it before anything else has loaded.
 
 ✒ Description:
-    Reads Dennis's two official marks and the house piece set and writes
-    them into the page: the emblem (assets/monolith-emblem.svg, the Conical
-    M with its twelve pieces) as the loading screen's inline SVG, between
-    the page's boot-emblem markers; White's back rank from the piece set
-    (js/data/piece-set.js) as the arc over the emblem, between its boot-arc
-    markers; and the logo (assets/monolith-logo.svg, the bare M) as the app
-    bar's mark, between its brand-logo markers. Inline, all three paint
-    with the page's first frame, before any script has run, and the
-    stylesheet colours them per world, so they follow the cathedral and
-    MONOLITH as the board diagrams do.
+    Reads the emblem (assets/monolith-emblem.svg, the MONOLITH M with its
+    twelve pieces) and the house piece set and writes them into the page:
+    the emblem's drawing once, in a hidden sprite between the page's
+    emblem-defs markers; the loading screen's emblem, between its
+    boot-emblem markers, and the app bar's mark, the M of the wordmark,
+    between its brand-logo markers, both drawn from that sprite with
+    <use>; and White's back rank from the piece set (js/data/piece-set.js)
+    as the arc over the loading screen's emblem, between its boot-arc
+    markers. Inline, all of it paints with the page's first frame, before
+    any script has run, and the stylesheet colours it per world, so it
+    follows the cathedral and MONOLITH as the board diagrams do.
 
 ✒ Key Features:
-    - The squares, in both marks: every square of the board group, a rect
-      or a cut path, with its geometry and the group's transform. With two
-      fills a square is class l (the lighter) or d (the darker); with one,
-      as the Conical M is drawn, every square is class d, the diagrams'
-      dark square, which in the cathedral is the very slate of Dennis's M.
-    - The pieces (the emblem): every piece-{side}-{type}-emblem group with
-      its transform; each path or circle becomes class f (the piece's face)
-      or c (its contour and marks). A White piece's faces are its lighter
-      fill, a Black piece's its darker, so the stylesheet can give either
-      side either wood.
-    - Timing, as classes (the emblem): a square's a0..a20 follows its place
-      along the M's stroke (up the left leg, down to the middle of the
-      bridge, up again, down the right leg), a little later the farther it
-      sits from the stroke's centre line; its g0..g12 its place corner to
-      corner, for the glint. Each piece is wrapped in a group (class pc)
-      with its turn, i0..i11 (the sides alternating, pawns first, kings
-      last), and its glint; the piece keeps its own transform inside.
+    - One drawing, drawn twice: the emblem goes into the page once, in a
+      sprite placed before the loading screen that stays when the screen
+      is removed. The loading screen draws it a square or a piece at a
+      time, each with its own <use>, so each keeps its moment as a class;
+      the app bar draws the whole of it with one <use>, as the M of the
+      wordmark. Colour crosses into a <use> only by inheritance, so the
+      drawing carries none of its own: whoever draws it sets the squares'
+      fills, the pieces' woods and the mortar.
+    - The squares: every square of the board group, a rect or a cut path,
+      with its geometry and the group's transform, each in the sprite with
+      an id (emb-s0 …) in a group of its tone. With two fills a square is
+      l (the lighter) or d (the darker); with one, as the MONOLITH M is
+      drawn, every square is d, the diagrams' dark square, which in the
+      cathedral is the very slate of the M.
+    - The pieces: every piece-{side}-{type}-emblem group with its
+      transform, each in the sprite with an id (emb-p0 … emb-p11) inside a
+      group of its side's woods. A part in the piece's face fill takes the
+      fill it inherits, and its contour and marks take currentColor; a
+      White piece's faces are its lighter fill, a Black piece's its
+      darker, so either side can be given either wood.
+    - Timing, as classes (the loading screen): a square's <use> carries
+      a0..a20, from its place along the M's stroke (up the left leg, down
+      to the middle of the bridge, up again, down the right leg), a little
+      later the farther it sits from the stroke's centre line, and
+      g0..g12, its place corner to corner, for the glint. Each piece's
+      <use> (class pw or pb, its side's woods) is wrapped in a group
+      (class pc) with its turn, i0..i11 (the sides alternating, pawns
+      first, kings last), and its glint; the piece keeps its own transform
+      inside the sprite.
     - Where a square is: a rect's centre; a path written only with absolute
       moves, lines and curves (as the generator writes a cut square), the
       middle of its points; any other path (as Inkscape writes one), its
@@ -81,51 +95,58 @@
       on the compositor where a part of an SVG would not. The pieces keep
       the set's own face and line fills.
     - Numbers rounded to two decimals in the emblem (four for a transform's
-      scale) and to one in the logo and the arc: at the sizes they are
-      drawn, far below a pixel.
-    - The emblem's usual stroke width goes on its board group (class bd),
+      scale) and to one in the arc: at the sizes they are drawn, far below
+      a pixel.
+    - The emblem's usual stroke width goes on the loading screen's board
+      group (class bd) and is the sprite's fallback for its mortar width,
       and a square drawn wider or narrower keeps its own; the stylesheet
-      sets only the stroke's colour and joins, so both survive. The logo's
-      squares carry no stroke width: the stylesheet draws its mortar one
-      pixel wide at any size, since at 32 pixels the drawing's own mortar
-      would vanish. Even-odd fill rules are kept on the pieces' parts.
+      sets only the stroke's colour and joins, so both survive. The app
+      bar's mark draws no mortar unless the stylesheet sets one, which it
+      does about half a pixel wide, since at the bar's size the drawing's
+      own mortar is a hairline. Even-odd fill rules are kept on the
+      pieces' parts.
     - Fails loudly on a missing board, piece, colour or marker, or a piece
       set that cannot be read or lacks a kind, rather than writing half a
       mark.
 
 ✒ Usage Instructions:
-    Run with Node 18 or later from the project folder after changing
-    either mark or the piece set:
+    Run with Node 18 or later from the project folder after changing the
+    emblem or the piece set:
         node tools/build-emblem.mjs
-    It reads assets/monolith-emblem.svg, assets/monolith-logo.svg and
-    js/data/piece-set.js and rewrites the blocks between
-    <!-- boot-emblem:start … --> and <!-- boot-emblem:end -->, between
-    <!-- boot-arc:start … --> and <!-- boot-arc:end -->, and between
-    <!-- brand-logo:start … --> and <!-- brand-logo:end -->, in index.html
-    (else wizards-chess.html).
+    It reads assets/monolith-emblem.svg and js/data/piece-set.js and
+    rewrites the blocks between <!-- emblem-defs:start … --> and
+    <!-- emblem-defs:end -->, between <!-- boot-emblem:start … --> and
+    <!-- boot-emblem:end -->, between <!-- boot-arc:start … --> and
+    <!-- boot-arc:end -->, and between <!-- brand-logo:start … --> and
+    <!-- brand-logo:end -->, in index.html (else wizards-chess.html).
     Other paths, in this order (any left off at the end take the default):
         node tools/build-emblem.mjs path/to/emblem.svg path/to/page.html \
-            path/to/logo.svg path/to/piece-set.js
-    Never edit the blocks in the page by hand; they are replaced on each
-    run. The marks themselves are written by the brand system,
-    assets/generator/monolith_m.py, and the piece set by
-    tools/build-piece-set.mjs.
+            - path/to/piece-set.js
+    The third place, once the logo's path, is kept so that the fourth
+    still names the piece set; whatever stands there is not read, and the
+    builder warns that it is not. Never edit the blocks in the page by
+    hand; they are replaced on each run. The marks themselves are written
+    by the brand system, assets/generator/monolith_m.py, and the piece set
+    by tools/build-piece-set.mjs.
 
 ✒ Other Important Information:
     - Dependencies: Node's fs, path and url only.
     - Input contract: the emblem has a group id="board-emblem" holding the
       squares (rects and paths, one or two fills between them) and groups
       id="piece-{white|black}-{type}-emblem" holding paths and circles in
-      two fills; the logo has a group id="board-logo" holding its squares
-      the same way; every element styled inline, as Inkscape and the
+      two fills; every element styled inline, as Inkscape and the
       generator write it. The piece set declares PIECE_SET with a size
       (the side of a piece's square) and pieces.r, n, b, q and k, each a
       string of SVG.
-    - Output: the emblem's classes bd, l, d, pc, pw, pb, f, c, a0..a20,
-      g0..g12 and i0..i11, under .boot-emblem; the arc's boot-arc,
-      boot-arc-set and boot-arc-pc, with symbols boot-pc-r, -n, -b, -q and
-      -k; the logo's bd, l and d, under .brand .logo (all in
-      css/layout.css).
+    - Output: the sprite, svg.emb-defs holding g#emb, its board group
+      reading the mortar from --emb-mortar and --emb-sw, its tone groups
+      the squares' fills from --emb-d and --emb-l, and each piece's group
+      its woods from --pc-wf and --pc-wl or --pc-bf and --pc-bl; the
+      loading screen's svg.boot-emblem, with classes bd, l, d, a0..a20,
+      g0..g12, pc, i0..i11, pw and pb on its <use>s and their groups; the
+      arc's boot-arc, boot-arc-set and boot-arc-pc, with symbols boot-pc-r,
+      -n, -b, -q and -k; and the app bar's svg.logo, one <use> of #emb,
+      which .brand .logo sizes and colours (the rules in css/layout.css).
     - Compatible platforms: any system with Node 18+.
 ---------
 */
@@ -139,9 +160,9 @@ const [srcArg, pageArg, logoArg, setArg] = process.argv.slice(2);
 const SRC = path.resolve(srcArg || path.join(ROOT, 'assets', 'monolith-emblem.svg'));
 const PAGE = path.resolve(pageArg || ['index.html', 'wizards-chess.html'].map(f => path.join(ROOT, f)).find(f => fs.existsSync(f)) || 'index.html');
 const fail = m => { console.error(`build-emblem: ${m}`); process.exit(1); };
-/* The app bar draws the emblem itself now (Dennis, 10/30/2026: the M with its pieces stands as the
-   M of the word), so the bare logo is no longer read; the third argument keeps its place so the
-   fourth still names the piece set. */
+/* The app bar draws the emblem itself now, the M with its pieces standing as the M of the word, so
+   the bare logo is no longer read; the third argument keeps its place so the fourth still names
+   the piece set. */
 if (logoArg) console.warn(`build-emblem: the app bar draws the emblem now; ${logoArg} is not read`);
 
 /* ---------- a small tokenizer: the emblem is plain Inkscape SVG, one element per tag ---------- */
@@ -198,7 +219,7 @@ function middleOf(d) {
 }
 
 /* ---------- the squares ----------
-   One fill or two: with two, the lighter is class l and the darker d; with one (the Conical M is
+   One fill or two: with two, the lighter is class l and the darker d; with one (the MONOLITH M is
    drawn in one slate, the mortar doing the rest) every square is d, the diagrams' dark square. */
 function toneOf(squares, what) {
   const fills = [...new Set(squares.map(d => (styleOf(d.a).fill || '').toLowerCase()))];
@@ -228,11 +249,11 @@ const [vx, vy, vw, vh] = E.viewBox.split(/[\s,]+/).map(Number);
 /* ---------- where things are, for the loading screen's timing ----------
    The screen's animation (css/layout.css) gives each square and piece a moment by class, from
    buckets: a square's a0..a20 is when it lights as the M is written, stroke by stroke; its g0..g12,
-   and a piece's, is when the glint crossing the emblem corner to corner reaches it; a piece's i0..i11
-   is its turn to be set down. The stroke is the Conical M's, as a pen would write it, in fractions of
-   the emblem: up the left leg's centre line (a leg is a quarter of the width) to the top row's
-   middle, down to the bridge's middle (halfway between the valley floor and the notch, 0.31 of the
-   height), up to the top of the right leg, and down it. */
+   and a piece's, is when the glint crossing the emblem corner to corner reaches it; a piece's
+   i0..i11 is its turn to be set down. The stroke is the MONOLITH M's, as a pen would write it, in
+   fractions of the emblem: up the left leg's centre line (a leg is a quarter of the width) to the
+   top row's middle, down to the bridge's middle (halfway between the valley floor and the notch,
+   0.31 of the height), up to the top of the right leg, and down it. */
 const STROKE = [[0.125, 1], [0.125, 0.125], [0.5, 0.31], [0.875, 0.125], [0.875, 1]].map(([x, y]) => [vx + x * vw, vy + y * vh]);
 function along(p) {   // how far along the stroke a point lies (0..1), and how far it sits off it
   let best = { d: Infinity, s: 0 }, run = 0, total = 0;
