@@ -290,6 +290,11 @@ function renderStageInstruments(st, sharp, rec) {
     b.setAttribute('aria-pressed', String(!!onK));
   }
   $('#xray-mode').textContent = xr.sticky ? (tapOnly() ? '· tap a square' : '· on') : tapOnly() ? '' : '· hold Space';
+  // Explore in Analyze (js/game/flow.js analyzeExplores): where a move made on this board goes during a game
+  const exb = $('#btn-an-explore'), exOn = prefs.analyzeExplore !== false;
+  exb.setAttribute('aria-checked', String(exOn));
+  exb.title = exOn ? 'Explore: on. During a game a move made here starts a line from the position shown; the game does not change. Click to play moves in the game instead'
+    : 'Explore: off. During a game a move made here on your turn is played in the game. Click to explore lines instead';
   // WDL ribbon (White's view)
   const wdl = l1 ? Monolith.wdlWhite(l1.wdl, st.turn) : null, ribbon = $('#wdl');
   ribbon.hidden = !wdl; $('#wdl-none').hidden = !!wdl || !l1;

@@ -68,9 +68,9 @@ import { engine } from '../game/engine.js';
 import { boardState, deselect } from '../game/board-ui.js';
 import { playMove } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped, exploreUndo,
-  goLive, offerDraw, openSetup, rematch, resign, sandbox, setAutoFlip, setExplorePref, setOrientation, showView,
-  startGame, turning, undo, viewedPly
+  analyzeExplores, analyzeGame, autoFlipOn, autoOrient, draftLine, explore, exploreAvailable, exploreEnd, exploreTyped,
+  exploreUndo, goLive, offerDraw, openSetup, rematch, resign, sandbox, setAnalyzeExplorePref, setAutoFlip,
+  setExplorePref, setOrientation, showView, startGame, turning, undo, viewedPly
 } from '../game/flow.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
@@ -140,6 +140,9 @@ export function init() {
   $('#set-sound').addEventListener('change', e => { ensureAudio(); prefs.sound = e.target.checked; savePrefs(); applyPrefs(); render(); });
   $('#set-legal').addEventListener('change', e => { prefs.legal = e.target.checked; savePrefs(); render(); });
   $('#set-explore').addEventListener('change', e => setExplorePref(e.target.checked));
+  // Explore in Analyze: the Settings row and the switch on the Analyze board are one setting
+  $('#set-an-explore').addEventListener('change', e => setAnalyzeExplorePref(e.target.checked));
+  $('#btn-an-explore').addEventListener('click', () => setAnalyzeExplorePref(prefs.analyzeExplore === false));
   for (const id of ['#set-autoflip', '#setup-autoflip', '#live-autoflip']) $(id).addEventListener('change', e => setAutoFlip(e.target.checked));
   $('#btn-explore-undo').addEventListener('click', exploreUndo);
   $('#btn-explore-back').addEventListener('click', () => exploreEnd());
@@ -175,9 +178,10 @@ export function init() {
   // on a phone the move box waits behind its keyboard button (css/media.css), which opens it ready to type
   $('#btn-type-move').addEventListener('click', e => { const on = $('.moves-card').classList.toggle('typing'); e.currentTarget.setAttribute('aria-expanded', String(on)); if (on) $('#move-input').focus(); });
   $('#move-form').addEventListener('submit', e => {
-    // the game on your turn; otherwise, as a click would, a line on the board the game does not own
+    // the game on your turn; otherwise, as a click would, a line: the one on the board, Analyze at the
+    // live position (Explore in Analyze), or a board the game does not own
     e.preventDefault(); ensureAudio();
-    const tryIt = !canMoveNow() && (explore.on || (prefs.explore !== false && exploreAvailable()));
+    const tryIt = explore.on || analyzeExplores() || (!canMoveNow() && prefs.explore !== false && exploreAvailable());
     if ((!canMoveNow() && !tryIt) || turning) return;
     const inp = $('#move-input'), r = parseTyped(tryIt ? boardState() : cur(), inp.value);
     if (!r) return;

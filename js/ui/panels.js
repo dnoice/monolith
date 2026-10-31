@@ -85,8 +85,8 @@ import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, canOfferDraw, drawJudging, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState,
-  sandbox, showView, viewedPly
+  analyzeExplores, analyzeGame, autoFlipOn, canOfferDraw, drawJudging, explore, exploreAvailable, exploreLine,
+  exploreOrigin, exploreState, sandbox, showView, viewedPly
 } from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
@@ -475,6 +475,7 @@ export function init() {
   // Settings
   onRender(() => {
     $('#set-sound').checked = prefs.sound; $('#set-legal').checked = prefs.legal; $('#set-explore').checked = prefs.explore !== false; $('#set-coords').checked = prefs.coords;
+    $('#set-an-explore').checked = prefs.analyzeExplore !== false;
     $('#set-autoflip').checked = prefs.autoFlip !== false;
     $('#set-coach').checked = coachOn(); $('#set-eval').checked = prefs.evalOn; $('#set-eval').disabled = !engine.ready;
     for (const b of document.querySelectorAll('[data-speed]')) radio(b, b.dataset.speed === prefs.speed);
@@ -544,10 +545,11 @@ export function init() {
     // on the free board First resets the line and Previous takes a move back; there is nothing ahead
     $('#nav-first').disabled = (!sb && at === 0) || app.busy; $('#nav-prev').disabled = (!sb && at === 0) || app.busy;
     $('#nav-next').disabled = sb || at >= last || app.busy; $('#nav-last').disabled = sb || at >= last || app.busy;
-    // a typed move goes where a click would: the game on your turn, else a line on a board the game does not own
-    const typeTry = !canMoveNow() && (explore.on || (tryOn && exploreAvailable()));
+    // a typed move goes where a click would: the line on the board, Analyze at the live position
+    // (Explore in Analyze), the game on your turn, else a line on a board the game does not own
+    const typeTry = explore.on || analyzeExplores() || (!canMoveNow() && tryOn && exploreAvailable());
     $('#move-input').disabled = $('#move-form button').disabled = !canMoveNow() && !typeTry;
-    $('#move-input').placeholder = canMoveNow() ? 'e2e4, Nf3 or O-O' : typeTry ? 'Try a move: e4, Nf3' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
+    $('#move-input').placeholder = typeTry ? 'Try a move: e4, Nf3' : canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
     // with nothing to list (no game, no line tried, no Crucible game on the board) the card folds
     // to its head (css/workspace.css)
     $('.moves-card').toggleAttribute('data-idle', !app.started && !explore.on && !boardOverride);

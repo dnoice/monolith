@@ -327,9 +327,22 @@ export const underlyingState = () => boardOverride ? boardOverride.state : shown
    on every tab, and Play from here turns the line into a game. */
 export const exploreAvailable = () => !!boardOverride || !app.started || app.view !== null || !!game.result;
 export const sandbox = () => explore.on && !app.started && !boardOverride;
+/* Analyze explores during a game (Dennis, 2.18.0; on by default: Settings → Explore in Analyze, the
+   Explore switch on the Analyze board, :explore analyze). At the live position of a running game a
+   click, a drag or a typed move in Analyze starts a line from the position shown and never touches
+   the game. Off, a move made there on your turn is played in the game, as before. The positions
+   Move pieces on any board covers (earlier moves, a finished game) keep following that setting. */
+export const analyzeExplores = () => prefs.tab === 'analyze' && prefs.analyzeExplore !== false && app.started && app.view === null && !game.result && !boardOverride;
+// a click or a typed move goes into a line (the one on the board, or a new one), not the game
+export const exploresHere = () => explore.on || analyzeExplores() || (prefs.explore !== false && exploreAvailable());
 // Play from here: the free board's line as it stands when Start game is pressed (draft.from marks the choice)
 export const draftLine = () => draft.from && sandbox() && explore.moves.length ? { states: explore.states.slice(), moves: explore.moves.slice(), sans: explore.sans.slice(), free: true } : null;
 export function setExplorePref(on) { prefs.explore = on; savePrefs(); if (!on && explore.on) exploreEnd(); else render(); }
+// switched off, a line standing on the live position goes, so the next move there is the game's
+export function setAnalyzeExplorePref(on) {
+  prefs.analyzeExplore = on; savePrefs();
+  if (!on && explore.on && !boardOverride && app.view === null && explore.base === cur()) exploreEnd(); else render();
+}
 function exploreStart() {
   const base = underlyingState();
   Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] }); draft.from = false;   // a new line is not yet one to play from
@@ -406,5 +419,5 @@ export function exploreOrigin() {
   if (!boardOverride && !app.started) return 'the starting position';
   if (boardOverride && boardOverride.game) return `game #${pad2(boardOverride.game.index)}, ply ${boardOverride.ply}`;
   if (app.view !== null) return app.view === 0 ? 'the starting position' : `move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
-  return 'the final position';
+  return game.result ? 'the final position' : 'the live position';
 }
