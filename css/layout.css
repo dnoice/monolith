@@ -669,7 +669,8 @@
 /* keys named in a tip: a hairline key in the world's accent, the key's name in the mono face */
 .boot-tip kbd{display:inline-block;margin:0 1px;padding:0 5px;border:1px solid var(--tip-key);border-bottom-width:2px;border-radius:4px;font:500 12px/1.35 var(--font-mono);color:var(--md-on-surface);background:color-mix(in srgb,var(--md-primary) 6%,transparent)}
 :root[data-skin="monolith"] .boot-tip kbd{border-radius:2px}
-.boot-skip{margin:0;font:400 11.5px/1.2 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var);opacity:.6}
+/* the skip hint at .75: 4.7:1 or better on the stage in both worlds, its lightest point included */
+.boot-skip{margin:0;font:400 11.5px/1.2 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var);opacity:.75}
 .boot-skip .t{display:none}
 :root[data-skin="monolith"] .boot-skip{font:500 10px/1.2 var(--font-tele);letter-spacing:.14em;text-transform:uppercase}
 @media (hover:none) and (pointer:coarse){.boot-skip .k{display:none}.boot-skip .t{display:inline}}

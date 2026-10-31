@@ -239,7 +239,7 @@
      label is its switch's target */
   .st-next-act .btn.small{height:40px}
   .gr-a-nav .icon-btn{width:40px;height:40px}
-  .opt{min-height:49px}
+  .opt{min-height:49px}   /* 48 px of target and the row's 1 px rule */
   .opt .select,.gfx-grid .select,.ed-ep select{height:40px}
   :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea){font-size:16px}
 }
