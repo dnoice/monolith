@@ -173,34 +173,136 @@ export function fitCanvas(cv) {
 }
 export const TOK = { canvas: '#0B0D10', panel: '#14181F', raised: '#1B212A', well: '#0E1116', rule: '#262D38', sqDark: '#181D25', sqLight: '#3F4B5B', steel: '#ABB5C3', ivory: '#ECE8EF', slate: '#556275', obsidian: '#0F1318', ink: '#E3E7EE', ink2: '#A4ACB9', ink3: '#7E8898', cyan: '#2CC8D8', amber: '#E8A93A', crimson: '#ED7F83' };
 export const FONT_T = '"Geist Mono", ui-monospace, monospace';
+/* ---------- Analyze: the search profile ----------
+   Depth over the search time, and beneath it, on the same time axis, the hash filling in a strip
+   of its own (two scales on one plot would make each read against the other). Both are monotone
+   cubics through the info stream (Fritsch–Carlson tangents, so a curve never overshoots a reported
+   value and depth never seems to fall back); the rules are hairlines on device pixels, the latest
+   values are marked and named at the right, and a pointer, or a finger, reads out the nearest
+   update. The canvas's size comes from a ResizeObserver, in the device pixels of its content box,
+   so a draw reads no layout: it follows a render's writes to the page, on every info line. */
+const prof = { w: 0, h: 0, bw: 0, bh: 0, ro: null, x: null, lift: 0, raf: 0, label: '' };
+function profileWatch(cv) {
+  if (prof.ro) return;
+  if (typeof ResizeObserver === 'undefined') prof.ro = 'none';
+  else {
+    prof.ro = new ResizeObserver(([e]) => {
+      const c = e.contentBoxSize && e.contentBoxSize[0], d = e.devicePixelContentBoxSize && e.devicePixelContentBoxSize[0];
+      const w = c ? c.inlineSize : e.contentRect.width, h = c ? c.blockSize : e.contentRect.height, dpr = Math.min(2, devicePixelRatio || 1);
+      // the device pixels when the browser reports them (and they agree with the ratio: an emulated
+      // screen may not), else the box at the ratio, rounded
+      const exact = d && Math.abs(d.inlineSize - w * dpr) < 1.5 && Math.abs(d.blockSize - h * dpr) < 1.5;
+      Object.assign(prof, { w, h, bw: exact ? d.inlineSize : Math.round(w * dpr), bh: exact ? d.blockSize : Math.round(h * dpr) });
+      drawProfile();
+    });
+    try { prof.ro.observe(cv, { box: 'device-pixel-content-box' }); } catch (e) { prof.ro.observe(cv); }
+  }
+  // the readout follows the pointer, and a finger for a moment after it lifts; one redraw a frame
+  const at = x => { clearTimeout(prof.lift); prof.x = x; if (!prof.raf) prof.raf = requestAnimationFrame(() => { prof.raf = 0; drawProfile(); }); };
+  cv.addEventListener('pointermove', e => at(e.offsetX));
+  cv.addEventListener('pointerdown', e => at(e.offsetX));
+  cv.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') at(null); });
+  for (const t of ['pointerup', 'pointercancel']) cv.addEventListener(t, e => { if (e.pointerType === 'touch') { clearTimeout(prof.lift); prof.lift = setTimeout(() => at(null), 2400); } });
+}
+/* The tangents at screen points P ([x, y], x rising) that keep a cubic through them monotone
+   between each pair (Fritsch–Carlson, as the Crucible's LLR trace), and the curve through them. */
+function monoTangents(P) {
+  const n = P.length, d = [], m = new Array(n).fill(0);
+  if (n < 2) return m;
+  for (let i = 0; i < n - 1; i++) d.push((P[i + 1][1] - P[i][1]) / Math.max(1e-6, P[i + 1][0] - P[i][0]));
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) { m[i] = m[i + 1] = 0; continue; }
+    const a = m[i] / d[i], b = m[i + 1] / d[i], s = a * a + b * b;
+    if (s > 9) { const k = 3 / Math.sqrt(s); m[i] = k * a * d[i]; m[i + 1] = k * b * d[i]; }
+  }
+  return m;
+}
+function monoPath(g, P, m) {
+  g.moveTo(P[0][0], P[0][1]);
+  for (let i = 0; i < P.length - 1; i++) {
+    const h = P[i + 1][0] - P[i][0];
+    g.bezierCurveTo(P[i][0] + h / 3, P[i][1] + m[i] * h / 3, P[i + 1][0] - h / 3, P[i + 1][1] - m[i + 1] * h / 3, P[i + 1][0], P[i + 1][1]);
+  }
+}
+// the smallest round step that cuts span into at most n parts
+const PROFILE_STEPS = [0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 1200, 1800, 3600];
+const roundStep = (span, n) => PROFILE_STEPS.find(s => Math.floor(span / s + 1e-9) <= n) || 3600;
 function drawProfile() {
-  const cv = $('#profile'); if (!cv || !cv.offsetParent) return;
-  const { g, w, h } = fitCanvas(cv);
-  g.clearRect(0, 0, w, h);
-  const S = an.stream; g.font = `10px ${FONT_T}`; g.textBaseline = 'alphabetic';
-  if (!S.length) { g.fillStyle = TOK.ink3; g.fillText(an.status === 'searching' ? 'Waiting for the first depth…' : 'No search yet', 10, h / 2 + 3); return; }
-  const L = 28, R = 64, T = 12, B = 18, tmax = Math.max(1, S[S.length - 1].t, an.status === 'searching' ? 0 : 0), dmax = Math.max(4, ...S.map(x => x.depth));
-  const X = t => L + (w - L - R) * (t / tmax), Y = d => h - B - (h - T - B) * (d / dmax), Yh = v => h - B - (h - T - B) * (v / 1000);
-  g.lineWidth = 1;
-  for (let k = 0; k <= 4; k++) { const y = Math.round(T + (h - T - B) * k / 4) + 0.5; g.strokeStyle = k === 4 ? '#3A4352' : 'rgba(38,45,56,.75)'; g.beginPath(); g.moveTo(L, y); g.lineTo(w - R, y); g.stroke(); }
-  // hashfull area (per mille, right axis), a soft gradient with a hairline crest
-  const hg = g.createLinearGradient(0, T, 0, h - B); hg.addColorStop(0, 'rgba(110,124,145,.42)'); hg.addColorStop(1, 'rgba(85,98,117,.06)');
-  g.beginPath(); g.moveTo(X(S[0].t), h - B);
-  for (const x of S) g.lineTo(X(x.t), Yh(x.hashfull || 0));
-  g.lineTo(X(S[S.length - 1].t), h - B); g.closePath(); g.fillStyle = hg; g.fill();
-  g.beginPath(); S.forEach((x, i) => i ? g.lineTo(X(x.t), Yh(x.hashfull || 0)) : g.moveTo(X(x.t), Yh(x.hashfull || 0))); g.strokeStyle = 'rgba(171,181,195,.45)'; g.lineWidth = 1; g.stroke();
-  // depth as a step trace (depth is whole iterations), with a node where each one completed
-  g.lineJoin = 'round'; g.lineCap = 'round';
-  const depthPath = () => { g.beginPath(); g.moveTo(X(S[0].t), Y(S[0].depth)); for (let i = 1; i < S.length; i++) { g.lineTo(X(S[i].t), Y(S[i - 1].depth)); g.lineTo(X(S[i].t), Y(S[i].depth)); } g.lineTo(w - R, Y(S[S.length - 1].depth)); };
-  depthPath(); g.strokeStyle = 'rgba(227,231,238,.10)'; g.lineWidth = 4; g.stroke();
-  depthPath(); g.strokeStyle = TOK.ink; g.lineWidth = 1.5; g.stroke();
-  if ((w - L - R) / Math.max(1, S.length) >= 6) { g.fillStyle = TOK.ink; for (const x of S) { g.beginPath(); g.arc(X(x.t), Y(x.depth), 1.8, 0, PI * 2); g.fill(); } }
-  g.fillStyle = TOK.ink3;
-  g.fillText(`d${dmax}`, 4, T + 8); g.fillText('0 s', L, h - 5);
-  const tl = `${tmax.toFixed(tmax < 10 ? 1 : 0)} s`; g.fillText(tl, w - R - g.measureText(tl).width, h - 5);
-  g.fillStyle = TOK.ink; g.fillText('depth', w - R + 8, T + 8);
-  g.fillStyle = TOK.ink3; g.fillText('hashfull', w - R + 8, T + 22);
-  g.fillText(Monolith.fmtPct((S[S.length - 1].hashfull || 0) / 1000), w - R + 8, T + 34);
+  const cv = $('#profile'); if (!cv) return;
+  profileWatch(cv);
+  if (prof.ro === 'none') { const dpr = Math.min(2, devicePixelRatio || 1); Object.assign(prof, { w: cv.clientWidth, h: cv.clientHeight, bw: Math.round(cv.clientWidth * dpr), bh: Math.round(cv.clientHeight * dpr) }); }
+  const { w, h, bw, bh } = prof; if (!w || !h || !bw || !bh) return;   // hidden with its tab, or not measured yet
+  if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+  const g = cv.getContext('2d'), sx = bw / w, sy = bh / h;
+  g.setTransform(sx, 0, 0, sy, 0, 0); g.clearRect(0, 0, w, h);
+  g.font = `10px ${FONT_T}`; g.textBaseline = 'alphabetic'; g.textAlign = 'left';
+  const S = an.stream, say = t => { const l = `Search depth and hash use over the search time: ${t}`; if (prof.label !== l) { prof.label = l; cv.setAttribute('aria-label', l); } };
+  if (!S.length) {
+    const t = an.status === 'searching' ? 'Waiting for the first depth…' : 'No search yet';
+    g.fillStyle = TOK.ink3; g.fillText(t, 10, h / 2 + 3); say(t.toLowerCase()); return;
+  }
+  // the frame: gutters for the scale at the left and the latest values at the right, the depth
+  // plot over the hash strip, and the time under both
+  const L = 32, R = 50, T = 8, AX = 14, HS = 18, GAP = 8;
+  const sBot = h - AX, sTop = sBot - HS, dBot = sTop - GAP, dTop = T, pw = w - L - R;
+  const last = S[S.length - 1], tmax = Math.max(1, last.t), dmax = Math.max(4, ...S.map(x => x.depth));
+  const dStep = dmax <= 6 ? 2 : dmax <= 15 ? 5 : dmax <= 40 ? 10 : 20, dHi = Math.ceil(dmax / dStep) * dStep;
+  const X = t => L + pw * t / tmax, Y = d => dBot - (dBot - dTop) * d / dHi, Yh = v => sBot - HS * Math.min(1000, v) / 1000;
+  // a hairline is one device pixel, centred on one
+  const hy = v => (Math.floor(v * sy) + 0.5) / sy, hx = v => (Math.floor(v * sx) + 0.5) / sx;
+  const rule = (y, c) => { g.strokeStyle = c; g.lineWidth = 1 / sy; g.beginPath(); g.moveTo(L, hy(y)); g.lineTo(w - R, hy(y)); g.stroke(); };
+  g.fillStyle = TOK.ink3; g.textAlign = 'right';
+  for (let v = dStep; v <= dHi; v += dStep) { rule(Y(v), 'rgba(58,67,82,.55)'); g.fillText(`d${v}`, L - 6, Y(v) + 3.5); }
+  rule(dBot, '#3A4352'); rule(sTop, 'rgba(58,67,82,.55)'); rule(sBot, '#3A4352');
+  g.fillText('hash', L - 6, sTop + HS / 2 + 3.5);
+  // time: a tick under the strip at each round step, and the unit after the last
+  const tStep = roundStep(tmax, Math.max(1, Math.floor(pw / 64))), dp = tStep < 1 ? 1 : 0;
+  g.textAlign = 'center'; g.strokeStyle = '#3A4352'; g.lineWidth = 1 / sx;
+  for (let k = 0, n = Math.floor(tmax / tStep + 1e-9); k <= n; k++) {
+    const x = X(k * tStep); g.beginPath(); g.moveTo(hx(x), sBot); g.lineTo(hx(x), sBot + 3); g.stroke();
+    g.fillText(k === n && n ? `${(k * tStep).toFixed(dp)} s` : (k * tStep).toFixed(k ? dp : 0), k === n && n ? x + 6 : x, h - 2);
+  }
+  g.textAlign = 'left';
+  // the points, at most one to a pixel column (updates closer than half a pixel merge into the
+  // later), from the start of the search at depth 0 and an empty hash; hashfull carries forward
+  // over an info line that left it out
+  const P = [[X(0), Y(0)]], Q = [[X(0), Yh(0)]], at = [-1], hv = [0];
+  let hf = 0;
+  S.forEach((s, i) => {
+    if (s.hashfull !== undefined && s.hashfull !== null) hf = s.hashfull;
+    const x = X(s.t), p = [x, Y(s.depth)], q = [x, Yh(hf)], k = P.length - 1;
+    if (k > 0 && x - P[k][0] < 0.5) { P[k] = p; Q[k] = q; at[k] = i; hv[k] = hf; } else { P.push(p); Q.push(q); at.push(i); hv.push(hf); }
+  });
+  const mD = monoTangents(P), mQ = monoTangents(Q), ex = P[P.length - 1][0];
+  // the hash: a wash of steel under a hairline crest
+  let gr = g.createLinearGradient(0, sTop, 0, sBot); gr.addColorStop(0, 'rgba(171,181,195,.32)'); gr.addColorStop(1, 'rgba(171,181,195,.06)');
+  g.beginPath(); monoPath(g, Q, mQ); g.lineTo(ex, sBot); g.lineTo(Q[0][0], sBot); g.closePath(); g.fillStyle = gr; g.fill();
+  g.beginPath(); monoPath(g, Q, mQ); g.strokeStyle = 'rgba(171,181,195,.75)'; g.lineWidth = 1; g.lineJoin = 'round'; g.stroke();
+  // depth: a faint wash to its baseline, then the line
+  gr = g.createLinearGradient(0, dTop, 0, dBot); gr.addColorStop(0, 'rgba(227,231,238,.10)'); gr.addColorStop(1, 'rgba(227,231,238,0)');
+  g.beginPath(); monoPath(g, P, mD); g.lineTo(ex, dBot); g.lineTo(P[0][0], dBot); g.closePath(); g.fillStyle = gr; g.fill();
+  g.beginPath(); monoPath(g, P, mD); g.strokeStyle = TOK.ink; g.lineWidth = 1.5; g.lineCap = 'round'; g.stroke();
+  // a point: a dot in a ring of the well's colour, so it stands clear of the line under it
+  const dot = (x, y, r, c) => { g.fillStyle = TOK.well; g.beginPath(); g.arc(x, y, r + 2, 0, PI * 2); g.fill(); g.fillStyle = c; g.beginPath(); g.arc(x, y, r, 0, PI * 2); g.fill(); };
+  const n = P.length - 1;
+  dot(ex, Q[n][1], 2.2, TOK.steel); dot(ex, P[n][1], 3, TOK.ink);
+  g.fillStyle = TOK.ink; g.fillText(`d${last.depth}`, w - R + 10, Math.max(dTop + 8, Math.min(dBot, P[n][1] + 3.5)));
+  g.fillStyle = TOK.ink2; g.fillText(Monolith.fmtPct(hf / 1000), w - R + 10, sTop + HS / 2 + 3.5);
+  say(`depth ${last.depth} at ${last.t.toFixed(1)} s, hash ${Monolith.fmtPct(hf / 1000)} full`);
+  // the readout: the update nearest the pointer, its values ahead of their names
+  if (prof.x === null) return;
+  let k = 1; for (let i = 2; i <= n; i++) if (Math.abs(P[i][0] - prof.x) < Math.abs(P[k][0] - prof.x)) k = i;
+  const s = S[at[k]], x = P[k][0];
+  g.strokeStyle = 'rgba(227,231,238,.35)'; g.lineWidth = 1 / sx; g.beginPath(); g.moveTo(hx(x), dTop); g.lineTo(hx(x), sBot); g.stroke();
+  dot(x, Q[k][1], 2.2, TOK.steel); dot(x, P[k][1], 3, TOK.ink);
+  const parts = [[`d${s.depth}`, TOK.ink], [`${s.t.toFixed(s.t < 10 ? 2 : 1)} s`, TOK.ink2], [`hash ${Monolith.fmtPct(hv[k] / 1000)}`, TOK.ink2]];
+  const ws = parts.map(([t]) => g.measureText(t).width), bwid = ws.reduce((a, b) => a + b, 0) + 10 * (parts.length - 1) + 12;
+  let bx = x + 9; if (bx + bwid > w - 2) bx = Math.max(2, x - 9 - bwid);
+  g.fillStyle = 'rgba(27,33,42,.96)'; g.strokeStyle = TOK.rule; g.lineWidth = 1 / sy;
+  g.beginPath(); if (g.roundRect) g.roundRect(hx(bx), hy(2), Math.round(bwid), 16, 2); else g.rect(hx(bx), hy(2), Math.round(bwid), 16); g.fill(); g.stroke();
+  let tx = bx + 6; parts.forEach(([t, c], i) => { g.fillStyle = c; g.fillText(t, tx, 13.5); tx += ws[i] + 10; });
 }
 function gradeLines(lines) {
   const grades = lineQuality(lines.map(l => l || null));

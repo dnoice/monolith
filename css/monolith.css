@@ -183,7 +183,8 @@
 .chip.amber{color:var(--mo-amber)}
 .chip.cyan{color:var(--mo-cyan)}
 .chip.crimson{color:var(--mo-crimson)}
-.profile{display:block;width:100%;height:120px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
+/* the search profile (js/ui/analyze-view.js): a sideways drag reads it out, an upright one scrolls */
+.profile{display:block;width:100%;height:120px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px;touch-action:pan-y;cursor:crosshair}
 .opt-list{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
 .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:4px 0;border-bottom:1px solid var(--mo-rule)}
 .opt > label,.opt > .opt-l{display:flex;flex-direction:column;justify-content:center;align-self:stretch;font-size:13px;min-width:0}

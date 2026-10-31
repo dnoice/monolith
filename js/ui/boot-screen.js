@@ -109,7 +109,7 @@
    same ones and times the stages: stage 1 from the first paint, stage 3 once the board has drawn.
    Each has a marker animation on the board group, and a stage is over when its marker finishes. A
    browser without getAnimations(), or without the marker, falls back on the same lengths by the
-   clock. REVEAL is when the tip card shows, ROTATE how long each tip stays. */
+   clock. REVEAL is when the tip shows, ROTATE how long each tip stays. */
 const WRITTEN = 2650, SET = 3600, LIFT = 950, REVEAL = 1700, ROTATE = 5200;
 /* The meter's steps, in the rail's order: what the line says while one is under way, once it is
    in, and, after "Ready", when it failed. */
@@ -189,7 +189,7 @@ function write(p, text) {
   }));
 }
 /* Shuffled, then one at a time in two slots that take turns: the next comes in from below as the
-   last lifts away. The card shows at REVEAL, and only then does the turning begin. */
+   last lifts away. The tip shows at REVEAL, and only then does the turning begin. */
 function tips() {
   const b = el(), slots = b ? [...b.querySelectorAll('.boot-tip-item')] : [];
   const all = typeof BOOT_TIPS !== 'undefined' && Array.isArray(BOOT_TIPS) ? BOOT_TIPS : [];
