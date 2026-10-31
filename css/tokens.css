@@ -90,7 +90,8 @@
   --md-secondary-container:#2c3a52;
   --md-on-secondary-container:#d6e3fa;
   /* the rail's selected destination (its pill, its label; faint on a hovered pill): the house gold,
-     apart from the cool secondary the panels' choices take */
+     which the panel's chosen segments, side cards and categories and its focus rings take too
+     (--pnl-accent, below) */
   --md-nav-active:#e8c377;
   --md-on-nav-active:#2b1e00;
   --md-error:#ffa59c;
