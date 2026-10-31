@@ -508,9 +508,9 @@
    --bt scales every length to the saved Animation speed: Cinematic 1, Brisk 0.55. Minimal, and
    reduced motion, draw it still and lift it at once. The markers boot-written and boot-set time
    stages 1 and 3 for the script; a key or a click jumps to the end of the stage under way. */
-.boot{--bt:1;--arc-ink:var(--md-primary);--boot-halo:color-mix(in srgb,var(--md-primary) 11%,transparent);--boot-fill:linear-gradient(180deg,color-mix(in srgb,var(--md-primary) 45%,#fff),var(--md-primary) 50%,color-mix(in srgb,var(--md-primary) 72%,#000));--boot-glow:color-mix(in srgb,var(--md-primary) 50%,transparent);--boot-sheen:color-mix(in srgb,var(--md-primary) 42%,transparent);--boot-edge:color-mix(in srgb,var(--md-primary) 20%,transparent);--boot-warm:color-mix(in srgb,var(--md-primary) 12%,transparent);position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:24px var(--gutter-r) calc(18px + env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--stage-bg) radial-gradient(ellipse 75% 62% at 50% 38%,color-mix(in srgb,var(--stage-bg) 93%,#fff),var(--stage-bg) 72%)}
+.boot{--bt:1;--arc-ink:var(--md-primary);--boot-halo:color-mix(in srgb,var(--md-primary) 11%,transparent);--boot-fill:linear-gradient(180deg,color-mix(in srgb,var(--md-primary) 45%,#fff),var(--md-primary) 50%,color-mix(in srgb,var(--md-primary) 72%,#000));--boot-glow:color-mix(in srgb,var(--md-primary) 50%,transparent);--boot-sheen:color-mix(in srgb,var(--md-primary) 42%,transparent);position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:24px var(--gutter-r) calc(18px + env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--stage-bg) radial-gradient(ellipse 75% 62% at 50% 38%,color-mix(in srgb,var(--stage-bg) 93%,#fff),var(--stage-bg) 72%)}
 /* MONOLITH: ink and steel, never cyan (colour is semantic there) */
-:root[data-skin="monolith"] .boot{--arc-ink:var(--mo-ink);--boot-halo:rgba(171,181,195,.07);--boot-fill:linear-gradient(180deg,#fff,var(--mo-ink) 45%,var(--mo-steel));--boot-glow:rgba(227,231,238,.26);--boot-sheen:rgba(227,231,238,.32);--boot-edge:var(--mo-rule);--boot-warm:rgba(171,181,195,.06)}
+:root[data-skin="monolith"] .boot{--arc-ink:var(--mo-ink);--boot-halo:rgba(171,181,195,.07);--boot-fill:linear-gradient(180deg,#fff,var(--mo-ink) 45%,var(--mo-steel));--boot-glow:rgba(227,231,238,.26);--boot-sheen:rgba(227,231,238,.32)}
 :root[data-boot-pace="fast"] .boot{--bt:.55}
 .boot-core{flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vmin,26px)}
 /* The emblem (--em wide) as wide as the window allows with the arc over it, short of the name, the
@@ -560,33 +560,37 @@
 :root[data-skin="monolith"] .boot-rail span{height:5px;border-radius:1px}
 :root[data-skin="monolith"] .boot-status{font:500 10.5px/1.25 var(--font-tele);letter-spacing:.13em;text-transform:uppercase}
 :root[data-skin="monolith"] .boot-count{font-family:var(--font-tele);color:var(--mo-ink)}
-/* the tip card, raised off the stage, its tip or fact turning over every few seconds */
+/* the tip: no card, but type set on the stage like the name and the meter, turning over every few
+   seconds. Its kind is a kicker in the status line's face between two hairlines that fade out as
+   the rail's sheen does: a tip in the world's accent (gold, or ink in MONOLITH), a fact in the
+   status line's quieter colour (steel in MONOLITH). The text is centred under it. */
 .boot-foot{flex:none;width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:14px}
-.boot-tip{position:relative;display:grid;width:min(480px,100%);padding:13px 18px 15px;border:1px solid var(--boot-edge);border-radius:var(--r-card);overflow:hidden;background:linear-gradient(180deg,var(--md-surface-2),var(--md-surface-1));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 2px 5px rgba(0,0,0,.4),0 22px 44px -16px rgba(0,0,0,.8);opacity:0;transform:translateY(16px) scale(.98);transition:opacity calc(800ms * var(--bt)) var(--ease-std),transform calc(900ms * var(--bt)) cubic-bezier(.2,.8,.2,1)}
+.boot-tip{--tip-key:color-mix(in srgb,var(--md-primary) 38%,transparent);--tip-kind:var(--md-primary);--tip-fact:var(--md-on-surface-var);display:grid;width:min(520px,100%);opacity:0;transform:translateY(10px);transition:opacity calc(800ms * var(--bt)) var(--ease-std),transform calc(900ms * var(--bt)) cubic-bezier(.2,.8,.2,1)}
+:root[data-skin="monolith"] .boot-tip{--tip-key:var(--md-outline);--tip-kind:var(--mo-ink);--tip-fact:var(--mo-steel)}
 .boot.tips .boot-tip{opacity:1;transform:none}
-.boot-tip::before{content:"";position:absolute;inset:0;background:radial-gradient(130% 150% at 0% 0%,var(--boot-warm),transparent 58%);pointer-events:none}
-:root[data-skin="monolith"] .boot-tip{background:linear-gradient(180deg,var(--mo-raised),var(--mo-panel));box-shadow:inset 0 1px 0 rgba(227,231,238,.07),0 2px 5px rgba(0,0,0,.5),0 22px 44px -16px rgba(0,0,0,.85)}
-:root[data-skin="monolith"] .boot-tip::after{content:"";position:absolute;top:0;left:18px;right:18px;height:1px;background:linear-gradient(90deg,transparent,rgba(171,181,195,.55),transparent)}
-/* two slots in one cell: the next rises in from below as the last lifts away */
-.boot-tip-item{position:relative;grid-area:1/1;display:flex;flex-direction:column;align-items:flex-start;gap:8px;opacity:0;transform:translateY(10px);filter:blur(4px)}
-.boot-tip-item.on{opacity:1;transform:none;filter:none;transition:opacity .7s var(--ease-std) .12s,transform .85s cubic-bezier(.2,.8,.2,1) .12s,filter .7s var(--ease-std) .12s}
-.boot-tip-item.off{opacity:0;transform:translateY(-8px);filter:blur(3px);transition:opacity .45s ease-in,transform .5s ease-in,filter .45s ease-in}
-.boot-tip p{margin:0;min-height:3em;font:400 14px/1.5 var(--font-body);color:var(--md-on-surface);text-wrap:pretty}
-.boot-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 6px;border-radius:var(--r-pill);font:600 10.5px/1.4 var(--font-body);letter-spacing:.12em;text-transform:uppercase;background:var(--md-primary-container);color:var(--md-on-primary-container);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 1px 3px rgba(0,0,0,.4)}
-.boot-chip svg{width:13px;height:13px;flex:none;fill:currentColor}
-.boot-chip .fact,.boot-tip-item[data-kind="fact"] .boot-chip .tip{display:none}
-.boot-tip-item[data-kind="fact"] .boot-chip .fact{display:block}
-.boot-tip-item[data-kind="fact"] .boot-chip{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
-:root[data-skin="monolith"] .boot-chip{border-radius:2px;font:500 10px/1.4 var(--font-tele);letter-spacing:.14em;background:var(--mo-well);color:var(--mo-ink);box-shadow:inset 0 0 0 1px var(--mo-rule)}
-:root[data-skin="monolith"] .boot-tip-item[data-kind="fact"] .boot-chip{background:transparent;color:var(--mo-steel);box-shadow:inset 0 0 0 1px var(--mo-slate)}
-/* keys named in a tip are drawn as key caps */
-.boot-tip kbd{display:inline-block;margin:0 1px;padding:0 5px;border:1px solid var(--md-outline-var);border-radius:5px;font:500 12px/1.45 var(--font-mono);color:var(--md-on-surface);background:linear-gradient(180deg,var(--md-surface-4),var(--md-surface-3));box-shadow:0 1px 0 rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07)}
+/* two slots in one cell: the next comes up into focus as the last fades away, and the kicker's
+   hairlines draw out from it */
+.boot-tip-item{grid-area:1/1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;opacity:0;transform:translateY(6px);filter:blur(3px)}
+.boot-tip-item.on{opacity:1;transform:none;filter:none;transition:opacity calc(700ms * var(--bt)) var(--ease-std) calc(120ms * var(--bt)),transform calc(850ms * var(--bt)) cubic-bezier(.2,.8,.2,1) calc(120ms * var(--bt)),filter calc(700ms * var(--bt)) var(--ease-std) calc(120ms * var(--bt))}
+.boot-tip-item.off{opacity:0;transform:translateY(-4px);filter:blur(2px);transition:opacity calc(450ms * var(--bt)) ease-in,transform calc(500ms * var(--bt)) ease-in,filter calc(450ms * var(--bt)) ease-in}
+.boot-tip p{margin:0;min-height:3em;font:400 14px/1.5 var(--font-body);color:var(--md-on-surface-var);text-wrap:balance}
+.boot-chip{display:inline-flex;align-items:center;gap:12px;font:500 10.5px/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:var(--tip-kind)}
+.boot-tip-item[data-kind="fact"] .boot-chip{color:var(--tip-fact)}
+:root[data-skin="monolith"] .boot-chip{font:500 10px/1.2 var(--font-tele);letter-spacing:.2em}
+/* the tracking is balanced by a negative end margin, so the label sits centred between its rules */
+.boot-chip-label{margin-right:-.2em}
+.boot-chip::before,.boot-chip::after{content:"";flex:none;width:32px;height:1px;background:linear-gradient(90deg,transparent,currentColor);opacity:.6;transform:scaleX(.25);transform-origin:100% 50%}
+.boot-chip::after{background:linear-gradient(270deg,transparent,currentColor);transform-origin:0 50%}
+.boot-tip-item.on .boot-chip::before,.boot-tip-item.on .boot-chip::after{transform:none;transition:transform calc(1100ms * var(--bt)) cubic-bezier(.2,.8,.2,1) calc(200ms * var(--bt))}
+.boot-tip-item.off .boot-chip::before,.boot-tip-item.off .boot-chip::after{transition:transform calc(450ms * var(--bt)) ease-in}
+/* keys named in a tip: a hairline key in the world's accent, the key's name in the mono face */
+.boot-tip kbd{display:inline-block;margin:0 1px;padding:0 5px;border:1px solid var(--tip-key);border-bottom-width:2px;border-radius:4px;font:500 12px/1.35 var(--font-mono);color:var(--md-on-surface);background:color-mix(in srgb,var(--md-primary) 6%,transparent)}
 :root[data-skin="monolith"] .boot-tip kbd{border-radius:2px}
 .boot-skip{margin:0;font:400 11.5px/1.2 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var);opacity:.6}
 .boot-skip .t{display:none}
 :root[data-skin="monolith"] .boot-skip{font:500 10px/1.2 var(--font-tele);letter-spacing:.14em;text-transform:uppercase}
 @media (hover:none) and (pointer:coarse){.boot-skip .k{display:none}.boot-skip .t{display:inline}}
-@media (max-width:520px){.boot-tip p{min-height:4.5em;font-size:13.5px}}
+@media (max-width:520px){.boot-tip p{min-height:4.5em;font-size:13.5px}.boot-chip::before,.boot-chip::after{width:24px}}
 /* a short window (a phone held sideways): the emblem, the name and the meter only */
 @media (max-height:560px){.boot-foot{display:none}.boot-mark{--em:min(calc((100vw - 32px) / 1.72),340px,calc((100vh - 170px) / 1.4))}}
 /* the moments, by class */
