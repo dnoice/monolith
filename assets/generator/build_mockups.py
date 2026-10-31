@@ -6,15 +6,18 @@
     - File Name: build_mockups.py
     - Relative Path: assets/generator/build_mockups.py
     - Artifact Type: python
-    - Version: 2.0.1
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.0.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      loading-02 and hero-01 taglines read MARBLE VS. OBSIDIAN · CATHEDRAL,
+      as the cathedral is no longer called Gothic.
     - 2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       kept working in it, so that name is his now: loading-01 is written

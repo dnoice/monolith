@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Emblem Builder (MONOLITH Edition - v1.2)
+    - Title: Emblem Builder (MONOLITH Edition - v1.3)
     - File Name: build-emblem.mjs
     - Relative Path: tools/build-emblem.mjs
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.3.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Also
+      writes White's back rank for the loading screen's arc, from
+      js/data/piece-set.js or a fourth argument, between boot-arc markers.
     - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — For the
       Conical M, which Dennis made MONOLITH's official logo and emblem: a
       board of one tone (his slate tiles) is read as the darker squares, so
@@ -34,14 +37,16 @@
       loading screen shows it before anything else has loaded.
 
 ✒ Description:
-    Reads Dennis's two official marks and writes them into the page: the
-    emblem (assets/monolith-emblem.svg, the Conical M with its twelve
-    pieces) as the loading screen's inline SVG, between the page's
-    boot-emblem markers, and the logo (assets/monolith-logo.svg, the bare
-    M) as the app bar's mark, between its brand-logo markers. Inline, both
-    paint with the page's first frame, before any script has run; their
-    colours become classes the stylesheet sets per world, so they follow
-    the cathedral and MONOLITH as the board diagrams do.
+    Reads Dennis's two official marks and the house piece set and writes
+    them into the page: the emblem (assets/monolith-emblem.svg, the Conical
+    M with its twelve pieces) as the loading screen's inline SVG, between
+    the page's boot-emblem markers; White's back rank from the piece set
+    (js/data/piece-set.js) as the arc over the emblem, between its boot-arc
+    markers; and the logo (assets/monolith-logo.svg, the bare M) as the app
+    bar's mark, between its brand-logo markers. Inline, all three paint
+    with the page's first frame, before any script has run, and the
+    stylesheet colours them per world, so they follow the cathedral and
+    MONOLITH as the board diagrams do.
 
 ✒ Key Features:
     - The squares, in both marks: every square of the board group, a rect
@@ -66,31 +71,45 @@
       middle of its points; any other path (as Inkscape writes one), its
       first point. A piece is placed by the first point of its drawing,
       through its group's transform and its path's own.
+    - The arc (White's back rank): PIECE_SET, read by running
+      js/data/piece-set.js (a classic script, not a module), becomes one
+      <symbol> per kind, boot-pc-r, -n, -b, -q and -k, with the set's ids
+      dropped, since the board diagrams draw the same set into the page
+      later; then the eight pieces a to h, rook to rook, each a span of its
+      own (class boot-arc-pc) holding a <use> of its kind. The stylesheet
+      places each on the arc and times it by its order, and a span moves
+      on the compositor where a part of an SVG would not. The pieces keep
+      the set's own face and line fills.
     - Numbers rounded to two decimals in the emblem (four for a transform's
-      scale) and to one in the logo: at the sizes they are drawn, far below
-      a pixel.
+      scale) and to one in the logo and the arc: at the sizes they are
+      drawn, far below a pixel.
     - The emblem's usual stroke width goes on its board group (class bd),
       and a square drawn wider or narrower keeps its own; the stylesheet
       sets only the stroke's colour and joins, so both survive. The logo's
       squares carry no stroke width: the stylesheet draws its mortar one
       pixel wide at any size, since at 32 pixels the drawing's own mortar
       would vanish. Even-odd fill rules are kept on the pieces' parts.
-    - Fails loudly on a missing board, piece, colour or marker rather than
-      writing half a mark.
+    - Fails loudly on a missing board, piece, colour or marker, or a piece
+      set that cannot be read or lacks a kind, rather than writing half a
+      mark.
 
 ✒ Usage Instructions:
     Run with Node 18 or later from the project folder after changing
-    either mark:
+    either mark or the piece set:
         node tools/build-emblem.mjs
-    It reads assets/monolith-emblem.svg and assets/monolith-logo.svg and
-    rewrites the blocks between <!-- boot-emblem:start … --> and
-    <!-- boot-emblem:end -->, and between <!-- brand-logo:start … --> and
-    <!-- brand-logo:end -->, in index.html (else wizards-chess.html).
-    Other paths:
-        node tools/build-emblem.mjs path/to/emblem.svg path/to/page.html path/to/logo.svg
+    It reads assets/monolith-emblem.svg, assets/monolith-logo.svg and
+    js/data/piece-set.js and rewrites the blocks between
+    <!-- boot-emblem:start … --> and <!-- boot-emblem:end -->, between
+    <!-- boot-arc:start … --> and <!-- boot-arc:end -->, and between
+    <!-- brand-logo:start … --> and <!-- brand-logo:end -->, in index.html
+    (else wizards-chess.html).
+    Other paths, in this order (any left off at the end take the default):
+        node tools/build-emblem.mjs path/to/emblem.svg path/to/page.html \
+            path/to/logo.svg path/to/piece-set.js
     Never edit the blocks in the page by hand; they are replaced on each
     run. The marks themselves are written by the brand system,
-    assets/generator/conical_m.py.
+    assets/generator/conical_m.py, and the piece set by
+    tools/build-piece-set.mjs.
 
 ✒ Other Important Information:
     - Dependencies: Node's fs, path and url only.
@@ -99,10 +118,14 @@
       id="piece-{white|black}-{type}-emblem" holding paths and circles in
       two fills; the logo has a group id="board-logo" holding its squares
       the same way; every element styled inline, as Inkscape and the
-      generator write it.
+      generator write it. The piece set declares PIECE_SET with a size
+      (the side of a piece's square) and pieces.r, n, b, q and k, each a
+      string of SVG.
     - Output: the emblem's classes bd, l, d, pc, pw, pb, f, c, a0..a20,
-      g0..g12 and i0..i11, under .boot-emblem; the logo's bd, l and d,
-      under .brand .logo (both in css/layout.css).
+      g0..g12 and i0..i11, under .boot-emblem; the arc's boot-arc,
+      boot-arc-set and boot-arc-pc, with symbols boot-pc-r, -n, -b, -q and
+      -k; the logo's bd, l and d, under .brand .logo (all in
+      css/layout.css).
     - Compatible platforms: any system with Node 18+.
 ---------
 */
