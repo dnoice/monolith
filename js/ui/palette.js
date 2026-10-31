@@ -262,7 +262,7 @@ function palRender() {
     li.setAttribute('role', 'option'); li.setAttribute('aria-selected', String(i === pal_.sel)); if (ok !== true) li.setAttribute('aria-disabled', 'true');
     const code = document.createElement('code'), colon = document.createElement('i'); colon.textContent = ':'; code.append(colon, c.cmd.slice(1));
     const dEntry = c.cmd === ':define' && pal_.arg ? grFind(pal_.arg) : null;
-    const span = document.createElement('span'); span.textContent = c.cmd === ':define' && pal_.arg ? (dEntry ? `Open ${dEntry.term}: ${dEntry.def.slice(0, 64)}${dEntry.def.length > 64 ? '…' : ''}` : `Search the Grimoire for “${pal_.arg.slice(0, 40)}”`) : c.arg && pal_.arg ? `Open in Set up: ${pal_.arg.slice(0, 40)}${pal_.arg.length > 40 ? '…' : ''}` : c.desc;
+    const span = document.createElement('span'); span.textContent = c.cmd === ':define' && pal_.arg ? (dEntry ? `Open ${dEntry.term}: ${dEntry.def.slice(0, 64)}${dEntry.def.length > 64 ? '…' : ''}` : `Search the Grimoire for “${pal_.arg.slice(0, 40)}”`) : c.arg && pal_.arg ? `${prefs.tab === 'analyze' ? 'Analyze' : 'Open in Set up'}: ${pal_.arg.slice(0, 40)}${pal_.arg.length > 40 ? '…' : ''}` : c.desc;
     const side = document.createElement('div'); side.className = 'side';
     if (ok !== true) { const why = document.createElement('em'); why.className = 'why'; why.textContent = ok; why.title = ok; side.appendChild(why); }
     for (const k of PAL_KEYS[c.cmd] || []) { const kb = document.createElement('kbd'); kb.textContent = k; side.appendChild(kb); }

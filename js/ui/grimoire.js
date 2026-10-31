@@ -100,7 +100,8 @@ const GR_AT = {
   fen: '#fen', castling: '#pos-rules', 'en-passant': '#pos-rules', 'fifty-move-rule': '#pos-rules', endgame: '#pr-phase', studies: '#st-cats',
   'passed-pawn': '#pr-legend', 'isolated-pawn': '#pr-legend', 'doubled-pawns': '#pr-legend', 'open-file': '#pr-legend', 'bishop-pair': '#pr-legend',
   hint: '#btn-hint', resignation: '#btn-resign', coach: '#coach', 'calculate-moves': '#btn-calc', 'best-line': '#eval-switch', 'eval-bar': '#eval-switch', evaluation: '#eval-switch',
-  'skill-levels': '#level, #level-live', 'uci-elo': '#level, #level-live'
+  'skill-levels': '#level, #level-live', 'uci-elo': '#level, #level-live',
+  'auto-flip': '#live-autoflip, #setup-autoflip, #set-autoflip', pgn: '#btn-pgn-copy, #pgn-load', draw: '#btn-draw'
 };
 export function grLand(sel) {
   const t = [...document.querySelectorAll(sel)].find(el => !el.closest('[hidden]')); if (!t) return;
