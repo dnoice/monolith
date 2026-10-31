@@ -143,7 +143,7 @@ const COMMANDS = [
   { cmd: ':settings', desc: 'Go to Settings', run: () => setTab('settings'), when: yes },
   { cmd: ':sound', desc: 'Sound on or off', run: () => { ensureAudio(); prefs.sound = !prefs.sound; savePrefs(); applyPrefs(); render(); }, when: yes },
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
-  { cmd: ':explore', desc: 'Move pieces on any board on or off (Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
+  { cmd: ':explore', desc: 'Move pieces on any board on or off (before a game, Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
   /* learn: Resign and Rematch, Settings, Position and Help */
   { cmd: ':resign', desc: 'Resign the game (it asks first)', run: () => $('#btn-resign').click(), when: () => !app.started ? 'No game to resign' : game.result ? 'The game is over' : app.busy ? 'A move is still playing' : true },
