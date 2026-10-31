@@ -122,7 +122,8 @@ export function studyStart(s) {
   const r = Chess.parseFen(s.fen); if (r.error) return;
   const go = () => {
     hideSnack();
-    if (s.mode === 'free') { study.cur = null; if (app.started) Object.assign(draft, userSetup()); startGame(r.state); return; }
+    // a set-up plays with Play's settings, or by both sides on this screen when it says so (vs)
+    if (s.mode === 'free') { study.cur = null; if (app.started) Object.assign(draft, userSetup()); if (s.vs === 'both') startGame(r.state, { opponent: 'human', side: s.side, level: draft.level, study: null }); else startGame(r.state); return; }
     const c = { s, state: 'playing', tries: 0, hint: 0, shown: false, reject: null, pending: null, msg: '', msgKind: '', msgAt: null, checking: false, gen: ++study.gen };
     startGame(r.state, { opponent: 'cpu', side: s.side, level: 8, study: c });
   };
@@ -159,6 +160,8 @@ function studyTakeBack(c, st, tries = 0) {
   if (study.cur !== c || c.reject !== st) return;
   if (app.busy && tries < 40) { setTimeout(() => studyTakeBack(c, st, tries + 1), 150); return; }
   c.reject = null; if (cur() === st) undo();
+  // the rejection stays in the card on the position it went back to, until the next move speaks
+  if (study.cur === c && c.msg && c.msgKind === 'bad') { c.msgAt = cur(); render(); }
 }
 async function studyCheckpoint(c, idx, n) {
   c.checking = true; studySay(c, studyText('checking', { n }), 'wait'); render();

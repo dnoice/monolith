@@ -184,7 +184,7 @@
 
 /* ---------- Studies: Up next, tiles, the grid ---------- */
 .st-index{display:flex;flex-direction:column;gap:14px}
-.st-next{display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px;padding:10px;border:1px solid color-mix(in srgb,var(--sc,var(--md-outline)) 45%,var(--md-outline-var));border-radius:12px;background:var(--md-surface-1)}
+.st-next{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:12px;padding:10px;border:1px solid color-mix(in srgb,var(--sc,var(--md-outline)) 45%,var(--md-outline-var));border-radius:12px;background:var(--md-surface-1)}
 .st-next-dg .dg{border-radius:4px}
 .st-next.done .st-next-dg{display:grid;place-items:center}
 .st-next.done .st-ring{width:72px;height:72px}
@@ -206,11 +206,17 @@
 .st-tile:hover{border-color:var(--md-outline);color:var(--md-on-surface)}
 .st-tile[aria-checked="true"]{border-color:var(--sc);background:color-mix(in srgb,var(--sc) 11%,transparent);color:var(--md-on-surface)}
 .st-tile:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
-.st-tile-l{font-size:11px;font-weight:500;line-height:1.2;text-align:center}
-.st-ring{width:40px;height:40px;flex:none}
+.st-tile-l{font-size:12px;font-weight:500;line-height:1.2;text-align:center}
+.st-ring{width:44px;height:44px;flex:none}
 .st-ring .bg{fill:none;stroke:var(--md-surface-4);stroke-width:4}
 .st-ring .fg{fill:none;stroke:var(--sc);stroke-width:4;stroke-linecap:round;transition:stroke-dasharray .4s var(--ease-std)}
-.st-ring text{font:600 9.5px var(--font-mono);fill:var(--md-on-surface)}
+.st-ring text{font:600 11px var(--font-mono);fill:var(--md-on-surface)}
+/* the count stays inside the ring's 28 inner units in either world's mono: three characters (0/3)
+   at 11, All's four (0/16) at 9.5 and its five (10/16) at 8 */
+.st-ring text.long{font-size:9.5px}
+.st-ring text.longer{font-size:8px}
+/* Set-ups count positions rather than progress, so their ring is dashed and never fills */
+.st-ring.free .bg{stroke-dasharray:3 4}
 .st-tile.done .st-ring .bg{stroke:color-mix(in srgb,var(--sc) 35%,transparent)}
 .st-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;list-style:none;margin:0;padding:0}
 .st-grid li{min-width:0}
@@ -222,7 +228,9 @@
 .st-done{position:absolute;top:4px;right:4px;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--md-success);box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .st-done svg{width:14px;height:14px;fill:#10241a}
 .st-tag{position:absolute;left:4px;bottom:4px;padding:2px 7px;border-radius:var(--r-pill);background:var(--sc);color:#14121a;font-size:10px;font-weight:600;letter-spacing:.04em}
-.st-card-b{display:flex;flex-direction:column;gap:5px;padding:0 3px;min-width:0}
+.st-card-b{display:flex;flex-direction:column;flex:1;gap:5px;padding:0 3px;min-width:0}
+/* a two-line title does not push its card's level and kind out of line with the neighbour's */
+.st-card-b .st-meta{margin-top:auto}
 .st-card-b b{font-size:12.5px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- Studies: the detail view ---------- */
@@ -363,9 +371,16 @@ button.pr-rule{cursor:pointer}
 .ed-ep select{height:32px;min-width:96px;padding:0 10px;border:1px solid var(--md-outline);border-radius:var(--r-field);background:var(--md-surface-1);color:var(--md-on-surface);font:500 12.5px var(--font-mono)}
 .ed-ep select:disabled{opacity:.5}
 .ed-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-.ed-tools .btn.small{flex-direction:column;gap:3px;height:auto;min-width:0;padding:7px 2px;border-radius:10px;font-size:11.5px;line-height:1.2;text-align:center;white-space:normal}
+.ed-tools .btn.small{flex-direction:column;justify-content:flex-start;gap:3px;height:auto;min-width:0;padding:7px 2px;border-radius:10px;font-size:11.5px;line-height:1.2;text-align:center;white-space:normal}
 .ed-tools .btn svg{width:18px;height:18px}
 #ed-flip[aria-pressed="true"]{background:color-mix(in srgb,var(--md-primary) 14%,transparent)}
+/* who plays it, and the card's foot: Play this position and the sentence saying how it will be
+   played stay at the bottom of the panel while the board above is built */
+.ed-play{display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid var(--md-outline-var)}
+.ed-play .seg button{height:34px;font-size:12.5px}
+.ed-foot{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;gap:8px;margin:0 -16px -16px;padding:10px 16px 14px;border-top:1px solid var(--md-outline-var);border-radius:0 0 var(--r-card) var(--r-card);background:var(--md-surface-2);box-shadow:0 -10px 16px -12px rgba(0,0,0,.55)}
+.ed-play-sum{font-size:12.5px;line-height:1.4;color:var(--md-on-surface-var)}
+.ed-play-sum:empty{display:none}
 
 /* ---------- Set up: the FEN, field by field ---------- */
 .fen-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:-4px;padding-top:6px;border-top:1px solid var(--md-outline-var)}
@@ -407,7 +422,8 @@ button.pr-rule{cursor:pointer}
 :root[data-skin="monolith"] .sl-steps li{border-radius:2px}
 :root[data-skin="monolith"] .sl-ranks li,:root[data-skin="monolith"] .sl-hold li,:root[data-skin="monolith"] .sl-bar,:root[data-skin="monolith"] .sl-bar i{border-radius:2px}
 :root[data-skin="monolith"] .pr-gt::after{background:var(--mo-rule)}
-:root[data-skin="monolith"] .fen-head{border-top-color:var(--mo-rule)}
+:root[data-skin="monolith"] .fen-head,:root[data-skin="monolith"] .ed-play{border-top-color:var(--mo-rule)}
+:root[data-skin="monolith"] .ed-foot{background:var(--mo-well);border-top-color:var(--mo-rule)}
 :root[data-skin="monolith"] .pr-status{background:var(--mo-crimson-tint);border-radius:3px}
 :root[data-skin="monolith"] .pr-status.draw{background:var(--mo-raised)}
 :root[data-skin="monolith"] .st-next,:root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .st-tile,:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap,:root[data-skin="monolith"] .ed-tool{border-radius:4px}
@@ -427,7 +443,12 @@ button.pr-rule{cursor:pointer}
 
 /* ---------- narrow panels ----------
    On phones the panel itself scrolls and has no top padding, so the switch sticks at its edge. */
-@media (max-width:899px){.pos-switch{top:0}}
+@media (max-width:899px){
+  .pos-switch{top:0}
+  /* a study's page puts what it is and Start first; the diagram and the facts follow */
+  .st-d-board{order:1}
+  .st-facts,.st-d-idea,.st-d-read{order:2}
+}
 @media (prefers-reduced-motion:reduce){
   .pv-badge.live,.sl-status.wait::before,.sl-hold.checking li:last-child{animation:none}
   .sl-bar i,.st-ring .fg,.pr-mob-track i,.pr-bal i,.st-card,.st-tile{transition:none}

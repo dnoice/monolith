@@ -52,7 +52,7 @@
       not load from file://.
 ---------
 */
-import { $, panelScroller, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { NAV, setTab } from './nav.js';
 import { setPosView } from './position.js';
 
@@ -85,6 +85,29 @@ function grScore(e, q) {
   return q.split(' ').every(w => body.includes(w)) ? 10 : 0;
 }
 const grSort = (a, b) => a.term.localeCompare(b.term, 'en', { sensitivity: 'base' });
+/* Where "Go to" lands: the control an article names, when it is on screen there (a missing or hidden
+   one leaves the jump at the top of the tab). Kept beside the code that knows the page's markup,
+   rather than in the entries. */
+const GR_AT = {
+  'legal-move': '#set-legal', 'ranks-and-files': '#set-coords', explore: '#set-explore', worlds: '[data-world]', 'graphics-tiers': '#gfx-meter', tips: '[data-tips]',
+  fen: '#fen', castling: '#pos-rules', 'en-passant': '#pos-rules', 'fifty-move-rule': '#pos-rules', endgame: '#pr-phase', studies: '#st-cats',
+  'passed-pawn': '#pr-legend', 'isolated-pawn': '#pr-legend', 'doubled-pawns': '#pr-legend', 'open-file': '#pr-legend', 'bishop-pair': '#pr-legend',
+  hint: '#btn-hint', resignation: '#btn-resign', coach: '#coach', 'calculate-moves': '#btn-calc', 'best-line': '#eval-switch', 'eval-bar': '#eval-switch', evaluation: '#eval-switch',
+  'skill-levels': '#level, #level-live', 'uci-elo': '#level, #level-live'
+};
+export function grLand(sel) {
+  const t = [...document.querySelectorAll(sel)].find(el => !el.closest('[hidden]')); if (!t) return;
+  const d = t.closest('details'); if (d && !d.open) d.open = true;   // the Coach card's engine lines
+  if (!t.getClientRects().length) return;
+  const row = t.closest('.switch-row,.set-item') || (t.matches('input,button,select,textarea') ? t.parentElement : t);
+  // centred in the panel's own scroller (scrollIntoView would move the page around it on phones)
+  const sc = panelScroller(), a = row.getBoundingClientRect(), b = sc.getBoundingClientRect();
+  sc.scrollTo({ top: Math.max(0, sc.scrollTop + a.top - b.top - Math.max(0, (b.height - a.height) / 2)), behavior: reduceMotion ? 'auto' : 'smooth' });
+  row.classList.remove('gr-land'); void row.offsetWidth; row.classList.add('gr-land');
+  setTimeout(() => row.classList.remove('gr-land'), 1600);
+  // a switch, slider or button takes the focus; a text field does not (a phone would open its keyboard)
+  if (t.matches('button,select,input[type="checkbox"],input[type="range"]') && !t.disabled) t.focus({ preventScroll: true });
+}
 function grFilter() {
   const q = grNorm(gr.q);
   const pool = GRIMOIRE.filter(e => gr.cat === 'all' || e.cat === gr.cat);
@@ -121,7 +144,17 @@ export function grRender() {
   index.hidden = false; article.hidden = true;
   const list = $('#gr-list'), q = grNorm(gr.q); list.innerHTML = '';
   $('#gr-count').textContent = `${gr.list.length} ${gr.list.length === 1 ? 'term' : 'terms'}${gr.cat !== 'all' ? ` in ${GR_CAT_NAME[gr.cat]}` : ''}${q ? ` matching “${gr.q.trim()}”` : ''}`;
-  if (!gr.list.length) { const p = document.createElement('p'); p.className = 'gr-none'; p.textContent = 'Nothing matches. Try a shorter word, or All.'; list.appendChild(p); return; }
+  if (!gr.list.length) {
+    // not a dead end: when other categories have the word, say how many and go there in one step
+    const inAll = gr.cat !== 'all' && q ? GRIMOIRE.filter(e => grScore(e, q) > 0).length : 0, word = gr.q.trim();
+    const p = document.createElement('p'); p.className = 'gr-none';
+    p.textContent = inAll ? `Nothing in ${GR_CAT_NAME[gr.cat]} matches “${word}”.` : `Nothing matches “${word}”. Try a shorter word, or another spelling.`;
+    const row = document.createElement('div'); row.className = 'row gr-none-act';
+    const btn = (cls, text, act) => { const b = document.createElement('button'); b.type = 'button'; b.className = `btn ${cls} small`; b.textContent = text; b.addEventListener('click', () => { act(); grRender(); $('#gr-q').focus(); }); row.appendChild(b); };
+    if (inAll) btn('filled', `Show ${inAll} in All`, () => { gr.cat = 'all'; grSave(); });
+    btn('outlined', 'Clear search', () => { gr.q = ''; $('#gr-q').value = ''; });
+    list.append(p, row); return;
+  }
   let letter = '';
   for (const e of gr.list) {
     if (!q) { const L = /[a-z]/i.test(e.term[0]) ? e.term[0].toUpperCase() : '#'; if (L !== letter) { letter = L; const h = document.createElement('div'); h.className = 'gr-letter'; h.setAttribute('role', 'presentation'); h.textContent = L; list.appendChild(h); } }
@@ -154,7 +187,7 @@ function grFillArticle(e) {
   // a Position term goes to the view its "where" names first (Read, Set up or Studies)
   const pv = e.go === 'position' && (/Position, (Read|Set up|Studies)/.exec(e.where || '') || [])[1];
   go.hidden = !tab;
-  if (tab) { go.textContent = `Go to ${tab.label}${pv ? `: ${pv}` : ''}`; go.onclick = () => { setTab(tab.id); if (pv) setPosView({ Read: 'read', 'Set up': 'setup', Studies: 'studies' }[pv]); }; }
+  if (tab) { go.textContent = `Go to ${tab.label}${pv ? `: ${pv}` : ''}`; go.onclick = () => { setTab(tab.id); if (pv) setPosView({ Read: 'read', 'Set up': 'setup', Studies: 'studies' }[pv]); if (GR_AT[e.id]) requestAnimationFrame(() => grLand(GR_AT[e.id])); }; }
   $('#gr-a-ex-box').hidden = !e.example; $('#gr-a-ex').textContent = e.example || '';
   const see = $('#gr-a-see'); see.innerHTML = '';
   const rel = (e.see || []).map(id => grById.get(id)).filter(Boolean);
@@ -249,6 +282,9 @@ export function init() {
   }, true);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && tp.anchor) { e.preventDefault(); e.stopPropagation(); termClose(true); return; }
+    /* / searches from anywhere on the Grimoire, the rail included (the page's own shortcuts leave a
+       tablist's keys alone), unless it is being typed into a field or the palette is open */
+    if (e.key === '/' && prefs.tab === 'grimoire' && !e.ctrlKey && !e.metaKey && !e.altKey && !(e.target.closest && e.target.closest('input,textarea,select,[contenteditable]')) && !$('#palette').classList.contains('show')) { e.preventDefault(); if (gr.id) grBack(); $('#gr-q').focus(); return; }
     const t = e.target.closest && e.target.closest('[data-term]');
     if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); termOpen(t, t.dataset.term, true); }
   }, true);

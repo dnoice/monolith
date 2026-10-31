@@ -62,7 +62,8 @@
    Fields: id; cat (mates, patterns, tactics, endgames, setups); title; level (1 to 3); fen;
    side (the side you play); mode: 'puzzle' (find the moves; the replies come from `line`),
    'practice' (play it out against Stockfish at full strength) or 'free' (load it with your own
-   game settings); goal: 'mate', 'promote' (queen a pawn the opponent cannot take at once),
+   game settings, or with vs: 'both' as a game where you move both sides); goal: 'mate',
+   'promote' (queen a pawn the opponent cannot take at once),
    'hold' (a draw by the rules, or `moves` of your moves with the engine still seeing a draw) or
    'line' (play the puzzle's line); line: the puzzle's moves in long algebraic, yours and the
    replies in turn (with goal 'mate' the last move may be any mate); par: Stockfish's quickest
@@ -157,8 +158,8 @@ const STUDIES = {
       task: 'A normal game from move one, with your game settings.',
       idea: 'Every game starts here. Fight for the centre, bring out the knights and bishops, and castle before the centre opens.',
       hints: [], read: ['opening', 'development', 'centre'] },
-    { id: 'castling-drill', cat: 'setups', title: 'Castling drill', level: 1, fen: 'r3k2r/pppq1ppp/2npbn2/2b1p3/2B1P3/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 0 1', side: 'w', mode: 'free', goal: null,
-      task: 'Both sides can castle either way, with your game settings.',
+    { id: 'castling-drill', cat: 'setups', title: 'Castling drill', level: 1, fen: 'r3k2r/pppq1ppp/2npbn2/2b1p3/2B1P3/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 0 1', side: 'w', mode: 'free', goal: null, vs: 'both',
+      task: 'Both sides can castle either way; you move both.',
       idea: 'Try O-O and O-O-O for both colours. Click the king, then its target square or the rook; the chip on the board names the squares, and lanes mark the path.',
       hints: [], read: ['castling', 'castling-notation', 'king-safety'] }
   ],

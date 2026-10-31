@@ -696,10 +696,10 @@
                 </nav>
                 <div class="st-d-board" id="st-d-board"></div>
                 <header class="st-d-head"><span class="st-chip" id="st-d-cat"></span><h4 id="st-d-title" tabindex="-1"></h4><p class="st-d-task" id="st-d-task"></p></header>
+                <div class="card-actions"><button class="btn filled" id="st-start" type="button">Start study</button><button class="btn outlined" id="st-tofen" type="button">Open in Set up</button></div>
                 <ul class="st-facts" id="st-d-facts" aria-label="About this study"></ul>
                 <p class="st-d-idea" id="st-d-idea"></p>
                 <div class="st-d-read" id="st-d-read-box"><span class="st-d-lab">Read about</span><div class="gr-see-list" id="st-d-read"></div></div>
-                <div class="card-actions"><button class="btn filled" id="st-start" type="button">Start study</button><button class="btn outlined" id="st-tofen" type="button">Open in Set up</button></div>
               </article>
             </section>
           </div>
@@ -747,12 +747,20 @@
                 <button class="btn text small" id="ed-seen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>Board you see</button>
                 <button class="btn text small" id="ed-flip" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3 5 6.99h3V14h2V6.99h3L9 3z"/></svg>Flip</button>
               </div>
+              <div class="ed-play" id="ed-play" role="group" aria-labelledby="ed-play-lab">
+                <span class="ed-lab" id="ed-play-lab">Who plays it</span>
+                <div class="seg" id="ed-vs" role="radiogroup" aria-label="Opponent"><button type="button" role="radio" data-edvs="cpu">Against Stockfish</button><button type="button" role="radio" data-edvs="human">Both sides</button></div>
+                <div class="seg" id="ed-side" role="radiogroup" aria-label="Your side"><button type="button" role="radio" data-edside="w">You play White</button><button type="button" role="radio" data-edside="b">You play Black</button></div>
+              </div>
               <div class="fen-head"><span class="ed-lab"><span data-term="fen">FEN</span></span><span class="fen-legend" aria-hidden="true">six fields, coloured below</span></div>
               <div class="fen-wrap"><div class="fen-hl" id="fen-hl" aria-hidden="true"></div><textarea class="fen-box" id="fen" spellcheck="false" rows="2" aria-label="FEN of the position" aria-describedby="fen-note fen-explain"></textarea></div>
               <div class="fen-fields" id="fen-fields" role="group" aria-label="The FEN's six fields: select one to read it"></div>
               <p class="fen-explain" id="fen-explain" aria-live="polite"></p>
               <p class="help" id="fen-note"></p>
-              <div class="card-actions"><button class="btn filled" id="btn-fen-load" type="button">Play this position</button><button class="btn outlined" id="btn-fen-copy" type="button">Copy FEN</button></div>
+              <div class="ed-foot" id="ed-foot">
+                <p class="ed-play-sum" id="ed-play-help"></p>
+                <div class="card-actions"><button class="btn filled" id="btn-fen-load" type="button" aria-describedby="ed-play-help">Play this position</button><button class="btn outlined" id="btn-fen-copy" type="button">Copy FEN</button></div>
+              </div>
             </section>
           </div>
         </section>
@@ -788,88 +796,105 @@
 
         <!-- SETTINGS -->
         <section class="pane" id="pane-settings" role="tabpanel" aria-labelledby="nav-settings" hidden>
-          <header class="pane-head"><h2>Settings</h2><p>Saved in this browser.</p></header>
-          <div class="group">
-            <div class="switch-row"><label for="set-sound">Sound<span>Moves, captures and check</span></label><input type="checkbox" class="switch" role="switch" id="set-sound"></div>
-            <div class="switch-row"><label for="set-legal">Show legal moves<span>Dots and rings when a piece is selected</span></label><input type="checkbox" class="switch" role="switch" id="set-legal"></div>
+          <header class="pane-head"><span class="kicker">Preferences</span><h2>Settings</h2><p>Saved in this browser.</p></header>
+          <section class="card" id="set-game" aria-labelledby="set-game-title">
+            <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3.2 3.2 0 0 0-2 5.7C8.7 8.4 8 9.6 8 11h2l-1.2 6h6.4L14 11h2c0-1.4-.7-2.6-2-3.3A3.2 3.2 0 0 0 12 2zM6 19v3h12v-3z"/></svg><h3 id="set-game-title">Game</h3></header>
+            <div class="switch-row"><label for="set-coach">Coach comments<span>A verdict on each of your moves, the threats on the board, a tip when it is quiet</span></label><input type="checkbox" class="switch" role="switch" id="set-coach"></div>
+            <div class="switch-row"><label for="set-eval">Evaluation bar<span>Bar beside the board and the engine's best line</span></label><input type="checkbox" class="switch" role="switch" id="set-eval"></div>
             <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves before a game, on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
-            <div class="switch-row"><label for="set-autoflip">Turn the board for each player<span>Friend games on one screen: after each move, the side to move comes to the bottom</span></label><input type="checkbox" class="switch" role="switch" id="set-autoflip"></div>
+          </section>
+          <section class="card" id="set-board" aria-labelledby="set-board-title">
+            <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18V3H3zm8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"/></svg><h3 id="set-board-title">Board</h3></header>
+            <div class="switch-row"><label for="set-legal">Show legal moves<span>Dots and rings when a piece is selected</span></label><input type="checkbox" class="switch" role="switch" id="set-legal"></div>
             <div class="switch-row"><label for="set-coords">Board coordinates<span>Files a–h and ranks 1–8 on the frame</span></label><input type="checkbox" class="switch" role="switch" id="set-coords"></div>
-          </div>
-          <div class="group"><div class="group-title">World</div>
-            <div class="seg" role="radiogroup" aria-label="World">
-              <button role="radio" data-world="auto"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Auto</button>
-              <button role="radio" data-world="cathedral"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Cathedral</button>
-              <button role="radio" data-world="monolith"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Monolith</button>
+            <div class="switch-row"><label for="set-autoflip">Turn the board for each player<span>Friend games on one screen: after each move, the side to move comes to the bottom</span></label><input type="checkbox" class="switch" role="switch" id="set-autoflip"></div>
+            <div class="card-actions"><button class="btn outlined" id="btn-flip-2">Flip board</button><button class="btn outlined" id="btn-reset-view">Reset view</button></div>
+          </section>
+          <section class="card" id="set-motion" aria-labelledby="set-motion-title">
+            <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg><h3 id="set-motion-title">Sound and motion</h3></header>
+            <div class="switch-row"><label for="set-sound">Sound<span>Moves, captures and check</span></label><input type="checkbox" class="switch" role="switch" id="set-sound"></div>
+            <div class="set-item"><span class="set-lab" id="set-speed-lab">Animation</span>
+              <div class="seg" role="radiogroup" aria-labelledby="set-speed-lab">
+                <button role="radio" data-speed="normal"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Cinematic</button>
+                <button role="radio" data-speed="fast"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Brisk</button>
+                <button role="radio" data-speed="minimal"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Minimal</button>
+              </div>
             </div>
-            <p class="help" id="world-help"></p>
+          </section>
+          <section class="card" id="set-world" aria-labelledby="set-world-title">
+            <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/></svg><h3 id="set-world-title">World and graphics</h3></header>
+            <div class="set-item"><span class="set-lab" id="set-world-lab">World</span>
+              <div class="seg" role="radiogroup" aria-labelledby="set-world-lab">
+                <button role="radio" data-world="auto"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Auto</button>
+                <button role="radio" data-world="cathedral"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Cathedral</button>
+                <button role="radio" data-world="monolith"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>MONOLITH</button>
+              </div>
+              <p class="help" id="world-help"></p>
+            </div>
             <div class="switch-row"><label for="set-badges">Short source badges<span>Each MONOLITH readout names only its source, such as [SF] or [Runner]; the full badge shows on hover</span></label><input type="checkbox" class="switch" role="switch" id="set-badges"></div>
-          </div>
-          <div class="group"><div class="group-title">MONOLITH pillars</div>
-            <div class="seg" role="radiogroup" aria-label="MONOLITH pillars">
-              <button role="radio" data-pillars="monoliths"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Monoliths</button>
-              <button role="radio" data-pillars="classic"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Classic</button>
-              <button role="radio" data-pillars="modern"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Modern</button>
+            <div class="set-item"><span class="set-lab" id="set-pillars-lab">MONOLITH pillars</span>
+              <div class="seg" role="radiogroup" aria-labelledby="set-pillars-lab">
+                <button role="radio" data-pillars="monoliths"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Monoliths</button>
+                <button role="radio" data-pillars="classic"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Classic</button>
+                <button role="radio" data-pillars="modern"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Modern</button>
+              </div>
+              <p class="help" id="pillars-help"></p>
             </div>
-            <p class="help" id="pillars-help"></p>
-          </div>
-          <div class="group gfx"><div class="group-title">Graphics</div>
-            <div class="switch-row"><label for="set-gfx-auto">Automatic<span>Picks a level for this device, then raises or lowers it with the frame rate</span></label><input type="checkbox" class="switch" role="switch" id="set-gfx-auto"></div>
-            <div class="gfx-meter" id="gfx-meter" role="radiogroup" aria-label="Graphics level, lowest to highest" aria-describedby="quality-help"></div>
-            <p class="gfx-read" aria-hidden="true"><b id="gfx-read-level"></b><span id="gfx-read-mode"></span></p>
-            <p class="help" id="quality-help"></p>
-            <details class="gfx-fine mo-details" id="gfx-fine">
-              <summary>Fine-tune</summary>
-              <div class="gfx-fine-body">
-                <div class="gfx-grid" id="gfx-grid"></div>
-                <p class="help" id="gfx-fine-help"></p>
+            <div class="set-item gfx"><span class="set-lab">Graphics</span>
+              <div class="switch-row"><label for="set-gfx-auto">Automatic<span>Picks a level for this device, then raises or lowers it with the frame rate</span></label><input type="checkbox" class="switch" role="switch" id="set-gfx-auto"></div>
+              <div class="gfx-meter" id="gfx-meter" role="radiogroup" aria-label="Graphics level, lowest to highest" aria-describedby="quality-help"></div>
+              <p class="gfx-read" aria-hidden="true"><b id="gfx-read-level"></b><span id="gfx-read-mode"></span></p>
+              <p class="help" id="quality-help"></p>
+              <details class="gfx-fine mo-details" id="gfx-fine">
+                <summary>Fine-tune</summary>
+                <div class="gfx-fine-body">
+                  <div class="gfx-grid" id="gfx-grid"></div>
+                  <p class="help" id="gfx-fine-help"></p>
+                </div>
+              </details>
+            </div>
+          </section>
+          <section class="card" id="set-help" aria-labelledby="set-help-title">
+            <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg><h3 id="set-help-title">Help and about</h3></header>
+            <div class="set-item"><span class="set-lab" id="set-tips-lab">Tips</span>
+              <div class="seg" role="radiogroup" aria-labelledby="set-tips-lab">
+                <button role="radio" data-tips="once"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Until used</button>
+                <button role="radio" data-tips="always"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Always</button>
+                <button role="radio" data-tips="off"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Off</button>
+              </div>
+              <p class="help" id="tips-help"></p>
+              <div class="row"><button class="btn outlined small" id="btn-tips-reset">Show tips again</button></div>
+            </div>
+            <details class="set-more mo-details" id="set-keys">
+              <summary>Keys and mouse</summary>
+              <dl class="keys">
+                <dt>Click or drag</dt><dd>Move a piece: click it, then a square, or drag it there</dd>
+                <dt>Drag the board</dt><dd>Orbit the camera (middle drag too; one finger on touch)</dd>
+                <dt>Wheel</dt><dd>Zoom (pinch on touch)</dd>
+                <dt>← →</dt><dd>Step through the moves</dd>
+                <dt>Home End</dt><dd>First position, live position</dd>
+                <dt>Esc</dt><dd>Drop the selected piece, close the palette</dd>
+                <dt>e2e4</dt><dd>Type a move in the move field</dd>
+                <dt id="kbd-palette">Ctrl K</dt><dd>Command palette</dd>
+                <dt>/</dt><dd>Search the Grimoire (Grimoire)</dd>
+                <dt>Space</dt><dd>Hold for the Tactical X-Ray (Analyze)</dd>
+                <dt>F V X</dt><dd>Field, vectors, X-Ray (Analyze)</dd>
+                <dt>F U H</dt><dd>Flip the board, undo, hint (Play)</dd>
+              </dl>
+            </details>
+            <details class="set-more mo-details" id="system-sheet">
+              <summary>MONOLITH system</summary>
+              <div class="set-more-body">
+                <p class="help">The solved stops, and every pair they must hold, measured here by the WCAG 2.x formula.</p>
+                <div class="swatches" id="swatches"></div>
+                <table class="ledger" id="ledger"></table>
               </div>
             </details>
-          </div>
-          <div class="group"><div class="group-title">Animation</div>
-            <div class="seg" role="radiogroup" aria-label="Animation speed">
-              <button role="radio" data-speed="normal"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Cinematic</button>
-              <button role="radio" data-speed="fast"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Brisk</button>
-              <button role="radio" data-speed="minimal"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Minimal</button>
+            <div class="set-about">
+              <p class="about" id="about-version"></p>
+              <p class="about" id="about-engine">Engine: Stockfish, GPL-3.0. Built with three.js.</p>
             </div>
-          </div>
-          <div class="group"><div class="group-title">Tips</div>
-            <div class="seg" role="radiogroup" aria-label="Tips">
-              <button role="radio" data-tips="once"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Until used</button>
-              <button role="radio" data-tips="always"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Always</button>
-              <button role="radio" data-tips="off"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Off</button>
-            </div>
-            <p class="help" id="tips-help"></p>
-            <div class="row"><button class="btn outlined small" id="btn-tips-reset">Show tips again</button></div>
-          </div>
-          <div class="group"><div class="group-title">Camera</div>
-            <div class="row"><button class="btn outlined" id="btn-flip-2">Flip board</button><button class="btn outlined" id="btn-reset-view">Reset view</button></div>
-          </div>
-          <div class="group"><div class="group-title">Controls</div>
-            <dl class="keys">
-              <dt>Click or drag</dt><dd>Move a piece: click it, then a square, or drag it there</dd>
-              <dt>Drag the board</dt><dd>Orbit the camera (middle drag too; one finger on touch)</dd>
-              <dt>Wheel</dt><dd>Zoom (pinch on touch)</dd>
-              <dt>← →</dt><dd>Step through the moves</dd>
-              <dt>Home End</dt><dd>First position, live position</dd>
-              <dt>Esc</dt><dd>Drop the selected piece, close the palette</dd>
-              <dt>e2e4</dt><dd>Type a move in the move field</dd>
-              <dt id="kbd-palette">Ctrl K</dt><dd>Command palette</dd>
-              <dt>Space</dt><dd>Hold for the Tactical X-Ray (Analyze)</dd>
-              <dt>F V X</dt><dd>Field, vectors, X-Ray (Analyze)</dd>
-              <dt>F U H</dt><dd>Flip the board, undo, hint (Play)</dd>
-            </dl>
-          </div>
-          <details class="group mo-details" id="system-sheet">
-            <summary class="group-title mo-head">MONOLITH system</summary>
-            <p class="help">The solved stops, and every pair they must hold, measured here by the WCAG 2.x formula.</p>
-            <div class="swatches" id="swatches"></div>
-            <table class="ledger" id="ledger"></table>
-          </details>
-          <div class="group"><div class="group-title">About</div>
-            <p class="about" id="about-version"></p>
-            <p class="about" id="about-engine">Engine: Stockfish, GPL-3.0. Built with three.js.</p>
-          </div>
+          </section>
         </section>
       </div>
 
@@ -901,7 +926,7 @@
   </div>
   <div id="palette" role="dialog" aria-modal="true" aria-label="Command palette">
     <div class="pal">
-      <div class="pal-input"><span aria-hidden="true">&gt;_</span><input id="pal-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command: :go, :flip, :fen …" aria-label="Command" aria-controls="pal-list" aria-autocomplete="list"><kbd>Esc</kbd></div>
+      <div class="pal-input"><span aria-hidden="true">&gt;_</span><input id="pal-input" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command or a word: flip, new game, castling…" aria-label="Command" aria-controls="pal-list" aria-autocomplete="list"><kbd>Esc</kbd></div>
       <ul class="pal-list" id="pal-list" role="listbox" aria-label="Commands"></ul>
       <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> choose</span><span><kbd>Enter</kbd> run</span><span><kbd>Tab</kbd> completes</span><span id="pal-foot-note"></span></div>
     </div>

@@ -87,6 +87,7 @@ import { $, panelScroller, prefs, reduceMotion, savePrefs } from '../app/base.js
 import { PIECE_NAMES } from '../scene/board.js';
 import { cur, draft, game, match, onRender, render } from '../app/state.js';
 import { snack } from './snackbar.js';
+import { engine } from '../game/engine.js';
 import { boardState, showHighlights } from '../game/board-ui.js';
 import { repetitions } from '../game/play.js';
 import { explore, startGame } from '../game/flow.js';
@@ -94,11 +95,11 @@ import { isPassed, phaseOf } from '../coach/coach.js';
 import { bookAt, openingOf } from '../coach/book.js';
 import { boardOverride } from './crucible-board.js';
 import { grById, termify } from './grimoire.js';
+import { setTab } from './nav.js';
 import { describeBoard, diagram, pieceIcon } from './diagram.js';
 import {
   NUM_WORD, SIDE_NAME, STUDY_CAT, study, studyById, studyEnd, studyHint, studyLineSan, studyMyMoves,
-  studyNext, studyProgress, studyReveal, studySolved, studyStart, studyText, studyUpNext,
-  userSetup
+  studyNext, studyProgress, studyReveal, studySolved, studyStart, studyText, studyUpNext
 } from './studies.js';
 
 /* ---------- Position: three views behind one switch ----------
@@ -390,11 +391,11 @@ function levelDots(n) {
   for (let i = 1; i <= 3; i++) lv.appendChild(h('i', i <= n ? 'on' : ''));
   return lv;
 }
-function ring(done, total, text) {
-  const s = svgEl('svg', { viewBox: '0 0 40 40', class: 'st-ring', 'aria-hidden': 'true' });
+function ring(done, total, text, cls = '') {
+  const s = svgEl('svg', { viewBox: '0 0 40 40', class: 'st-ring' + (cls ? ' ' + cls : ''), 'aria-hidden': 'true' });
   s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'bg' }));
   if (total && done) { const pct = Math.round(100 * done / total); s.appendChild(svgEl('circle', { cx: 20, cy: 20, r: 16, class: 'fg', pathLength: 100, 'stroke-dasharray': `${pct} 100`, transform: 'rotate(-90 20 20)' })); }
-  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central' }); t.textContent = text; s.appendChild(t);
+  const t = svgEl('text', { x: 20, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'central', class: text.length > 4 ? 'longer' : text.length > 3 ? 'long' : '' }); t.textContent = text; s.appendChild(t);
   return s;
 }
 const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
@@ -406,7 +407,15 @@ export function studyOpen(id) {
   study.sel = id ? studyById.get(id) || null : null;
   if (!was && study.sel && sc) pos.gridScroll = sc.scrollTop;
   pos.libKey = ''; renderLibrary();
-  if (study.sel) { if (sc) sc.scrollTop = 0; setTimeout(() => $('#st-d-title').focus({ preventScroll: true }), 0); }
+  if (study.sel) {
+    if (sc) {
+      sc.scrollTop = 0;
+      // a short panel (a phone's) opens at the card instead, so the title and Start show under the switch
+      const r = sc.getBoundingClientRect();
+      if ($('#st-start').getBoundingClientRect().bottom > r.bottom) sc.scrollTop += $('#pos-studies').getBoundingClientRect().top - r.top - $('#pos-switch').offsetHeight - 8;
+    }
+    setTimeout(() => $('#st-d-title').focus({ preventScroll: true }), 0);
+  }
   else if (was && sc) sc.scrollTop = pos.gridScroll || 0;
 }
 /* The studies shown in the grid (and paged in the detail view): the category chosen. */
@@ -430,7 +439,7 @@ function drawTiles() {
     const b = h('button', 'st-tile'); b.type = 'button'; b.setAttribute('role', 'radio'); b.dataset.scat = k; b.dataset.k = k;
     b.setAttribute('aria-checked', String(k === study.cat));
     const n = STUDIES.list.filter(s => k === 'all' || s.cat === k).length;
-    if (k === 'setups') { b.appendChild(ring(0, 0, String(n))); b.setAttribute('aria-label', `${label}: ${plural(n, 'position')} to play freely`); }
+    if (k === 'setups') { b.appendChild(ring(0, 0, String(n), 'free')); b.setAttribute('aria-label', `${label}: ${plural(n, 'position')} to play freely`); }
     else { const p = studyProgress(k); b.appendChild(ring(p.done, p.total, `${p.done}/${p.total}`)); b.setAttribute('aria-label', `${label}: ${p.done} of ${p.total} solved`); if (p.total && p.done === p.total) b.classList.add('done'); }
     b.appendChild(h('span', 'st-tile-l', label));
     b.addEventListener('click', () => { const had = document.activeElement === b; study.cat = k; study.sel = null; pos.libKey = ''; renderLibrary(); if (had) $(`#st-cats [data-k="${k}"]`).focus(); });
@@ -495,7 +504,8 @@ function drawDetailView(s) {
   const facts = $('#st-d-facts'); facts.innerHTML = '';
   const fact = (cls, ...kids) => { const li = h('li', cls); li.append(...kids); facts.appendChild(li); return li; };
   fact('', h('span', '', MODE_WORD[s.mode]), h('b', '', studyKind(s)));
-  fact('', h('i', `pr-av ${s.side}`), h('span', '', `You play ${SIDE_NAME(s.side)}`));
+  if (s.vs === 'both') fact('', h('i', 'pr-av w'), h('i', 'pr-av b'), h('span', '', 'You move both sides'));
+  else fact('', h('i', `pr-av ${s.side}`), h('span', '', `You play ${SIDE_NAME(s.side)}`));
   fact('', levelDots(s.level), h('span', '', `Level ${s.level}`));
   if (studySolved(s.id)) { const f = fact('solved'); f.insertAdjacentHTML('beforeend', CHECK); f.appendChild(h('span', '', `Solved ${prefs.studies[s.id].solved}`)); }
   const read = $('#st-d-read'); read.innerHTML = '';
@@ -537,7 +547,9 @@ function renderStudyLive() {
   $('#sl-solution').hidden = !c.shown; if (c.shown) $('#sl-solution').textContent = studyLineSan(s);
   // once the study is over, only Restart and Next matter
   $('#study-live .card-actions').hidden = (hb.hidden && rv.hidden) || c.state !== 'playing';
-  $('#sl-next').textContent = c.state === 'solved' ? 'Next study' : 'Skip to the next';
+  // Next study is the call once it is solved; until then skipping stays as quiet as Restart and End
+  const nx = $('#sl-next'); nx.textContent = c.state === 'solved' ? 'Next study' : 'Skip to the next';
+  nx.classList.toggle('filled', c.state === 'solved'); nx.classList.toggle('text', c.state !== 'solved');
 }
 /* The goal, drawn: the moves to find (puzzles), the moves against par (mates), the pawn's road
    to the last rank (queening), the moves still to hold (holds). */
@@ -597,7 +609,7 @@ function drawTrack(c) {
 /* ed is the position being built. It keeps what the player asked for (castling letters, an en
    passant square) and the FEN writes what the board allows, so moving a rook away and back
    gives its right back. */
-const ed = { board: new Array(64).fill(null), turn: 'w', want: 'KQkq', ep: '-', half: 0, full: 1, flip: false, tool: 'move', held: -1, cursor: 12, focused: false, seen: '' };
+const ed = { board: new Array(64).fill(null), turn: 'w', want: 'KQkq', ep: '-', half: 0, full: 1, flip: false, tool: 'move', held: -1, cursor: 12, focused: false, seen: '', vs: 'cpu', side: null };
 const CASTLE = [['K', 'w', 4, 7, 'White O-O'], ['Q', 'w', 4, 0, 'White O-O-O'], ['k', 'b', 60, 63, 'Black O-O'], ['q', 'b', 60, 56, 'Black O-O-O']];
 const canCastle = ch => { const [, c, k, r] = CASTLE.find(x => x[0] === ch); const K = ed.board[k], R = ed.board[r]; return !!(K && K.t === 'k' && K.c === c && R && R.t === 'r' && R.c === c); };
 /* En passant squares the board allows: behind an enemy pawn that could just have moved two. */
@@ -803,21 +815,42 @@ function syncSetup() {
 function renderSetup(force = false) {
   if (force) drawEditor();
   renderFenFields(force);
+  renderEdPlay();
 }
 let edDrawnKey = '';
 function renderSetupView() {
   const k = `${ed.seen}|${ed.flip}|${ed.tool}|${ed.held}|${ed.focused}|${ed.cursor}`;
   if (k !== edDrawnKey) { edDrawnKey = k; drawEditor(); }
   renderFenFields();
+  renderEdPlay();
 }
-/* Load what the Set up view holds: the box's FEN, as a new game with the player's settings. */
+/* Who plays the position: you against Stockfish, on the side to move unless you pick the other, or
+   both sides on this screen. The opponent is kept between visits; the side goes with the position.
+   The foot beside Play this position says which, so the button never starts a game unannounced. */
+const edVs = () => engine.failed ? 'human' : ed.vs;
+function renderEdPlay() {
+  const vs = edVs(), side = ed.side || ed.turn, L = LEVELS[draft.level - 1], wait = vs === 'cpu' && !engine.ready;
+  for (const b of document.querySelectorAll('#ed-vs [data-edvs]')) { const on = b.dataset.edvs === vs; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; b.disabled = b.dataset.edvs === 'cpu' && engine.failed; }
+  $('#ed-side').hidden = vs !== 'cpu';
+  for (const b of document.querySelectorAll('#ed-side [data-edside]')) { const on = b.dataset.edside === side; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; }
+  $('#btn-fen-load').disabled = wait;
+  $('#ed-play-help').textContent = vs === 'human' ? `You move both sides on this screen, ${SIDE_NAME(ed.turn)} first.`
+    : wait ? 'Stockfish is still loading.'
+    : side === ed.turn ? `You play ${SIDE_NAME(side)}, the side to move, against Stockfish at ${L.name}, level ${draft.level} of 8.`
+    : `You play ${SIDE_NAME(side)} against Stockfish at ${L.name}, level ${draft.level} of 8; Stockfish moves first.`;
+}
+/* Load what the Set up view holds: the box's FEN, as a new game played as the foot says. The game's
+   own settings stand aside (startGame's opts), so the next ordinary game is Play's again. */
 function loadFen() {
   const note = $('#fen-note'), r = Chess.parseFen($('#fen').value);
   if (r.error) { note.className = 'help err'; note.textContent = r.error; return; }
+  const cpu = edVs() === 'cpu', side = cpu && ed.side || r.state.turn;
   const go = () => {
-    app.fenDirty = false; note.className = 'help'; note.textContent = 'Position loaded. The game continues from here.';
-    if (app.started) Object.assign(draft, userSetup());
-    startGame(r.state);
+    app.fenDirty = false;
+    startGame(r.state, { opponent: cpu ? 'cpu' : 'human', side, level: draft.level, study: null });
+    const what = `A new game from this position: ${cpu ? `you play ${SIDE_NAME(side)} against Stockfish` : 'you move both sides'}.`;
+    note.className = 'help'; note.textContent = what;
+    snack(what, [{ label: 'Go to Play', act: () => setTab('play') }]);
   };
   if (app.started && game.sans.length && !game.result) snack('Play this position? The current game ends.', [{ label: 'Keep playing', act: () => {} }, { label: 'Play it', filled: true, act: go }], true);
   else go();
@@ -841,8 +874,8 @@ function copyText(text, note) {
 }
 /* Put a position into the Set up view and open it: a study's (edited, not loaded) or the board
    you see (still matching it). */
-export function openInSetup(fen, { flip = false, say = '' } = {}) {
-  const box = $('#fen');
+export function openInSetup(fen, { flip = false, say = '', side = null } = {}) {
+  const box = $('#fen'); ed.side = side;
   if (fen) { box.value = fen; edFromText(fen); ed.seen = fen; app.fenDirty = true; } else { app.fenDirty = false; const st = boardState(); box.value = Chess.fen(st); edFromState(st); ed.seen = box.value; }
   app.fenSel = -1; ed.flip = flip; ed.tool = 'move';
   const n = $('#fen-note'); n.className = 'help'; n.textContent = say;
@@ -881,7 +914,7 @@ export function init() {
   $('#st-start').addEventListener('click', () => { if (study.sel) studyStart(study.sel); });
   $('#st-tofen').addEventListener('click', () => {
     const s = study.sel; if (!s) return;
-    openInSetup(s.fen, { flip: s.side === 'b', say: `${s.title} is set up. Change anything you like; Play this position plays it with your own game settings.` });
+    openInSetup(s.fen, { flip: s.side === 'b', side: s.side, say: `${s.title} is set up. Change anything you like, choose who plays it, then Play this position.` });
   });
   // Read
   $('#pr-edit').addEventListener('click', () => openInSetup(null, { flip: app.orient === 'b', say: 'The board you see is set up. Edit it, then Play this position.' }));
@@ -916,6 +949,10 @@ export function init() {
   });
   box.addEventListener('scroll', () => { $('#fen-hl').scrollTop = box.scrollTop; });
   $('#btn-fen-load').addEventListener('click', loadFen);
+  ed.vs = prefs.edVs === 'human' ? 'human' : 'cpu';
+  for (const b of document.querySelectorAll('#ed-vs [data-edvs]')) b.addEventListener('click', () => { ed.vs = b.dataset.edvs; prefs.edVs = ed.vs; savePrefs(); renderEdPlay(); });
+  // the side to move is the default, so choosing it again goes back to following the position
+  for (const b of document.querySelectorAll('#ed-side [data-edside]')) b.addEventListener('click', () => { ed.side = b.dataset.edside === ed.turn ? null : b.dataset.edside; renderEdPlay(); });
   $('#btn-fen-copy').addEventListener('click', () => copyText($('#fen').value.trim(), $('#fen-note')));
   edSay('Pick a tool, then click a square. Right-click erases.');
   onRender(() => {
