@@ -264,7 +264,8 @@ export function offerDraw() {
      before that declines as too early to agree a draw.
    - Better than that, or a forced mate of its own: it declines and plays on for the win.
    After a decline the offer can be made again DRAW_RETRY_MOVES of your moves later; the wait
-   belongs to the game record (game.states), so a new or loaded game starts without one. */
+   belongs to the game record (game.states), so a new or loaded game starts without one, and it is
+   kept with the game through a reload (drawWaitAt() and setDrawWait(), js/app/snapshot.js). */
 export const DRAW_WORSE_CP = 100, DRAW_LEVEL_CP = 40, DRAW_FROM_MOVE = 20, DRAW_RETRY_MOVES = 5;
 const DRAW_SEARCH = { depth: 14, movetime: 800, multipv: 1 }, DRAW_BEAT = 0.6;   // seconds: an answer found at once still reads as considered
 let drawAsk = null;   // the offer being judged: { rec, st }
@@ -272,6 +273,13 @@ let drawWait = null;  // after a decline: { rec, at }, the move from which it ca
 // still judging only while the game is the one the offer was made in, at the same position
 export const drawJudging = () => !!drawAsk && drawAsk.rec === game.states && drawAsk.st === cur() && !game.result;
 const drawAgainAt = () => drawWait && drawWait.rec === game.states && cur().fullmove < drawWait.at ? drawWait.at : 0;
+// the game's wait as it is saved: the move it ends at, or 0 with none (or one from another game)
+export const drawWaitAt = () => drawWait && drawWait.rec === game.states ? drawWait.at : 0;
+// a saved wait back on the game now on the board (game.states set first); one that does not read, or
+// longer than a decline gives, is dropped
+export function setDrawWait(at) {
+  drawWait = Number.isInteger(at) && at > 0 && at <= cur().fullmove + DRAW_RETRY_MOVES ? { rec: game.states, at } : null;
+}
 // the computer as the player card names it (js/ui/panels.js playerName(): 'Stockfish' in both worlds)
 const CPU_NAME = 'Stockfish';
 async function judgeDraw() {
