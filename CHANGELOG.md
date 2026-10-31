@@ -1,12 +1,12 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Changelog (digiSpace Edition - v2.17)
+    - Title: MONOLITH Changelog (digiSpace Edition - v2.18)
     - File Name: CHANGELOG.md
     - Relative Path: CHANGELOG.md
     - Artifact Type: docs
-    - Version: 2.17.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.18.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
@@ -33,6 +33,230 @@
 # MONOLITH changelog
 
 The app was named Wizard's Chess until 2.13.0. Each release below keeps the name of its time.
+
+## 2.18.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5]
+
+Dennis asked for an enhancement pass over each main area of the app, to make the game more
+intuitive, and named three things: auto-flip as an option for two players on one screen, a Play
+page where the pieces can be moved without starting a game, and alignment and placement that look
+intentional. Each area was audited, then rebuilt in a package of its own (the stage, the frame,
+play, Analyze and the Crucible, and Position, the Grimoire and Settings), with a pass for phones
+and tablets after them; the cathedral's columns and the loading screen had passes of their own.
+
+- **The board fits the stage.** The camera no longer sits at one fixed distance: it fits the board
+  to the stage, so the frame, every coordinate and both back ranks stay in view at any window size,
+  panel width or phone, in both worlds. The fit follows the window, the panel and the evaluation
+  bar, and a zoom by hand is kept as a share of it. Reset view returns to the world's own camera,
+  so MONOLITH keeps its lower angle; it shows on the stage once the view has been turned or zoomed
+  by hand, and it stops the end-of-game swing where it stands.
+- **Drag a piece, drag the board.** A piece can be dragged onto its square, in a game, an explored
+  line or a study. A click on a piece and then a square still works, and a piece let go anywhere
+  else goes back and stays selected. A left drag anywhere else orbits, so a trackpad can orbit
+  too; the middle button still does. On a touch screen one finger carries a piece that can move,
+  or orbits from anywhere else, and a second finger turns either into a pinch. The orbit hint sits
+  at the top right and names the gestures for touch, and the loading screen's orbit tip names the
+  left drag.
+- **Overlays clear of the board.** The player cards, the chips, the orbit hint, Reset view and
+  Analyze's instruments sit in bands along the stage's edges, clear of the board's coordinates and
+  pieces. Analyze shows no player cards, and the field's key sits under the layer toggles. On a
+  phone the player cards take one compact row each, and a chip takes the top card's place while it
+  shows; on a narrow stage the chips sit under the top card, centred across the stage.
+- **One panel width per world.** The side panel is 400 px wide in the cathedral and 440 px in
+  MONOLITH on screens 1280 px and wider, and 368 px below that, so moving between Play, Position,
+  the Grimoire and Settings no longer moves the edge of the stage. The Grimoire's 460 px and the
+  Crucible's 500 px are gone; the Crucible's matrix fits in 440 px. A width dragged with the
+  splitter is kept per world, and widths saved per tab carry over. From 900 to 1199 px, an iPad
+  held sideways, the rail is slimmer and the panel gives way to 344 px, so the stage is nearer
+  square: 608 px wide at 1024 × 768, up from 568.
+- **The frame lines up.** Each tab keeps its own scroll place, opening at its top or where it was
+  left. The Moves card is gone from Settings and the Grimoire, and before a game it folds to its
+  title, so Start game is in view on a 1440 × 900 screen. Analyze and the Crucible carry an
+  Instrument line over their titles, as the other tabs carry theirs, so every title sits at one
+  height. The match strip sits on the app bar's centre line and no longer cuts its numbers short
+  (move 25 read "Move 2." at laptop widths), and the release chip and the palette button share one
+  height and shape. Keyboard focus on a segmented choice, such as Opponent or World, rings the
+  whole control. In MONOLITH the move box, the selects, the release chip and Position's chips,
+  rows, tools and tiles take the same square corners as the buttons beside them.
+- **Two players on one screen.** In a friend game the board turns to the side to move a beat after
+  each move lands, a cut under Minimal or reduced motion. Undo and Back to live turn it at once,
+  stepping through earlier moves leaves it still, and Flip board holds for the move on the board;
+  Reset view, pressed while it turns, leaves the turn alone. It is on by default, and its switch
+  sits on the setup card when Friend is chosen, in a Board card in the game, in Settings (Turn the
+  board for each player) and in the palette as `:autoflip`. Friends can agree a draw (Draw, or
+  `:draw`), and with auto-flip off the result card offers Switch sides.
+- **The free board.** Before any game the board is free on every tab: both sides move in turn from
+  the starting position, the moves show in the move list, and Undo and Reset take them back;
+  ← takes back a move and Home clears the line. Play from here makes the line a game that keeps
+  its moves. A click on the board on Analyze or Position before a game no longer sends you to Play,
+  and with Move pieces on any board off it says how to start. The explore chip, the player cards and
+  the move list switch to a tried line on the first click, not the first move.
+- **The game kept, written and read.** A game in progress survives a reload, a closed tab or a lost
+  GPU process, kept in the browser's storage (`monolith-game-v1`); a finished game comes back
+  finished, and Stockfish picks up its turn. Copy PGN, Download PGN and Copy FEN sit under New game
+  and Resign, and Load a game on the setup takes a pasted PGN or FEN and plays on from it, naming
+  the first move that is not legal; the palette has `:copy pgn`, `:download pgn` and `:load pgn`.
+  Against the computer the result card offers the other side; it also offers Analyze game, which
+  opens the game in Analyze at the Coach's turning point, as the Coach's end note's Analyze it and
+  `:review` do. Start game asks before it ends a game in progress, reads Start new game there, and
+  stays in reach at the foot of the Play pane at every size. The move box takes SAN up to ten
+  characters (exd8=Q+, Nbxd7+, O-O-O+).
+- **Analyze loads games and plays lines.** A Load section takes a pasted FEN or PGN and opens it
+  there, both sides moved by hand with no computer reply: a PGN game at its last move with its
+  moves listed, titled White – Black from its tags; in Analyze, `:fen` does the same with a FEN. A
+  pinned Synaptic PV line offers Play to here, which plays the engine line onto the board as an
+  explored line, the game unchanged, and the analysis carries on from where it leads; Enter on the
+  pinned chip or a double-click does the same, and Shift-click on a MultiPV row plays its first
+  move. On a touch screen the PV's header says to tap a move to pin its line, where it said hover
+  and click. Holding Space for the Tactical X-Ray works right after a click on the tab and no
+  longer stops Go infinite, and on a phone or tablet a tap on the board aims it and a second
+  releases it.
+- **Analyze reads more plainly.** The match strip shows Analyze's evaluation from White's side,
+  with the depth and the search state under it, and the recorded run is named
+  Kasparov – Topalov 1999. Source badges have a short form, set in Settings or with
+  `:badges short`: `[SF · rec]` for `[SF: MultiPV 5 · d26 · recorded]`, the full badge on hover.
+  The dock's TB / Mate line shows only when a line has a mate. The search status beside Go
+  infinite reads on two lines, what is happening over its detail, a number keeps its unit, and
+  three text collisions are gone: the Sharpness chip, the fork walk's label and the MultiPV
+  subtitle.
+- **The Crucible.** The verdict reads as a sentence, such as "A is stronger than B: +185.7 Elo, 95 %
+  from +129.5 to +252.6." The Hive says a click replays a game and shows a readout on hover. The
+  Live run keeps Start run right under its settings, and before a run the deck says what to do
+  next and has a Start run of its own. The card over a Crucible game keeps to two rows, the game
+  and where you are in it, with the rest under Details, which stays open or closed as you step.
+  With a Crucible game on the board the Moves card lists and steps that game, and a typed move can
+  no longer freeze the Play game underneath. On a narrower stage an explored line's chip takes the
+  card's place (under 820 px, or 920 px while Reset view shows), and under 580 px Reset view is its
+  icon alone, clear of the card's Back to the deck.
+- **Keys.** On Play, F flips the board, U takes back and H asks for a hint, and Ctrl or Cmd Z takes
+  back too, with the focus left on the rail as well. The Grimoire's / works right after a click on
+  its tab.
+- **Set up asks who plays.** Play this position used to start a game against Stockfish with whatever
+  the Play tab held, even with Black to move, and sat far below the board. Set up now asks Who
+  plays it: against Stockfish (you take the side to move, or pick the other) or both sides on this
+  screen. The button stays at the foot of the panel with a sentence saying how the game will be
+  played, Play's own settings are left alone, and a snack offers Go to Play. The palette's `:fen`
+  opens a pasted position in Set up rather than playing it. The Castling drill is a both-sides
+  game, so either colour can castle.
+- **Studies.** A wrong move is taken back and its explanation now stays in the card until the next
+  move. Skip to the next is a quiet text button while a study runs; only Next study, once solved,
+  is filled. Start study sits right under a study's title, above the fold on a laptop, and on a
+  phone a study opens at its title. Up next centres its diagram, the grid's rows line up across
+  two-line titles, and the tile rings are a size larger, each count kept inside its ring in both
+  worlds; the Set-ups ring is dashed, since it counts positions rather than progress.
+- **The Grimoire.** The search box draws one focus ring instead of two, and / reaches it from
+  anywhere on the Grimoire, the rail included. A search that finds nothing names the category and,
+  when other categories hold the word, offers Show N in All beside Clear search. An article's Go
+  to lands on the control it names (Show legal moves, the graphics meter, the FEN box, Hint and so
+  on): the panel scrolls it to the middle, rings it for a moment and gives a switch or button the
+  focus. A new entry, Turn the board for each player, makes 149, and the entries on PGN, draws,
+  the free board, Play to here, the source badges, touch and Settings' cards describe the page as
+  it now is. Articles lose stray space around their section headings, and each viewpoint's icon
+  is centred on its heading.
+- **Settings in five cards.** Settings was one long column whose first block had no title. It is
+  now five titled cards built like Play's (Game, Board, Sound and motion, World and graphics, and
+  Help and about) under a Preferences kicker, so its title sits where the other tabs' do. Coach
+  comments and Evaluation bar can be switched here without a game running, the Board card carries
+  Turn the board for each player, and World and graphics carries Short source badges. Keys and
+  mouse and the MONOLITH system fold away, the keys list gains / and F U H, and the World choice
+  writes MONOLITH as the rest of the page does. The new preferences start as auto-flip on, full
+  badges and Set up against Stockfish, and a saved value outside its choices is repaired on load.
+- **The palette knows everyday words.** Ordinary words find commands: start and new game find
+  `:new`, turn finds `:flip`, mute finds `:sound`, graphics finds `:quality`, take back finds
+  `:undo` and give up finds `:resign`. A word no command knows, such as castling, opens its
+  Grimoire entry. New commands: `:legal`, `:coords`, `:animation`, `:tips`, `:keys`, `:study`,
+  `:read`, `:setup`, `:resign` (it asks first), `:rematch`, `:badges`, `:autoflip`, `:draw`,
+  `:review` and the three PGN commands. With nothing typed, the tab in view puts its own groups
+  first, and the groups follow Settings' cards; `:explore` names the free board.
+- **A phone held sideways, a tablet held upright.** A phone on its side has a layout of its own:
+  the sections down the left, the board the full height and the panel at the right, where Start
+  game, Analyze's panel and the section bar were out of reach before. A tablet held upright has a
+  larger board (800 px across at 820 × 1180, up from 650), and the panel's cards keep to a centred
+  column.
+- **Phones.** The move list is a strip held at the foot of the panel with the step buttons beside
+  it, so a game can be stepped through without scrolling past every card; the move box opens from
+  its keyboard button, and messages take the screen's width and sit clear of the strip. Analyze's
+  panel shows more (284 px instead of 239 at 390 × 844) with the board the same size. The bottom
+  bar no longer moves when Analyze or the Crucible opens or the world changes, MONOLITH's labels in
+  it are a little larger, and the telemetry footer is set aside on screens under 600 px wide. The
+  Crucible's heartbeat shows its whole strip, its heading on one line, and the Crucible's board
+  card keeps clear of the board at every width. The player cards line up with the chips when the
+  evaluation bar is off, and a pinned line's Play to here stays on the screen.
+- **Touch screens and narrow stages.** On touch screens the small buttons, switches and menus are
+  at least 40 px tall, and fields and menus use 16 px type, so iOS Safari no longer zooms in on
+  one. On a narrower Analyze stage a pinned engine line has room to show (256 px instead of 164 at
+  960 × 700), the X-Ray readout sits next to the WDL column instead of 100 px away, and in the WDL
+  column the D figure no longer lands on its neighbours when the chances are lopsided.
+- **The cathedral's columns.** Dennis reported jagged, pixelated edges on the cathedral's columns
+  at some camera angles, and narrowed them down: they showed where the light shafts lie behind the
+  columns, seen from outside. The cause was the light pass's composite, which, drawn at a reduced
+  resolution, smeared across the columns' silhouettes; the ray march's step banding was ruled out.
+  The light is now laid over the scene by depth: against a depth drawn at full resolution, each
+  pixel takes only the light whose rays ended where its own surface does, and a pixel on a
+  column's edge takes the light of both surfaces it covers, so the edges stay as smooth as the
+  anti-aliasing draws them. The column shafts have 64 sides instead of 20, so their outlines stay
+  round and steady as the camera orbits close. The full-size depth takes about 1 to 11 MB more
+  video memory at Medium and above, kept down by a one-byte channel.
+- **The loading screen's arc.** As the M is written, White's back rank, rook to rook, flies in
+  along its own radii, overshoots and settles in an arc over the emblem, the rooks first and the
+  king and queen last at the crown. It carries over the idea of Dennis's Firewatch dashboard
+  loading screen, whose icons fly in along an arc above its logo. The row breathes while the board
+  is built, bows a to h as the glint crosses the emblem, and opens out as the screen lifts; Minimal
+  and reduced motion draw it still. The pieces are the house set in the world's accent, written
+  into the page by `tools/build-emblem.mjs` 1.3.0 so they paint with the first frame, and the
+  emblem leaves the arc its headroom, so the whole stays centred and inside the window on
+  desktops, laptops and phones either way up.
+- **The cathedral, by name.** At Dennis's request the cathedral is no longer called Gothic: the app
+  bar's subtitle (Marble vs. obsidian · Cathedral), the board's label for screen readers, the
+  palette's `:world cathedral`, the World setting's note, the Grimoire's Worlds entry, the
+  documents and the mockups' taglines now call it the cathedral. The notes on earlier releases
+  keep the name they were written with.
+- **Left for a later call.** A draw against Stockfish is not offered, since it needs a rule for
+  when the engine accepts; during a game a click on Analyze still plays a real move on your turn;
+  and from 600 to 899 px wide the telemetry footer still sits under the bottom bar. Each is left
+  for Dennis to decide.
+- **Headers and documents.** Every file the release changed carries its own version; the page
+  header, `js/app/base.js` (the release on screen), README.md and this file carry 2.18.0. A new
+  module, `js/game/pgn.js` 1.0.0, writes and reads PGN. README.md, ARCHITECTURE.md, GRAPHICS.md
+  and STUDIES.md describe the release, MONOLITH_HYBRID.md, two mockups and their generator drop
+  "Gothic", and the Grimoire has its new entry. Shipped headers keep three entries; the 34 that
+  rolled out are below, under Entries moved from file headers.
+
+**Checked.**
+
+- On the merged tree: no conflict markers, every script under `js/` and `tools/` passes
+  `node --check`, the page has no duplicate ids, and `tools/build-emblem.mjs` reports the page
+  current.
+- After the seven packages were merged, in headless Chromium on the GPU: all six tabs at
+  1600 × 1000 and 390 × 844 in both worlds with no console or page errors; a friend game turning
+  the board to π and back to 0, and Reset view pressed against the turn; the free board and Play
+  from here; a game against the computer; a reload restoring a game; a typed move in the
+  Crucible's Moves box, which no longer freezes the Play game; Analyze loading a FEN, a PGN and text
+  that is neither; the X-Ray's Space after a click on the rail; drag-to-move; and the loading
+  screen's arc through to the lift. `tools/verify-studies.mjs`: every study passes.
+- After the phone and tablet pass was merged (73a4264): the static checks again, then all six tabs
+  at 390 × 844, at 820 × 1180 with touch and at 1600 × 1000, in both worlds, with no console or
+  page errors, no duplicate ids and no sideways overflow, a pinned line's Play to here inside its
+  chip and the Crucible's heartbeat whole; a friend game on phones 390 and 360 px wide in both
+  worlds, the board turning each move; and `tools/verify-studies.mjs` again. The sizes given in the
+  notes above (Analyze's panel at 390 × 844, the tablet's board at 820 × 1180, the pinned line at
+  960 × 700) were measured before and after the pass.
+- The cathedral's columns, on the GPU: the teeth went when the light pass was switched off, which
+  placed the cause, and a one-pixel remainder came from a single-sample depth against the
+  multisampled scene. A 20-sided shaft's outline wobbled 2.9 to 3.2 px peak to peak in an orbit,
+  a 64-sided one 0.33 to 0.51 px. Missing anti-aliasing (every level has it), dynamic resolution
+  during motion, shadow acne, and the ray march's step banding and shadow lookup were ruled out.
+  GPU timer queries stayed within 0.2 ms of the old figures at every level, the draw calls are
+  unchanged, and the video memory grows by 1.2 to 10.8 MB at Medium and above. Not verified: other
+  GPUs, browsers and phones, and Dennis's own camera poses, which lie outside the camera's limits.
+- Each package on its own branch before the merge, in headless Chromium on software GL
+  (SwiftShader): its own scripted checks, most at 1600 × 1000 and 390 × 844, with
+  `tools/verify-studies.mjs` where play, studies or Analyze changed.
+- Not tested here: phones and tablets were checked as emulated viewports in headless desktop
+  Chromium on one GPU (an RTX 5050 through ANGLE D3D11), not on real devices or in other browsers.
+  Also not tested: Copy PGN and Download PGN against a real clipboard and download, reduced motion
+  set by the system rather than Minimal, the PV header's touch hint (083cacc came after the last
+  sweep), and a live deployment on GitHub Pages. The README's screenshots are still the 2.12.0
+  capture.
 
 ## 2.17.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5]
 
@@ -1781,6 +2005,7 @@ word, under the file they came from.
 
 ### `js/app/base.js`
 
+- 1.5.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The release on screen is 2.15.0.
 - 1.5.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The release on screen is 2.14.0.
 - 1.5.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The release on screen is 2.13.0,
   under the name Dennis chose, MONOLITH, which the version chip and About now show. The preferences
@@ -1803,6 +2028,8 @@ word, under the file they came from.
 
 ### `js/ui/palette.js`
 
+- 1.3.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — :quality ultra, high, medium, low
+  and minimal, for Dennis's five graphics levels, with auto; :quality balanced is now medium.
 - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — :pillars monoliths, classic and
   modern choose MONOLITH's pillars from Dennis's Blender models.
 - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — :fen opens the Position tab's Set up
@@ -1812,6 +2039,8 @@ word, under the file they came from.
 
 ### `js/ui/panels.js`
 
+- 1.4.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Settings → Graphics draws Dennis's
+  graphics meter (js/ui/gfx-meter.js) in place of the bar ladder, its needle on the level in use.
 - 1.3.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Settings → Graphics for Dennis's
   tiered levels: the Automatic switch, the five-level ladder, what the level in use draws, and the
   Fine-tune rows, each showing the value in use or why it cannot change.
@@ -1829,6 +2058,8 @@ word, under the file they came from.
 
 ### `js/ui/splitters.js`
 
+- 1.2.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The level buttons it wires are now
+  the cells of Dennis's graphics meter.
 - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Wires Settings → Graphics for
   Dennis's tiered levels: the Automatic switch, the level ladder and the Fine-tune rows.
 - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Wires Settings' MONOLITH pillars
@@ -1838,6 +2069,9 @@ word, under the file they came from.
 
 ### `js/scene/worlds.js`
 
+- 1.1.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Reads the graphics level from
+  js/scene/quality.js, the new home of Dennis's tiered levels; the mirror floor shows wherever the
+  level's reflections are on.
 - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis found hot spots on MONOLITH's
   board: its key light now spreads evenly, its squares are a touch more satin, its haze is lighter
   and only what shines past white blooms; the wash on the monoliths follows the world.
@@ -1846,6 +2080,10 @@ word, under the file they came from.
 
 ### `js/scene/sets.js`
 
+- 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The pillar places are shared
+  (monoSlots) so Dennis's Blender models can stand on them (js/scene/pillars.js), the built pillars
+  kept as the fallback; the lancet mullions face the nave only, so a camera out past the aisle walls
+  no longer sees them float as thin bars.
 - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis found MONOLITH's board glaring
   from low angles and its pillars flat: the rim lights now sit high and narrow, the monoliths are
   built (base, body, raised face, cap) and a wash light reads them solid.
@@ -1854,6 +2092,9 @@ word, under the file they came from.
 
 ### `css/position.css`
 
+- 2.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The pieces take Dennis's house set
+  and its two woods (boxwood White, ebony Black); the cathedral's diagram squares are the ones he
+  drew the set on.
 - 2.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rewritten for the redesigned Position
   tab Dennis asked for: the view switch, board diagrams with their own palette per world, study
   cards and progress rings, the goal tracks, the drawn board reading, the board editor and the
@@ -1863,6 +2104,11 @@ word, under the file they came from.
 
 ### `css/layout.css`
 
+- 1.4.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The loading screen animated, as
+  Dennis asked: the M written square by square, the pieces set down in turn, a glint, then the lift,
+  timed by class and by two marker animations (see the section). The graphics meter follows his
+  version 1.2 drawing: the needle turns about the hub, which carries the Automatic mark; the ribbon
+  is gone, and the chosen cell sits above its neighbours, since the cells now meet.
 - 1.3.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The loading screen Dennis asked for,
   around his emblem: on the stage colour of the world the page opens in, with the board diagrams'
   squares and woods, the name in Michroma and a sweeping bar that stands still under reduced motion.
@@ -1881,11 +2127,16 @@ word, under the file they came from.
 
 ### `css/play.css`
 
+- 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The match strip, which Dennis found
+  disjointed before a game: only a number takes the larger size, and a side the die will pick shows
+  half marble, half obsidian.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/app/loop.js`
 
+- 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed with the project: Wizard's
+  Chess is now MONOLITH, the name Dennis chose.
 - 1.0.2 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the release audit Dennis asked
   for: the preview shaders are warmed once a world change has settled, in the world they will be
   drawn in, and the check pulse works out a position's check once rather than every frame.
@@ -1896,22 +2147,34 @@ word, under the file they came from.
 
 ### `js/data/grimoire.js`
 
+- 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Where each term appears on the
+  Position tab, for its new Read, Set up and Studies views; the FEN entry describes the board editor
+  and Play this position.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: the
   grimoire-data script block of wizards-chess.html 2.4.0 when Dennis asked for a proper separation
   of concerns.
 
 ### `js/game/flow.js`
 
+- 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The study state comes from
+  js/ui/studies.js; startGame() no longer redraws the studies library itself, since the Position
+  tab redraws it from render().
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/game/play.js`
 
+- 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — studyAfterMove() and studyScripted()
+  come from js/ui/studies.js, where the study engine moved with the Position redesign.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/scene/post.js`
 
+- 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — For Dennis's tiered graphics levels:
+  the pipeline is built from the level's settings (bloom and shadows can each be off, the light at
+  three resolutions), and the frame-time watch moved to js/scene/quality.js, which this file now
+  starts.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
@@ -1935,21 +2198,34 @@ word, under the file they came from.
 
 ### `js/ui/grimoire.js`
 
+- 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — A Position term's Go to button opens
+  the view its where names first (Read, Set up or Studies).
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/ui/nav.js`
 
+- 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — setQualityPref() moved to
+  js/scene/quality.js with the rest of Dennis's tiered graphics levels.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/ui/position.js`
 
+- 2.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The tab redesigned after Dennis
+  found it awkward, "a stack of text blocks": three views (Studies, Read, Set up) behind one switch
+  that follows what you do; studies as diagram cards with progress rings and an Up next pick; the
+  board read as bars, piece rows and a structure map; a click-to-place board editor tied both ways
+  to a colour-coded FEN. The study engine moved to js/ui/studies.js; the FEN wiring came here from
+  js/ui/controls.js and js/ui/panels.js.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 ### `js/ui/telemetry.js`
 
+- 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — With Dennis's tiered graphics levels:
+  RENDER names the level (with Auto when Automatic chose it), and GPU shows the cleaned-up name the
+  levels detect from ("Intel Iris Xe Graphics", not "Intel").
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
@@ -1985,7 +2261,87 @@ word, under the file they came from.
 
 ### `css/monolith.css`
 
+- 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the release audit Dennis asked
+  for: a rule for a class no page uses (.ref-card) is gone.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `css/grimoire.css`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `css/terms.css`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `css/workspace.css`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `css/xray.css`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/analyze-view.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/analyze.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/controls.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/crucible-view.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/crucible.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/ui/studies.js`
+
+- 1.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release: the study engine
+  moved out of js/ui/position.js when Dennis asked for a clearer, more visual Position tab, so the
+  views and the rules of a study live apart. Adds the study order (Up next) and the progress counts
+  the new views draw.
+
+### `js/game/ceremony.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/app/snapshot.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/coach/notes.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/core/monolith.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/data/studies.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: the
+  studies script block of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of
+  concerns.
 
 <!-- ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once! -->
