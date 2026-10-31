@@ -210,8 +210,8 @@ file:
    `turning` from `game/flow.js`, `app/state.js` and `game/play.js` read `boardOverride` from
    `ui/crucible-board.js`, `app/snapshot.js` reads `resultFor` (`game/play.js`) and
    `autoFlipOn` (`game/flow.js`), and `game/flow.js` reads `anEvalShown` (`ui/analyze.js`). Since
-   2.19.0 `coach/notes.js` calls `markConsult()` from `game/flow.js`, which imports it in turn,
-   only when a hint is given.
+   2.19.0 `coach/notes.js` reads `markConsult` from `game/flow.js`, which imports `coach/notes.js`
+   in turn; it is called only when a hint is given.
 
 A module without setup has no `init()` and is not in the boot; it loads through the modules that
 import it (`js/game/pgn.js`, new in 2.18.0, is one: nothing in it runs on import). When WebGL is
