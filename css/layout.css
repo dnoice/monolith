@@ -134,7 +134,9 @@
 .icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset{position:relative;overflow:hidden;cursor:pointer;-webkit-user-select:none;user-select:none}
 .icon-btn{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:999px;background:transparent;color:var(--md-on-surface-var);transition:background .15s var(--ease-std),color .15s}
 .icon-btn svg{width:22px;height:22px;fill:currentColor}
-.icon-btn:hover{background:rgba(235,230,240,.08);color:var(--md-on-surface)}
+/* hover tints, on these and on the other buttons of the panel and the bars, only where the pointer
+   hovers: on a touch screen a tap left the tint behind, where it read as a state */
+@media (hover:hover){.icon-btn:hover{background:rgba(235,230,240,.08);color:var(--md-on-surface)}}
 .icon-btn[aria-pressed="false"]{color:var(--md-on-surface-var)}
 .icon-btn:disabled{opacity:.38;cursor:default;background:transparent}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 20px;border:0;border-radius:var(--r-pill);font-weight:500;letter-spacing:.1px;background:var(--md-surface-4);color:var(--md-on-surface);transition:background .15s var(--ease-std),filter .15s}
@@ -144,7 +146,7 @@
 .btn.text{background:transparent;color:var(--md-primary);padding:0 12px}
 .btn.outlined{background:transparent;border:1px solid var(--md-outline);color:var(--md-on-surface)}
 .btn.danger{background:transparent;border:1px solid var(--md-outline);color:var(--md-error)}
-.btn:hover:not(:disabled){filter:brightness(1.1)}
+@media (hover:hover){.btn:hover:not(:disabled){filter:brightness(1.1)}}
 .btn:disabled{opacity:.38;cursor:default}
 .btn.small{height:32px;padding:0 14px;font-size:13px}
 :is(.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset,input,select,textarea,.mv):focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
@@ -165,7 +167,7 @@
    under its icon (⌘K on Apple keyboards, js/ui/palette.js); the release as a small chip, its date
    and the note in its title */
 .rail .btn-pal{width:40px;height:40px;padding:0;justify-content:center;border-color:transparent;border-radius:999px;font-size:14px;font-weight:500}
-.rail .btn-pal:hover{background:rgba(235,230,240,.08);border-color:transparent}
+@media (hover:hover){.rail .btn-pal:hover{background:rgba(235,230,240,.08);border-color:transparent}}
 .rail .btn-pal kbd{display:none}
 @media (hover:hover) and (pointer:fine){
   .rail .btn-pal{flex-direction:column;gap:4px;width:56px;height:auto;padding:8px 0 6px;border-radius:12px}
@@ -271,7 +273,7 @@
    world's own pose by hand (scene/camera.js) */
 .stage-reset{position:absolute;z-index:2;right:var(--gutter-r);bottom:27px;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px 0 9px;border:1px solid var(--md-outline-var);border-radius:999px;background:rgba(28,26,32,.78);color:var(--md-on-surface);font-size:12.5px;font-weight:500;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .stage-reset svg{width:16px;height:16px;fill:currentColor;flex:none}
-.stage-reset:hover{background:rgba(48,44,54,.86)}
+@media (hover:hover){.stage-reset:hover{background:rgba(48,44,54,.86)}}
 .stage-reset:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .stage-reset[hidden],#stage:has(#deck:not([hidden])) .stage-reset{display:none}
 /* Analyze keeps it at the foot of its right band, the Crucible's board in its top band beside an
@@ -349,7 +351,7 @@
 .gfx-panel{fill:var(--gm-panel);transition:fill .15s}
 .gfx-piece{--pc-face:var(--md-surface-4);--pc-line:var(--gm-ink)}
 .gfx-label{font:600 8.5px/1 var(--font-body,inherit);letter-spacing:1.4px;fill:var(--gm-ink)}
-.gfx-cell:hover:not(:disabled) .gfx-frame{fill:var(--md-surface-4)}
+@media (hover:hover){.gfx-cell:hover:not(:disabled) .gfx-frame{fill:var(--md-surface-4)}}
 .gfx-cell:focus-visible .gfx-frame{stroke:var(--md-primary);stroke-width:2}
 .gfx-cell[aria-checked="true"] .gfx-frame{stroke:var(--md-primary);stroke-width:1.5}
 .gfx-cell[aria-checked="true"] .gfx-panel{fill:var(--gm-on)}
@@ -379,7 +381,7 @@
 /* side choice cards */
 .side-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .side-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px 12px;border-radius:var(--r-card);border:1px solid var(--md-outline-var);background:var(--md-surface-2);text-align:center;transition:border-color .15s,background .15s}
-.side-card:hover{background:var(--md-surface-3)}
+@media (hover:hover){.side-card:hover{background:var(--md-surface-3)}}
 .side-card[aria-checked="true"]{border-color:var(--md-primary);background:var(--md-primary-container);color:var(--md-on-primary-container)}
 .side-card b{font-weight:500;font-size:14px}
 .side-card small{font-size:11.5px;color:var(--md-on-surface-var);line-height:1.3}
@@ -429,7 +431,7 @@
 .select{height:40px;border-radius:var(--r-field);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px}
 .cands{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .cand{display:grid;grid-template-columns:auto 48px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 8px 8px 10px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px}
-.cand:hover{background:var(--md-surface-3)}
+@media (hover:hover){.cand:hover{background:var(--md-surface-3)}}
 .cand .grade{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:11.5px;font-weight:500;letter-spacing:.2px;color:var(--q);min-width:9.5ch}
 .cand .grade::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--q);flex:none;box-shadow:0 0 0 2px rgba(0,0,0,.35)}
 .cand.active{border-color:var(--q)}
@@ -443,7 +445,7 @@
 /* position */
 .fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
 .preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:10px 14px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2)}
-.preset:hover{background:var(--md-surface-3)}
+@media (hover:hover){.preset:hover{background:var(--md-surface-3)}}
 .preset b{font-weight:500}
 .preset small{color:var(--md-on-surface-var);font-size:12px}
 
@@ -478,7 +480,7 @@
 .moves{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;font-family:var(--font-mono);font-size:13px;display:grid;grid-template-columns:4ch 1fr 1fr;align-content:start;column-gap:6px;row-gap:2px;font-variant-numeric:tabular-nums}
 .moves .num{color:var(--md-on-surface-var);padding:3px 0}
 .mv{padding:3px 8px;border-radius:6px;cursor:pointer}
-.mv:hover{background:rgba(235,230,240,.07)}
+@media (hover:hover){.mv:hover{background:rgba(235,230,240,.07)}}
 .mv.cur{background:var(--md-primary-container);color:var(--md-on-primary-container)}
 .moves .empty{grid-column:1/-1;color:var(--md-on-surface-var);font-family:var(--font-body);font-size:13px}
 .move-entry{display:flex;gap:8px}

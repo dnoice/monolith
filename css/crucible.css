@@ -125,7 +125,7 @@
 .penta small{align-self:stretch;padding-top:4px;border-top:1px solid var(--mo-rule);font-size:10px;color:var(--mo-ink3)}
 .anoms{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
 .anoms button{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;min-height:36px;padding:4px 8px;border:0;border-bottom:1px solid var(--mo-rule);background:transparent;color:var(--md-on-surface);font:400 12px var(--font-tele);font-variant-numeric:tabular-nums;text-align:left;cursor:pointer;transition:background .12s}
-.anoms button:hover,.anoms button.on{background:var(--mo-raised)}
+.anoms button.on{background:var(--mo-raised)}@media (hover:hover){.anoms button:hover{background:var(--mo-raised)}}
 .anoms button.on{box-shadow:inset 2px 0 0 var(--mo-crimson)}
 .anoms .jump{color:var(--mo-crimson)}
 .anoms .ply{color:var(--mo-ink3)}
