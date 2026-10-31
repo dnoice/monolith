@@ -1,17 +1,21 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Architecture (digiSpace Edition - v1.11)
+    - Title: MONOLITH Architecture (digiSpace Edition - v1.12)
     - File Name: ARCHITECTURE.md
     - Relative Path: ARCHITECTURE.md
     - Artifact Type: docs
-    - Version: 1.11.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.12.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.12.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.19.0: prefs.open and movesStrip, the kept game's kinds of help and
+      draw wait, the panel ladder, data-motion, data-vt, worldFor(), the
+      block merlons, the tip on the stage; build-piece-models.py in step.
     - 1.11.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.18.0: js/game/pgn.js, the kept game and its marks, the safe bands,
       the emblem drawn once, the rail's actions, exports; the MONOLITH M.
@@ -130,7 +134,7 @@ writes for hosts that refuse `.glb`, Blender's backup files, editor and OS files
 
 1. **The markup**: `index.html`. Everything the panels show is in it; the code fills and toggles
    it. It opens with the emblem's one drawing, a hidden sprite (`#emb`), and the loading screen
-   (`#boot`, with the emblem drawn from it, the meter and the tip card); in the page's head a short
+   (`#boot`, with the emblem drawn from it, the meter and the tip); in the page's head a short
    inline script sets the world's skin (`data-skin`) from the saved preferences, so the screen and
    the frame around it paint in the world the page opens in, and the pace and tips the screen
    follows (`data-boot-pace`, `data-boot-tips`). See
@@ -150,28 +154,29 @@ The engine (`engine/`), the recorded runs (`data/`) and the MONOLITH pillars
 (`assets/models/*.glb`, see `assets/models/MANIFEST.md`) are fetched by the code at run time, by
 paths relative to the page. The `.blend` files beside them are the models' sources; the page never
 loads them, nor the 3D pieces' `.blend` files there, which `tools/build-piece-models.py` builds from
-`js/scene/board.js` for work in Blender (out of step since 2.18.0; see [Tools](#tools)).
+`js/scene/board.js` for work in Blender (the script in step again since 2.19.0, the files not
+yet rebuilt; see [Tools](#tools)).
 Everything that is art rather than code lives under `assets/`: the drawings,
 the logo and the emblem with the brand system and Python generators that draw them (`brand/`,
-`generator/`), the mock-ups, the game's sounds, the models and the README's screenshots, all mapped
+`generator/`), the mock-ups, the game's sounds, the models and screenshots of the app, all mapped
 in `assets/README.md`.
 
 ### Stylesheets
 
 | Order | File | What it holds |
 | --- | --- | --- |
-| 1 | `css/tokens.css` | The custom properties every other sheet reads: colour, type, shape and motion tokens for the cathedral world (the rail's selected colour, `--md-nav-active`, among them), and the MONOLITH solved stops that replace them in the instrument world; also the frame's widths, among them the side panel's, one per world. |
+| 1 | `css/tokens.css` | The custom properties every other sheet reads: colour, type, shape and motion tokens for the cathedral world (the rail's selected colour, `--md-nav-active`, among them), and the MONOLITH solved stops that replace them in the instrument world; also the frame's widths, among them the side panel's, one per world. Since 2.19.0 also the side panel's surface ladder, `--pnl-*`, one in each world: the ground, the raised card, the sunk well, the raised key, the state layers and three inks, with the rail's colour as its accent (`--pnl-accent`); a card's padding and where its head band holds (`--pnl-pad`, `--pnl-sticky-top`, per tab and on phones); three durations (`--dur-1` to `--dur-3`); and four of the ladder's colours registered with `@property`, so a card's gradient face cross-fades with the world. |
 | 2 | `css/layout.css` | The frame of the page and its shared controls: the app bar with its wordmark (the emblem as its M, in `--emb-*` custom properties), the navigation rail with the app's actions at its foot, the stage with its safe bands, the side panel and the move list, with the buttons, segmented choices, switches and cards the panels are built from; and the loading screen. |
 | 3 | `css/monolith.css` | How the shared components look in the MONOLITH world, and the components only the instrument has. |
 | 4 | `css/crucible.css` | The Crucible tab: the deck that covers the stage, the game board card and the pane beside it. |
-| 5 | `css/workspace.css` | The parts of the workspace around the board that are not a tab: the telemetry footer, the Command Palette, the System sheet, the dock, the move sheet and the splitters. |
+| 5 | `css/workspace.css` | The parts of the workspace around the board that are not a tab: the telemetry footer, the Command Palette, the System sheet, the dock, the move sheet and the splitters; since 2.19.0 also the move list as one row (`data-strip`), a phone's always and a wider screen's when the fold button in its head says so. |
 | 6 | `css/play.css` | The Play pane as cards (10/22/2026), and the match strip at the app bar's end that names who is playing, the level and whose move it is. |
 | 7 | `css/grimoire.css` | The Grimoire tab: the searchable index of terms, the category chips and the article view with its three viewpoints (in a game, in analysis, inside the engine). |
 | 8 | `css/position.css` | The Position tab: the view switch, the board diagrams with a palette per world, the studies (Up next, tiles, cards, the Study card's goal tracks), the board reading and the board editor with its coloured FEN. |
 | 9 | `css/terms.css` | A Grimoire term wherever it appears on screen: a quiet dotted underline, and the card a click or Enter opens. |
 | 10 | `css/coach.css` | The Coach's feed in the Play pane: one note per moment of the game, each with its badge, the move, the score and the text in the Coach's voice. |
 | 11 | `css/xray.css` | The Tactical X-Ray readout docked beside the board (10/22/2026): the square, its state, the gauge and the move, with a two-line strip on phones. |
-| 12 | `css/media.css` | The overrides for small screens, touch screens and reduced motion, kept last so they win: on phones and narrow tablets (under 900 px) the rail becomes a bottom bar, the app's actions go to the app bar's end, the telemetry footer is set aside and the move list is a strip at the panel's foot; a phone held sideways (landscape, under 500 px tall) and a tablet held upright each have a layout of their own; a coarse pointer gets 40 px targets and 16 px fields; and reduced motion turns transitions off. |
+| 12 | `css/media.css` | The overrides for small screens, touch screens and reduced motion, kept last so they win: on phones and narrow tablets (under 900 px) the rail becomes a bottom bar, the app's actions go to the app bar's end, the telemetry footer is set aside and the move list is a strip at the panel's foot; a phone held sideways (landscape, under 500 px tall) and a tablet held upright each have a layout of their own; a coarse pointer gets 40 px targets and 16 px fields; and reduced motion turns transitions off, the side panel's also under the Minimal speed (`data-motion="minimal"` on the root, set by `js/app/state.js`). |
 
 ### Plain scripts
 
@@ -204,7 +209,9 @@ file:
    added across the folders are read only when a function runs: `scene/camera.js` reads
    `turning` from `game/flow.js`, `app/state.js` and `game/play.js` read `boardOverride` from
    `ui/crucible-board.js`, `app/snapshot.js` reads `resultFor` (`game/play.js`) and
-   `autoFlipOn` (`game/flow.js`), and `game/flow.js` reads `anEvalShown` (`ui/analyze.js`).
+   `autoFlipOn` (`game/flow.js`), and `game/flow.js` reads `anEvalShown` (`ui/analyze.js`). Since
+   2.19.0 `coach/notes.js` reads `markConsult` from `game/flow.js`, which imports `coach/notes.js`
+   in turn; it is called only when a hint is given.
 
 A module without setup has no `init()` and is not in the boot; it loads through the modules that
 import it (`js/game/pgn.js`, new in 2.18.0, is one: nothing in it runs on import). When WebGL is
@@ -260,7 +267,7 @@ stages (`css/layout.css`, loading screen) and `js/ui/boot-screen.js` runs their 
 
 1. **The M is written** (2.65 s from the first paint): the squares light along the letter's stroke,
    each in the world's primary colour cooling to its own, and the name gathers in; the meter rises
-   at 1.3 s and the tip card at 1.7 s. Every square's moment is a class the builder gave it (`a0`
+   at 1.3 s and the tip at 1.7 s. Every square's moment is a class the builder gave it (`a0`
    to `a20`).
 2. **The board is built**: when stage 1's marker animation (`boot-written`) ends, the screen is
    marked `holding`, one frame is let through, and the page's boot runs (`main.js` handed it to
@@ -271,8 +278,8 @@ stages (`css/layout.css`, loading screen) and `js/ui/boot-screen.js` runs their 
    takes the class `go`, the pieces are set down in turn (`i0` to `i11`), a glint crosses the
    emblem (`g0` to `g12`) and it holds a breath, 3.6 s in all (the `boot-set` marker). Meanwhile the
    frame loop draws nothing under it (`bootCovering()`), so the animation has the frames.
-4. **The screen lifts**: a 0.95 s fade, the emblem coming forward and the meter and card settling
-   away, then the screen is removed.
+4. **The screen lifts**: a 0.95 s fade, the emblem coming forward and the meter and the tip
+   settling away, then the screen is removed.
 
 **The meter** has a segment for each step, filled only when that step reports in through
 `bootStep(id, state)`, where a state is waiting, `on` (under way), `ok` or `no` (failed), and moves
@@ -290,10 +297,11 @@ The line under the rail names the first step under way, or the last one settled,
 all five are (naming any that failed); the count is the steps settled. The screen waits for none of
 them past the first frame, so the pillars and the engine may still be under way as it lifts.
 
-**The tip card** shows one entry of `BOOT_TIPS` (`js/data/boot-tips.js`) at a time, shuffled, the next
-every 5.2 s: a tip about the page under a Tip chip, or a chess fact under Did you know?. Tips: Off
-in Settings keeps it to the facts. Text between backticks is drawn as key caps, and `{palette}`
-names the palette's key for the keyboard (Ctrl K, or ⌘K on Apple keyboards).
+**The tip** is set on the screen under the meter, in the screen's own type and colours, not on a
+card: one entry of `BOOT_TIPS` (`js/data/boot-tips.js`) at a time, shuffled, centred, the next
+every 5.2 s, under a kicker between two hairlines: Tip for a tip about the page, Did you know? for
+a chess fact. Tips: Off in Settings keeps it to the facts. Text between backticks is drawn as key
+caps, and `{palette}` names the palette's key for the keyboard (Ctrl K, or ⌘K on Apple keyboards).
 
 **The pace** is the saved Animation speed: Cinematic as above, Brisk at 0.55 of every length (the
 custom property `--bt` in the stylesheet, `scale()` in the script), and Minimal still. A key or a
@@ -369,9 +377,16 @@ there, under its owner.
 Two localStorage keys outlive the page. `monolith-prefs-v2` (`js/app/base.js`) holds the
 preferences, repaired against `DEFAULTS` when they are read; the side panel's width in it
 (`prefs.ui.panel`) is kept per world since 2.18.0, the dock, heartbeat and move list per
-destination. `monolith-game-v1` (`js/app/snapshot.js`, since 2.18.0) holds the game on the board
-as its start position and its moves (a FEN and UCI), with the plies whose side used Analyze in a
-two-player game (`consult`), written when the game changes and removed when there is none.
+destination. Since 2.19.0 it also holds `prefs.open`, each of the side panel's disclosures open or
+closed as it was left, by its id (`js/ui/controls.js`; repaired to true or false for the eight ids
+`OPEN_IDS` names, Engine lines' earlier flag, `engineOpen`, moved into it), and `prefs.movesStrip`,
+the move list folded to one row on a wide screen. `monolith-game-v1` (`js/app/snapshot.js`, since
+2.18.0) holds the game on the board as its start position and its moves (a FEN and UCI); in a
+two-player game its marks of the engine's help, `consult`, as `[{ ply, kinds }]` (each position
+whose side to move used help there, and which; a bare ply, as 2.18.0 saved them, reads as
+Analyze), and `consultBar`, whether the evaluation bar has marked the game; and `drawWait`, the
+move from which a draw Stockfish declined can be offered again (0 for none). It is written when
+the game changes and removed when there is none, and the hot snapshot carries the same three.
 `start()` replays it when there is no hot snapshot, stopping at the first move that is not legal
 there. A study, an explored line and the free board are not kept.
 
@@ -410,8 +425,8 @@ The page as an app: its basics, state, sound, the frame loop and the hot snapsho
 | --- | --- | --- |
 | `base.js` | The basics every module leans on: the $ query helper, the release number shown on screen, the reduced-motion preference, the saved preferences and `panelScroller()`, the element the side panel scrolls in (the panes on a wide screen, the whole panel on a phone). | 1 |
 | `sound.js` | The page's sounds, synthesized with Web Audio rather than loaded from files. | — |
-| `state.js` | The app layer's core: the game record, the match being played, the words for sides and pieces, the tips system and the render registry. | 10 |
-| `snapshot.js` | Keeps the game through a hot update of the artifact and, since 2.18.0, through a reload: snapshot() hands the viewer the game and match on every render and writes the game to localStorage (`monolith-game-v1`) when it changes, both with the game's Analyze marks (`consult`, through `consultPlies()` and `setConsultPlies()` in `game/flow.js`), and start() restores the hot snapshot, or else the kept game, and brings the page up. | — |
+| `state.js` | The app layer's core: the game record, the match being played, the words for sides and pieces, the tips system and the render registry; `applyPrefs()`, which since 2.19.0 also sets `data-motion="minimal"` on the root at the Minimal speed, for the stylesheets. | 10 |
+| `snapshot.js` | Keeps the game through a hot update of the artifact and, since 2.18.0, through a reload: snapshot() hands the viewer the game and match on every render and writes the game to localStorage (`monolith-game-v1`) when it changes, both with the game's marks of the engine's help (`consult` and `consultBar`, through `consultRecord()`, `consultBarUsed()` and `setConsultPlies()` in `game/flow.js`) and, since 2.19.0, the draw's wait (`drawWait`, through `drawWaitAt()` and `setDrawWait()`), and start() restores the hot snapshot, or else the kept game, and brings the page up. | — |
 | `loop.js` | The frame loop and resizing; the first frame after `start()` tells the loading screen the board has drawn, and the loop draws nothing while the screen then covers it. | 26 |
 | `store.js` | The one object for state that several modules change: whether a game has started, the selected square, whose move is being viewed, the hint, the render tier and the rest. | — |
 
@@ -427,13 +442,13 @@ post-processing, camera, motion and the world transition.
 | `materials.js` | The shared materials: marble and obsidian for the pieces (obsidian's clearcoat 0.22 rough since 2.18.0, so MONOLITH's strip lights spread into a soft sheen), the squares and frame, stone, brass, flame and stained glass for the cathedral, and the monolith slabs, with the rim-light and marble shader patches; `matCopy()` copies a material with its patch (three r147's `clone()` drops it). | 3 |
 | `sets.js` | The two worlds' sets on one turning rig: the cathedral (floor, arcades, ribs, lancets, the rose window, candles) and MONOLITH (three pillar places, each with a built, steel-edged pillar, over a mirror floor). | 4 |
 | `pillars.js` | The Blender pillars (`assets/models/*.glb`) on MONOLITH's pillar places, in three styles (the monoliths; Solomonic, Doric and Tuscan columns; Prism, Halo and Fin), swapped in once loaded, the built pillars kept as the fallback. Started by `sets.js`. | — |
-| `board.js` | The board and everything on it: squares, highlight markers, coordinate labels, the lathe-turned pieces (the knight's neck, head, muzzle, ears and mane, since 2.18.0, blocks with bowed faces, `block()`) and the fragments a captured piece shatters into (`clearFragments()`), and `boardGen`, which counts each rebuild of the pieces so a move still animating leaves a new board alone. | 5 |
+| `board.js` | The board and everything on it: squares, highlight markers, coordinate labels, the lathe-turned pieces (the knight's neck, head, muzzle, ears and mane, since 2.18.0, and the rook's merlons, since 2.19.0, blocks with bowed faces, `block()`: the knight's at exponent 4.5, the merlons' at 7, nearly flat faces with rounded edges and corners) and the fragments a captured piece shatters into (`clearFragments()`), and `boardGen`, which counts each rebuild of the pieces so a move still animating leaves a new board alone. | 5 |
 | `instruments.js` | The instrument's 3D layers on the board: the sub-surface move-value field, the ballistic vectors of the candidate moves, and the Tactical X-Ray ring over a square. | 6 |
 | `phantoms.js` | A line scrubbed in the Synaptic PV is shown as a difference from the board: phantom pieces where the line puts them, ghosts where it takes them away, capture rings where it takes. A warm-up frame compiles their shaders once the world has settled, and its materials are kept so the programs stay. | 7 |
 | `post.js` | Post-processing for every level with HDR (Low and up): a ray-marched volumetric light pass (its depth drawn at full resolution, the march at the level's fraction, and the composite matched to each pixel's depth), Unreal bloom, and an output pass (sRGB, vignette, dither), built from the level's settings. | 8 |
 | `camera.js` | The camera's orbit around the board and the pointer: a left drag off a piece orbits (the middle button too), dragging a piece moves it, the wheel or a pinch zooms, and a square or piece under the pointer is picked. The fit to the stage inside its safe bands (`safeBands()`, `fitFor()`, `fitCamera()`, `fitDist()`, see [The stage's bands](#the-stages-bands)) and Reset view (`resetView()`). Reads `turning` from `game/flow.js`. | 9 |
 | `motion.js` | Tweens and the pieces' movement: glides, hops and lunges, facing the target and back, the idle breathing of the pieces between moves, and `dropAt()`, which lets a piece dragged to its square settle from where it was let go. | — |
-| `worlds.js` | Cathedral and MONOLITH on one board: the transition, its veil, `worldSettled()`, `desiredWorld()` and `applyBackdrop()`, which sets the background and the fog, the fog thinning as the fit draws the camera back; the app bar's subtitle, which names the world (`#brand-sub`). | 16 |
+| `worlds.js` | Cathedral and MONOLITH on one board: the transition, its veil, `worldSettled()`, `worldFor(tab)`, the world a destination opens in (since 2.19.0, read by `desiredWorld()` and by the rail's crossfade in `ui/nav.js`), `desiredWorld()` and `applyBackdrop()`, which sets the background and the fog, the fog thinning as the fit draws the camera back; the app bar's subtitle, which names the world (`#brand-sub`). | 16 |
 
 ### `js/game/`
 
@@ -444,11 +459,11 @@ lines, typed moves and the game as PGN.
 | --- | --- | --- |
 | `engine.js` | The UCI client for Stockfish: it starts the best engine it can (Stockfish 19 lite from engine/, the same build from unpkg, or Stockfish 10 as a last resort) and speaks UCI to it over postMessage. An engine that stops after it has started is restarted once, then reported. It names its engine in MONOLITH's subtitle (`MONOLITH world · Stockfish 19 instrument`). | 11 |
 | `board-ui.js` | What the player sees and does on the board: highlights, castling lanes, hint and candidate arrows, selection, hover, the square a click means, and `grabbable()`, whether a press on a square picks a piece up to drag. | 12 |
-| `play.js` | Making a move happen: playMove() runs a move through the animations, the record and the results, then asks the computer for its reply at the level being played; in a two-player game it marks a move made from Analyze and tells the next player of a marked move (`consultOnMove()`, `consultHandover()` in `flow.js`). `positionCmd()` is the UCI position of a ply, which the draw judgement searches too. | — |
+| `play.js` | Making a move happen: playMove() runs a move through the animations, the record and the results, then asks the computer for its reply at the level being played; in a two-player game it marks a move played from Analyze with its evaluation on screen and tells the next player which help the other used before a marked move (`consultOnMove()`, `consultHandover()` in `flow.js`). `positionCmd()` is the UCI position of a ply, which the draw judgement searches too. | — |
 | `ceremony.js` | The game's ceremonies: pieces dealt in at the start, the shudder of a king in check, the flash of a promotion, and the end: the loser's king topples, the winner's army waves and bows, the camera swings (`endSwing()` stops the swing, for Reset view). | 13 |
-| `flow.js` | Starting, ending and rewinding games, reviewing earlier moves, and exploring: moves tried on a board the game does not own, from any position on screen. Since 2.18.0 also the free board before a game (`sandbox()`, its line for Play from here in `draftLine()`, and `startGame()`'s third parameter, a line the game begins with its moves kept), the board turning for each player (`turning`, `autoFlipOn()`, `autoOrient()`, `setAutoFlip()`), a draw by agreement (`canOfferDraw()`, `offerDraw()`; against the computer judged by a full-strength search on the play engine, `drawJudging()` while it runs, its thresholds the exported `DRAW_*` constants), `analyzeGame()`, and typed or appended explored moves (`exploreTyped()`, `exploreAppend()` for Analyze's Play to here). Analyze explores at the live position of a game (`analyzeExplores()`, `exploresHere()`, `setAnalyzeExplorePref()`), and a two-player game marks the moves played after their side used Analyze (`consultable()`, `markConsult()`, `consultedAt()`, `consultPlies()`, `setConsultPlies()`, `consultOnMove()`, `consultHandover()`, `CONSULT_DWELL_MS`). | — |
-| `pgn.js` | The game as PGN (2.18.0): `gamePgn()` writes the seven tags (with SetUp and FEN for a game begun part-way), the moves, with a comment after each move played after its side used Analyze (`consultedAt()`), and the result; `parsePgn()` reads a pasted game back to positions and moves, or says what failed; Copy PGN, Download PGN, Copy FEN and Load a game. No `init()`; Analyze's Load reads PGN through it. | — |
-| `lines.js` | The evaluation bar and best line for the position on screen, and Calculate moves: the engine's MultiPV candidates drawn as ranked arrows. | 14 |
+| `flow.js` | Starting, ending and rewinding games, reviewing earlier moves, and exploring: moves tried on a board the game does not own, from any position on screen. Since 2.18.0 also the free board before a game (`sandbox()`, its line for Play from here in `draftLine()`, and `startGame()`'s third parameter, a line the game begins with its moves kept), the board turning for each player (`turning`, `autoFlipOn()`, `autoOrient()`, `setAutoFlip()`), a draw by agreement (`canOfferDraw()`, `offerDraw()`; against the computer judged by a full-strength search on the play engine, `drawJudging()` while it runs, its thresholds the exported `DRAW_*` constants; since 2.19.0 the wait after a decline is kept through a reload, `drawWaitAt()` and `setDrawWait()`), `analyzeGame()`, and typed or appended explored moves (`exploreTyped()`, `exploreAppend()` for Analyze's Play to here). Analyze explores at the live position of a game (`analyzeExplores()`, `exploresHere()`, `setAnalyzeExplorePref()`), and a two-player game marks the moves played after their side used the engine's help, since 2.19.0 recording each kind (`CONSULT_KINDS`: `hint`, `calc`, `eval`, `analyze`): `consultable()`, `markConsult(kind, quiet)`, `consultKinds()`, `consultedAt()`, `consultWords()` (the kinds as words: "used a hint and used Calculate"), `consultPlies()`, `consultRecord()` and `consultBarUsed()` (the marks as saved), `consultBar()` (the evaluation bar, which marks once a game), `setConsultPlies(list, bar)`, `consultOnMove()`, `consultHandover()`, `CONSULT_DWELL_MS`. | — |
+| `pgn.js` | The game as PGN (2.18.0): `gamePgn()` writes the seven tags (with SetUp and FEN for a game begun part-way), the moves, with a comment after each move played after its side used the engine's help that says which (`consultWords()`: `{Marble used a hint and used Calculate before this move}`), and the result; `parsePgn()` reads a pasted game back to positions and moves, or says what failed; Copy PGN, Download PGN, Copy FEN and Load a game. No `init()`; Analyze's Load reads PGN through it. | — |
+| `lines.js` | The evaluation bar and best line for the position on screen, and Calculate moves: the engine's MultiPV candidates drawn as ranked arrows; since 2.19.0, Calculate in a two-player game marks the side to move at the live position, whichever position it runs on (`markConsult('calc')`). | 14 |
 | `input.js` | Moves typed in the move box: long algebraic (e2e4), SAN (Nf3, exd5, e8=Q) or castling (O-O), and SAN back to moves for replaying long games quickly. | — |
 
 ### `js/coach/`
@@ -460,7 +475,7 @@ The Coach: its reading of the board, what a move does, the opening book and its 
 | `coach.js` | The Coach's reading of a position, the way a coach at the board would: piece values, material along a line, threats, loose and outnumbered pieces, development and the phase of the game. | — |
 | `facts.js` | What a move does, as checked facts in the order a coach would name them, and the voice that turns them into sentences from COACH_VOICE. | — |
 | `book.js` | Looks positions up in OPENING_BOOK, so the Coach can say a move is book and name the opening, even after a transposition. | — |
-| `notes.js` | The Coach at work: its own engine, the note for each move (your move judged against the best, the opponent's move read for you), the watch on your turn, the hint, and the review at the end, whose note carries its `actions` (show the turning point, or analyze it); `turningPly()` is that point's ply, for Analyze game. | 15 |
+| `notes.js` | The Coach at work: its own engine, the note for each move (your move judged against the best, the opponent's move read for you), the watch on your turn, the hint (which, since 2.19.0, marks the side to move in a two-player game: `markConsult('hint')`), and the review at the end, whose note carries its `actions` (show the turning point, or analyze it); `turningPly()` is that point's ply, for Analyze game. | 15 |
 
 ### `js/ui/`
 
@@ -471,23 +486,23 @@ controls and splitters.
 | File | What it holds | Boot step |
 | --- | --- | --- |
 | `boot-screen.js` | The loading screen's order: `bootStarted(begin)` runs the page's boot once the M is written and starts the tips, `bootReady(drawn)` after the first frame starts the last stage and lifts the screen when it ends (once only, so the loop calls it freely), `bootStep(id, state)` moves a step of the meter forward, `bootCovering()` tells the loop to rest, `bootStop()` removes the screen when the boot halts or fails. See [The loading screen](#the-loading-screen). | — |
-| `snackbar.js` | One message at a time at the foot of the stage, with optional actions; it hides itself after a few seconds unless it is sticky. | — |
+| `snackbar.js` | One message at a time at the foot of the stage, with optional actions; it hides itself after a few seconds unless it is sticky. A message's kind stays on it as `data-kind` (since 2.19.0), so `css/media.css` sets the two-player handover's notice at the top of the stage on a phone. | — |
 | `analyze.js` | MONOLITH Analyze's searches and state: the deep MultiPV search with WDL, the field search over every legal move, the fork walk along line 1, the recorded reference run, and Load (`loadForAnalysis()`), which analyses a pasted FEN, or a PGN game read by `game/pgn.js`, where it is. `anEvalShown()` says whether the engine's evaluation is on screen, for the Analyze mark in `game/flow.js`. | — |
-| `analyze-view.js` | MONOLITH Analyze on screen: the stats, the search profile, the WDL ribbon, the Synaptic PV scrubber and its phantom preview with Play to here (through `exploreAppend()` in `game/flow.js`), the stage instruments, the X-Ray readout and the source badges, full or short; the Explore switch on its board (`#btn-an-explore`), and `consultWatch()`, which marks the side to move in a two-player game once Analyze has shown its evaluation there for `CONSULT_DWELL_MS`. | — |
+| `analyze-view.js` | MONOLITH Analyze on screen: the stats, the search profile (since 2.19.0 depth as a monotone curve over a strip of its own for the hash, on one time axis, drawn in device pixels sized by a `ResizeObserver`, with a readout under the pointer or a finger), the WDL ribbon, the Synaptic PV scrubber and its phantom preview with Play to here (through `exploreAppend()` in `game/flow.js`), the stage instruments, the X-Ray readout and the source badges, full or short; the Explore switch on its board (`#btn-an-explore`), and `consultWatch()`, which marks the side to move in a two-player game once Analyze has shown its evaluation there for `CONSULT_DWELL_MS`. | — |
 | `crucible.js` | MONOLITH Crucible: a paired-opening gauntlet between two engine configurations, decided by a real pentanomial GSPRT. | 17 |
 | `crucible-board.js` | A Crucible game expanded onto the 3D board: step through its moves (the Moves card lists and steps it), explore from any of them, and go back to the deck. While that game is on the board (`boardOverride`), the Play game's moves, Undo and review leave the board alone. | — |
 | `crucible-view.js` | The Crucible on screen: the verdict, the LLR oscilloscope, the Hive of games and the heartbeat of a game's evaluation. | 18 |
 | `palette.js` | The Command Palette: glass, one at a time, Ctrl K (⌘K on Apple keyboards). | 19 |
 | `telemetry.js` | MONOLITH's telemetry footer: browser-honest readouts, each with its source badge. | 20 |
 | `system-sheet.js` | The System sheet in Settings: the MONOLITH solved stops as swatches, and a contrast ledger computed in the page from the same colours. | — |
-| `grimoire.js` | The Grimoire, the reference tab, and term cards anywhere on the page. | 21 |
-| `nav.js` | Single-level navigation: the rail (a bottom bar on phones) and the tab switch, which also moves the world when it follows the destination and gives each pane its own scroll position (through `panelScroller()`); the world setting; and `placeActions()`, which puts the app's actions (`#app-actions`: the palette, Flip board, Sound and the release chip) at the foot of the rail, or at the app bar's end under 900 px (where `css/media.css` shows the release as a line under the wordmark instead of the chip). | — |
+| `grimoire.js` | The Grimoire, the reference tab, and term cards anywhere on the page; since 2.19.0 also roving term groups (`data-roving`: one Tab stop, the arrows between its terms, Home and End), which Analyze's six readouts are. | 21 |
+| `nav.js` | Single-level navigation: the rail (a bottom bar on phones) and the tab switch, which also moves the world when it follows the destination and gives each pane its own scroll position (through `panelScroller()`); since 2.19.0 `railTo()`, the rail's way to a destination, which crossfades the panes in a view transition (`data-vt` on the root while one runs) where the browser has them, but not when the world changes with it (`worldFor()`), under reduced motion or at the Minimal speed; the world setting; and `placeActions()`, which puts the app's actions (`#app-actions`: the palette, Flip board, Sound and the release chip) at the foot of the rail, or at the app bar's end under 900 px (where `css/media.css` shows the release as a line under the wordmark instead of the chip), the control that had the focus keeping it, even one the change hid before it moved. | — |
 | `diagram.js` | Flat SVG board diagrams drawn with the house piece set (`PIECE_SET`): study cards, the structure map, the board editor, piece icons, and single pieces placed in other drawings (`pieceUse()`). | — |
 | `gfx-meter.js` | The graphics meter in Settings, after its drawing (`assets/graphics-meter-design-v1.2.svg`): five back-rank cells meeting edge to edge on a dial a little more than a half circle (rook for Minimal to king for Ultra), each a button that takes the pointer only on its shape, and a needle that is one shape with the hub ring, turning about the hub, pointing between levels for Custom. Built and drawn by `panels.js`. | — |
 | `studies.js` | How a study runs (puzzles, practice games, set-ups), the study order behind Up next and Next study, and the progress counts. | — |
 | `position.js` | The Position tab in three views behind one switch: Studies (Up next, tiles, cards, the Study card), Read (the board you see, drawn) and Set up (a board editor tied to a coloured FEN). | 22 |
-| `panels.js` | The renderers that keep the panels in step with the game: the Play pane, the match strip, the players' cards with their captures, the evaluation bar, the move list (with a two-player game's Analyze marks), the Coach's feed and Settings (its Graphics rows built from `scene/quality.js`). | 23 |
-| `controls.js` | Wires every control on the page: the rail, the Play pane, the move box, Analyze, Crucible and Settings, and the first render. The Position tab wires its own. | 24 |
+| `panels.js` | The renderers that keep the panels in step with the game: the Play pane, the match strip, the players' cards with their captures, the evaluation bar (whose first showing in a two-player game marks the side to move, `consultBar()`, since 2.19.0), the move list (with a two-player game's marks of the engine's help, each titled with the help used), the Coach's feed and Settings (its Graphics rows built from `scene/quality.js`). | 23 |
+| `controls.js` | Wires every control on the page: the rail, the Play pane, the move box, Analyze, Crucible and Settings, and the first render. The Position tab wires its own. Since 2.19.0 every disclosure in the side panel opens as it was left and records its state (`prefs.open`), Settings' index row brings a card's head to the top of the panel and the focus to its title, and the Moves head's fold button sets the move list as one row (`data-strip`, `prefs.movesStrip`). | 24 |
 | `splitters.js` | Drag handles on the dock, the side panel and the move list, with keyboard control and saved sizes (the side panel's per world, through `desiredWorld()`; the others per destination); the page's keyboard shortcuts, the free board's among them (`sandbox()`); also the dock's scrubber and heartbeat pointer handling. | 25 |
 
 ## Adding to it
@@ -534,13 +549,14 @@ controls and splitters.
 - `blender --background --python tools/build-piece-models.py -- assets/models` builds the 3D pieces as
   `.blend` files (`piece-pawn.blend` … `piece-king.blend`, and `pieces.blend`) from `js/scene/board.js`'s
   own numbers: its profiles through three.js's spline sampling under a Screw modifier of the lathe's
-  40 steps, the boxes and spheres where `buildPiece()` puts them, and the two materials after
-  `js/scene/materials.js` and `js/scene/worlds.js`. The page does not load them; it still builds its
-  pieces in code. See `assets/models/MANIFEST.md`. Since 2.18.0 the script is out of step with the
-  page: `board.js` draws the knight's neck, head, muzzle, ears and mane as bowed blocks (`block()`)
-  where the script writes boxes, and `materials.js` gives obsidian a clearcoat 0.22 rough where the
-  script writes 0.08. Its check that `board.js` still says what it copies stops it, and the
-  `.blend` files show the box knight, until the script is brought up to date.
+  40 steps, the blocks of its `block()` calls (the knight's neck, head, muzzle, ears and mane, and
+  the rook's merlons), the boxes and spheres at their sizes, every part where `buildPiece()` puts
+  it, and the two materials after `js/scene/materials.js` and `js/scene/worlds.js` (obsidian's
+  clearcoat 0.22 rough). The page does not load them; it still builds its pieces in code. See
+  `assets/models/MANIFEST.md`. Since 2.19.0 (the script's 1.1.0) it is in step with the page again,
+  and its check that `board.js` still says what it copies passes. The `.blend` files in
+  `assets/models/` were built before that and still show the box knight, the box merlons and
+  obsidian's 0.08 clearcoat until a Blender run with `--force` rebuilds them.
 
 The first two load `js/core` and `js/data` with `require()`, so they test the same code the page runs. Each
 still reads a single-file page (2.4.0 and earlier) when there is no `js/` beside it.

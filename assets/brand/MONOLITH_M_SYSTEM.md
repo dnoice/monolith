@@ -4,15 +4,19 @@
     - File Name: MONOLITH_M_SYSTEM.md
     - Relative Path: assets/brand/MONOLITH_M_SYSTEM.md
     - Artifact Type: docs
-    - Version: 1.2.1
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.2
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.19.0: the official marks' paragraph says the emblem's copy in the
+      page also draws the app bar's M and the page does not read the logo,
+      so the build is run after the emblem changes.
     - 1.2.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       from CONICAL_MONOLITH_SYSTEM.md: at Dennis's request the brand files
       dropped "conical" from their names while the logo is still being

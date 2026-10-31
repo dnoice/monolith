@@ -4,14 +4,18 @@
     - File Name: MANIFEST.md
     - Relative Path: assets/models/MANIFEST.md
     - Artifact Type: docs
-    - Version: 1.4.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.4.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.19.0: The pieces says the vertex check covers what 1.0.0 built, the
+      blocks are checked outside Blender only, and the files here keep the
+      box knight, box merlons and 0.08 coat until rebuilt; rows unchanged.
     - 1.4.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       asked for the game's 3D chess pieces as .blend files: a new section,
       The pieces, and rows for piece-pawn.blend … piece-king.blend and
@@ -307,9 +311,17 @@ after its bevel, and its build stops if either check fails.
 The game's 3D chess pieces are kept here as .blend files (10/24/2026). The page still builds its
 pieces in code (`js/scene/board.js`) and loads none of these; they are for work in Blender, and for
 a page that one day loads its pieces as models. `tools/build-piece-models.py` builds them from that
-file's own numbers, read from it each time it runs, so they match the game: checked against
-three.js r147 running `board.js`'s own lines, every exported piece's vertices sit within 1.5e-7 of
-the page's.
+file's own numbers, read from it each time it runs, so they match the game. The files here were
+built by its 1.0.0 and checked against three.js r147 running `board.js`'s own lines: every
+exported piece's vertices as 1.0.0 built them (the turned parts, the boxes and the spheres) sit
+within 1.5e-7 of the page's. The blocks its 1.1.0 builds (the knight's neck, head, muzzle, ears and
+mane, and the rook's merlons) have been checked against the page outside Blender only: their points
+and normals match the page's to 1.3e-8 and 4.2e-8.
+
+Until they are rebuilt (a run with `--force`), the files here are still 1.0.0's:
+`piece-knight.blend` and `pieces.blend` hold the box knight, `piece-rook.blend` and `pieces.blend`
+the box merlons, and every file obsidian's clearcoat at 0.08 rough, where the page now uses 0.22.
+The rows above are measured from those files and stay as they are until the rebuild.
 
 - **Six pieces, two woods.** Each `piece-{name}.blend` holds the piece twice, in marble (the page's
   white) and obsidian (its black), each in its own collection (`piece-pawn-marble`,
@@ -326,7 +338,8 @@ the page's.
 - **Axes and size:** a board square is 1, as on the page. The page's Y-up is Blender's Z-up, and a
   piece faces Blender's −Y, as the page's black pieces face +Z (it turns the white ones half round).
 - **The two materials,** `material-marble` and `material-obsidian`, carry the page's numbers in both
-  worlds: a value node, `world` (0 the cathedral, 1 MONOLITH), moves the colour, roughness and
+  worlds as the script writes them (the files here keep obsidian's 0.08 clearcoat until rebuilt): a
+  value node, `world` (0 the cathedral, 1 MONOLITH), moves the colour, roughness and
   clearcoat between `WORLD.cathedral` and `WORLD.monolith` (`js/scene/worlds.js`), and with them
   marble's form shading (darker toward the silhouette and in the contact shadow near the base) and
   obsidian's steel rim, which only MONOLITH lights. Colours are the page's own values, which three.js

@@ -4,14 +4,17 @@
     - File Name: README.md
     - Relative Path: engine/README.md
     - Artifact Type: docs
-    - Version: 1.5.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.5.3
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.5.3 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.19.0: the 6(d) paragraph says MONOLITH's fork keeps the source
+      available, in the project's own hands.
     - 1.5.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose. As he asked, his fork also keeps a copy of the network the
