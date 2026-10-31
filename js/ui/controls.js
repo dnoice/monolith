@@ -76,7 +76,7 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, panelScroller, PI, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { resetView } from '../scene/camera.js';
 import { ensureAudio } from '../app/sound.js';
 import { applyPrefs, canMoveNow, cur, draft, game, match, render } from '../app/state.js';
@@ -181,6 +181,14 @@ export function init() {
     if (open !== d.open) { d.open = open; reopened.add(d); }
     d.addEventListener('toggle', () => { reopened.delete(d); prefs.open[d.id] = d.open; savePrefs(); });
   }
+  // Settings' index: a button brings its card's head to the top of the panel's scroller (scrolled
+  // there, not into view, which would move the page on a phone) and the focus to the card's title
+  for (const b of document.querySelectorAll('.set-index [data-goto]')) b.addEventListener('click', () => {
+    const card = document.getElementById(b.dataset.goto), sc = panelScroller(); if (!card) return;
+    const top = sc.scrollTop + card.getBoundingClientRect().top - sc.getBoundingClientRect().top - sc.clientTop;
+    sc.scrollTo({ top: Math.max(0, top), behavior: reduceMotion || prefs.speed === 'minimal' ? 'auto' : 'smooth' });
+    card.querySelector('.card-head h3')?.focus({ preventScroll: true });
+  });
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
