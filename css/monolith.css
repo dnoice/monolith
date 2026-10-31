@@ -221,6 +221,9 @@
 .syn-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--mo-ink3);min-width:0}
 .syn-head .mo-title{margin-right:4px}
 .syn-head .grow{flex:1}
+/* a screen with no hover is told what a tap does (a tap pins, as a click does) */
+.syn-head .for-touch{display:none}
+@media (hover:none) and (pointer:coarse){.syn-head .for-mouse{display:none}.syn-head .for-touch{display:inline}}
 /* the dock's two badges wrap as one, never leaving the last alone on a line */
 .syn-badges{display:inline-flex;gap:8px;flex-wrap:nowrap}
 /* the short source badges (Settings) set the footer's compact form too */
