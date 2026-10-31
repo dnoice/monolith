@@ -152,8 +152,11 @@
 /* The move list as a strip (data-strip, js/ui/controls.js): one row of moves scrolling sideways, the
    steps beside it, the move box behind its keyboard button. A phone's list is always one (css/
    media.css holds it at the panel's foot); a wider screen's is one when the Moves head's fold
-   button says so, at its own height, no splitter, so the pane above takes the rows. */
-:root .moves-card[data-strip]:not([data-idle]){display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;height:auto;max-height:none;min-height:0;padding-block:6px}
+   button says so, at its own height, no splitter, so the pane above takes the rows. Its layout
+   weighs no more than a class, so the tabs that show no move list (css/layout.css) still hide it;
+   its height outweighs the Analyze list's MONOLITH floor (css/monolith.css). */
+.moves-card:where([data-strip]:not([data-idle])){display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;padding-block:6px}
+:root .moves-card[data-strip]:not([data-idle]){height:auto;max-height:none;min-height:0}
 .moves-card[data-strip] #split-moves{display:none}
 .moves-card[data-strip]:not([data-idle]) .moves-head{grid-area:1/2;gap:2px}
 .moves-card[data-strip]:not([data-idle]) .moves-head h2{display:none}
