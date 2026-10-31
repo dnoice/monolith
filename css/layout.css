@@ -150,6 +150,27 @@
 :is(.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset,input,select,textarea,.mv):focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .ripple{position:absolute;border-radius:50%;transform:scale(0);background:currentColor;opacity:.2;pointer-events:none;animation:ripple .5s var(--ease-std) forwards}
 @keyframes ripple{to{transform:scale(2.6);opacity:0}}
+/* Disclosures: every details element in the panel is the same row, whatever it folds (Load a game,
+   Engine lines, Analyze's Load and UCI options, a live run's facts, Fine-tune, Keys and mouse, the
+   system sheet). The row runs a little past its text on both sides, takes a state layer under the
+   pointer, and holds its chevron in a small well at the right: down when closed, up when open. */
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary{position:relative;display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 42px 6px 10px;margin-inline:-10px;border-radius:var(--r-field);list-style:none;cursor:pointer;transition:background-color var(--dur-1) var(--ease-std)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::-webkit-details-marker{display:none}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after{content:'';position:absolute;right:8px;top:50%;width:24px;height:24px;margin-top:-12px;border:1px solid var(--pnl-line);border-radius:calc(var(--r-field) - 2px);background:var(--pnl-well);box-shadow:var(--pnl-sink);transition:border-color var(--dur-1) var(--ease-std)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before{content:'';position:absolute;z-index:1;right:17px;top:50%;width:6px;height:6px;margin-top:-5px;border-right:1.5px solid var(--pnl-ink-2);border-bottom:1.5px solid var(--pnl-ink-2);transform:rotate(45deg);transition:transform var(--dur-2) var(--ease-std),border-color var(--dur-1)}
+.panel :is(.mo-details,.pgn-load,.engine-lines)[open] > summary::before{transform:translateY(3px) rotate(-135deg)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover{background:var(--pnl-hover)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover::after{border-color:var(--pnl-accent-line)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover::before{border-color:var(--pnl-ink)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:active{background:var(--pnl-press)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:0}
+/* a summary's words are a control's label: full ink, never a caption's grey */
+.panel :is(.set-more,.gfx-fine) > summary{font-size:13.5px;font-weight:500;color:var(--pnl-ink)}
+/* an instrument's disclosure keeps its title and caption, on two lines */
+.panel summary.mo-head{display:grid;grid-template-columns:minmax(0,1fr);row-gap:3px;align-items:center}
+.panel summary.mo-head > .mo-sub{font-size:12px;color:var(--pnl-ink-2)}
+/* closed, a details section is its summary alone: no gap held for the folded content */
+.panel details.mo-section:not([open]){row-gap:0}
 
 /* ---------- body layout ---------- */
 .body{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) max(var(--panel-min),min(var(--panel-w),calc(100vw - var(--rail-w) - var(--stage-min))));grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"rail stage panel" "rail dock panel";min-height:0}
@@ -361,7 +382,6 @@
 .gfx-read b{font-size:15px;font-weight:600;color:var(--md-on-surface)}
 .gfx-read b:empty,.gfx-read span:empty{display:none}
 @media (prefers-reduced-motion:reduce){.gfx-needle,.gfx-frame,.gfx-panel{transition:none}}
-.gfx-fine > summary{display:flex;align-items:center;min-height:36px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
 .gfx-fine-body{display:flex;flex-direction:column;gap:10px;padding-top:6px}
 .gfx-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:8px 12px;align-items:center}
 .gfx-grid label{font-size:13px;color:var(--md-on-surface)}
@@ -454,7 +474,6 @@
 .set-lab{font-size:14px;color:var(--md-on-surface)}
 .card > .set-item + .set-item,.set-about{padding-top:12px;border-top:1px solid var(--md-outline-var)}
 .set-more{margin:0 -16px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
-.set-more > summary{display:flex;align-items:center;min-height:44px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
 .set-more > .keys,.set-more-body{padding-bottom:14px}
 .set-more-body{display:flex;flex-direction:column;gap:10px}
 .set-more + :is(.set-more,.set-about){margin-top:-12px}

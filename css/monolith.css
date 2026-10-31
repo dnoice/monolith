@@ -111,11 +111,6 @@
 .mo-head > .badge:last-child{margin-left:auto}
 /* the MultiPV subtitle stays one line: its badge moves under it rather than squeeze it in two */
 #pv-sub{flex:1 0 auto}
-.mo-details > summary{list-style:none;cursor:pointer;border-radius:2px}
-.mo-details > summary::-webkit-details-marker{display:none}
-.mo-details > summary::after{content:'';flex:none;width:7px;height:7px;border-right:1.5px solid var(--mo-ink3);border-bottom:1.5px solid var(--mo-ink3);transform:rotate(45deg);margin:0 4px 3px auto}
-.mo-details[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
-.mo-details > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .an-card{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .an-id{display:flex;flex-direction:column;gap:3px;min-width:0}
 .an-id b{font-size:20px;font-weight:500;line-height:1.15}

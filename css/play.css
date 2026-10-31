@@ -90,11 +90,6 @@
 .switch.small::before{left:4px;width:12px;height:12px}
 .switch.small:checked::before{left:18px;width:16px;height:16px}
 .engine-lines{margin:0 -16px -6px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
-.engine-lines > summary{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;list-style:none;border-radius:4px}
-.engine-lines > summary::-webkit-details-marker{display:none}
-.engine-lines > summary::before{content:'';flex:none;width:7px;height:7px;margin:0 3px 3px 1px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(-45deg);transition:transform .15s var(--ease-std)}
-.engine-lines[open] > summary::before{transform:rotate(45deg);margin-bottom:5px}
-.engine-lines > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .el-title{font-size:13px;font-weight:500;color:var(--md-on-surface)}
 .engine-lines .engine-foot{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .el-body{display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
@@ -225,11 +220,9 @@
    buttons sit quietly under New game and Resign. A details element keeps the card's own flex
    off, since its parts are not all flex items in every browser. */
 .pgn-load{display:block;scroll-margin-bottom:84px}
-.pgn-load > summary{list-style:none;cursor:pointer;border-radius:4px}
-.pgn-load > summary::-webkit-details-marker{display:none}
-.pgn-load > summary::after{content:'';flex:none;width:7px;height:7px;margin:0 4px 3px 2px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(45deg);transition:transform .15s var(--ease-std)}
-.pgn-load[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
-.pgn-load > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+/* its summary is the card's head, so it keeps the head's size and its row reaches the card's edges */
+.pgn-load > summary.card-head{min-height:44px;margin:-8px -10px}
+.pgn-load[open] > summary.card-head{margin-bottom:0}
 .pgn-body{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .pgn-box{width:100%;min-height:88px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-1);color:var(--md-on-surface);font:12.5px/1.5 var(--font-mono)}
 .pgn-box::placeholder{color:var(--md-on-surface-var)}
