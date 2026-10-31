@@ -172,6 +172,8 @@ export function init() {
   $('#nav-prev').addEventListener('click', () => sandbox() ? exploreUndo() : showView(viewedPly() - 1));
   $('#nav-next').addEventListener('click', () => showView(viewedPly() + 1));
   $('#nav-last').addEventListener('click', goLive);
+  // on a phone the move box waits behind its keyboard button (css/media.css), which opens it ready to type
+  $('#btn-type-move').addEventListener('click', e => { const on = $('.moves-card').classList.toggle('typing'); e.currentTarget.setAttribute('aria-expanded', String(on)); if (on) $('#move-input').focus(); });
   $('#move-form').addEventListener('submit', e => {
     // the game on your turn; otherwise, as a click would, a line on the board the game does not own
     e.preventDefault(); ensureAudio();

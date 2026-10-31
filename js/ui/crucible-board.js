@@ -121,9 +121,12 @@ export function renderCrMoves() {
       }
     }
     if (key) { const t = list.querySelector(`[data-key="${key}"]`); if (t) t.focus({ preventScroll: true }); }
-    // the move in view is kept visible by scrolling the list itself, never the panel
+    // the move in view is kept visible by scrolling the list itself, never the panel; a game just
+    // opened lists before its card shows (with the heartbeat's dock), so then it waits a frame, and
+    // a list rebuilt meanwhile keeps its own
     const c = list.querySelector('.cur');
-    if (c) { const r = c.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; }
+    const keep = () => { if (!c.isConnected) return; const r = c.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; if (r.left < b.left) list.scrollLeft -= b.left - r.left; else if (r.right > b.right) list.scrollLeft += r.right - b.right; };
+    if (c) { if (list.offsetWidth) keep(); else requestAnimationFrame(keep); } else list.scrollTop = list.scrollLeft = 0;   // the first position: the list's start
   }
   const last = g.states.length - 1;
   $('#nav-first').disabled = $('#nav-prev').disabled = cr.ply <= 0; $('#nav-next').disabled = $('#nav-last').disabled = cr.ply >= last;
