@@ -74,6 +74,7 @@ import { clearCeremony } from '../game/ceremony.js';
 import { explore, exploreState, setOrientation } from '../game/flow.js';
 import { emptyCalc } from '../game/lines.js';
 import { sanList, sanMove, stmScore } from '../game/input.js';
+import { parsePgn } from '../game/pgn.js';
 import { clearScrub, renderAnalyze } from './analyze-view.js';
 import { setTab } from './nav.js';
 import { study } from './studies.js';
@@ -289,18 +290,37 @@ const replacing = (q, label, go) => {
   if (app.started && game.sans.length && !game.result && !game.title) snack(`${q} The current game ends.`, [{ label: 'Keep playing', act: () => {} }, { label, filled: true, act: go }], true);
   else go();
 };
-/* Load: a pasted FEN analysed where it is, without leaving Analyze (the palette's :fen does the
-   same here). Returns what was wrong with the text, or '' once it is loading. */
+/* Load: a pasted FEN, or a game in PGN, analysed where it is, without leaving Analyze (the
+   palette's :fen does the same here). Returns what was wrong with the text, or '' once it is
+   loading. */
 export function loadForAnalysis(text) {
   const note = $('#an-load-note'), t = String(text || '').trim();
   const say = (msg, err = false) => { note.className = 'help' + (err ? ' err' : ''); note.textContent = msg; return err ? msg : ''; };
-  if (!t) return say('Paste a FEN first.', true);
+  if (!t) return say('Paste a FEN or a PGN game first.', true);
   const r = Chess.parseFen(t);
-  if (r.error) return say(/^\s*(\[|1\.)/.test(t) ? 'That looks like a PGN game. This box takes a FEN.' : r.error, true);
+  if (r.error) return loadPgnForAnalysis(t, r.error, say);
   const side = r.state.turn === 'w' ? 'White' : 'Black';
   replacing('Analyze this position?', 'Analyze it', () => {
     analyzeLine([r.state], [], [], { name: 'Position from a FEN', sub: 'Loaded for analysis from a FEN, both sides by hand' }, r.state.turn);
     say(`Loaded, ${side} to move. Moves on the board are made by hand for both sides.`);
+  });
+  return '';
+}
+/* Not a FEN: a game in PGN (js/game/pgn.js reads it), opened at its last move with its moves in
+   the list, as the reference game is. Text that is neither says what failed: the PGN's own error
+   when it reads as a game (tags or move numbers), else the FEN's. */
+function loadPgnForAnalysis(t, fenErr, say) {
+  const g = parsePgn(t);
+  if (g.error) return say(/^\s*(\[|\d+\s*\.)/.test(t) ? g.error : `This is neither a FEN nor a PGN game. As a FEN: ${fenErr}`, true);
+  const T = g.tags, tag = k => T[k] && T[k] !== '?' ? T[k] : '', w = tag('White'), b = tag('Black');
+  const at = [tag('Event'), (tag('Date').match(/^\d{4}/) || [''])[0]].filter(Boolean).join(' ');
+  const sub = at ? `${at} · loaded for analysis from a PGN, both sides by hand` : 'Loaded for analysis from a PGN, both sides by hand';
+  const title = w && b ? { name: `${w} – ${b}`, players: { w, b }, sub } : { name: 'Game from a PGN', sub };
+  const n = g.sans.length, end = g.states[n].turn === 'w' ? 'White' : 'Black';
+  replacing('Analyze this game?', 'Analyze it', () => {
+    analyzeLine(g.states, g.moves, g.sans, title);
+    say(n ? `Loaded, ${n} ${n === 1 ? 'move' : 'moves'}. The board shows the last position, ${end} to move; step back through the move list to see the game.`
+      : `Loaded, ${end} to move. Moves on the board are made by hand for both sides.`);
   });
   return '';
 }
