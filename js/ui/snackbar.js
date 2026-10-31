@@ -51,9 +51,10 @@ import { $ } from '../app/base.js';
 /* ---------- snackbar: one message at a time ---------- */
 let snackTimer = 0, snackKind = '';
 /* kind names a message that something else may need to withdraw (the promotion chooser, when the
-   position it was offered for is no longer on the board). */
+   position it was offered for is no longer on the board); it stays on the element as data-kind, so
+   the stylesheet can place one kind apart (the handover's notice on a phone, css/media.css). */
 export function snack(msg, actions = [], sticky = false, kind = '') {
-  const sb = $('#snackbar'); sb.innerHTML = ''; clearTimeout(snackTimer); snackKind = kind;
+  const sb = $('#snackbar'); sb.innerHTML = ''; clearTimeout(snackTimer); snackKind = kind; sb.dataset.kind = kind;
   const m = document.createElement('span'); m.className = 'msg'; m.textContent = msg; sb.appendChild(m);
   for (const a of actions) {
     const b = document.createElement('button'); b.className = 'btn ' + (a.filled ? 'filled' : 'text'); b.textContent = a.label;
