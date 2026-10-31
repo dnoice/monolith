@@ -146,12 +146,12 @@ writes for hosts that refuse `.glb`, Blender's backup files, editor and OS files
    the same value through `module.exports`, so the tools load exactly what the page runs.
 5. **`js/main.js`**, a module, which imports the rest and runs the boot.
 
-The engine (`engine/`), the recorded runs (`data/`) and Dennis's MONOLITH pillars
+The engine (`engine/`), the recorded runs (`data/`) and the MONOLITH pillars
 (`assets/models/*.glb`, see `assets/models/MANIFEST.md`) are fetched by the code at run time, by
 paths relative to the page. The `.blend` files beside them are the models' sources; the page never
 loads them, nor the 3D pieces' `.blend` files there, which `tools/build-piece-models.py` builds from
 `js/scene/board.js` for work in Blender (out of step since 2.18.0; see [Tools](#tools)).
-Everything of Dennis's that is art rather than code lives under `assets/`: his drawings,
+Everything that is art rather than code lives under `assets/`: the drawings,
 the logo and the emblem with the brand system and Python generators that draw them (`brand/`,
 `generator/`), the mock-ups, the game's sounds, the models and the README's screenshots, all mapped
 in `assets/README.md`.
@@ -165,12 +165,12 @@ in `assets/README.md`.
 | 3 | `css/monolith.css` | How the shared components look in the MONOLITH world, and the components only the instrument has. |
 | 4 | `css/crucible.css` | The Crucible tab: the deck that covers the stage, the game board card and the pane beside it. |
 | 5 | `css/workspace.css` | The parts of the workspace around the board that are not a tab: the telemetry footer, the Command Palette, the System sheet, the dock, the move sheet and the splitters. |
-| 6 | `css/play.css` | The Play pane as cards (Dennis, 10/22/2026), and the match strip at the app bar's end that names who is playing, the level and whose move it is. |
+| 6 | `css/play.css` | The Play pane as cards (10/22/2026), and the match strip at the app bar's end that names who is playing, the level and whose move it is. |
 | 7 | `css/grimoire.css` | The Grimoire tab: the searchable index of terms, the category chips and the article view with its three viewpoints (in a game, in analysis, inside the engine). |
 | 8 | `css/position.css` | The Position tab: the view switch, the board diagrams with a palette per world, the studies (Up next, tiles, cards, the Study card's goal tracks), the board reading and the board editor with its coloured FEN. |
 | 9 | `css/terms.css` | A Grimoire term wherever it appears on screen: a quiet dotted underline, and the card a click or Enter opens. |
 | 10 | `css/coach.css` | The Coach's feed in the Play pane: one note per moment of the game, each with its badge, the move, the score and the text in the Coach's voice. |
-| 11 | `css/xray.css` | The Tactical X-Ray readout docked beside the board (Dennis, 10/22/2026): the square, its state, the gauge and the move, with a two-line strip on phones. |
+| 11 | `css/xray.css` | The Tactical X-Ray readout docked beside the board (10/22/2026): the square, its state, the gauge and the move, with a two-line strip on phones. |
 | 12 | `css/media.css` | The overrides for small screens, touch screens and reduced motion, kept last so they win: on phones and narrow tablets (under 900 px) the rail becomes a bottom bar, the app's actions go to the app bar's end, the telemetry footer is set aside and the move list is a strip at the panel's foot; a phone held sideways (landscape, under 500 px tall) and a tablet held upright each have a layout of their own; a coarse pointer gets 40 px targets and 16 px fields; and reduced motion turns transitions off. |
 
 ### Plain scripts
@@ -183,7 +183,7 @@ in `assets/README.md`.
 | `js/data/coach-voice.js` | `COACH_VOICE`: every sentence the Coach can say (COACH_VOICE.md) | — |
 | `js/data/opening-book.js` | `OPENING_BOOK`: named openings keyed by position | — |
 | `js/data/studies.js` | `STUDIES`: the Position tab's studies (STUDIES.md) | `tools/verify-studies.mjs` |
-| `js/data/piece-set.js` | `PIECE_SET`: Dennis's house piece set, the board diagrams' pieces; built from his drawing, never edited by hand | written by `tools/build-piece-set.mjs` |
+| `js/data/piece-set.js` | `PIECE_SET`: the house piece set, the board diagrams' pieces; built from the drawing in `assets/chess-pieces.svg`, never edited by hand | written by `tools/build-piece-set.mjs` |
 | `js/data/grimoire.js` | `GRIMOIRE`: the reference entries | — |
 | `js/data/boot-tips.js` | `BOOT_TIPS`: the loading screen's tips about the page and facts about chess | — |
 
@@ -250,7 +250,7 @@ the saved tab and starts the engine.
 
 ### The loading screen
 
-Dennis's emblem covers the page while it starts (2.14.0), animated since 2.15.0, and since 2.16.0
+The emblem covers the page while it starts (2.14.0), animated since 2.15.0, and since 2.16.0
 slower, with a loading meter and a rotating tip: about seven seconds plus the boot itself at the
 Cinematic pace. `#boot` is markup, the first thing in `#app` after the emblem's hidden drawing,
 so it shows, and its first stage plays, from the first paint, before any script has run. An early
@@ -325,7 +325,7 @@ do; in the wordmark the sprite reads `--emb-d`, `--emb-l`, `--emb-mortar` and `-
 `css/layout.css`: the same squares and woods (MONOLITH lifts the squares to its light slate in
 `css/monolith.css`, where its dark one sinks into the bar) and a mortar of the bar's colour about
 half a pixel wide. Since 2.17.0 the emblem is the MONOLITH M, its squares one slate, which the
-builder reads as the diagrams' dark square: in the cathedral that is the slate Dennis drew it in.
+builder reads as the diagrams' dark square: in the cathedral that is the slate it is drawn in.
 The bare logo, `assets/monolith-logo.svg`, is no longer read.
 
 ## Shared state
@@ -426,7 +426,7 @@ post-processing, camera, motion and the world transition.
 | `quality.js` | The graphics levels (GRAPHICS.md): Minimal, Low, Medium, High and Ultra, the seven Fine-tune settings, device detection, Automatic's frame-time watch (`stepPerf()`, fed by `app/loop.js`) and what Settings says about them. Started by `post.js`. | — |
 | `materials.js` | The shared materials: marble and obsidian for the pieces (obsidian's clearcoat 0.22 rough since 2.18.0, so MONOLITH's strip lights spread into a soft sheen), the squares and frame, stone, brass, flame and stained glass for the cathedral, and the monolith slabs, with the rim-light and marble shader patches; `matCopy()` copies a material with its patch (three r147's `clone()` drops it). | 3 |
 | `sets.js` | The two worlds' sets on one turning rig: the cathedral (floor, arcades, ribs, lancets, the rose window, candles) and MONOLITH (three pillar places, each with a built, steel-edged pillar, over a mirror floor). | 4 |
-| `pillars.js` | Dennis's Blender pillars (`assets/models/*.glb`) on MONOLITH's pillar places, in three styles (the monoliths; Solomonic, Doric and Tuscan columns; Prism, Halo and Fin), swapped in once loaded, the built pillars kept as the fallback. Started by `sets.js`. | — |
+| `pillars.js` | The Blender pillars (`assets/models/*.glb`) on MONOLITH's pillar places, in three styles (the monoliths; Solomonic, Doric and Tuscan columns; Prism, Halo and Fin), swapped in once loaded, the built pillars kept as the fallback. Started by `sets.js`. | — |
 | `board.js` | The board and everything on it: squares, highlight markers, coordinate labels, the lathe-turned pieces (the knight's neck, head, muzzle, ears and mane, since 2.18.0, blocks with bowed faces, `block()`) and the fragments a captured piece shatters into (`clearFragments()`), and `boardGen`, which counts each rebuild of the pieces so a move still animating leaves a new board alone. | 5 |
 | `instruments.js` | The instrument's 3D layers on the board: the sub-surface move-value field, the ballistic vectors of the candidate moves, and the Tactical X-Ray ring over a square. | 6 |
 | `phantoms.js` | A line scrubbed in the Synaptic PV is shown as a difference from the board: phantom pieces where the line puts them, ghosts where it takes them away, capture rings where it takes. A warm-up frame compiles their shaders once the world has settled, and its materials are kept so the programs stay. | 7 |
@@ -482,8 +482,8 @@ controls and splitters.
 | `system-sheet.js` | The System sheet in Settings: the MONOLITH solved stops as swatches, and a contrast ledger computed in the page from the same colours. | — |
 | `grimoire.js` | The Grimoire, the reference tab, and term cards anywhere on the page. | 21 |
 | `nav.js` | Single-level navigation: the rail (a bottom bar on phones) and the tab switch, which also moves the world when it follows the destination and gives each pane its own scroll position (through `panelScroller()`); the world setting; and `placeActions()`, which puts the app's actions (`#app-actions`: the palette, Flip board, Sound and the release chip) at the foot of the rail, or at the app bar's end under 900 px (where `css/media.css` shows the release as a line under the wordmark instead of the chip). | — |
-| `diagram.js` | Flat SVG board diagrams drawn with Dennis's house piece set (`PIECE_SET`): study cards, the structure map, the board editor, piece icons, and single pieces placed in other drawings (`pieceUse()`). | — |
-| `gfx-meter.js` | The graphics meter in Settings, after Dennis's drawing (version 1.2): five back-rank cells meeting edge to edge on a dial a little more than a half circle (rook for Minimal to king for Ultra), each a button that takes the pointer only on its shape, and a needle that is one shape with the hub ring, turning about the hub, pointing between levels for Custom. Built and drawn by `panels.js`. | — |
+| `diagram.js` | Flat SVG board diagrams drawn with the house piece set (`PIECE_SET`): study cards, the structure map, the board editor, piece icons, and single pieces placed in other drawings (`pieceUse()`). | — |
+| `gfx-meter.js` | The graphics meter in Settings, after its drawing (`assets/graphics-meter-design-v1.2.svg`): five back-rank cells meeting edge to edge on a dial a little more than a half circle (rook for Minimal to king for Ultra), each a button that takes the pointer only on its shape, and a needle that is one shape with the hub ring, turning about the hub, pointing between levels for Custom. Built and drawn by `panels.js`. | — |
 | `studies.js` | How a study runs (puzzles, practice games, set-ups), the study order behind Up next and Next study, and the progress counts. | — |
 | `position.js` | The Position tab in three views behind one switch: Studies (Up next, tiles, cards, the Study card), Read (the board you see, drawn) and Set up (a board editor tied to a coloured FEN). | 22 |
 | `panels.js` | The renderers that keep the panels in step with the game: the Play pane, the match strip, the players' cards with their captures, the evaluation bar, the move list (with a two-player game's Analyze marks), the Coach's feed and Settings (its Graphics rows built from `scene/quality.js`). | 23 |
@@ -516,10 +516,10 @@ controls and splitters.
 - `node tools/pack-models.mjs` wraps each `assets/models/*.glb` as `.glb.json` (the same bytes, base64 in
   JSON) for a host that serves no .glb, such as the published page; `js/scene/pillars.js` reads
   either.
-- `node tools/build-piece-set.mjs` rebuilds `js/data/piece-set.js` from Dennis's drawing of the
+- `node tools/build-piece-set.mjs` rebuilds `js/data/piece-set.js` from the drawing of the
   piece set, `assets/chess-pieces.svg` (ChessWorkstation keeps the same drawing). The path data is
   copied as drawn; the two woods become custom properties the stylesheet sets per side and world.
-- `node tools/build-emblem.mjs` writes Dennis's emblem (`assets/monolith-emblem.svg`) into the
+- `node tools/build-emblem.mjs` writes the emblem (`assets/monolith-emblem.svg`) into the
   page once, as a hidden sprite between its `emblem-defs` markers (`#emb`), and the two places
   that draw it with `<use>`: the loading screen, between its `boot-emblem` markers, and the app
   bar's wordmark, between its `brand-logo` markers; with them the loading screen's arc of White's

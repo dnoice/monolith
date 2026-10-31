@@ -87,8 +87,8 @@ facts the page has checked against the rules and the engine.
    king away", "plants a flag in the centre", never a paragraph of metaphor.
 6. **A house maxim may close a lesson, never two in a row.** Maxims follow a mistake or a blunder
    and are chosen by the kind of lesson (a tactical loss, the opening, the middlegame, the
-   endgame). One of them is Dennis's own: *Aim twice, shoot once: look at every capture and check
-   before you move.*
+   endgame). One of them is the project's own: *Aim twice, shoot once: look at every capture and
+   check before you move.*
 
 ## What the Coach says, and when
 

@@ -84,14 +84,14 @@ marble square is the same marble at Minimal and at Ultra.
 
 ## The meter
 
-Settings chooses the level on a meter Dennis designed (his drawing's version 1.2): a dial a little
+Settings chooses the level on the graphics meter (version 1.2 of its drawing): a dial a little
 more than a half circle, its five cells meeting edge to edge, Minimal on the left to Ultra on the
-right, the two end cells cut flat by the base line. Each holds a piece of his house set in
+right, the two end cells cut flat by the base line. Each holds a piece of the house set in
 back-rank order (the rook, knight, bishop, queen and king of the a- to e-files), turned to face
 out, with the level's name along the rim. The needle is one shape with the hub ring, which sits
 raised off the base with the pawn in its eye; it turns about the hub to point at the level in use
 and swings to a new one (it jumps instead when motion is reduced or Animation is Minimal). The
-chosen cell shows its piece in Dennis's woods, boxwood and ebony. A line under the dial names the
+chosen cell shows its piece in the house woods, boxwood and ebony. A line under the dial names the
 level and how it was chosen: by Automatic, by hand, or Custom. While Automatic is on, the hub's
 face is ringed in the primary colour.
 

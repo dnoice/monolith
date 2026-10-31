@@ -120,8 +120,8 @@ wordmark on a screen under 900 px wide) and under Settings → Help and about.
 | **The Crucible**: a recorded engine gauntlet, replayed and re-checked. | **A Crucible game** opened on the board at its anomaly, with its heartbeat. |
 | [![A study under way in the Position tab: the study card with its goal, on the cathedral board](assets/screenshots/06-position-study.jpg)](assets/screenshots/06-position-study.jpg) | [![The Grimoire open at a term's article, with its definition, where it appears and related terms](assets/screenshots/07-grimoire.jpg)](assets/screenshots/07-grimoire.jpg) |
 | **Position**: studies checked with Stockfish, a board reading and an editor. | **The Grimoire**: every term on these screens, explained. |
-| [![Settings, Graphics: Dennis's graphics meter, a half-dial of five levels carrying the back rank, its needle on High, chosen by hand](assets/screenshots/08-settings-graphics.jpg)](assets/screenshots/08-settings-graphics.jpg) | |
-| **Settings → Graphics**: five levels on Dennis's meter, Automatic and Fine-tune. | |
+| [![Settings, Graphics: the graphics meter, a half-dial of five levels carrying the back rank, its needle on High, chosen by hand](assets/screenshots/08-settings-graphics.jpg)](assets/screenshots/08-settings-graphics.jpg) | |
+| **Settings → Graphics**: five levels on the graphics meter, Automatic and Fine-tune. | |
 
 The screenshots are the app itself, captured in Chromium at 1600 × 1000 at the High graphics level.
 The capture rendered in software, so MONOLITH's telemetry footer, whose frame readout said so, is
@@ -188,7 +188,7 @@ move.
 | **Play** | Cathedral | A game against the computer at eight levels, adjustable mid-game, or against a friend. Choose marble or obsidian, or roll the die. Hint, Undo, Resign, the Coach and an end-of-game review with accuracy and the turning point. In a friend game the board turns to the side to move after each move (*Turn the board for each player*, on by default), and a move played after its side used Analyze is marked in the move list and the PGN, and the other player is told. Draw offers a draw: in a friend game the other player agrees or declines; against the computer, on your turn, Stockfish judges the position at full strength and accepts when it stands a pawn or more worse or faces mate, or from move 20 when the position is level, and otherwise plays on, and you can offer again five moves later. Copy PGN, Download PGN and Copy FEN write out the game; *Load a game* on the setup takes a pasted PGN or FEN and plays on from it. The result card offers Rematch, the other side (Play obsidian or Play marble against the computer, Switch sides in a friend game) and *Analyze game*, which opens the game in Analyze at its turning point. A game in progress, with its marks, is kept in this browser through a reload or a closed tab. |
 | **Analyze** | MONOLITH | Stockfish MultiPV with win/draw/loss to a time limit or *Go infinite*. Shows depth, nodes, NPS, hashfull, Sharpness, the root move-value field, vectors and the Tactical X-Ray. Scrubbing a line shows it on the board as holograms and ghosts, and *Play to here* on a pinned line plays it onto the board as an explored line. During a game, a move made on its board starts a line from the live position and leaves the game alone, unless the **Explore** switch on the board is off. **Load** takes a FEN or a PGN game and analyses it where it is, both sides moved by hand. A recorded Kasparov–Topalov run serves as a reference. |
 | **Crucible** | MONOLITH | A recorded engine gauntlet, replayed and re-checked: LLR trace, Elo with its interval, the pentanomial, anomalies. Any game opens on the 3D board with its heartbeat, and the Moves card steps through it. Live runs between two configurations play in the browser and export a results JSON. |
-| **Position** | Cathedral | Three views behind one switch. **Studies**: mates, patterns, tactics, endgames and set-ups, each checked with Stockfish. **Read**: the board as bars, piece rows, a phase meter and a structure map. **Set up**: a board editor tied both ways to a FEN field, and *Who plays it*: against Stockfish, on the side to move or the other, or both sides on this screen. Every diagram uses Dennis's house piece set. |
+| **Position** | Cathedral | Three views behind one switch. **Studies**: mates, patterns, tactics, endgames and set-ups, each checked with Stockfish. **Read**: the board as bars, piece rows, a phase meter and a structure map. **Set up**: a board editor tied both ways to a FEN field, and *Who plays it*: against Stockfish, on the side to move or the other, or both sides on this screen. Every diagram uses the house piece set. |
 | **Grimoire** | Either | A reference for 149 terms on these screens, searchable and sorted by category. Underlined terms anywhere in the app open a short card. |
 | **Settings** | Either | Five cards. **Game**: Coach comments, Evaluation bar, *Move pieces on any board* and *Explore in Analyze*. **Board**: legal-move markers, coordinates, *Turn the board for each player*, Flip board and Reset view. **Sound and motion**: sound and animation speed. **World and graphics**: the world, short source badges, MONOLITH's pillars and the graphics level (with Automatic and Fine-tune). **Help and about**: tips, *Keys and mouse*, the MONOLITH colour system with its contrast ledger, and the release. |
 
@@ -210,7 +210,7 @@ the board's stage, and a width you drag is kept for that world.
 
 One board, two settings, one transition. Switching worlds blends the materials, lights, haze, bloom
 and backdrop, swaps the sets under a brief dip and eases the camera to the new world's pose.
-MONOLITH's three pillars are Dennis's Blender models, in three styles you choose in Settings:
+MONOLITH's three pillars are Blender models, in three styles you choose in Settings:
 
 - **Monoliths**: stele, rift and spire.
 - **Classic**: Solomonic, Doric and Tuscan columns.
@@ -218,7 +218,7 @@ MONOLITH's three pillars are Dennis's Blender models, in three styles you choose
 
 The built pillars stand in for any model that cannot load.
 
-The page opens on Dennis's emblem, the MONOLITH M of slate squares carrying the house piece set
+The page opens on the emblem, the MONOLITH M of slate squares carrying the house piece set
 (the same emblem stands as the M of the wordmark in the app bar), and takes its time: the M is
 written square by square (in gold in the cathedral, in ink in MONOLITH), the board is built while
 it rests, the pieces are set down one by one, and a glint crosses it before it lifts. Beneath it
@@ -230,9 +230,9 @@ only the facts), and a key or a click skips ahead.
 
 ## Graphics
 
-Settings → Graphics has five levels, each adding to the one below. They are chosen on a meter
-Dennis designed: five cells carrying the back rank, rook to king, on a dial a little more than a half
-circle, with a needle that is one shape with the hub ring, the pawn in its eye.
+Settings → Graphics has five levels, each adding to the one below. They are chosen on a meter:
+five cells carrying the back rank, rook to king, on a dial a little more than a half circle, with
+a needle that is one shape with the hub ring, the pawn in its eye.
 
 | Level | What it adds |
 | --- | --- |
@@ -309,11 +309,11 @@ monolith/
 ├── engine/               Stockfish 19 (lite, single-threaded WebAssembly), GPL-3.0, vendored
 ├── data/                 recorded runs: analyze.json (Analyze), gauntlet.json (Crucible)
 ├── tools/                build and check scripts (below)
-├── assets/               Dennis's drawings (the house piece set among them), the MONOLITH logo and
+├── assets/               the drawings (the house piece set among them), the MONOLITH logo and
 │                         emblem, the brand system that draws them (brand/, generator/), the
 │                         mock-ups, the game's sounds and screenshots/ for this README; mapped in
 │                         assets/README.md
-│   └── models/           Dennis's Blender pillars as .glb, their .blend sources, the 3D pieces as
+│   └── models/           the Blender pillars as .glb, their .blend sources, the 3D pieces as
 │                         .blend files, MANIFEST.md
 ├── LICENSE               the MIT License, for the project's own files
 ├── .gitignore            what version control leaves out (OS and editor files, generated wrappers)
@@ -331,8 +331,8 @@ monolith/
 | [GRAPHICS.md](GRAPHICS.md) | The graphics levels: what each draws, the Fine-tune settings, and how Automatic chooses and adapts. |
 | [STUDIES.md](STUDIES.md) | The studies dataset: what a study is, how each kind is played, judged and checked, and how to add one. |
 | [CALIBRATION.md](CALIBRATION.md) | The level calibrator: how to run it, recipes, and how to read and trust its results. |
-| [MONOLITH_HYBRID.md](MONOLITH_HYBRID.md) | How Dennis's MONOLITH plates became the second world. Covers what came across, the rulings kept and the rendering techniques. |
-| [assets/README.md](assets/README.md) | The assets folder: what Dennis draws, what the generators write from it, and the one command that rebuilds and audits it all. |
+| [MONOLITH_HYBRID.md](MONOLITH_HYBRID.md) | How the MONOLITH plates became the second world. Covers what came across, the rulings kept and the rendering techniques. |
+| [assets/README.md](assets/README.md) | The assets folder: the source drawings, what the generators write from them, and the one command that rebuilds and audits it all. |
 | [assets/brand/MONOLITH_M_SYSTEM.md](assets/brand/MONOLITH_M_SYSTEM.md) | The MONOLITH M: the letter's parameters and equations, its tiling, skins and layouts, and the official logo and emblem. |
 | [assets/models/MANIFEST.md](assets/models/MANIFEST.md) | The models the page loads: which file fits which slot, placement, nodes and materials. |
 | [engine/README.md](engine/README.md) | The vendored Stockfish build: its source, how to verify it and how the page loads it. |
@@ -343,8 +343,8 @@ Run these from the project folder: the `.mjs` and `.js` scripts with Node 18 or 
 
 | Script | Use |
 | --- | --- |
-| `tools/build-piece-set.mjs` | Rebuilds `js/data/piece-set.js` from Dennis's drawing, `assets/chess-pieces.svg`. Re-run it whenever the drawing changes, and never edit the output by hand. |
-| `tools/build-emblem.mjs` | Writes Dennis's emblem, `assets/monolith-emblem.svg`, into `index.html` once, as a hidden drawing that the loading screen draws square by square and the app bar draws whole, as the M of the wordmark; and the loading screen's arc of White's back rank, from `js/data/piece-set.js`. The logo, `assets/monolith-logo.svg`, is no longer read. Re-run it whenever the emblem changes, and never edit the blocks it writes by hand. |
+| `tools/build-piece-set.mjs` | Rebuilds `js/data/piece-set.js` from the drawing, `assets/chess-pieces.svg`. Re-run it whenever the drawing changes, and never edit the output by hand. |
+| `tools/build-emblem.mjs` | Writes the emblem, `assets/monolith-emblem.svg`, into `index.html` once, as a hidden drawing that the loading screen draws square by square and the app bar draws whole, as the M of the wordmark; and the loading screen's arc of White's back rank, from `js/data/piece-set.js`. The logo, `assets/monolith-logo.svg`, is no longer read. Re-run it whenever the emblem changes, and never edit the blocks it writes by hand. |
 | `tools/pack-models.mjs` | Wraps each `assets/models/*.glb` as `.glb.json` for hosts that will not serve `.glb`, such as the published page. Live Server does not need these files. |
 | `tools/verify-studies.mjs` | Checks every study against the vendored Stockfish 19, using the same dataset and rules engine the page loads. |
 | `tools/calibrate.js` | Plays the computer's levels against Stockfish's Elo-limited mode and estimates each level's rating. [CALIBRATION.md](CALIBRATION.md) has the recipes and how to read the results. |

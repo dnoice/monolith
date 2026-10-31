@@ -92,7 +92,7 @@ asks for, is stockfish.js 19.0.1: tag `v19.0.1`, commit `0d5dd7944f88c817c07a26b
 It is kept in two places:
 
 - **Upstream:** <https://github.com/nmrugg/stockfish.js>, where the build comes from.
-- **Dennis's fork:** <https://github.com/dnoice/stockfish.js>, a full copy. Its 456 branches and
+- **MONOLITH's fork:** <https://github.com/dnoice/stockfish.js>, a full copy. Its 456 branches and
   tags match upstream's, `v19.0.1` at the same commit (both checked 10/23/2026). Its
   `v19.0.1-net` branch adds one commit on top of the tag, `536618e`: the network file the build
   embeds, so the fork builds this engine without a download.

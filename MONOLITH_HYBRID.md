@@ -46,7 +46,7 @@
     Chess 2.0.0. All are in CHANGELOG.md.
 
 ✒ Description:
-    How Dennis's MONOLITH concept (the v1.1 plates Analyze, Crucible Deck
+    How the MONOLITH concept (the v1.1 plates Analyze, Crucible Deck
     and System Sheet, with their recorded Stockfish 19 data) was baked into
     the chess game, then named Wizard's Chess, as a second world on the same
     3D board: what came across and where it lives, the rulings kept, the
@@ -62,8 +62,7 @@
 
 ✒ Other Important Information:
     - Dependencies: the page (index.html), 2.2.0 or later, data/analyze.json
-      and data/gauntlet.json (Dennis's recorded runs), engine/ (Stockfish
-      19).
+      and data/gauntlet.json (the recorded runs), engine/ (Stockfish 19).
     - Compatible platforms: any Markdown renderer.
     - Limitations: describes the browser build only; MONOLITH's native
       Windows and Linux stack is out of scope here.
@@ -145,19 +144,19 @@ and post-processed light on the real board.
    show only with a recorded run, badged as recorded.
 6. **No dead controls.** Threads is a fixed value with the reason; a palette command that cannot run
    stays listed with its reason.
-7. **Phantoms** show what a line changes (revised at Dennis's direction, 10/22/2026; the plate's
-   90 % phantoms over current pieces at 30 % read as two overlapping sets): unchanged pieces stay
-   solid, a piece leaving its square fades to 18 %, a captured piece to a crimson-lit 55 % over a
-   crimson ring, and only the pieces landing somewhere new appear, as cyan-rimmed holograms.
-   Material from the projected position.
+7. **Phantoms** show what a line changes (revised 10/22/2026; the plate's 90 % phantoms over
+   current pieces at 30 % read as two overlapping sets): unchanged pieces stay solid, a piece
+   leaving its square fades to 18 %, a captured piece to a crimson-lit 55 % over a crimson ring,
+   and only the pieces landing somewhere new appear, as cyan-rimmed holograms. Material from the
+   projected position.
 8. **Docked surfaces are opaque**; glass only on the X-Ray readout, the Command Palette and the
-   Grimoire's term cards. The X-Ray readout is see-through on purpose (Dennis, 10/15/2026) and,
-   since 10/22/2026 at his direction, docks beside the board instead of floating by the square: at
-   the stage's left edge, moving right only while the square it describes would sit under it.
+   Grimoire's term cards. The X-Ray readout is see-through on purpose (10/15/2026) and, since
+   10/22/2026, docks beside the board instead of floating by the square: at the stage's left edge,
+   moving right only while the square it describes would sit under it.
 9. **Every telemetry layer carries a source badge** (`[SF: …]`, `[Runner: …]`, `[Browser: …]`,
    `[WebGL: …]`, `[Renderer: …]`, `[Recorded: …]`, `[Data: …]`). Where the footer is short of room
    a badge shows only its source (`[SF]`), with the full text on hover.
-10. **Every board can be played on** (Dennis, 10/15/2026), behind Settings → Move pieces on any
+10. **Every board can be played on** (10/15/2026), behind Settings → Move pieces on any
     board. A read-only board takes moves into a scratch line that never changes the game or the
     record.
 
@@ -213,7 +212,7 @@ and post-processed light on the real board.
   emissive light, blended by the world transition.
 - **Mirror floor.** A Reflector with its own shader: the reflection tone-mapped, faded with distance
   over the canvas colour, under an anti-aliased one-unit rule grid.
-- **MONOLITH's light** (Dennis, 10/23/2026: from some angles the board glared white). Three causes
+- **MONOLITH's light** (10/23/2026: from some angles the board glared white). Three causes
   stacked. The key's cone was narrow (0.42 rad) with a long penumbra, so its full-strength core was
   a pool about four squares wide; the squares were glossy (roughness 0.42 and 0.46); and bloom
   started at 0.8, below the brightest a tone-mapped surface reaches, so the glints of the key and of
@@ -222,7 +221,7 @@ and post-processed light on the real board.
   the rim lights stand high and narrow (8 up, 0.34 rad, aimed at the pieces' middle), and bloom
   starts at 0.95, so only the brightest glints and what is drawn past white (instruments, markers)
   glow. The cathedral is unchanged.
-- **Monoliths** (Dennis, 10/23/2026: the pillars read as flat panes). Each is built from unit boxes:
+- **Monoliths** (10/23/2026: the pillars read as flat panes). Each is built from unit boxes:
   a base, a body about a third as deep as it is wide, a face panel stepped 12 cm out of the front,
   and a cap. The material is graphite steel (metalness 0.55, roughness 0.42) rather than near-black
   glass, so the faces show the room's strip lights as gradients, and a soft wash light from high over
@@ -230,11 +229,11 @@ and post-processed light on the real board.
 - **Steel edges.** The plinth and the monoliths' parts are unit boxes scaled to size, and their shader
   draws the steel: each fragment's distance to the framed face's border, in pixels from its
   screen-space derivative, gives a 12 mm band on both faces that meet at the edge, never narrower
-  than 1.6 px, smoothed and faintly haloed (Dennis, 10/22/2026). Separate edge boxes, under a
+  than 1.6 px, smoothed and faintly haloed (10/22/2026). Separate edge boxes, under a
   pixel wide at that distance, broke into dashes.
 - **World rig.** Both worlds' scenery and lights hang from one rig that turns with the board's
   orientation. A flip turns the rig with the camera, so the backdrop holds still while the board
-  turns (Dennis, 10/22/2026: the pillars popped in and out of view). The plinths counter-turn, the
+  turns (10/22/2026: the pillars popped in and out of view). The plinths counter-turn, the
   floor's rule grid is drawn in world space, the PBR environment chunk reads through the rig's yaw
   (one shared typed-array uniform), and the haze pass takes the key light's world position and
   turns the window beams. Black sits before the same view as White.
@@ -323,7 +322,7 @@ Headless Chromium (software GL):
     `js/ui/crucible-board.js` and `js/ui/crucible-view.js` (Crucible), `js/ui/telemetry.js` (the
     footer) and `js/ui/system-sheet.js` (the System sheet);
   - `css/monolith.css`, `css/crucible.css` and `css/xray.css`.
-- `data/analyze.json`, `data/gauntlet.json`: Dennis's recorded MONOLITH runs, published unchanged.
+- `data/analyze.json`, `data/gauntlet.json`: the recorded MONOLITH runs, published unchanged.
 - `engine/`: Stockfish 19 lite, see `engine/README.md`.
 - `CHANGELOG.md`: the 2.1.0 and 2.0.0 entries and every earlier one.
 
