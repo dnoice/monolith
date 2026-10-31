@@ -78,10 +78,12 @@
 /* A card is raised on the panel's ground (css/tokens.css, --pnl-*): a lighter face that settles
    down its first 180 px, a rim of light on its top edge and a soft drop. Its head is a band across
    the top, parted from the body by a hairline, its icon in a tile of the accent; a long title wraps
-   inside the band (the clip would cut it at the card's edge). */
+   inside the band (the clip would cut it at the card's edge). The band holds at the top of the
+   panel while the rest of its card scrolls under it (--pnl-sticky-top, css/tokens.css); the clip
+   makes no scroll container, so the band sticks to the panel's scroller. */
 .card{display:flex;flex-direction:column;gap:12px;min-width:0;margin:0;padding:var(--pnl-pad);border-radius:var(--r-card);overflow:clip;overflow-clip-margin:2px;background:linear-gradient(180deg,var(--pnl-card-hi) 0 44px,var(--pnl-card) 180px);border:1px solid var(--pnl-line);box-shadow:var(--pnl-rim),var(--pnl-lift)}
 .card-head{display:flex;align-items:center;gap:10px;min-height:24px;min-width:0}
-.card > header.card-head{min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
+.card > header.card-head{position:sticky;top:var(--pnl-sticky-top);z-index:2;min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
 .card-head > svg{box-sizing:content-box;width:16px;height:16px;padding:5px;flex:none;fill:currentColor;border-radius:calc(var(--r-inner) - 4px);background:var(--pnl-accent-soft);color:var(--pnl-accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pnl-accent) 24%,transparent)}
 .card-head h3{min-width:0;font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--pnl-ink);text-wrap:balance}
 .card-aside{margin-left:auto;min-width:0;text-align:right;font-size:12.5px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

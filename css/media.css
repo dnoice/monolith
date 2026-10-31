@@ -118,6 +118,9 @@
   .rail-tabs{flex-direction:row;justify-content:space-around;gap:0;padding-block:0}
   .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
+  /* the panel scrolls here, so the shade at its top edge is the panel's (css/layout.css) */
+  .panes::before{display:none}
+  .panel::before{display:block;flex:none;top:0;margin-bottom:-14px}
   .moves-card{max-height:none;min-height:0;padding-left:var(--gutter-l)}
   .moves{max-height:132px}
   /* The move list as a strip held at the panel's foot, the steps beside it: in a game it sat under

@@ -109,9 +109,10 @@
 :is(.panel,#dock) .badge[data-term]:hover,:is(.panel,#dock) .badge[data-term][aria-expanded="true"]{color:var(--pnl-ink);text-decoration-color:currentColor}
 .mo-pane{gap:20px}
 .mo-section{display:flex;flex-direction:column;gap:10px;min-width:0}
-/* in the panel an instrument's section is a card (css/play.css), its first head the band */
+/* in the panel an instrument's section is a card (css/play.css), its first head the band, which
+   holds at the panel's top while the section scrolls under it */
 .panel .mo-pane > .mo-section{gap:12px;padding:var(--pnl-pad);border-radius:var(--r-card);overflow:clip;overflow-clip-margin:2px;background:linear-gradient(180deg,var(--pnl-card-hi) 0 44px,var(--pnl-card) 180px);border:1px solid var(--pnl-line);box-shadow:var(--pnl-rim),var(--pnl-lift)}
-.panel .mo-pane > .mo-section > .mo-head:first-child:not(summary){min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
+.panel .mo-pane > .mo-section > .mo-head:first-child:not(summary){position:sticky;top:var(--pnl-sticky-top);z-index:2;min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
 /* a details section's summary stands where the band would, a row reaching the card's edges */
 .panel .mo-pane > details.mo-section > summary{margin:-8px -10px}
 .panel .mo-pane > details.mo-section[open] > summary{margin-bottom:4px}
