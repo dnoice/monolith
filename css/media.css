@@ -189,6 +189,11 @@
   :root:not([data-tab="analyze"]) .body{grid-template-rows:minmax(220px,min(52%,75vw)) auto minmax(0,1fr) auto}
   .panes,.moves-card{padding-inline:max(var(--gutter-l),calc((100% - 680px) / 2))}
 }
+/* a narrow window with a mouse or a trackpad, so a keyboard is likely: the palette's key back on
+   its button at the app bar's end, where from 600 px there is room for it */
+@media (min-width:600px) and (max-width:899px) and (hover:hover) and (pointer:fine){
+  .appbar .btn-pal kbd{display:inline}
+}
 /* ---------- phones: Analyze's panel more than a porthole ----------
    With the dock open Analyze's stage takes a smaller share: the board's width binds on a phone, so
    it keeps its size and the panel gains the rows. (The telemetry footer, which sat under the bottom
