@@ -214,7 +214,21 @@ export function init() {
   $('#nav-prev').addEventListener('click', () => sandbox() ? exploreUndo() : showView(viewedPly() - 1));
   $('#nav-next').addEventListener('click', () => showView(viewedPly() + 1));
   $('#nav-last').addEventListener('click', goLive);
-  // on a phone the move box waits behind its keyboard button (css/media.css), which opens it ready to type
+  /* The move list as one row (css/workspace.css): always under 900 px, and on a wider screen when
+     the Moves head's fold button says so (prefs.movesStrip). The move in view stays in sight as the
+     list changes shape, scrolled in the list itself, never the panel around it. */
+  const NARROW = matchMedia('(max-width: 899px)'), card = $('.moves-card'), fold = $('#btn-moves-strip');
+  const strip = () => {
+    card.toggleAttribute('data-strip', NARROW.matches || prefs.movesStrip);
+    fold.setAttribute('aria-pressed', String(prefs.movesStrip)); fold.title = prefs.movesStrip ? 'Unfold the move list' : 'Fold the move list to one row';
+    const list = $('#moves'), c = list.querySelector('.cur'); if (!c) return;
+    const r = c.getBoundingClientRect(), b = list.getBoundingClientRect();
+    list.scrollLeft += r.left < b.left ? r.left - b.left : r.right > b.right ? r.right - b.right : 0;
+    list.scrollTop += r.top < b.top ? r.top - b.top : r.bottom > b.bottom ? r.bottom - b.bottom : 0;
+  };
+  strip(); NARROW.addEventListener('change', strip);
+  fold.addEventListener('click', () => { prefs.movesStrip = !prefs.movesStrip; savePrefs(); card.classList.remove('typing'); $('#btn-type-move').setAttribute('aria-expanded', 'false'); strip(); });
+  // in the strip the move box waits behind its keyboard button, which opens it ready to type
   $('#btn-type-move').addEventListener('click', e => { const on = $('.moves-card').classList.toggle('typing'); e.currentTarget.setAttribute('aria-expanded', String(on)); if (on) $('#move-input').focus(); });
   $('#move-form').addEventListener('submit', e => {
     // the game on your turn; otherwise, as a click would, a line: the one on the board, Analyze at the
