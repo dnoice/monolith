@@ -6,14 +6,18 @@
     - File Name: build_all.py
     - Relative Path: assets/generator/build_all.py
     - Artifact Type: python
-    - Version: 1.0.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      brand step is monolith_m.py, conical_m.py renamed: at Dennis's
+      request the brand files dropped "conical" from their names while the
+      logo is still being decided.
     - 1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
       version, written when Dennis had the generators gathered into one
       folder and asked that nothing break: one command rebuilds every
@@ -28,7 +32,7 @@
     fails, so a broken generator is never followed by a stale audit.
 
 ✒ Key Features:
-    - Steps: conical_m.py, build_mockups.py, audit_assets.py, and with
+    - Steps: monolith_m.py, build_mockups.py, audit_assets.py, and with
       --render render_review.py
     - --relabel runs relabel_sources.py first, after an Inkscape pass on
       the kit or the meter
@@ -77,7 +81,7 @@ def main():
     args = ap.parse_args()
     if args.relabel:
         run("relabel_sources.py")
-    run("conical_m.py")
+    run("monolith_m.py")
     run("build_mockups.py")
     run("audit_assets.py")
     if args.render:

@@ -2,19 +2,27 @@
 # -*- coding: utf-8 -*-
 """
 ✒ Metadata
-    - Title: Conical Monolith M (MONOLITH Edition - v1.2)
-    - File Name: conical_m.py
-    - Relative Path: assets/generator/conical_m.py
+    - Title: MONOLITH M (MONOLITH Edition - v1.2)
+    - File Name: monolith_m.py
+    - Relative Path: assets/generator/monolith_m.py
     - Artifact Type: python
-    - Version: 1.2.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.2.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      from conical_m.py: at Dennis's request the brand files dropped
+      "conical" from their names while the logo is still being decided.
+      The letter's parameters are MONOLITH_M (CONICAL before), the
+      variants are written as monolith-m-<n>-<layout>-<skin>.svg and the
+      kit as monolith-brand-kit-generated.svg, and every file this writes
+      names the M, the system and the kit by their new names in a patch
+      entry of its own; the entries before it keep their dates.
     - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       ruled that a construction grid is a template, not drawing: the grid
       layout's lines are now invisible guide paths over the outline, open
@@ -47,8 +55,8 @@
       the letter as parameters, the tiling computed, his layouts as tables.
 
 ✒ Description:
-    The MONOLITH brand mark as a system: one letter, the Conical M that
-    Dennis landed on in conical-monolith-brand-kit.svg, written down as
+    The MONOLITH brand mark as a system: one letter, the MONOLITH M that
+    Dennis landed on in monolith-brand-kit.svg, written down as
     parameters and equations, and every variant of the tiled M built from
     it. The outline is computed from a dozen numbers (leg width, corner
     radius, the valley's floor and flank handles, the crossbar's underside,
@@ -57,7 +65,7 @@
     layouts he composed are tables of his own placements. Run it and it
     writes the two official marks, the variants and the generated kit;
     import it and build_mark() gives any size, density, skin or layout.
-    The companion document is assets/brand/CONICAL_MONOLITH_SYSTEM.md.
+    The companion document is assets/brand/MONOLITH_M_SYSTEM.md.
 
 ✒ Key Features:
     - Geometry: Outline(P) is the letter as an exact SVG path (lines, arcs,
@@ -75,11 +83,11 @@
     - Variants under assets/brand/variants, the kit sheet in assets/brand
 
 ✒ Usage Instructions:
-    $ python assets/generator/conical_m.py                    # officials, variants, kit
-    $ python assets/generator/conical_m.py --only official    # just the two marks
-    $ python assets/generator/conical_m.py --only 8-ranks     # one variant
-    >>> from conical_m import build_mark, render_variant, CONICAL
-    >>> mark = build_mark(4, "quartet", CONICAL.scaled(600))
+    $ python assets/generator/monolith_m.py                   # officials, variants, kit
+    $ python assets/generator/monolith_m.py --only official   # just the two marks
+    $ python assets/generator/monolith_m.py --only 8-ranks    # one variant
+    >>> from monolith_m import build_mark, render_variant, MONOLITH_M
+    >>> mark = build_mark(4, "quartet", MONOLITH_M.scaled(600))
 
 ✒ Command-Line Arguments:
     Output:
@@ -114,8 +122,16 @@ from mono_svg import Svg, n as num, wrap_document
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BRAND = os.path.join(ASSETS, "brand")
-TODAY = date(2026, 10, 26)
+TODAY = date(2026, 10, 30)
 DATE_MDY, DATE_ISO, UPDATE_LONG = TODAY.strftime("%m/%d/%Y"), TODAY.isoformat(), TODAY.strftime("%A, %B %d, %Y")
+# Why every file this writes carries a 10/30/2026 patch entry; older entries keep their dates.
+RENAMED = ("at Dennis's request the brand files dropped \"conical\" from their names while the "
+           "logo is still being decided; the letter is the MONOLITH M, built by monolith_m.py "
+           "and written up in MONOLITH_M_SYSTEM.md")
+OFFICIAL_RENAMED = ("{version} (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
+                    + RENAMED[0].upper() + RENAMED[1:]
+                    + ", and the kit it was measured from is monolith-brand-kit.svg. The path and "
+                    "the {group} group stay put.")
 
 
 # ---------------------------------------------------------------------------
@@ -125,13 +141,13 @@ DATE_MDY, DATE_ISO, UPDATE_LONG = TODAY.strftime("%m/%d/%Y"), TODAY.isoformat(),
 @dataclass(frozen=True)
 class MParams:
     """Every length is in units of a square canvas of side S. Defaults are the
-    Conical M of conical-monolith-brand-kit.svg, measured from its outline."""
+    MONOLITH M of monolith-brand-kit.svg, measured from its outline."""
     S: float = 1200.0
     leg: float = 300.0          # leg width (S / 4)
     r_corner: float = 26.239    # the six convex corners: four outer, two inner feet
     # valley: the dip between the legs, open to the top. Each flank is one cubic
     # with horizontal tangents, from the top edge at x = leg - r_corner down to
-    # the floor; the handles are what make it conical rather than a V
+    # the floor; the handles are what make it a smooth dip rather than a V
     valley_floor_y: float = 146.43     # depth of the floor below the top edge
     valley_floor_w: float = 185.39     # width of the flat floor, centred
     valley_handle_top: float = 59.35   # the flank's handle at the top edge
@@ -149,7 +165,7 @@ class MParams:
         return MParams(**{f: getattr(self, f) * k for f in self.__dataclass_fields__})
 
 
-CONICAL = MParams()
+MONOLITH_M = MParams()
 
 
 def _fillet(p_prev, corner, p_next, r):
@@ -187,7 +203,7 @@ def _cubic_pts(p0, p1, p2, p3, steps):
 class Outline:
     """The M's outline, built once from MParams: an exact SVG path and a polygon."""
 
-    def __init__(self, P: MParams = CONICAL, steps: int = 32):
+    def __init__(self, P: MParams = MONOLITH_M, steps: int = 32):
         self.P = P
         S, leg, r = P.S, P.leg, P.r_corner
         cx = S / 2
@@ -454,7 +470,7 @@ class Mark:
     pieces: list[Piece] = field(default_factory=list)
 
 
-def build_mark(n: int, layout: str = "bare", P_: MParams = CONICAL) -> Mark:
+def build_mark(n: int, layout: str = "bare", P_: MParams = MONOLITH_M) -> Mark:
     """The tiled M: its outline, its tiles and its placed pieces, ready to draw."""
     if layout not in LAYOUTS:
         raise ValueError(f"unknown layout {layout}; one of {list(LAYOUTS)}")
@@ -548,8 +564,8 @@ def _doc(svg, *, title, file_name, rel_path, version, description, features, key
         key_features=features, other_info=["Dependencies: none; opens in Inkscape 1.4 and renders in any browser",
                                            *other],
         keywords=keywords, width=width, height=height, changelog=changelog, id_convention=id_convention,
-        source_note="Source of truth: assets/generator/conical_m.py emits this file; edit the script or "
-                    "its parameters, not the SVG, then rerun it")
+        source_note="Source of truth: assets/generator/monolith_m.py emits this file; edit the "
+                    "script or its parameters, not the SVG, then rerun it")
 
 
 def _stats(mark: Mark) -> str:
@@ -565,21 +581,22 @@ def _stats(mark: Mark) -> str:
 
 
 def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: float = 1200.0) -> tuple[str, str]:
-    mark = build_mark(n, layout, CONICAL.scaled(size))
+    mark = build_mark(n, layout, MONOLITH_M.scaled(size))
     svg = Svg()
     panel = f"{n}-{layout}"
     draw_mark(svg, mark, skin, panel)
-    fname = f"conical-m-{n}-{layout}-{skin}.svg"
+    fname = f"monolith-m-{n}-{layout}-{skin}.svg"
     grid = layout == "grid"
+    version = "1.2.1" if grid else "1.1.1"
     what = {"grid": "the construction template: the outline with the full grid over it as invisible guide lines",
             "bare": "the tiled M without pieces"}.get(layout, f"the {layout} layout")
     doc = _doc(
-        svg, title=f"Conical Monolith M {n} x {n} {layout} {skin} (MONOLITH Edition - v{'1.2' if grid else '1.1'})",
-        file_name=fname, rel_path=f"assets/brand/variants/{fname}", version="1.2.0" if grid else "1.1.0",
-        description=(f"The Conical Monolith M on a {n} by {n} grid of {size / n:g} px cells in the {skin} skin, "
-                     f"{what}" + (f": {_stats(mark)}" if mark.tiles else "") +
-                     ". Built by assets/generator/conical_m.py from the letter's parameters; the system is "
-                     "described in assets/brand/CONICAL_MONOLITH_SYSTEM.md."),
+        svg, title=f"MONOLITH M {n} x {n} {layout} {skin} (MONOLITH Edition - v{version[:3]})",
+        file_name=fname, rel_path=f"assets/brand/variants/{fname}", version=version,
+        description=(f"The MONOLITH M on a {n} by {n} grid of {size / n:g} px cells in the {skin} "
+                     f"skin, {what}" + (f": {_stats(mark)}" if mark.tiles else "") +
+                     ". Built by assets/generator/monolith_m.py from the letter's parameters; the "
+                     "system is described in assets/brand/MONOLITH_M_SYSTEM.md."),
         features=[f"Canvas {size:g} x {size:g}; grid {n} x {n}; cell {size / n:g} px",
                   "Outline: legs S/4, corners r 26.24, valley floor 146.43 deep and 185.39 wide with cubic flanks "
                   "(handles 59.35 and 72.39), crossbar underside at 509.68, notch to 600 (1200 units, scaled)",
@@ -590,11 +607,16 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
                    "Pieces: chess-pieces.svg stamped verbatim at Dennis's placements; White is boxwood-faced")],
         keywords=["MONOLITH", "brand", "logo", "tiled M", "chess"], width=size, height=size,
         id_convention=ID_CONVENTION + (" " + GUIDE_NOTE if grid else ""),
-        changelog=([f"1.2.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — The grid's lines are "
-                    "invisible guide paths over the outline, as Dennis ruled for a construction template; the "
-                    "filled rects of 1.1.0 painted pixels and widened the bounding box."] if grid else []) + [
-                   f"1.1.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt with Dennis's "
-                   "placements measured from his kit, sides named by faces, and the construction layout.",
+        changelog=[f"{version} ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Renamed "
+                   f"from conical-m-{n}-{layout}-{skin}.svg: {RENAMED}."] + (
+                  ["1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The grid's lines "
+                   "are invisible guide paths over the outline, as Dennis ruled for a construction "
+                   "template; the filled rects of 1.1.0 painted pixels and widened the bounding "
+                   "box."]
+                  if grid else []) + [
+                   "1.1.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt with "
+                   "Dennis's placements measured from his kit, sides named by faces, and the "
+                   "construction layout.",
                    "1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Fable 5.1] — First build of the system "
                    "Dennis landed on in conical-monolith-brand-kit.svg."])
     return fname, doc
@@ -602,15 +624,18 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
 
 OFFICIAL = {
     "logo": dict(
-        n=4, layout="bare", file="monolith-logo.svg", root="logo-monolith", panel="logo", version="1.0.1",
-        title="MONOLITH Logo (MONOLITH Edition - v1.0)",
-        description=("MONOLITH's official logo, chosen by Dennis on 10/26/2026: the Conical M cut into a four by "
-                     "four grid of slate tiles with black mortar, no pieces. The letter is his (measured from "
-                     "conical-monolith-brand-kit.svg and written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); "
+        n=4, layout="bare", file="monolith-logo.svg", root="logo-monolith", panel="logo",
+        version="1.0.2", title="MONOLITH Logo (MONOLITH Edition - v1.0)",
+        description=("MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M "
+                     "cut into a four by four grid of slate tiles with black mortar, no pieces. "
+                     "The letter is his (measured from monolith-brand-kit.svg and written down in "
+                     "assets/brand/MONOLITH_M_SYSTEM.md); "
                      "this file is the system's rendering of it at 1200 px, and the emblem is the same mark with "
                      "his twelve pieces standing on it. It is the source of the page's app bar logo: "
                      "tools/build-emblem.mjs writes it into index.html, reading its board-logo group."),
-        changelog=["1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis asked for the logo in the "
+        changelog=[OFFICIAL_RENAMED.format(version="1.0.2", group="board-logo"),
+                   "1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis asked for "
+                   "the logo in the "
                    "web app's header: the page's app bar carries it now, written in by tools/build-emblem.mjs, so "
                    "its path and its board-logo group stay put.",
                    "1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis made the 4 x 4 Conical M "
@@ -618,14 +643,17 @@ OFFICIAL = {
     ),
     "emblem": dict(
         n=4, layout="quartet", file="monolith-emblem.svg", root="emblem-monolith", panel="emblem",
-        version="2.0.0", title="MONOLITH Emblem (MONOLITH Edition - v2.0)",
-        description=("MONOLITH's official emblem, chosen by Dennis on 10/26/2026: the Conical M cut into a four "
-                     "by four grid of slate tiles with black mortar, with his quartet of twelve pieces standing "
-                     "on it, one of each kind per side. The letter and the placements are his (measured from "
-                     "conical-monolith-brand-kit.svg and written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); "
+        version="2.0.1", title="MONOLITH Emblem (MONOLITH Edition - v2.0)",
+        description=("MONOLITH's official emblem, chosen by Dennis on 10/26/2026: the MONOLITH M "
+                     "cut into a four by four grid of slate tiles with black mortar, with his "
+                     "quartet of twelve pieces standing on it, one of each kind per side. The "
+                     "letter and the placements are his (measured from monolith-brand-kit.svg and "
+                     "written down in "
+                     "assets/brand/MONOLITH_M_SYSTEM.md); "
                      "this file is the system's rendering of them at 1200 px. It is the source of the page's "
                      "loading screen: tools/build-emblem.mjs copies it into index.html."),
         changelog=[
+            OFFICIAL_RENAMED.format(version="2.0.1", group="board-emblem"),
             "2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis landed on the Conical M and made "
             "its 4 x 4 panel with pieces the official emblem; the 23 x 24 board M of 1.x is retired. Same path "
             "and the same id scheme (board-row-NN-emblem, square-rNN-cNN-emblem, pieces-white-emblem, "
@@ -644,25 +672,26 @@ OFFICIAL = {
 
 def render_official(kind: str, size: float = 1200.0) -> tuple[str, str]:
     spec = OFFICIAL[kind]
-    mark = build_mark(spec["n"], spec["layout"], CONICAL.scaled(size))
+    mark = build_mark(spec["n"], spec["layout"], MONOLITH_M.scaled(size))
     svg = Svg()
     draw_mark(svg, mark, "slate", spec["panel"], root_id=spec["root"])
     doc = _doc(
         svg, title=spec["title"], file_name=spec["file"], rel_path=f"assets/{spec['file']}", version=spec["version"],
         description=spec["description"],
-        features=[f"Canvas {size:g} x {size:g}; the Conical M edge to edge on a 4 x 4 grid of {size / 4:g} px cells: "
-                  f"{_stats(mark)}",
+        features=[f"Canvas {size:g} x {size:g}; the MONOLITH M edge to edge on a 4 x 4 grid of "
+                  f"{size / 4:g} px cells: {_stats(mark)}",
                   "Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per 1200 (paint-order "
                   "markers fill stroke), as Dennis draws the grout",
                   *(["Pieces: chess-pieces.svg stamped verbatim at Dennis's placements; White is boxwood-faced "
                      "(#decd87 face, #1a1a1a contour), Black ebony-faced; pawns 3 % smaller, as drawn"]
                     if mark.pieces else []),
                   "One flat layer: groups only, no Inkscape layers",
-                  "Regenerate by running assets/generator/conical_m.py; its official target rebuilds just the two marks"],
+                  "Regenerate by running assets/generator/monolith_m.py; its official target "
+                  "rebuilds just the two marks"],
         keywords=["MONOLITH", "logo" if kind == "logo" else "emblem", "brand", "tiled M", "chess"],
         width=size, height=size, changelog=spec["changelog"],
-        other=["Official: the 4 x 4 Conical M is the MONOLITH mark; every mock-up under assets/mockups is built "
-               "on this file's geometry"])
+        other=["Official: the 4 x 4 MONOLITH M is the MONOLITH mark; every mock-up under "
+               "assets/mockups is built on this file's geometry"])
     return spec["file"], doc
 
 
@@ -684,24 +713,29 @@ def render_kit(size: float = 1200.0, gap: float = 44.0, skin: str = "slate") -> 
             n, layout = spec
             panel = f"{n}-{layout}"
             cell = svg.g(f"panel-{panel}", transform=f"translate({num(ci * (size + gap))},{num(ri * (size + gap))})")
-            mark = build_mark(n, layout, CONICAL.scaled(size))
+            mark = build_mark(n, layout, MONOLITH_M.scaled(size))
             draw_mark(cell, mark, skin, panel)
             stats.append(f"{panel}: {_stats(mark) if mark.tiles else 'outline and grid'}")
-    fname = "conical-monolith-brand-kit-generated.svg"
+    fname = "monolith-brand-kit-generated.svg"
     doc = _doc(
-        svg, title="Conical Monolith Brand Kit Generated (MONOLITH Edition - v1.2)", file_name=fname,
-        rel_path=f"assets/brand/{fname}", version="1.2.0",
+        svg, title="MONOLITH Brand Kit Generated (MONOLITH Edition - v1.2)", file_name=fname,
+        rel_path=f"assets/brand/{fname}", version="1.2.1",
         description=("Dennis's brand kit rebuilt by the system, panel for panel: the construction drawings on 4, 8 "
                      "and 16 grids across the top; the quartet, the ranks and the bare 16 below them; the scatter "
                      "under those on the right. Every tile is computed from the letter's parameters and every "
-                     "piece stands where he placed it. His hand-built kit, brand/conical-monolith-brand-kit.svg, "
-                     "is the reference this reproduces."),
+                     "piece stands where he placed it. His hand-built kit, "
+                     "brand/monolith-brand-kit.svg, is the reference this reproduces."),
         features=[f"Seven panels of {size:g} px, {gap:g} px apart; canvas {W:g} x {H:g}", *stats],
         keywords=["MONOLITH", "brand kit", "logo", "tiled M", "chess"], width=W, height=H,
-        changelog=[f"1.2.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — The construction panels' "
-                   "grid lines are invisible guide paths over the outline, as Dennis ruled for a template.",
-                   f"1.1.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Laid out as Dennis's kit "
-                   "(seven panels, construction row on top) with his measured placements.",
+        changelog=[f"1.2.1 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Renamed from "
+                   f"conical-monolith-brand-kit-generated.svg, beside his kit, now "
+                   f"monolith-brand-kit.svg: {RENAMED}.",
+                   "1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The construction "
+                   "panels' grid lines are invisible guide paths over the outline, as Dennis ruled "
+                   "for a template.",
+                   "1.1.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Laid out as "
+                   "Dennis's kit (seven panels, construction row on top) with his measured "
+                   "placements.",
                    "1.0.0 (10/26/2026) [dendogg + Anthropic - Claude Fable 5.1] — First generated kit."],
         id_convention="panel-<n>-<layout> holds one mark; inside it the ids of the variant files, suffixed "
                       "-<n>-<layout>. " + ID_CONVENTION + " " + GUIDE_NOTE)
@@ -720,7 +754,7 @@ def _write(path: str, doc: str):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Build the Conical Monolith marks, variants and kit.")
+    ap = argparse.ArgumentParser(description="Build the MONOLITH M marks, variants and kit.")
     ap.add_argument("--only", default=None, help="official | kit | <n>-<layout>")
     ap.add_argument("--size", type=float, default=1200.0)
     ap.add_argument("--skin", default="slate", choices=list(SKINS))

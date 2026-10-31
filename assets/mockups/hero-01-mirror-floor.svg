@@ -15,7 +15,9 @@
 ✒ Changelog:
     - 2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       tagline reads MARBLE VS. OBSIDIAN · CATHEDRAL, as the cathedral is no
-      longer called Gothic.
+      longer called Gothic, and the mark is called the MONOLITH M and is
+      built by monolith_m.py: at Dennis's request the brand files dropped
+      "conical" from their names while the logo is still being decided.
     - 2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt
       on the official 4 x 4 Conical M Dennis chose (monolith-logo.svg and
       monolith-emblem.svg).
@@ -50,8 +52,8 @@
     transform-free and its CSS animation never fights the geometry.
 
 ✒ Other Important Information:
-    - Mark: the official 4 x 4 Conical M (assets/monolith-logo.svg,
-      monolith-emblem.svg), built by assets/generator/conical_m.py; pieces
+    - Mark: the official 4 x 4 MONOLITH M (assets/monolith-logo.svg,
+      monolith-emblem.svg), built by assets/generator/monolith_m.py; pieces
       from assets/chess-pieces.svg stamped verbatim
     - Palette roles: ground, ground-2, ink, ink-2, accent, tile-light,
       tile-dark, mortar, white-face, white-contour, black-face,

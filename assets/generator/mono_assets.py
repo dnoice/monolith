@@ -6,15 +6,21 @@
     - File Name: mono_assets.py
     - Relative Path: assets/generator/mono_assets.py
     - Artifact Type: library
-    - Version: 2.0.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] —
+      load_conical() is now load_monolith_m(), building the M from
+      monolith_m.py and its MONOLITH_M parameters, and the kit source is
+      brand/monolith-brand-kit.svg: at Dennis's request the brand files
+      dropped "conical" from their names while the logo is still being
+      decided.
     - 2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rewired to
       the Conical Monolith system Dennis landed on: load_conical(n, layout)
       builds any tiled M straight from conical_m.py, and load_logo() and
@@ -34,13 +40,13 @@
     piece set and the graphics meter are Dennis's hand-drawn sources, read
     as literal path data with every group transform composed into one
     matrix, so a stamped piece is his nodes and never a re-derivation. The
-    tiled M comes from the system in conical_m.py: load_conical(n, layout)
-    returns its tiles and placed pieces as the same Elem and Piece objects,
-    so a mock-up stamps the official emblem exactly as it stamps any other
-    drawing. Every element carries a ROLE (tile-light, tile-dark,
-    white-face, white-contour, black-face, black-contour, meter parts)
-    instead of a colour, which is what lets one drawing be painted in
-    several palettes.
+    tiled M comes from the system in monolith_m.py:
+    load_monolith_m(n, layout) returns its tiles and placed pieces as the
+    same Elem and Piece objects, so a mock-up stamps the official emblem
+    exactly as it stamps any other drawing. Every element carries a ROLE
+    (tile-light, tile-dark, white-face, white-contour, black-face,
+    black-contour, meter parts) instead of a colour, which is what lets one
+    drawing be painted in several palettes.
 
 ✒ Key Features:
     - Transforms: parse_transform for translate, scale, rotate and matrix;
@@ -49,7 +55,7 @@
     - load_pieces(): one piece of each kind per side from chess-pieces.svg
       in square-local coordinates; sides by faces (that file names its
       boxwood-contoured, ebony-faced set White; MONOLITH calls it Black)
-    - load_conical(n, layout, S): the tiled M as a Drawing; load_logo()
+    - load_monolith_m(n, layout, S): the tiled M as a Drawing; load_logo()
       and load_emblem() are the 4 x 4 bare and quartet marks
     - load_meter(): the graphics gauge's sectors, inner sectors, needle and
       pieces from graphics-meter-design-v1.2.svg
@@ -65,7 +71,7 @@
 
 ✒ Other Important Information:
     - Dependencies: Python 3.10+, lxml, svgpathtools, numpy, shapely (the
-      last through conical_m)
+      last through monolith_m)
     - Paths are relative to the assets folder (the parent of this one), so
       the folder can move with the project
     - The sources are never modified by this module
@@ -91,9 +97,9 @@ ASSETS = os.path.normpath(os.path.join(HERE, ".."))
 SOURCES = {
     "pieces": "chess-pieces.svg",
     "meter": "graphics-meter-design-v1.2.svg",
-    "kit": "brand/conical-monolith-brand-kit.svg",
-    "logo": "monolith-logo.svg",          # written by conical_m.py
-    "emblem": "monolith-emblem.svg",      # written by conical_m.py; the page's emblem build reads it
+    "kit": "brand/monolith-brand-kit.svg",
+    "logo": "monolith-logo.svg",          # written by monolith_m.py
+    "emblem": "monolith-emblem.svg",      # written by monolith_m.py; built into the page
 }
 
 BOXWOOD, EBONY = "#decd87", "#1a1a1a"
@@ -375,16 +381,16 @@ def load_pieces() -> PieceSet:
 # The tiled M, from the system
 # ---------------------------------------------------------------------------
 
-def load_conical(n: int, layout: str = "bare", S: float = 1200.0) -> Drawing:
-    """The Conical M tiled on an n x n grid with one of Dennis's layouts, as a
+def load_monolith_m(n: int, layout: str = "bare", S: float = 1200.0) -> Drawing:
+    """The MONOLITH M tiled on an n x n grid with one of Dennis's layouts, as a
     Drawing in a canvas of side S: tiles carry row, col, span and whole in
     their meta and tile-light / tile-dark as their role (row + column even
     is light); pieces are placed and named by faces."""
-    import conical_m as C            # local import: conical_m imports this module
-    mark = C.build_mark(n, layout, C.CONICAL.scaled(S))
-    dr = Drawing(f"conical-{n}-{layout}", S, S)
+    import monolith_m as mm          # local import: monolith_m imports this module
+    mark = mm.build_mark(n, layout, mm.MONOLITH_M.scaled(S))
+    dr = Drawing(f"monolith-m-{n}-{layout}", S, S)
     for t in mark.tiles:
-        d = C.tile_d(t, mark.cell)
+        d = mm.tile_d(t, mark.cell)
         role = "tile-light" if (t.row + t.col) % 2 == 0 else "tile-dark"
         kind = "plinth" if t.span > 1 else "square"
         name = f"{kind}-r{t.row + 1:02d}-c{t.col + 1:02d}" + ("" if t.whole else "-cut")
@@ -396,13 +402,13 @@ def load_conical(n: int, layout: str = "bare", S: float = 1200.0) -> Drawing:
 
 
 def load_logo(S: float = 1200.0) -> Drawing:
-    """The official logo: the Conical M on a 4 x 4 grid, no pieces."""
-    return load_conical(4, "bare", S)
+    """The official logo: the MONOLITH M on a 4 x 4 grid, no pieces."""
+    return load_monolith_m(4, "bare", S)
 
 
 def load_emblem(S: float = 1200.0) -> Drawing:
-    """The official emblem: the Conical M on a 4 x 4 grid with Dennis's quartet."""
-    return load_conical(4, "quartet", S)
+    """The official emblem: the MONOLITH M on a 4 x 4 grid with Dennis's quartet."""
+    return load_monolith_m(4, "quartet", S)
 
 
 def drawing_bbox(dr: Drawing):

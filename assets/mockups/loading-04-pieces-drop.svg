@@ -5,14 +5,18 @@
     - File Name: loading-04-pieces-drop.svg
     - Relative Path: assets/mockups/loading-04-pieces-drop.svg
     - Artifact Type: mockup
-    - Version: 2.0.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The mark
+      is called the MONOLITH M and is built by monolith_m.py: at Dennis's
+      request the brand files dropped "conical" from their names while the
+      logo is still being decided.
     - 2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt
       on the official 4 x 4 Conical M Dennis chose (monolith-logo.svg and
       monolith-emblem.svg).
@@ -43,8 +47,8 @@
     transform-free and its CSS animation never fights the geometry.
 
 ✒ Other Important Information:
-    - Mark: the official 4 x 4 Conical M (assets/monolith-logo.svg,
-      monolith-emblem.svg), built by assets/generator/conical_m.py; pieces
+    - Mark: the official 4 x 4 MONOLITH M (assets/monolith-logo.svg,
+      monolith-emblem.svg), built by assets/generator/monolith_m.py; pieces
       from assets/chess-pieces.svg stamped verbatim
     - Palette roles: ground, ground-2, ink, ink-2, accent, tile-light,
       tile-dark, mortar, white-face, white-contour, black-face,
@@ -203,7 +207,7 @@
       <cc:Work
          rdf:about="">
         <dc:title>MONOLITH Loading Screen 04 Pieces Drop (Slate)</dc:title>
-        <dc:date>2026-10-26</dc:date>
+        <dc:date>2026-10-30</dc:date>
         <dc:creator>
           <cc:Agent>
             <dc:title>Dennis 'dendogg' Smaltz</dc:title>

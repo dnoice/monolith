@@ -1,18 +1,25 @@
 <!--
 ✒ Metadata
-    - Title: Conical Monolith System (MONOLITH Edition - v1.2)
-    - File Name: CONICAL_MONOLITH_SYSTEM.md
-    - Relative Path: assets/brand/CONICAL_MONOLITH_SYSTEM.md
+    - Title: MONOLITH M System (MONOLITH Edition - v1.2)
+    - File Name: MONOLITH_M_SYSTEM.md
+    - Relative Path: assets/brand/MONOLITH_M_SYSTEM.md
     - Artifact Type: docs
-    - Version: 1.2.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.2.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      from CONICAL_MONOLITH_SYSTEM.md: at Dennis's request the brand files
+      dropped "conical" from their names while the logo is still being
+      decided. The letter is called the MONOLITH M; the paths, commands and
+      Python name monolith_m.py, MONOLITH_M, load_monolith_m() and
+      monolith-brand-kit.svg with its generated twin; the valley's
+      horizontal tangents are said to make it a smooth dip.
     - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       ruled that a construction grid is a template, not drawing: the
       construction section now draws its lines as invisible guide paths
@@ -39,11 +46,11 @@
 
 ✒ Description:
     The MONOLITH brand mark as a system rather than a pile of files: one
-    letter (the Conical M), defined by a dozen numbers; one tiling rule
+    letter (the MONOLITH M), defined by a dozen numbers; one tiling rule
     that lays any grid over it; a few skins; the piece layouts Dennis
     composed; and the two official marks cut from it. Everything in
     assets/brand/variants, the generated kit, assets/monolith-logo.svg and
-    assets/monolith-emblem.svg comes out of assets/generator/conical_m.py
+    assets/monolith-emblem.svg comes out of assets/generator/monolith_m.py
     from what is written here.
 
 ✒ Key Features:
@@ -58,25 +65,24 @@
 
 ✒ Other Important Information:
     - Dependencies: Python 3.10+, shapely, numpy, lxml, svgpathtools; the
-      code is assets/generator/conical_m.py with mono_svg.py and
+      code is assets/generator/monolith_m.py with mono_svg.py and
       mono_assets.py beside it
-    - Reference: brand/conical-monolith-brand-kit.svg is Dennis's
-      hand-built kit; brand/conical-monolith-brand-kit-generated.svg
-      reproduces it panel for panel
+    - Reference: brand/monolith-brand-kit.svg is Dennis's hand-built kit;
+      brand/monolith-brand-kit-generated.svg reproduces it panel for panel
 ---------
 -->
 
-# The Conical Monolith system
+# The MONOLITH M system
 
 One letter, one rule, a few skins, three layouts, two official marks. The
-letter is the Conical M: a square-cornered M whose valley is a smooth dip
+letter is the MONOLITH M: a square-cornered M whose valley is a smooth dip
 rather than a V and whose crossbar carries a small tab underneath, the
 notch. It is defined by the numbers in §1 and nothing else. A grid of *n* ×
 *n* cells laid over the square becomes the tiled M by the rule in §3: every
 cell the letter covers is a tile, whole or cut. Pieces from
 `assets/chess-pieces.svg` stand on the tiles in the layouts of §5. The 4 × 4
 tiling is the official logo, and the same tiling with the quartet of twelve
-pieces is the official emblem (§6). `assets/generator/conical_m.py` is the
+pieces is the official emblem (§6). `assets/generator/monolith_m.py` is the
 whole system as code; every file it writes is its output and is never
 edited by hand.
 
@@ -88,7 +94,7 @@ so a 240 px favicon and a 4800 px poster are the same letter.
 
 The outline is drawn clockwise on screen (y down), starting on the left
 leg's outer edge just below the top corner. Measured from the outline in
-`brand/conical-monolith-brand-kit.svg` (the 8-grid panel's
+`brand/monolith-brand-kit.svg` (the 8-grid panel's
 `outline-8-grid`); the parametric outline differs from the drawn one by 0.12
 % of its area, 5.3 units at the widest, which is the drawing's own
 left/right asymmetry in the valley flanks.
@@ -173,7 +179,7 @@ whose control points sit on the horizontals through **A** and **B**:
 \mathbf{F}(t) = (1-t)^3\mathbf{A} + 3(1-t)^2 t\,\mathbf{P}_1 + 3(1-t)t^2\,\mathbf{P}_2 + t^3\mathbf{B}.
 ```
 
-Horizontal tangents at both ends are what make the dip conical: it leaves
+Horizontal tangents at both ends are what make the dip smooth: it leaves
 the top edge flat, steepens, and lands on the floor flat. A least-squares
 fit of this form to Dennis's drawn flank (which he built from three cubic
 segments) gives *h_t* = 59.35 and *h_f* = 72.39 with a maximum error of 1.66
@@ -285,7 +291,7 @@ plinth `(col, row, span)`. A piece is stamped from its 153.79-unit square in
 read right to left: move the centre **b** of the piece's own bounding box to
 the origin, scale it (negative *x* mirrors it), rotate it, place it. The
 three layouts are Dennis's placements, measured from his kit; the tables in
-`conical_m.py` carry them to four decimals, which reproduces his panels to
+`monolith_m.py` carry them to four decimals, which reproduces his panels to
 0.02 units.
 
 **Quartet** (n = 4, the emblem): twelve pieces upright, one of each kind per
@@ -329,7 +335,7 @@ Kings: White K on (5, 3) span 3, Black K on (8, 3) span 3.
 
 ## 6. The official marks
 
-The 4 × 4 Conical M is the MONOLITH mark, chosen by Dennis on 10/26/2026.
+The 4 × 4 MONOLITH M is the MONOLITH mark, chosen by Dennis on 10/26/2026.
 
 | File | What it is | Built as |
 |---|---|---|
@@ -354,23 +360,23 @@ Every mock-up in `assets/mockups` is built on these two marks, through
 ## 7. Making things
 
 ```bash
-python assets/generator/conical_m.py                     # the two marks, the variants, the generated kit
-python assets/generator/conical_m.py --only official     # just the logo and the emblem
-python assets/generator/conical_m.py --only 8-ranks      # one variant
-python assets/generator/conical_m.py --skin checker      # the variants in another skin
-python assets/generator/conical_m.py --size 240          # at another canvas size
+python assets/generator/monolith_m.py                    # the two marks, the variants, the generated kit
+python assets/generator/monolith_m.py --only official    # just the logo and the emblem
+python assets/generator/monolith_m.py --only 8-ranks     # one variant
+python assets/generator/monolith_m.py --skin checker     # the variants in another skin
+python assets/generator/monolith_m.py --size 240         # at another canvas size
 ```
 
 From Python, with `assets/generator` on the path:
 
 ```python
 from dataclasses import replace
-from conical_m import CONICAL, build_mark, render_variant, render_official, SKINS, LAYOUTS
-from mono_assets import load_conical
+from monolith_m import MONOLITH_M, build_mark, render_variant, render_official, SKINS, LAYOUTS
+from mono_assets import load_monolith_m
 
-mark = build_mark(12, "bare", CONICAL.scaled(600))          # outline, tiles, pieces
+mark = build_mark(12, "bare", MONOLITH_M.scaled(600))       # outline, tiles, pieces
 name, svg_text = render_variant(12, "bare", "legs", 600)    # a finished file
-drawing = load_conical(4, "quartet")                        # tiles and pieces as stampable elements
+drawing = load_monolith_m(4, "quartet")                     # tiles and pieces as stampable elements
 ```
 
 - **A new density** is a number: `build_mark(32, "bare")`. Nothing else
@@ -378,7 +384,7 @@ drawing = load_conical(4, "quartet")                        # tiles and pieces a
 - **A new skin** is a dict in `SKINS` with the tile, mortar and piece roles.
 - **A new layout** is a list of `P(...)` placements registered in `LAYOUTS`
   with the density it was composed for.
-- **A different letter** is a new `MParams`: `replace(CONICAL,
+- **A different letter** is a new `MParams`: `replace(MONOLITH_M,
   valley_floor_y=200)` deepens the valley; `leg=240` thins the legs; every
   mark, variant and mock-up follows, because the tiles are computed from the
   letter.

@@ -19,7 +19,13 @@
       loading-02 and hero-01 taglines read MARBLE VS. OBSIDIAN · CATHEDRAL,
       as the cathedral is no longer called Gothic. Those two screens carry
       their own 2.0.1 header (version, date and entry, emit() taking the
-      day), so a rebuild writes the headers they were given by hand.
+      day), so a rebuild writes the headers they were given by hand. The
+      mark is called the MONOLITH M and is read through load_monolith_m()
+      from monolith_m.py, as Dennis asked that the brand files drop
+      "conical" from their names while the logo is still being decided;
+      the screens that name the mark carry it in a 10/30/2026 patch entry
+      (2.0.1, loading-01 2.0.2), and the gauge and its palette study,
+      which do not, keep 2.0.0.
     - 2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       kept working in it, so that name is his now: loading-01 is written
@@ -81,7 +87,7 @@
 ✒ Other Important Information:
     - Dependencies: Python 3.10+, lxml, svgpathtools, numpy, shapely
     - Reads the marks through mono_assets.load_logo() and load_emblem(),
-      which build them from conical_m.py, the same code that writes
+      which build them from monolith_m.py, the same code that writes
       assets/monolith-logo.svg and monolith-emblem.svg
     - Animation is CSS inside a <style> in defs; the base attributes of
       every animated element are its finished state, so Inkscape and any
@@ -105,9 +111,9 @@ from mono_svg import Node, Svg, blend, n, stop, wrap_document
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(A.ASSETS, "mockups")
 
-TODAY = date(2026, 10, 26)
-DATE_MDY, DATE_ISO, UPDATE_LONG = TODAY.strftime("%m/%d/%Y"), TODAY.isoformat(), TODAY.strftime("%A, %B %d, %Y")
-VERSION = "2.0.0"
+SET_DAY = date(2026, 10, 26)        # 2.0.0: the set rebuilt on the official marks
+TODAY = date(2026, 10, 30)          # 2.0.1: the mark called the MONOLITH M
+VERSION = "2.0.1"
 APP_VERSION = "v2.12.0"
 
 W, H = 1600, 1000           # screens
@@ -121,17 +127,25 @@ EASE_OVER = "cubic-bezier(0.34, 1.46, 0.64, 1)"
 # under this name and never touches his.
 LOADING_01 = "loading-01-rising-columns-generated"
 
-CHANGELOG = [f"2.0.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt on the official 4 x 4 "
-             "Conical M Dennis chose (monolith-logo.svg and monolith-emblem.svg).",
-             "1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Fable 5.1] — First version, on the logo "
-             "concepts that the Conical M replaced."]
+SET_CHANGELOG = ["2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt on the "
+                 "official 4 x 4 Conical M Dennis chose (monolith-logo.svg and "
+                 "monolith-emblem.svg).",
+                 "1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Fable 5.1] — First version, on "
+                 "the logo concepts that the Conical M replaced."]
+RENAMED = ("the mark is called the MONOLITH M and is built by monolith_m.py: at Dennis's request "
+           "the brand files dropped \"conical\" from their names while the logo is still being "
+           "decided")
+CHANGELOG = [f"2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
+             f"{RENAMED[0].upper()}{RENAMED[1:]}.", *SET_CHANGELOG]
 
-# hero-01 and loading-02: their tagline changed on 10/30/2026, so they carry 2.0.1 of that day.
-TAGLINE_DAY = date(2026, 10, 30)
+# hero-01 and loading-02: their tagline changed the same day, so their 2.0.1 says both.
 TAGLINE_CHANGELOG = [
     "2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The tagline reads MARBLE VS. "
-    "OBSIDIAN · CATHEDRAL, as the cathedral is no longer called Gothic.",
-    *CHANGELOG]
+    f"OBSIDIAN · CATHEDRAL, as the cathedral is no longer called Gothic, and {RENAMED}.",
+    *SET_CHANGELOG]
+
+# meter-01 and palette-study-03 show no mark, so they keep the set's 2.0.0.
+SET_HEADER = dict(version="2.0.0", changelog=SET_CHANGELOG, day=SET_DAY)
 
 ID_CONVENTION = (
     "Every element and group carries a descriptive id, component-subcomponent-panel: mark holds "
@@ -282,8 +296,9 @@ def emit(svg: Svg, file_name: str, *, title: str, description: str, key_features
     print("wrote", os.path.relpath(path, A.ASSETS).replace(os.sep, "/"))
 
 
-MARK_INFO = ("Mark: the official 4 x 4 Conical M (assets/monolith-logo.svg, monolith-emblem.svg), built by "
-             "assets/generator/conical_m.py; pieces from assets/chess-pieces.svg stamped verbatim")
+MARK_INFO = ("Mark: the official 4 x 4 MONOLITH M (assets/monolith-logo.svg, monolith-emblem.svg), "
+             "built by assets/generator/monolith_m.py; pieces from assets/chess-pieces.svg stamped "
+             "verbatim")
 
 
 # ---------------------------------------------------------------------------
@@ -318,12 +333,16 @@ def build_loading_01(pal, suffix=""):
       @keyframes appear {{ from {{ opacity: 0; transform: translateY({14 / s:.0f}px) scale(0.92); }} to {{ opacity: 1; transform: none; }} }}
       @keyframes fill-in {{ from {{ opacity: 0.18; }} to {{ opacity: 1; }} }}
     """)
-    emit(svg, f"{LOADING_01}{suffix}.svg", version="2.0.1",
-         changelog=[f"2.0.1 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Written under this name "
-                    "after Dennis saved his own design ideas over loading-01-rising-columns.svg, which is his "
-                    "design file now; the screen is unchanged.", *CHANGELOG],
+    emit(svg, f"{LOADING_01}{suffix}.svg", version="2.0.2",
+         changelog=[f"2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
+                    f"{RENAMED[0].upper()}{RENAMED[1:]}.",
+                    "2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Written under "
+                    "this name after Dennis saved his own design ideas over "
+                    "loading-01-rising-columns.svg, which is his design file now; the screen is "
+                    "unchanged.", *SET_CHANGELOG],
          title=f"MONOLITH Loading Screen 01 Rising Columns ({pal['label']})",
-         description=("Loading screen built on the official emblem, the 4 x 4 Conical M with its twelve pieces. "
+         description=("Loading screen built on the official emblem, the 4 x 4 MONOLITH M with its "
+                      "twelve pieces. "
                       "The M's four columns rise out of the ground line at its feet like monoliths being raised, "
                       "one after another (a clip at the base hides each column until it emerges); the pieces then "
                       "settle onto their tiles; a rank of eight tiles below the wordmark "
@@ -362,10 +381,10 @@ def build_loading_02(pal, suffix=""):
       @keyframes tile-in {{ from {{ opacity: 0; transform: scale(0.35); }} to {{ opacity: 1; transform: none; }} }}
       @keyframes grow {{ from {{ transform: scaleX(0); }} to {{ transform: none; }} }}
     """)
-    emit(svg, f"loading-02-tile-wave{suffix}.svg", version="2.0.1", changelog=TAGLINE_CHANGELOG,
-         day=TAGLINE_DAY,
+    emit(svg, f"loading-02-tile-wave{suffix}.svg", changelog=TAGLINE_CHANGELOG,
          title=f"MONOLITH Loading Screen 02 Tile Wave ({pal['label']})",
-         description=("Loading screen built on the official logo, the 4 x 4 Conical M without pieces. Its twelve "
+         description=("Loading screen built on the official logo, the 4 x 4 MONOLITH M without "
+                      "pieces. Its twelve "
                       "tiles arrive in a diagonal wave from the top-left corner, each scaling up from its centre "
                       "with a slight overshoot; a hairline bar under the tagline runs in the accent."),
          key_features=["Tiles: scale 0.35 to 1 with fade and overshoot, delay by (x + y) across the mark, 1.2 s spread",
@@ -509,8 +528,7 @@ def build_hero_01(pal, suffix=""):
     ana.text("cta-analyze-label", x + 296, 728, "Analyze", 20, pal["ink"], weight=500, anchor="middle")
     tagline(copy, "copy", pal, x, 836, "MARBLE VS. OBSIDIAN  ·  CATHEDRAL", anchor="start")
     version_chip(svg, "version", pal, HERO_W - 60, HERO_H - 56, f"{APP_VERSION} · MIT")
-    emit(svg, f"hero-01-mirror-floor{suffix}.svg", version="2.0.1", changelog=TAGLINE_CHANGELOG,
-         day=TAGLINE_DAY,
+    emit(svg, f"hero-01-mirror-floor{suffix}.svg", changelog=TAGLINE_CHANGELOG,
          title=f"MONOLITH Hero 01 Mirror Floor ({pal['label']})",
          description=("Hero image, 1920 x 1080. The official emblem stands on the left on a mirror floor, its "
                       "reflection fading into the ground over the lower part of its height, the way the in-game "
@@ -640,7 +658,7 @@ def build_meter_01(pal, suffix=""):
     ft.path("panel-finetune-chevron", f"M {px + pw - 46},{py + 685} l 7,7 l 7,-7", stroke=pal["ink-2"],
             stroke_width=1.5, linecap="round", linejoin="round")
     version_chip(svg, "version", pal, W - 40, H - 40)
-    emit(svg, f"meter-01-graphics-gauge{suffix}.svg",
+    emit(svg, f"meter-01-graphics-gauge{suffix}.svg", **SET_HEADER,
          title=f"MONOLITH Meter 01 Graphics Gauge ({pal['label']})",
          description=("Dennis's graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as the Settings "
                       "widget it is for. His five sectors and five inner sectors are filled, the active sector in "
@@ -700,7 +718,8 @@ def build_palette_study_marks():
         g.text(f"cell-note{sfx}", x + 20, y + 612, pal["note"], 11, pal["ink-2"])
         swatches(g, "cell-swatches", pal, x + 20, y + cell_h - 46, 18, sfx=sfx)
     sheet_chrome(svg, w, h, "MONOLITH — Palette Study 01: the logo and the emblem",
-                 "The official 4 x 4 Conical M, bare and with its pieces, painted in five palettes; the swatch "
+                 "The official 4 x 4 MONOLITH M, bare and with its pieces, painted in five "
+                 "palettes; the swatch "
                  "row is ground, lift, accent, ink, ink-2, the two tiles, mortar and the four piece inks.", fname)
     emit(svg, fname, title="MONOLITH Palette Study 01 Logo and Emblem",
          description=("Review sheet: the official logo and emblem painted in the five candidate palettes, each "
@@ -765,7 +784,7 @@ def build_palette_study_meter():
         g.text(f"cell-name{sfx}", x + 20, y + cell_h - 24, pal["label"], 14, pal["ink"], weight=600)
     sheet_chrome(svg, w, h, "MONOLITH — Palette Study 03: the graphics meter",
                  "Dennis's gauge as the settings widget, HIGH active, in five palettes.", fname)
-    emit(svg, fname, title="MONOLITH Palette Study 03 Graphics Meter",
+    emit(svg, fname, title="MONOLITH Palette Study 03 Graphics Meter", **SET_HEADER,
          description="Review sheet: the graphics gauge widget in the five candidate palettes, HIGH active in each.",
          key_features=["Five cells, one palette each", "Gauge geometry from graphics-meter-design-v1.2.svg, stamped verbatim"],
          other_info=["Source: graphics-meter-design-v1.2.svg", PAL_INFO],

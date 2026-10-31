@@ -4,15 +4,18 @@
     - File Name: README.md
     - Relative Path: assets/mockups/README.md
     - Artifact Type: docs
-    - Version: 2.0.1
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.0.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The mark
+      is called the MONOLITH M: at Dennis's request the brand files dropped
+      "conical" from their names while the logo is still being decided.
     - 2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       works in it now, so it is his design file: the generated screen is
@@ -52,7 +55,7 @@
 
 # MONOLITH mock-ups
 
-Screen mock-ups built on the official MONOLITH mark, the 4 × 4 Conical M:
+Screen mock-ups built on the official MONOLITH mark, the 4 × 4 MONOLITH M:
 the logo (`assets/monolith-logo.svg`, no pieces) and the emblem
 (`assets/monolith-emblem.svg`, with its twelve pieces). Every tile is the
 system's geometry and every piece is Dennis's path data from
