@@ -15,7 +15,7 @@
 ✒ Changelog:
     - 1.1.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — TB HITS
       shows only when the engine reports them, and a footer the stylesheet
-      hides (on a phone) is neither read nor fitted.
+      hides (under 900 px wide) is neither read nor fitted.
     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -36,8 +36,7 @@
     - Frame time from requestAnimationFrame; cores from hardwareConcurrency;
       heap and GPU name where the browser exposes them.
     - Sparklines and the fit to the footer's width; nothing is read or
-      fitted while the stylesheet hides the footer (phones under 600 px
-      wide, or held sideways).
+      fitted while the stylesheet hides the footer (under 900 px wide).
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls
@@ -106,7 +105,7 @@ function spark(cv, vals, color = TOK.steel) {
 export function updateTelemetry(now) {
   const foot = $('#telemetry'); foot.hidden = app.worldName !== 'monolith';
   if (foot.hidden || now - telemetry.t < 300) return; telemetry.t = now;
-  if (!foot.offsetWidth) return;   // set aside by the stylesheet (a phone): nothing to read or fit
+  if (!foot.offsetWidth) return;   // set aside by the stylesheet (under 900 px): nothing to read or fit
   const C = telemetry.cells, show = (k, on) => { C[k].el.hidden = !on; return on; },
     set_ = (k, v, badge) => { const c = C[k]; c.v.textContent = v; if (c.bf.textContent !== badge) { c.bf.textContent = badge; c.bs.textContent = badge.replace(/:.*\]$/, ']'); c.bd.title = badge; } };
   const tab = prefs.tab, crTab = tab === 'crucible', anTab = tab === 'analyze';

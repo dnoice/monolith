@@ -13,20 +13,23 @@
 
 ✒ Changelog:
     - 1.0.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release, with 2.18.0: the game written out as PGN (copied or
-      downloaded), a PGN or a FEN read back in as a game, and the FEN of
-      the board on screen copied.
+      release, with 2.18.0: PGN out (copied, downloaded, a comment after an
+      Analyze-marked move), PGN or FEN in as a game, the board's FEN copied.
 
 ✒ Description:
     The game as a record other chess software reads: PGN out, PGN (or a
     FEN) in. A game played here can be taken to another site or kept as a
     file, and a game from elsewhere can be pasted in to review, analyse or
-    play on from.
+    play on from. A move in a two-player game made after using Analyze is
+    followed by a comment saying so.
 
 ✒ Key Features:
     - gamePgn(): the seven standard tags, SetUp and FEN for a game that
       began part-way, the moves numbered from where it began (12... when
       Black moved first), how it ended as a comment, wrapped at 80 columns.
+      A move with an Analyze mark (consultedAt() in js/game/flow.js) is
+      followed by {Marble used Analyze before this move}, and a move of
+      Black's after a comment takes its number again (12... Nf6).
     - parsePgn(): reads the tags, skips comments, variations, NAGs, move
       numbers and annotation marks, and replays the moves; an error names
       the first move that is not legal, with its number. Play's Load a game

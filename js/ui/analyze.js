@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Load
-      takes a pasted FEN or PGN game (parsePgn) and opens it in Analyze; the
-      reference and Load share analyzeLine(), and xr keeps a tapped square.
+      takes a FEN or PGN game (parsePgn) via analyzeLine(), as the reference
+      does; xr keeps a tapped square; anEvalShown() serves the Analyze mark.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -37,6 +37,9 @@
     - an: the tab's state; xr: the X-Ray's, with the square a tap picked
       on a touch screen (cleared when the position changes).
     - deep and field: two engines for the instrument.
+    - anEvalShown(): whether the engine's evaluation is on screen (Analyze
+      open with a scored line, live or recorded), which the two-player
+      Analyze mark asks (js/game/flow.js, js/ui/analyze-view.js).
     - anSync(), anGoToggle() and anStopSearch(): the search for the position
       shown, and Go infinite.
     - The fork walk: MultiPV 2 along line 1 to find the fork and

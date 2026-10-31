@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Each
-      pane keeps its own scroll place across tab switches, and the World
-      setting applies that world's panel width at once.
+      pane keeps its scroll place, a World change sizes the panel at once,
+      and the actions stand at the rail's foot (the app bar under 900 px).
     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -25,11 +25,17 @@
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    Single-level navigation: the rail (a bottom bar on phones) and the tab
-    switch, which also moves the world when it follows the destination.
+    Single-level navigation: the rail (the bottom bar under 900 px) and the
+    tab switch, which also moves the world when it follows the destination.
+    The app's actions stand at the rail's foot, or under 900 px at the app
+    bar's end.
 
 ✒ Key Features:
     - NAV and buildNav(): the destinations.
+    - placeActions(), run from buildNav(): the app's actions (#app-actions:
+      the command palette, Flip board, Sound and the release chip) moved to
+      the rail's foot, or to the app bar's end under 900 px (css/media.css),
+      whenever the width crosses it; a focused control gets the focus back.
     - setTab(): shows a destination and saves it, sizes the layout for it,
       puts Analyze's searches away on the way out, and lets the world
       follow; each pane opens at its own top, or where it was left.
@@ -92,7 +98,7 @@ export function buildNav() {
   placeActions(); NARROW.addEventListener('change', placeActions);
 }
 /* The app's actions (the command palette, Flip board, Sound and the release chip, #app-actions)
-   stand at the foot of the rail, after its tabs (Dennis, 10/30/2026). Under 900 px the rail is
+   stand at the foot of the rail, after its tabs. Under 900 px the rail is
    the bottom bar, its six tabs its whole width, or on a phone held sideways a column with no
    height to spare, so there they go back to the app bar's end (css/media.css). One set of
    elements, moved, so their ids, handlers and titles stay as they are; a control that had the

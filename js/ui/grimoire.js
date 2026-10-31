@@ -12,9 +12,9 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Go
-      to lands on the control an article names (GR_AT, grLand), and a search
-      that finds nothing offers Show N in All and Clear search.
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Go to
+      lands on the control an article names (GR_AT, grLand), auto-flip, PGN
+      and Draw too; no matches offer Show N in All and Clear search.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -36,11 +36,11 @@
       (grBack). A search that finds nothing names its category, and
       offers Show N in All where other categories hold the word, and
       Clear search.
-    - grLand() and GR_AT: Go to lands on the control an article names,
-      opening a folded section around it, centring it in the panel and
-      ringing it; a switch or button takes the focus, a text field never.
-      A hidden control leaves the jump at the tab's top. The palette's
-      :keys uses grLand() too.
+    - grLand() and GR_AT: Go to lands on the control an article names
+      (auto-flip, PGN and Draw among them), opening a folded section
+      around it, centring it in the panel and ringing it; a switch or
+      button takes the focus, a text field never. A hidden control leaves
+      the jump at the tab's top. The palette's :keys uses grLand() too.
     - termify(): marks terms in the markup.
     - termOpen() and termClose(): the term card beside any marked term.
 

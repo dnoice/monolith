@@ -4,15 +4,18 @@
     - File Name: board.js
     - Relative Path: js/scene/board.js
     - Artifact Type: javascript
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      knight's neck, head, muzzle, ears and mane are blocks with bowed faces
+      (block()) within the old boxes' bounds, so the light runs across them.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,14 +25,12 @@
       keep their piece's shading, share one fading copy per capture and
       shrink at the same speed at any frame rate; and clearFragments() lives
       here and frees what it clears.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The board and everything on it: squares, highlight markers, coordinate
-    labels, the lathe-turned pieces and the fragments a captured piece
-    shatters into.
+    labels, the pieces (lathe-turned, with the knight's head and neck
+    built of bowed blocks) and the fragments a captured piece shatters into.
 
 ✒ Key Features:
     - sqPos(): a square's world position; the board and its squares.
@@ -38,6 +39,8 @@
     - Coordinate labels on all four sides, relabelled when the board turns.
     - Pieces: lathe profiles per kind, buildPiece(), placePieces() and
       pieceAt().
+    - block(): the knight's neck, head, muzzle, ears and mane, boxes whose
+      faces bow out (a superellipsoid, n = 4) within the same bounds.
     - Fragments: shatter(), stepFragments() and clearFragments() for
       captures.
     - boardGen: counts each rebuild of the pieces.
@@ -105,7 +108,7 @@ function lathe(points, segs = 40) {
   for (const p of pts) if (p.x < 0) p.x = 0;
   const g = new THREE.LatheGeometry(pts, segs); g.computeVertexNormals(); return g;
 }
-/* The knight's neck, head, muzzle, ears and mane (Dennis, 10/30/2026: the knight read flat and
+/* The knight's neck, head, muzzle, ears and mane (the knight read flat and
    matte beside the rest of the set). They were plain boxes: a flat face mirrors one direction of
    the room, so each face showed one even tone, while every lathe-turned piece curves and carries
    its highlights across itself. Each part is now a block whose faces bow out: a box w × h × d

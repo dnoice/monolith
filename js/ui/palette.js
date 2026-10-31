@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.5.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Everyday
-      words find commands, a term opens its Grimoire entry and :fen opens
-      Set up; commands for games, PGN, Settings, Position and badges.
+      words find commands or a Grimoire term, :fen opens Set up or Analyze's
+      Load; commands for games, PGN, Settings, Draw and :explore analyze.
     - 1.4.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — :version
       names the app MONOLITH, the name Dennis chose.
     - 1.4.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
@@ -41,7 +41,11 @@
     - With nothing typed, the tab in view puts its own groups first
       (TAB_GROUPS), Settings in the order of its cards.
     - :fen with a FEN opens it in Set up, to choose who plays it; on
-      Analyze it is analysed in place (its Load section).
+      Analyze it is analysed in place (its Load section), and its row says
+      Analyze there instead of Open in Set up.
+    - :draw, in the Game group, offers a draw to the other player or, on
+      your turn, to Stockfish; :explore analyze turns Explore in Analyze
+      on or off.
     - layerToggle(): a MONOLITH layer on or off, opening Analyze first.
 
 ✒ Usage Instructions:

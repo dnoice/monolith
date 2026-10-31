@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Play
-      to here plays an engine line onto the board, badges have a short form,
-      a tap aims the X-Ray, and status, fork row and WDL labels keep clear.
+      to here plays an engine line, badges have a short form, a tap aims the
+      X-Ray; it shows the Explore switch and times the Analyze mark.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -45,6 +45,11 @@
       MultiPV row plays its first move; the game itself never changes.
     - renderXray() and placeXrayChip(): the X-Ray readout and its chip on
       the board; on a screen without hover a tap picks its square.
+    - The Explore switch on the board (#btn-an-explore): its state, and a
+      title saying where a move made here goes during a game.
+    - consultWatch(): Analyze open for CONSULT_DWELL_MS (1.5 s) during a
+      two-player game, with the evaluation on screen, marks the side to move
+      (markConsult(), js/game/flow.js); leaving the tab or a move resets it.
     - setBadge(), badgeShort(), syncBadges() and setBadgesPref(): each
       source badge in its full or short form ([SF · rec]), the full text
       in a short badge's title.

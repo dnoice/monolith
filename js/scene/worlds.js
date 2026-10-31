@@ -13,9 +13,9 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
-      world change eases to the fitted distance and pan, the fog thins with
-      the fit (applyBackdrop(), now exported), and the labels drop "Gothic".
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A world
+      change eases to the fitted distance and pan, the fog thins with the
+      fit (applyBackdrop(), exported), and the subtitle names the world.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -44,6 +44,9 @@
     - setWorld() and desiredWorld(): the transition, and which world a tab
       wants; the camera eases to the fit and pan read live, so a stage that
       changes size on the way is still fitted at the end.
+    - The app bar's subtitle (#brand-sub), set on each change: "Cathedral
+      world · marble vs. obsidian", or "MONOLITH world · {engine family}
+      instrument" (js/game/engine.js names the engine that loaded).
     - resizeMirror() and syncWorldRender().
     - worldSettled(): whether a world change has finished.
 

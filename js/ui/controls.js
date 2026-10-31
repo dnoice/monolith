@@ -15,7 +15,7 @@
 ✒ Changelog:
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Wires
       the free board, auto-flip, Draw, rematch on the other side, Analyze
-      game, PGN and FEN, Reset view, a phone's move box and Analyze's Load.
+      game, PGN, FEN, Reset view, the move box, Load and Explore in Analyze.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -41,14 +41,17 @@
     - The game record: Copy PGN, Download PGN, Copy FEN and the setup's
       Load a game.
     - The Moves card: its steps walk the game, the free board's line or a
-      Crucible game on the board; the move box plays a move on your turn
-      or tries it in a line, and on a phone opens from its keyboard button.
+      Crucible game on the board; the move box sends a typed move where a
+      click would (the line on the board, a line from the live position in
+      Analyze, the game on your turn, else a new line), and on a phone opens
+      from its keyboard button.
     - The Coach card's switches, engine lines and Calculate.
     - Analyze and Crucible settings, saved as they change; Analyze's Load
       and the short source badges; the Crucible deck's own Start run.
-    - Settings: sound, legal moves, Move pieces, coordinates, tips, speed
-      and Reset view (also on the stage); Coach comments and Evaluation bar
-      run the Coach card's own switches.
+    - Settings: sound, legal moves, Move pieces, Explore in Analyze (one
+      setting with the Explore switch on the Analyze board), coordinates,
+      tips, speed and Reset view (also on the stage); Coach comments and
+      Evaluation bar run the Coach card's own switches.
     - Arrow keys in radio groups, and the Hive's pointer and keyboard
       handling.
 

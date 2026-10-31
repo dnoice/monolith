@@ -4,24 +4,25 @@
     - File Name: materials.js
     - Relative Path: js/scene/materials.js
     - Artifact Type: javascript
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      obsidian clearcoat is 0.22 rough, not 0.08: MONOLITH's strip lights
+      are a soft sheen on the dark pieces, not hard lines down them.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
     - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: matCopy(), a copy of a material that
       keeps its shader patch (three.js's clone() leaves it out).
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The shared materials: marble and obsidian for the pieces, the squares
@@ -30,7 +31,8 @@
     set and piece draws from this one table.
 
 ✒ Key Features:
-    - MAT: the materials by name.
+    - MAT: the materials by name; obsidian's clearcoat is 0.22 rough, so a
+      strip light on a dark piece is a soft sheen, not a hard line.
     - marbleUniforms: the veining patch for marble.
     - rimUniforms: the rim light that keeps pieces readable against dark
       ground.
@@ -73,7 +75,7 @@ export function matCopy(m) {
 
 /* ---------- setup: run once, in order, by js/main.js ---------- */
 export function init() {
-  /* Obsidian's clearcoat is 0.22 rough, not a mirror's 0.08 (Dennis, 10/30/2026: hard white lines
+  /* Obsidian's clearcoat is 0.22 rough, not a mirror's 0.08 (hard white lines
      ran down the middle of the dark pieces in MONOLITH). MONOLITH's room is lit by two strip lights
      0.8 wide standing at the sides (scene/renderer.js); a turned body is curved across and straight
      along its length, so a mirror-like coat drew each strip as a line a few pixels wide down the

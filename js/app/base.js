@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.6.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      release on screen is 2.18.0. New defaults: autoFlip on, badges
-      'full', edVs 'cpu'; a saved badges or edVs keeps to its choices.
+      release on screen is 2.18.0. New defaults: autoFlip and analyzeExplore
+      on, badges 'full', edVs 'cpu'; the last three keep to their choices.
     - 1.5.4 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       release on screen is 2.17.0.
     - 1.5.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
@@ -29,8 +29,9 @@
 
 ✒ Key Features:
     - $: document.querySelector.
-    - APP_VERSION and APP_DATE, shown in the app bar and in Settings; a
-      release bumps them with the page header.
+    - APP_VERSION and APP_DATE, shown on the release chip at the rail's foot
+      (under the wordmark below 900 px) and in Settings; a release bumps
+      them with the page header.
     - prefs: the per-viewer preferences in localStorage (monolith-prefs-v2;
       a copy saved under the old name, wizards-chess-prefs-v2, moves there
       on first load), with defaults, and every saved value repaired to its

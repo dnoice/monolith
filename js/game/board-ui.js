@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Pieces
-      can be dragged (grabbable()); before a game a click plays the free
-      board or says how to start, and the tab stays; a tap aims the X-Ray.
+      can be dragged (grabbable()); a click plays the free board before a
+      game, or a line from Analyze's live position; a tap aims the X-Ray.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -41,6 +41,9 @@
     - Before any game a click plays on the free board while Move pieces on
       any board is switched on; with it off, a click says how to start and
       leaves the tab alone.
+    - In Analyze, at the live position of a running game, a click or a drag
+      starts a line and leaves the game alone while Explore in Analyze is
+      on (exploresHere() in js/game/flow.js says where a click goes).
     - While the board turns for the other player, clicks on it wait.
     - With the X-Ray on in Analyze, a tap aims it at a square, and a second
       tap there lets it go.

@@ -13,9 +13,9 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      board turns for each player and is free before a game; startGame()
-      takes a line (Play from here, PGN); draws by agreement; analyzeGame().
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Draws
+      agreed, or judged by the computer on Dennis's ruling; the board turns
+      per player; free board; startGame() lines; Analyze explores and marks.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -29,8 +29,9 @@
 ✒ Description:
     Starting, ending and rewinding games, reviewing earlier moves, and
     exploring: moves tried on a board the game does not own, from any
-    position on screen, or on the free board before any game. In a game
-    between two people on one screen, the board turns to the side to move.
+    position on screen, or on the free board before any game. Draw offers
+    are settled here, and in a game between two people on one screen the
+    board turns to the side to move and a side that used Analyze is marked.
 
 ✒ Key Features:
     - startGame(), rematch(), openSetup(), undo() and resign(); a new game
@@ -45,8 +46,11 @@
       side to move comes to the bottom a beat after each move (a cut under
       Minimal or reduced motion); turning is true while the board turns,
       and clicks on it wait.
-    - canOfferDraw() and offerDraw(): a draw by agreement between two
-      players on one screen.
+    - canOfferDraw(), offerDraw() and drawJudging(): a draw by agreement,
+      answered by the other player or by the computer at full strength. It
+      accepts facing mate or a pawn or more worse (DRAW_WORSE_CP), and a
+      level position (DRAW_LEVEL_CP) from move DRAW_FROM_MOVE; after a
+      decline the offer waits DRAW_RETRY_MOVES of your moves.
     - analyzeGame(): the game opened in Analyze at the Coach's turning
       point, else at its end.
     - showView() and goLive(): review an earlier move without changing the
@@ -55,8 +59,17 @@
     - Explore: a scratch line from a game, an earlier move, a finished game
       or a Crucible game; exploreTyped() takes a typed move into it, and
       exploreAppend() plays an engine line onto it at once (Play to here).
+    - analyzeExplores(): in Analyze a move at a running game's live position
+      starts a line (setAnalyzeExplorePref(), on by default); exploresHere()
+      says whether a click or a typed move goes into a line.
     - The free board: before any game a line starts from the starting
       position (sandbox()), and draftLine() hands it to Play from here.
+    - The Analyze mark, two-player games only (consultable()): Analyze's
+      evaluation on screen for CONSULT_DWELL_MS, a line from the live
+      position or a move played from Analyze marks the side to move
+      (markConsult()); the move then played carries it (consultedAt()), the
+      other player is told (consultHandover()), and consultPlies() and
+      setConsultPlies() keep it through a reload.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup
@@ -69,8 +82,8 @@
       scene/board.js, scene/camera.js, scene/motion.js, app/sound.js,
       app/state.js, ui/snackbar.js, game/engine.js, game/board-ui.js,
       game/play.js, game/ceremony.js, game/lines.js, coach/notes.js,
-      ui/crucible.js, ui/crucible-board.js, ui/nav.js and ui/studies.js;
-      globals Chess (js/core/chess.js).
+      ui/crucible.js, ui/crucible-board.js, ui/nav.js, ui/studies.js and
+      ui/analyze.js; globals Chess (js/core/chess.js).
     - Shared state (js/app/store.js): sets app.orient, app.rolling,
       app.cpuThinking, app.lastMove, app.view, app.hint, app.calc,
       app.fenDirty, app.started, app.setupOpen, app.busy, app.selected and
@@ -243,7 +256,7 @@ export function offerDraw() {
     render(); celebrate(game.result); coachKick();
   } }], true);
 }
-/* The computer's answer (Dennis's rule, 2.18.0). It judges the position at full strength whatever
+/* The computer's answer (a set rule, 2.18.0). It judges the position at full strength whatever
    level it plays at: a short search on the play engine (no Elo limit, MultiPV 1), its last scored
    line read from its own side (the engine scores for the side to move, which is you).
    - A pawn or more worse (DRAW_WORSE_CP), or facing a forced mate: it accepts.
@@ -348,7 +361,7 @@ export const underlyingState = () => boardOverride ? boardOverride.state : shown
    on every tab, and Play from here turns the line into a game. */
 export const exploreAvailable = () => !!boardOverride || !app.started || app.view !== null || !!game.result;
 export const sandbox = () => explore.on && !app.started && !boardOverride;
-/* Analyze explores during a game (Dennis, 2.18.0; on by default: Settings → Explore in Analyze, the
+/* Analyze explores during a game (2.18.0; on by default: Settings → Explore in Analyze, the
    Explore switch on the Analyze board, :explore analyze). At the live position of a running game a
    click, a drag or a typed move in Analyze starts a line from the position shown and never touches
    the game. Off, a move made there on your turn is played in the game, as before. The positions
@@ -445,7 +458,7 @@ export function exploreOrigin() {
 }
 
 /* ---------- looking at the engine in a two-player game (2.18.0) ----------
-   Dennis: with two people on one screen, one of them using Analyze during the game is consulting
+   With two people on one screen, one of them using Analyze during the game is consulting
    the engine, and the other is told. It counts for the side to move at the live position, and only
    in a live two-player game: never a finished game, a game against the computer, the free board, a
    study, a game loaded for analysis or a Crucible game on the board (consultable()).

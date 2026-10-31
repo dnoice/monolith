@@ -13,9 +13,9 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — After a
-      move a friend game's board turns. A move ends a line explored over it,
-      spares a Crucible game's pieces, and lands if its animation fails.
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A move
+      ends a line over it, spares a Crucible game's pieces, lands if its
+      animation fails; a friend game turns the board and flags Analyze use.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -36,10 +36,12 @@
       promotion. A line explored over the live position ends before the
       game's move; a move whose animation fails still lands, its pieces
       placed; a Crucible game on the board keeps its pieces while a reply
-      is recorded underneath.
+      is recorded underneath. In a friend game a move played from Analyze,
+      its evaluation on screen, carries the Analyze mark (consultOnMove()).
     - afterMove(): the result, sounds, the Coach and the next turn; in a
-      friend game the board then turns to the side to move (autoOrient()
-      in js/game/flow.js).
+      friend game the board then turns to the side to move, and that player
+      is told when the other used Analyze before the move (autoOrient() and
+      consultHandover() in js/game/flow.js).
     - maybeComputerMove(): the engine's reply at the level's limits, with
       chooseMove for levels 1 to 5.
     - playLevel() and levelNote(): a level, adjusted when the engine has no

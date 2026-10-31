@@ -4,26 +4,24 @@
     - File Name: engine.js
     - Relative Path: js/game/engine.js
     - Artifact Type: javascript
-    - Version: 1.0.3
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.0.4
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.4 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      MONOLITH brand subtitle names its world first, as the Cathedral one
+      does: "MONOLITH world · Stockfish 19 instrument".
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Reports
       Stockfish under way, ready or failed to the loading screen's meter
       Dennis asked for.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: an engine that stops working after it
-      has started answers its pending search, restarts once and then reports
-      the failure, instead of leaving searches waiting; a terminated engine
-      starts nothing more.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -37,7 +35,9 @@
       stop, with info lines parsed.
     - engine: the engine that plays; allEngines lists every engine the page
       started.
-    - engineFamily() and the labels the page shows for each build.
+    - engineFamily() and the labels the page shows for each build: the
+      Crucible's engine choices and, in MONOLITH, the brand subtitle
+      (#brand-sub, "MONOLITH world · Stockfish 19 instrument").
     - putLine(): files an info line under its MultiPV rank, dropping a lower
       rank with the same first move.
 
@@ -49,7 +49,8 @@
 
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, app/state.js,
-      game/play.js and game/lines.js; globals Chess (js/core/chess.js).
+      game/play.js, game/lines.js and ui/boot-screen.js; globals Chess
+      (js/core/chess.js).
     - Shared state (js/app/store.js): sets app.cpuThinking; reads
       app.worldName.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
