@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Coach Styles (MONOLITH Edition - v1.0)
+    - Title: Coach Styles (MONOLITH Edition - v1.1)
     - File Name: coach.css
     - Relative Path: css/coach.css
     - Artifact Type: stylesheet
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      notes are wells sunk into the Coach card; the idle and working notes
+      are one sentence in a dashed outline, the idle one without its head.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -19,19 +22,19 @@
     - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a [hidden] rule the base rule in
       css/tokens.css already covers is gone.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Coach's feed in the Play pane: one note per moment of the game, each
     with its badge, the move, the score and the text in the Coach's voice.
 
 ✒ Key Features:
-    - The note: badge, move, score, text, an extra line and a closing maxim.
+    - The note, a well sunk into the Coach card: badge, move, score, text,
+      an extra line and a closing maxim.
     - Kinds: the verdict on your move, the reply, the watch on your turn
       (alert or chance), book moves and the end of the game.
-    - Idle and busy states, with the thinking ellipsis while the Coach's
+    - Idle and busy states, each one sentence in a dashed outline (the idle
+      note without its head), with the thinking ellipsis while the Coach's
       engine works.
 
 ✒ Usage Instructions:

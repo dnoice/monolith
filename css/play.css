@@ -1,17 +1,22 @@
 /*
 ✒ Metadata
-    - Title: Play Cards (MONOLITH Edition - v1.1)
+    - Title: Play Cards (MONOLITH Edition - v1.2)
     - File Name: play.css
     - Relative Path: css/play.css
     - Artifact Type: stylesheet
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Cards
+      raised on the panel's ground, each head a band held at the top with
+      its icon in an accent tile and room for a long title; the turn card's
+      accent wash, its move number plain; Load a game and Engine lines the
+      panel's disclosure row; the PGN box a well.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       free board, the board turning, Start game in reach, the PGN record,
       Draw, the Analyze mark; the strip at the bar's end on one baseline.
@@ -19,10 +24,6 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 1.0.2 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: rules for classes no page uses
-      (.card-rule, .card-sub) and [hidden] rules the base rule in
-      css/tokens.css already covers are gone.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -32,24 +33,32 @@
     the board turns, and the game record.
 
 ✒ Key Features:
-    - Cards: head and aside, with switch rows and the level inside a card;
-      group titles elsewhere end in a hairline.
-    - Engine lines as a disclosure inside a card.
-    - The status card: the turn banner, the move and the opening's name.
+    - Cards raised on the panel's ground (a lighter face, a rim of light on
+      the top edge, a soft drop; the --pnl-* tokens, css/tokens.css), each
+      head a band across the top that holds at the top of the panel while
+      its card scrolls, its icon in an accent tile, a long title wrapping
+      inside it; head and aside, with switch rows and the level inside a
+      card; group titles elsewhere end in a hairline.
+    - Engine lines as a disclosure inside a card, on the panel's shared
+      disclosure row (css/layout.css).
+    - The status card, washed faintly in the accent from its top edge: the
+      turn banner, the move number as plain text, and the opening's name.
     - The game's actions: two or three to a row (Draw, in any game but a
       study or one loaded for analysis), the words without their icons in
       a narrow panel.
     - The setup's Start game held at the foot of the pane while the cards
       scroll under it.
-    - The game record: Load a game folded at the foot of the setup with its
-      PGN box, and Copy PGN, Download PGN and Copy FEN under New game and
-      Resign.
+    - The game record: Load a game folded at the foot of the setup (its
+      summary the card's head, on the shared disclosure row) with its PGN
+      box sunk in a well, and Copy PGN, Download PGN and Copy FEN under New
+      game and Resign.
     - The free board before a game: its tried moves in the list, the line
       Play from here opens the setup with, and on a phone the explore
       chip's line over its three buttons.
-    - The Analyze mark: in a two-player game, the Analyze icon after a
-      move played once its side had used Analyze, in the selected move's
-      colour on the current move.
+    - The engine-help mark: in a two-player game, the Analyze icon after a
+      move played once its side had used the engine's help (Analyze, a
+      hint, Calculate, or the evaluation bar, once a game), in the selected
+      move's colour on the current move.
     - The board turning for each player: the players' cards out of sight
       while it turns; a cut (Minimal, reduced motion) never hides them.
     - The match strip: players, level, move number, status and the last
@@ -202,7 +211,8 @@
 /* ---------- the free board before a game (2.18.0) ----------
    Its moves in the list are a line being tried, not a record to step through; Play from here
    opens the setup on it, with the line in the card at the top. */
-/* a move played after its side used Analyze in a two-player game (2.18.0): the Analyze icon */
+/* a move played after its side used the engine's help in a two-player game (2.18.0; a hint,
+   Calculate and the evaluation bar since 2.19.0): the Analyze icon, its title saying which */
 .mv .mk-consult{display:inline-block;width:12px;height:12px;margin-left:3px;vertical-align:-1px;color:var(--md-secondary)}
 .mv .mk-consult svg{display:block;width:100%;height:100%;fill:currentColor}
 .mv.cur .mk-consult{color:inherit}

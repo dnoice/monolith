@@ -1,18 +1,25 @@
 /*
 ✒ Metadata
-    - Title: Page Layout (MONOLITH Edition - v1.7)
+    - Title: Page Layout (MONOLITH Edition - v1.8)
     - File Name: layout.css
     - Relative Path: css/layout.css
     - Artifact Type: stylesheet
-    - Version: 1.7.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.8.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.8.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      panel's ground, wells and raised keys; one disclosure row, opening
+      over 280 ms; segments raised in a sunk track; one accent focus ring;
+      an off switch that reads as off; the top-edge shade, the tab
+      crossfade, Settings' index; hover tints only where the pointer
+      hovers; the palette's key on its button; the loading screen's tip set
+      on the stage, its skip hint at 4.7:1.
     - 1.7.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       stage's safe bands; the emblem as the wordmark's M, the strip at the
       bar's end; the rail's actions and accent; Settings in cards; boot arc.
@@ -21,12 +28,6 @@
       mark: its squares in the board diagrams' dark tone (in the cathedral
       the slate he drew it in), its mortar the bar's own colour, one pixel
       wide at any size so the twelve squares read at 32 px.
-    - 1.5.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      loading screen slowed down as Dennis asked, every length scaled by
-      --bt for the saved Animation speed, with the loading meter (a recessed
-      rail, a segment for each step, a sheen on the step under way and a
-      flash as each comes in) and the tip card (raised off the stage, a chip
-      for its kind, key caps), styled for both worlds; the bar is gone.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -46,14 +47,24 @@
     - The navigation rail: the destinations, the selected one's pill and
       label in --md-nav-active (css/tokens.css), faint on a hovered or
       focused pill; at its foot the app's actions (the palette as an icon
-      button, Flip board, Sound, the release chip), which js/ui/nav.js
-      moves there from 900 px up. A short window tightens the column.
-    - Shared controls: state layers, ripples and focus rings; a segmented
-      choice is ringed whole, with a bar under the focused option.
+      button, its key under it where the pointer is a mouse or a trackpad,
+      Flip board, Sound, the release chip), which js/ui/nav.js moves there
+      from 900 px up. A short window tightens the column.
+    - Shared controls: state layers (hover tints only where the pointer
+      hovers), ripples, and one focus ring in the accent (--pnl-accent)
+      for every control; in the panel a filled or tonal button catches the
+      light on its top edge and an outlined one has a faint face.
+    - The panel's disclosures: every details element in it is one row,
+      with a state layer and its chevron in a small well, its words in full
+      ink; it opens and closes over 280 ms where the browser can size its
+      content to auto (interpolate-size, ::details-content).
     - Body layout: the navigation rail, the stage, the panel at its world's
-      width (css/tokens.css) and the move list, which Settings and the
-      Grimoire leave out (its fold is in css/workspace.css, its phone strip
-      in css/media.css).
+      width (css/tokens.css) on its own ground (--pnl-ground), and the move
+      list, which Settings and the Grimoire leave out (its folded forms, to
+      its title or to a one-row strip, are in css/workspace.css). The panes
+      contain their overscroll, stop a control scrolled into view below a
+      held head band, shade their top edge once scrolled, and crossfade
+      when the rail changes tab (data-vt, view-transition-name).
     - The stage's safe bands (--safe-t, --safe-r, --safe-b, --safe-l on
       #scene), which the camera fits the board inside: the player cards,
       the chips and the orbit hint in the top band, the chips on a second
@@ -62,20 +73,29 @@
     - The Crucible's board on a narrow stage: an explored line's chip takes
       the game card's place under 820 px (under 920 px while Reset view
       shows), and Reset view is its icon alone under 580 px.
-    - Panel parts: the kicker over every pane's title, segmented buttons,
-      side choice cards, the difficulty slider, the in-game summary and
-      switch rows; Settings' five cards, and its graphics meter (a dial of
-      five back-rank cells, with its needle and pawn hub) and its
-      Fine-tune rows.
-    - Per-tab basics for Analyze (whose board has no player cards),
-      Position and Settings, and the snackbar (one message at a time).
+    - Panel parts: the kicker over every pane's title; segmented buttons, a
+      track sunk into the card with the chosen segment raised and the
+      accent's check, a focused segment ringed inside its edge; side choice
+      cards raised as keys, the chosen one in the accent's edge and tint;
+      the difficulty slider, the in-game summary and switch rows, whose
+      label fills the row (off, a switch is a sunk track with a light
+      thumb and edge); Settings' index row and five cards, and its graphics
+      meter (a dial of five back-rank cells, with its needle and pawn hub)
+      and its Fine-tune rows.
+    - Fields and readings sunk in wells (--pnl-well): selects, the move
+      box, the FEN box and the engine's best line.
+    - Per-tab basics for Analyze (whose board has no player cards; the
+      recorded run's preset a raised key with a chevron), Position and
+      Settings, and the snackbar (one message at a time).
     - The stage's notices: WebGL missing (over the stage), and the page
       opened from disk (over the whole page, since nothing can run).
     - The loading screen: the emblem on the stage colour, its squares
       and woods the board diagrams', with the name in Michroma and White's
       back rank in an arc over it; animated in three stages (the M written,
       a rest with the loading meter and a tip while the board is built, the
-      pieces set and a glint) and still under reduced motion.
+      pieces set and a glint) and still under reduced motion. The tip is
+      type set on the stage, its kind a kicker between two hairlines, its
+      keys light hairline caps.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 2 of 12. The sheets are one cascade
@@ -87,7 +107,8 @@
       the board diagrams' colours in css/position.css, the markup of
       index.html (with the emblem's drawing, #emb), and the class names the
       modules under js/ set; js/ui/nav.js places the actions (#app-actions)
-      in the rail or the app bar.
+      in the rail or the app bar and sets data-vt while a tab crossfades,
+      and js/ui/controls.js moves the panel for Settings' index.
     - Safe bands: js/scene/camera.js reads --safe-t/r/b/l from the canvas
       (#scene); css/monolith.css (Analyze), css/crucible.css and
       css/media.css (phones) set their own.

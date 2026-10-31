@@ -1,18 +1,23 @@
 /*
 ✒ Metadata
-    - Title: Media Overrides (MONOLITH Edition - v1.1)
+    - Title: Media Overrides (MONOLITH Edition - v1.2)
     - File Name: media.css
     - Relative Path: css/media.css
     - Artifact Type: stylesheet
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      panel's segments, chips and small buttons 40 px on touch; its motion
+      off under reduced motion and Minimal; the strip's layout moved to
+      css/workspace.css; the handover notice at the stage's top; the
+      palette's key from 600 px; MONOLITH's wordmark 18 px under 360 px.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rules
       for phones held sideways, upright tablets and touch screens; a phone's
       move list as a strip; under 900 px, actions in the bar, no telemetry.
@@ -20,16 +25,15 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The overrides for small screens, touch screens and reduced motion, kept
     last so they win. Under 900 px the page is one column over a bottom
     bar, with layouts of its own for a phone held sideways and a tablet
     held upright; touch screens get targets a finger can hit, and reduced
-    motion turns transitions off.
+    motion turns transitions off, as the Minimal speed does for the
+    panel's own.
 
 ✒ Key Features:
     - Up to 899 px: one column (stage, dock, panel, then the rail as a
@@ -37,25 +41,38 @@
       (whose readings the panels carry) are hidden, the app's actions stand
       at the app bar's end (js/ui/nav.js moves them there) and the chrome
       is compact. The stage's safe bands narrow to the player cards'
-      compact rows, a chip taking the top card's place while it shows.
-    - Up to 899 px, the move list: a strip held at the panel's foot, one
-      row of moves scrolling sideways with the steps beside it and the move
-      box behind its keyboard button; the snackbar sits over the strip, up
-      to the screen's width, and the heartbeat's head keeps to one row.
+      compact rows, a chip taking the top card's place while it shows. The
+      panel is what scrolls: it contains its overscroll, carries the shade
+      at its top edge and is what a tab's crossfade captures.
+    - Up to 899 px, the move list: always the one-row strip of
+      css/workspace.css, held at the panel's foot, with no fold button; the
+      snackbar sits over the strip, up to the screen's width, but the
+      handover notice of a two-player game sits at the top of the stage.
+      The heartbeat's head keeps to one row, a flex row rather than the
+      grid wider screens use.
     - A phone held sideways (up to 899 px wide and 500 px tall): the rail
       at the left, the stage the full height, the dock and the panel at the
-      right.
+      right; the handover notice centred over the stage.
     - A tablet held upright (600 to 899 px, portrait): a stage up to 52% of
       the height (Analyze keeps its share) and the panel's cards in a
       centred 680 px column.
+    - From 600 to 899 px with a mouse or a trackpad: the palette's key back
+      on its button at the app bar's end.
     - Under 600 px: Analyze's stage takes 38% so its panel gains the rows.
     - Up to 420 px: no player subtitles, a smaller wordmark and narrower
-      side cards.
+      side cards; under 360 px MONOLITH's wordmark steps down to 18 px.
     - Touch screens (a coarse pointer): small buttons, tabs and menus 40 px
-      tall, the small switch at full size, and 16 px type in every field,
-      so iOS Safari does not zoom in on one.
+      tall, as are the panel's segmented buttons, Settings' index, its
+      chips, a card head's switch, the study card's buttons and the article
+      pager, and a UCI option's row holds a 48 px target; the small switch
+      at full size, and 16 px type in every field, so iOS Safari does not
+      zoom in on one.
     - prefers-reduced-motion: no transitions on the snackbar, the evaluation
-      bar, switches and the instrument bars, and no halo animation.
+      bar, switches and the instrument bars, and no halo animation; the
+      panel's own motion (its disclosures, segments, keys, preset and
+      Settings' index, the top-edge shade, a tab's crossfade) stops too. A
+      data-motion="minimal" block does the same for the Minimal speed
+      (js/ui/nav.js starts no crossfade there).
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 12 of 12. The sheets are one cascade
