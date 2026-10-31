@@ -57,6 +57,7 @@ import { ensureAudio } from '../app/sound.js';
 import { learn } from '../app/state.js';
 import { boardState, grabbable, isTarget, onSquare, rookSqOf } from '../game/board-ui.js';
 import { endSwing } from '../game/ceremony.js';
+import { turning } from '../game/flow.js';
 
 /* ---------- camera orbit ---------- */
 /* fit: the distance at which the board fills the stage inside its safe bands, for the world's pose
@@ -146,13 +147,16 @@ export function fitCamera() {
   applyBackdrop();
 }
 /* Reset view: the world's own pose at the fitted distance, square to the side at the bottom. It
-   stops an end-of-game swing first, which would otherwise carry the camera off again. */
+   stops an end-of-game swing first, which would otherwise carry the camera off again. While the
+   board turns for the next player (game/flow.js), the turn owns theta and already squares it to
+   the side at the bottom, so the reset leaves theta to it from then on: pressed in the beat
+   before a turn, its own tween held theta still and the turn then jumped. */
 export function resetView() {
   endSwing();
   const pose = WORLD[app.worldName].pose, p0 = cam.phi, r0 = cam.dist / fitDist(), t0 = cam.theta, tg0 = cam.target.clone();
   const dt = wrap((app.orient === 'w' ? 0 : PI) - t0);
-  cam.hand = false;
-  return tween(0.6, e => { cam.phi = p0 + (pose.phi - p0) * e; cam.dist = fitDist() * (r0 + (1 - r0) * e); cam.theta = t0 + dt * e; cam.target.lerpVectors(tg0, REST, e); });
+  cam.hand = false; let spin = !turning;
+  return tween(0.6, e => { cam.phi = p0 + (pose.phi - p0) * e; cam.dist = fitDist() * (r0 + (1 - r0) * e); if (spin && turning) spin = false; if (spin) cam.theta = t0 + dt * e; cam.target.lerpVectors(tg0, REST, e); });
 }
 
 /* Pointer. A press on a piece the side to move can play picks it up at once (its targets show):
