@@ -13,9 +13,9 @@
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
-    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Phones
-      held sideways, upright tablets and touch screens get their own rules;
-      on a phone the move list is a strip at the panel's foot.
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rules
+      for phones held sideways, upright tablets and touch screens; a phone's
+      move list as a strip; under 900 px, actions in the bar, no telemetry.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -33,8 +33,10 @@
 
 ✒ Key Features:
     - Up to 899 px: one column (stage, dock, panel, then the rail as a
-      bottom bar); the splitters and the match strip are hidden and the
-      chrome is compact. The stage's safe bands narrow to the player cards'
+      bottom bar); the splitters, the match strip and the telemetry footer
+      (whose readings the panels carry) are hidden, the app's actions stand
+      at the app bar's end (js/ui/nav.js moves them there) and the chrome
+      is compact. The stage's safe bands narrow to the player cards'
       compact rows, a chip taking the top card's place while it shows.
     - Up to 899 px, the move list: a strip held at the panel's foot, one
       row of moves scrolling sideways with the steps beside it and the move
@@ -42,14 +44,13 @@
       to the screen's width, and the heartbeat's head keeps to one row.
     - A phone held sideways (up to 899 px wide and 500 px tall): the rail
       at the left, the stage the full height, the dock and the panel at the
-      right, and no telemetry footer.
+      right.
     - A tablet held upright (600 to 899 px, portrait): a stage up to 52% of
       the height (Analyze keeps its share) and the panel's cards in a
       centred 680 px column.
-    - Under 600 px: no telemetry footer, and Analyze's stage takes 38% so
-      its panel gains the rows.
-    - Up to 420 px: no player subtitles, a tighter brand and narrower side
-      cards.
+    - Under 600 px: Analyze's stage takes 38% so its panel gains the rows.
+    - Up to 420 px: no player subtitles, a smaller wordmark and narrower
+      side cards.
     - Touch screens (a coarse pointer): small buttons, tabs and menus 40 px
       tall, the small switch at full size, and 16 px type in every field,
       so iOS Safari does not zoom in on one.

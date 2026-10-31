@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Analyze's
-      safe bands place the toggles, the WDL column, the field's key and a
-      pinned line's Play to here; the FEN or PGN box; the PV's touch hint.
+      safe bands place the toggles and the Explore switch, the WDL column,
+      the key, a pinned line; the FEN or PGN box; the PV hint; the wordmark.
     - 1.0.3 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The app
       bar's logo is now Dennis's Conical M: in MONOLITH its squares take
       the world's light slate, since the dark slate square sinks into the
@@ -33,18 +33,20 @@
     world.
 
 ✒ Key Features:
-    - Shared components restyled for MONOLITH: the brand, pane and group
-      headings, the rail, the player cards, the stage chips and Reset view.
+    - Shared components restyled for MONOLITH: the wordmark (in Michroma,
+      the emblem's squares in the light slate), pane and group headings,
+      the rail's labels, the player cards, the stage chips and Reset view.
     - Instrument components: headings that wrap before they shrink,
       readouts, badges, the WDL ribbon and its Sharpness halo.
     - Analyze's pane: the search status in two lines under Go, a one-line
       MultiPV subtitle, Sharpness with its chip on a row under the numbers,
       and the Load box that takes a FEN or a PGN game.
     - Stage instruments in Analyze's safe bands: the layer toggles at the
-      top band's right with the field's key under them, the WDL column in
-      the right band, and a previewed or pinned line (with its Play to
-      here) in the chips' slot at the top band's left. A stage under 760 px
-      narrows the right band and widens the slot.
+      top band's right, the Explore switch a little apart from them with a
+      round mark (aria-checked, as a switch), the field's key under them,
+      the WDL column in the right band, and a previewed or pinned line
+      (with its Play to here) in the chips' slot at the top band's left. A
+      stage under 760 px narrows the right band and widens the slot.
     - The dock: the Synaptic PV scrubber (Analyze), whose head tells a
       touch screen that a tap pins a line, and the heartbeat strip
       (Crucible).

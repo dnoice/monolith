@@ -15,7 +15,7 @@
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — One
       panel width per world, a nearer-square stage from 900 to 1199 px,
-      field and inner radius tokens, and h4 without the browser's margins.
+      the rail's accent, field and inner radius tokens; h4 without margins.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -37,6 +37,9 @@
     - Material-style tokens for surfaces, text, outlines, primary and error
       colours, radii (with --r-field for fields and --r-inner for tiles in
       a card, squared in MONOLITH) and easing.
+    - The rail's selected destination, --md-nav-active with
+      --md-on-nav-active over it: the house gold in the cathedral, apart
+      from the panels' cool secondary; MONOLITH's ink on its canvas.
     - Layout tokens: one panel width per world (from 1280 px, 400 px in the
       cathedral and 440 px in MONOLITH; 368 px below), the panel's and the
       stage's floors (--panel-min, --stage-min), and from 900 to 1199 px a

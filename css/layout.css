@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.7.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      stage's overlays keep to safe bands off the board, the match strip to
-      the bar's centre line; Settings in cards; the loading screen's arc.
+      stage's safe bands; the emblem as the wordmark's M, the strip at the
+      bar's end; the rail's actions and accent; Settings in cards; boot arc.
     - 1.6.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The app
       bar carries Dennis's logo, the Conical M he made MONOLITH's official
       mark: its squares in the board diagrams' dark tone (in the cathedral
@@ -37,11 +37,17 @@
     loading screen covers it until the 3D board has drawn.
 
 ✒ Key Features:
-    - App bar: three columns, so the match strip sits on the page's centre
-      line; the brand at its min-content width, with Dennis's logo (the
-      Conical M, written into the page by tools/build-emblem.mjs) in the
-      board diagrams' tones; the release chip and the palette button in
-      one height and shape.
+    - App bar: two columns, the brand at its own width and the match strip
+      at the bar's end. The brand is the wordmark: the MONOLITH M stands as
+      the M of MONOLITH, on the word's baseline at its capitals' height, a
+      <use> of the emblem's drawing (#emb, which tools/build-emblem.mjs
+      writes into the page once) in the board diagrams' tones, its mortar
+      in the bar's colour.
+    - The navigation rail: the destinations, the selected one's pill and
+      label in --md-nav-active (css/tokens.css), faint on a hovered or
+      focused pill; at its foot the app's actions (the palette as an icon
+      button, Flip board, Sound, the release chip), which js/ui/nav.js
+      moves there from 900 px up. A short window tightens the column.
     - Shared controls: state layers, ripples and focus rings; a segmented
       choice is ringed whole, with a bar under the focused option.
     - Body layout: the navigation rail, the stage, the panel at its world's
@@ -79,7 +85,9 @@
 ✒ Other Important Information:
     - Dependencies: the tokens in css/tokens.css (custom properties) and
       the board diagrams' colours in css/position.css, the markup of
-      index.html, and the class names the modules under js/ set.
+      index.html (with the emblem's drawing, #emb), and the class names the
+      modules under js/ set; js/ui/nav.js places the actions (#app-actions)
+      in the rail or the app bar.
     - Safe bands: js/scene/camera.js reads --safe-t/r/b/l from the canvas
       (#scene); css/monolith.css (Analyze), css/crucible.css and
       css/media.css (phones) set their own.
@@ -88,13 +96,13 @@
 */
 /* ---------- app bar ---------- */
 /* Two columns: the brand at its own width, and the match strip at the bar's end, where the app's
-   actions stood before they moved to the foot of the rail (Dennis, 10/30/2026). Phones, which have
-   no match strip, keep a plain row, the actions back at its end (css/media.css, js/ui/nav.js). */
+   actions stood before they moved to the foot of the rail. Phones, which have no match strip,
+   keep a plain row, the actions back at its end (css/media.css, js/ui/nav.js). */
 .appbar{position:relative;z-index:3;display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:12px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);padding-block:0;background:var(--md-surface-1);border-bottom:1px solid var(--md-outline-var)}
 /* min-content: the brand never gives up width it needs */
 .brand{display:flex;align-items:center;gap:12px;min-width:min-content;flex:1}
-/* The wordmark (Dennis, 10/30/2026): his emblem, the Conical M with its twelve pieces, stands as
-   the M of MONOLITH, on the word's baseline and as tall as its capitals, 8 % over as a round
+/* The wordmark: the emblem, the MONOLITH M with its twelve pieces, stands as the M of MONOLITH,
+   on the word's baseline and as tall as its capitals, 8 % over as a round
    letter overshoots (the emblem's rounded shoulders and its fine detail read smaller than a
    letter's flat top), the letters in the lighter weight, so the two read as one word. The
    wordmark's name is MONOLITH (role img); the heading's is that and the world under it. The
@@ -165,7 +173,7 @@
 .nav-pill{display:grid;place-items:center;width:56px;height:32px;border-radius:var(--r-pill);transition:background .2s var(--ease-std),color .2s var(--ease-std)}
 .nav-pill svg{width:24px;height:24px;fill:currentColor}
 /* The selected destination in the rail's own colour, --md-nav-active (css/tokens.css): its pill
-   filled with it and its label written in it (Dennis, 10/30/2026). A pointer over another item
+   filled with it and its label written in it. A pointer over another item
    lays the same colour faintly on its pill and lights its label; the keyboard's focus shows the
    same, inside the focus ring. Hover only where there is a pointer that hovers, so a tap on the
    phone's bottom bar leaves no tint behind that reads as a second selection. */

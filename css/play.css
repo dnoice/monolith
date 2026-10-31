@@ -13,8 +13,8 @@
 
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      free board, the board turning, Start game held in reach, the PGN game
-      record, Draw, numbers whole in the strip; .kicker to css/layout.css.
+      free board, the board turning, Start game in reach, the PGN record,
+      Draw, the Analyze mark; the strip at the bar's end on one baseline.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -36,8 +36,9 @@
       group titles elsewhere end in a hairline.
     - Engine lines as a disclosure inside a card.
     - The status card: the turn banner, the move and the opening's name.
-    - The game's actions: two or three to a row (Draw, in a game between
-      two players), the words without their icons in a narrow panel.
+    - The game's actions: two or three to a row (Draw, in any game but a
+      study or one loaded for analysis), the words without their icons in
+      a narrow panel.
     - The setup's Start game held at the foot of the pane while the cards
       scroll under it.
     - The game record: Load a game folded at the foot of the setup with its
@@ -46,13 +47,17 @@
     - The free board before a game: its tried moves in the list, the line
       Play from here opens the setup with, and on a phone the explore
       chip's line over its three buttons.
+    - The Analyze mark: in a two-player game, the Analyze icon after a
+      move played once its side had used Analyze, in the selected move's
+      colour on the current move.
     - The board turning for each player: the players' cards out of sight
       while it turns; a cut (Minimal, reduced motion) never hides them.
     - The match strip: players, level, move number, status and the last
-      move, in one line of the app bar; the move number and the last
-      segment are never cut short.
-    - Narrow widths: at 1380, 1240 and 1080 px the strip drops its small
-      labels, then the last move, then the players and title.
+      move, in one line at the app bar's end, every segment's words on one
+      baseline; the move number and the last segment are never cut short.
+    - Narrow widths: the players' notes (a level, a side) go under 1100 px
+      and the last move under 1000 px; the players or the title stay at
+      every desktop width.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 6 of 12. The sheets are one cascade
@@ -111,7 +116,7 @@
 .calc-row .select{height:40px}
 .game-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-top:-4px}
 .game-actions .btn{width:100%;height:36px;font-size:13px}
-/* three actions (Draw, in a game between two players) in a narrow panel: the words without the icons */
+/* three actions (Draw, when a draw can be offered) in a narrow panel: the words without the icons */
 .game-actions{container-type:inline-size}
 .game-actions .btn{min-width:0;padding-inline:12px;white-space:nowrap}
 @container (max-width:400px){.game-actions:has(> #btn-draw:not([hidden])) .btn svg{display:none}}
@@ -132,13 +137,13 @@
    the game Start game will begin, as the Play tab's choices change, and that it has not started
    (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
    Only a number takes the larger size. It stands at the bar's end, where the actions were before
-   they moved to the rail (Dennis, 10/30/2026), and has their room: it narrows as the bar does, the
+   they moved to the rail, and has their room: it narrows as the bar does, the
    levels going under 1100 px and the last move under 1000, while the players or the title stay
    at every desktop width (its widest, the Crucible's board with both engines named, is 700 px;
    the room beside the brand is the width less about 345, so from 1000 to 1045 px and at 900 the
    Crucible's title is shortened to fit); phones leave it to the panel.
-   Every segment sets its words on one baseline (Dennis, 10/30/2026: the labels, the values and
-   the larger numbers sat at their own heights, up to 2 px apart, each centred by its box): a
+   Every segment sets its words on one baseline (before, the labels, the values and the larger
+   numbers sat at their own heights, up to 2 px apart, each centred by its box): a
    segment is a row of baseline-aligned cells whose row is centred in the pill, with a strut the
    size of the strip's numbers (::after), so a segment with a number and one without put their
    baselines at the same height; a player's dot is centred on the line it sits in. */

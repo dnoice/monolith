@@ -14,8 +14,8 @@
 
 ✒ Changelog:
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      Moves card folds to its title while there is nothing to list, and
-      the palette button takes the release chip's height and shape.
+      Moves card folds to its title while there is nothing to list, the
+      palette button takes the release chip's shape; no 1180 px title rule.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -35,8 +35,9 @@
       10/22/2026: it bled off the right edge).
     - Command Palette: a quieter glass, focus shown as a cyan rule (Dennis,
       10/15/2026).
-    - The palette button in the app bar, in the release chip's height and
-      shape (the world's pill).
+    - The palette button's own look, in the release chip's height and
+      shape (the world's pill), which it keeps in the app bar under 900 px;
+      at the foot of the rail css/layout.css makes it an icon button.
     - System sheet in Settings: swatches and the contrast ledger.
     - The dock at a fixed height while shown, so search lines scroll inside
       it.
