@@ -209,6 +209,9 @@
   .side-card{padding:12px 4px 10px}
   .side-card small{font-size:11px}
 }
+/* the narrowest phones (320 to 359 px): MONOLITH's wordmark at 21 px ran about 20 px past the
+   room the bar's actions leave it, so it steps down; from 360 px it keeps its size */
+@media (max-width:359px){:root[data-skin="monolith"] .brand-word{font-size:18px}}
 /* ---------- touch screens: a finger's targets ----------
    Phones and tablets, an iPad in the desktop layout too. The small controls come up to the 40 px
    the icon buttons already are, and the small switch to the full one. Every field reads at 16 px,
