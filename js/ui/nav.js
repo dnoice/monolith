@@ -59,11 +59,12 @@
       not load from file://.
 ---------
 */
-import { $, panelScroller, prefs, savePrefs } from '../app/base.js';
+import { app } from '../app/store.js';
+import { $, panelScroller, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { learn, render, renderers, TIP_IDS } from '../app/state.js';
 import { deselect } from '../game/board-ui.js';
 import { refreshAnalysis } from '../game/lines.js';
-import { desiredWorld, setWorld } from '../scene/worlds.js';
+import { desiredWorld, setWorld, worldFor } from '../scene/worlds.js';
 import { anStop, anSync } from './analyze.js';
 import { cr, getGauntlet } from './crucible.js';
 import { crLeaveBoard, crShowBoard } from './crucible-board.js';
@@ -86,14 +87,14 @@ export function buildNav() {
     const b = document.createElement('button'); b.className = 'nav-item'; b.id = `nav-${n.id}`; b.type = 'button';
     b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', `pane-${n.id}`);
     b.innerHTML = `<span class="nav-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path${n.rule ? ` fill-rule="${n.rule}"` : ''} d="${n.icon}"/></svg></span><span class="nav-label">${n.label}</span>`;
-    b.addEventListener('click', () => setTab(n.id));
+    b.addEventListener('click', () => railTo(n.id));
     nav.appendChild(b);
   }
   nav.addEventListener('keydown', e => {
     if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
     e.preventDefault(); e.stopPropagation();
-    const i = NAV.findIndex(n => n.id === prefs.tab), d = (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 1;
-    const n = NAV[(i + d + NAV.length) % NAV.length]; setTab(n.id); $(`#nav-${n.id}`).focus();
+    const i = NAV.findIndex(n => n.id === (goingTo || prefs.tab)), d = (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 1;
+    const n = NAV[(i + d + NAV.length) % NAV.length]; $(`#nav-${n.id}`).focus(); railTo(n.id);
   });
   placeActions(); NARROW.addEventListener('change', placeActions);
 }
@@ -138,5 +139,18 @@ export function setTab(id) {
      (Analyze, whose lines refill with the new search) opens as far down as it now reaches */
   if (prev !== id) sc.scrollTop = paneScroll[id] || 0;
   if (id !== 'analyze' && id !== 'crucible' && prev !== id) refreshAnalysis();
+}
+/* A destination chosen in the rail crossfades the panel's panes, old into new over 160 ms
+   (css/layout.css), where the browser has view transitions. Not when the world changes with it
+   (the world's own change covers that), under reduced motion or the Minimal speed, and only from
+   the rail: a view transition makes its change a frame later, and every other caller of setTab()
+   goes on to act on the pane it opened. data-vt names what is captured while one runs; goingTo is
+   the destination still to come, so arrows pressed in quick succession step on from it. */
+let goingTo = null, vts = 0;
+function railTo(id) {
+  if (!document.startViewTransition || id === (goingTo || prefs.tab) || reduceMotion || prefs.speed === 'minimal' || !renderers.length || worldFor(id) !== app.worldName) { setTab(id); return; }
+  const root = document.documentElement; goingTo = id; vts++; root.dataset.vt = 'tab';
+  const t = document.startViewTransition(() => { if (goingTo === id) goingTo = null; setTab(id); });
+  t.finished.finally(() => { if (--vts === 0) delete root.dataset.vt; });
 }
 export function setWorldPref(w) { prefs.world = w; savePrefs(); setWorld(desiredWorld(), true); applyLayoutSizes(); render(); }

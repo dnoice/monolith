@@ -188,8 +188,9 @@ function swapWorld(mono) {
 }
 /* True once a world change has finished (the mix is at its world's end). */
 export const worldSettled = () => Math.abs(worldK - (app.worldName === 'monolith' ? 1 : 0)) < 1e-3;
-// the Grimoire is a reference: opening it never changes the world
-export const desiredWorld = () => prefs.world !== 'auto' ? prefs.world : ['analyze', 'crucible'].includes(prefs.tab) ? 'monolith' : prefs.tab === 'grimoire' ? app.worldName : 'cathedral';
+// the world a destination opens in; the Grimoire is a reference: opening it never changes the world
+export const worldFor = tab => prefs.world !== 'auto' ? prefs.world : ['analyze', 'crucible'].includes(tab) ? 'monolith' : tab === 'grimoire' ? app.worldName : 'cathedral';
+export const desiredWorld = () => worldFor(prefs.tab);
 export function setWorld(name, animate = true) {
   if (name === app.worldName && Math.abs(worldK - (name === 'monolith' ? 1 : 0)) < 1e-3) return;
   app.worldName = name; document.documentElement.dataset.skin = name;

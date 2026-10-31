@@ -173,9 +173,16 @@ export function init() {
   $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
   // the panel's disclosures open as they were left (prefs.open, by id; Engine lines, never set, with
   // the evaluation). Load a game, opened, comes clear of the Start game row, but not when it is only
-  // being reopened as the page loads.
-  const reopened = new Set();
-  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open && !reopened.has(e.target)) e.target.scrollIntoView({ block: 'nearest' }); });
+  // being reopened as the page loads; where it opens over 280 ms (css/layout.css) the panel follows
+  // it down as it grows.
+  const reopened = new Set(), pgn = $('#pgn-load'), clearPgn = () => pgn.scrollIntoView({ block: 'nearest' });
+  let follow = null;
+  pgn.addEventListener('toggle', () => {
+    follow?.disconnect(); follow = null;
+    if (!pgn.open || reopened.has(pgn)) return;
+    clearPgn(); follow = new ResizeObserver(clearPgn); follow.observe(pgn);
+    setTimeout(() => { follow?.disconnect(); follow = null; }, 400);
+  });
   for (const d of document.querySelectorAll('.panel details[id]')) {
     const open = d.id in prefs.open ? prefs.open[d.id] : d.id === 'engine-lines' ? !!prefs.evalOn : d.open;
     if (open !== d.open) { d.open = open; reopened.add(d); }

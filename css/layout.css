@@ -177,6 +177,16 @@
 .panel summary.mo-head > .mo-sub{font-size:12px;color:var(--pnl-ink-2)}
 /* closed, a details section is its summary alone: no gap held for the folded content */
 .panel details.mo-section:not([open]){row-gap:0}
+/* A disclosure opens and closes over 280 ms where the browser can size its content to auto;
+   elsewhere it opens at once. Set on the panel, not the root: interpolate-size is inherited, and
+   would reach every height transition in the page. The clip keeps 6 px round the content for the
+   focus rings and shadows at its edges; no floor under the content, or a details laid out as a
+   flex column (Analyze's Load and UCI options) would hold it at full height and open at once. */
+@supports (interpolate-size:allow-keywords) and selector(::details-content){
+  .panel{interpolate-size:allow-keywords}
+  .panel details::details-content{block-size:0;min-block-size:0;overflow:clip;overflow-clip-margin:6px;transition:block-size var(--dur-3) var(--ease-std),content-visibility var(--dur-3) allow-discrete}
+  .panel details[open]::details-content{block-size:auto}
+}
 
 /* ---------- body layout ---------- */
 .body{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) max(var(--panel-min),min(var(--panel-w),calc(100vw - var(--rail-w) - var(--stage-min))));grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"rail stage panel" "rail dock panel";min-height:0}
@@ -337,6 +347,12 @@
 .panel::before{display:none}
 @supports (animation-timeline:scroll()){.panes::before,.panel::before{animation:pnl-shade linear both;animation-timeline:scroll(nearest block);animation-range:0 40px}}
 @keyframes pnl-shade{to{opacity:1}}
+/* A destination chosen in the rail crossfades the panes, old into new (js/ui/nav.js sets data-vt
+   while it runs). Only the panes are captured, never the page's root, so the board keeps drawing;
+   on phones, where the panel scrolls, the panel is (css/media.css). */
+:root[data-vt]{view-transition-name:none}
+:root[data-vt] .panes{view-transition-name:panes}
+::view-transition-group(panes),::view-transition-old(panes),::view-transition-new(panes){animation-duration:160ms;animation-timing-function:var(--ease-std)}
 .pane{display:flex;flex-direction:column;gap:20px}
 .pane-head{display:flex;flex-direction:column;gap:4px}
 .pane-head h2{font-size:22px;font-weight:400;line-height:1.25;text-wrap:balance}

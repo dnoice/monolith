@@ -118,9 +118,12 @@
   .rail-tabs{flex-direction:row;justify-content:space-around;gap:0;padding-block:0}
   .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
-  /* the panel scrolls here, so the shade at its top edge is the panel's (css/layout.css) */
+  /* the panel scrolls here, so the shade at its top edge is the panel's (css/layout.css), and the
+     panel is what a tab's crossfade captures */
   .panes::before{display:none}
   .panel::before{display:block;flex:none;top:0;margin-bottom:-14px}
+  :root[data-vt] .panes{view-transition-name:none}
+  :root[data-vt] .panel{view-transition-name:panes}
   .moves-card{max-height:none;min-height:0;padding-left:var(--gutter-l)}
   .moves{max-height:132px}
   /* The move list as a strip held at the panel's foot, the steps beside it: in a game it sat under
@@ -229,3 +232,19 @@
   .wdl-halo svg{animation:none}
   .wdl-v i,.penta i,.cr-progress i{transition:none}
 }
+/* The panel's own motion, off under reduced motion and under the Minimal Animation speed
+   (data-motion, js/app/state.js): a disclosure's row, chevron and well, a segment's selection, the
+   keys' and the preset's lift, the Settings index, a disclosure opening, the shade at the top edge
+   and a tab's crossfade. The world's .45 s cross-fade of colours (css/tokens.css) stays, as it does
+   for every surface. */
+@media (prefers-reduced-motion:reduce){
+  .panel :is(.mo-details,.pgn-load,.engine-lines) > summary,.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before,.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after,.seg button,.syn-chip,.preset,.set-index button{transition:none}
+  .syn-chip:hover,.preset:hover{transform:none}
+  .panel details::details-content{transition:none}
+  .panes::before,.panel::before{animation:none;opacity:0}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
+}
+:root[data-motion="minimal"] :is(.panel :is(.mo-details,.pgn-load,.engine-lines) > summary,.seg button,.syn-chip,.preset,.set-index button),:root[data-motion="minimal"] .panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before,:root[data-motion="minimal"] .panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after{transition:none}
+:root[data-motion="minimal"] :is(.syn-chip,.preset):hover{transform:none}
+:root[data-motion="minimal"] .panel details::details-content{transition:none}
+:root[data-motion="minimal"] :is(.panes,.panel)::before{animation:none;opacity:0}
