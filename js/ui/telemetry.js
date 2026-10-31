@@ -105,6 +105,7 @@ function spark(cv, vals, color = TOK.steel) {
 export function updateTelemetry(now) {
   const foot = $('#telemetry'); foot.hidden = app.worldName !== 'monolith';
   if (foot.hidden || now - telemetry.t < 300) return; telemetry.t = now;
+  if (!foot.offsetWidth) return;   // set aside by the stylesheet (a phone): nothing to read or fit
   const C = telemetry.cells, show = (k, on) => { C[k].el.hidden = !on; return on; },
     set_ = (k, v, badge) => { const c = C[k]; c.v.textContent = v; if (c.bf.textContent !== badge) { c.bf.textContent = badge; c.bs.textContent = badge.replace(/:.*\]$/, ']'); c.bd.title = badge; } };
   const tab = prefs.tab, crTab = tab === 'crucible', anTab = tab === 'analyze';
