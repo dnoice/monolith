@@ -139,7 +139,7 @@
 :root{--dock-h:auto;--beat-h:116px}
 :root[data-tab="analyze"]{--dock-h:clamp(170px,32vh,300px)}
 #dock{height:var(--dock-h);max-height:calc(100vh - 64px - 240px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent}
-.syn-head{position:sticky;top:0;z-index:1;margin:-10px 0 0;padding-top:10px;padding-bottom:4px;background:var(--mo-panel)}
+.syn-head{position:sticky;top:0;z-index:1;margin:-10px 0 0;padding-top:10px;padding-bottom:7px;background:var(--pnl-ground);box-shadow:0 1px 0 var(--pnl-line-soft)}
 .syn-hold{font:400 10.5px var(--font-tele);color:var(--mo-amber)}
 .syn-chip small{display:inline-block;min-width:4.6ch;text-align:right}
 :root[data-moves-sized] .moves-card{max-height:75%;min-height:110px}

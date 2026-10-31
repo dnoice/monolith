@@ -320,12 +320,13 @@
 #serve-fail.show{position:fixed;z-index:100;padding-inline:max(24px,calc(50vw - 320px));background:var(--md-surface);font-size:15px;line-height:1.6}
 
 /* panel */
-.panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--md-surface-1);border-left:1px solid var(--md-outline-var)}
+/* the panel is the ground its cards are raised on (--pnl-ground, a step under the bars' surface) */
+.panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--pnl-ground);border-left:1px solid var(--md-outline-var)}
 .panes{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
 .pane{display:flex;flex-direction:column;gap:20px}
 .pane-head{display:flex;flex-direction:column;gap:4px}
 .pane-head h2{font-size:22px;font-weight:400;line-height:1.25;text-wrap:balance}
-.pane-head p{color:var(--md-on-surface-var);font-size:13.5px}
+.pane-head p{color:var(--md-on-surface-var);font-size:13.5px;text-wrap:pretty}
 /* the line over a pane's title: where the pane belongs (Play, Instrument, Learn, Reference), or on
    Play its state. Every pane carries one, so the titles hold one line from tab to tab (MONOLITH's
    smaller type keeps the same 11 px line). */
@@ -334,7 +335,7 @@
 :root[data-skin="monolith"] .kicker{font:400 10px/11px var(--font-tele);letter-spacing:.16em;color:var(--mo-ink3)}
 .group{display:flex;flex-direction:column;gap:10px;border:0;margin:0;padding:0;min-width:0}
 .group > legend,.group-title{padding:0;margin-bottom:10px;font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var)}
-.help{font-size:12.5px;color:var(--md-on-surface-var)}
+.help{font-size:12.5px;color:var(--md-on-surface-var);text-wrap:pretty}
 .help.err{color:var(--md-error)}
 .help:empty{display:none}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -443,10 +444,11 @@
 .switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-nav-active)}
 
 /* analysis */
-.bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px;min-width:0}
+/* readings, notes and fields sit in wells sunk into their card (--pnl-well, a 1 px inner shade) */
+.bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--pnl-well);border:1px solid var(--pnl-well-line);box-shadow:var(--pnl-sink);font-family:var(--font-mono);font-size:12.5px;min-width:0}
 .bestline b{color:var(--md-primary);font-weight:500;font-variant-numeric:tabular-nums}
 .bestline span{color:var(--md-on-surface);overflow-wrap:anywhere}
-.select{height:40px;border-radius:var(--r-field);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px}
+.select{height:40px;border-radius:var(--r-field);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:0 10px}
 .cands{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .cand{display:grid;grid-template-columns:auto 48px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 8px 8px 10px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px}
 .cand:hover{background:var(--md-surface-3)}
@@ -461,7 +463,7 @@
 .engine-foot.err .led{background:var(--md-error)}
 
 /* position */
-.fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
+.fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
 /* a preset (Analyze's recorded run) is a key: a raised face with a trailing chevron, lifting under
    the pointer (it read as an information card) */
 .preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:10px 44px 10px 14px;border-radius:var(--r-ctl);border:1px solid var(--pnl-line);background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card));box-shadow:var(--pnl-rim),var(--pnl-key);transition:border-color var(--dur-1),transform var(--dur-1) var(--ease-std)}
@@ -505,7 +507,7 @@
 .moves .empty{grid-column:1/-1;color:var(--md-on-surface-var);font-family:var(--font-body);font-size:13px}
 .move-entry{display:flex;gap:8px}
 .move-entry label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.move-entry input{flex:1;min-width:0;height:40px;border-radius:var(--r-field);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 12px;font-family:var(--font-mono);font-size:14px}
+.move-entry input{flex:1;min-width:0;height:40px;border-radius:var(--r-field);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:0 12px;font-family:var(--font-mono);font-size:14px}
 .move-entry input::placeholder{color:var(--md-on-surface-var)}
 .move-entry input:disabled{opacity:.5}
 

@@ -117,7 +117,7 @@
 .pr-av.w{background:var(--md-marble)}.pr-av.b{background:var(--md-obsidian)}
 
 /* ---------- the view switch ---------- */
-.pos-switch{position:sticky;top:-20px;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;margin:-6px 0;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:var(--md-surface-2);box-shadow:0 0 0 6px var(--md-surface-1)}
+.pos-switch{position:sticky;top:-20px;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;margin:-6px 0;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:var(--md-surface-2);box-shadow:0 0 0 6px var(--pnl-ground)}
 .pos-switch [role="tab"]{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;height:36px;padding:0 8px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--md-on-surface-var);font:500 13px/1 var(--font-body);cursor:pointer;transition:background-color .2s,color .2s}
 .pos-switch [role="tab"] svg{width:17px;height:17px;flex:none;fill:currentColor}
 .pos-switch [role="tab"] span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -386,17 +386,18 @@ button.pr-rule{cursor:pointer}
    played stay at the bottom of the panel while the board above is built */
 .ed-play{display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid var(--md-outline-var)}
 .ed-play .seg button{height:34px;font-size:12.5px}
-.ed-foot{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;gap:8px;margin:0 -16px -16px;padding:10px 16px 14px;border-top:1px solid var(--md-outline-var);border-radius:0 0 var(--r-card) var(--r-card);background:var(--md-surface-2);box-shadow:0 -10px 16px -12px rgba(0,0,0,.55)}
+.ed-foot{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;gap:8px;margin:0 -16px -16px;padding:10px 16px 14px;border-top:1px solid var(--md-outline-var);border-radius:0 0 var(--r-card) var(--r-card);background:var(--pnl-card);box-shadow:0 -10px 16px -12px rgba(0,0,0,.55)}
 .ed-play-sum{font-size:12.5px;line-height:1.4;color:var(--md-on-surface-var)}
 .ed-play-sum:empty{display:none}
 
 /* ---------- Set up: the FEN, field by field ---------- */
 .fen-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:-4px;padding-top:6px;border-top:1px solid var(--md-outline-var)}
 .fen-legend{font-size:11px;color:var(--md-on-surface-var)}
-.fen-wrap{position:relative;border-radius:var(--r-ctl);background:var(--md-surface-1)}
+/* the well is the wrapper's: the field over it is transparent, so the coloured fields drawn under it show */
+.fen-wrap{position:relative;border-radius:var(--r-ctl);background:var(--pnl-well);box-shadow:var(--pnl-sink)}
 .fen-wrap .fen-box,.fen-hl{margin:0;padding:10px 12px;font:500 12.5px/1.55 var(--font-mono);letter-spacing:0;white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere;tab-size:4}
 .fen-hl{position:absolute;inset:0;overflow:hidden;border:1px solid transparent;border-radius:var(--r-ctl);color:var(--md-on-surface);pointer-events:none}
-.fen-wrap .fen-box{position:relative;display:block;min-height:64px;resize:none;overflow:hidden;background:transparent;color:transparent;caret-color:var(--md-on-surface)}
+.fen-wrap .fen-box{position:relative;display:block;min-height:64px;resize:none;overflow:hidden;background:transparent;box-shadow:none;color:transparent;caret-color:var(--md-on-surface)}
 .fen-wrap .fen-box::selection{background:color-mix(in srgb,var(--md-secondary) 38%,transparent);color:transparent}
 .fh.f0{color:var(--fc0)}.fh.f1{color:var(--fc1)}.fh.f2{color:var(--fc2)}.fh.f3{color:var(--fc3)}.fh.f4{color:var(--fc4)}.fh.f5{color:var(--fc5)}.fh.f6{color:var(--md-on-surface-var);text-decoration:line-through}
 .fh.sel{border-radius:3px;background:color-mix(in srgb,currentColor 20%,transparent);box-shadow:0 0 0 2px color-mix(in srgb,currentColor 20%,transparent)}
@@ -421,7 +422,7 @@ button.pr-rule{cursor:pointer}
 .help:empty{display:none}
 
 /* ---------- MONOLITH ---------- */
-:root[data-skin="monolith"] .pos-switch{border-radius:4px;background:var(--mo-raised);border-color:var(--mo-rule);box-shadow:0 0 0 6px var(--md-surface-1)}
+:root[data-skin="monolith"] .pos-switch{border-radius:4px;background:var(--mo-raised);border-color:var(--mo-rule);box-shadow:0 0 0 6px var(--pnl-ground)}
 :root[data-skin="monolith"] .pos-switch [role="tab"]{border-radius:3px;font:400 11px/1 var(--font-tele);letter-spacing:.12em;text-transform:uppercase}
 :root[data-skin="monolith"] .sl-status,:root[data-skin="monolith"] .sl-hints li,:root[data-skin="monolith"] .sl-solution,:root[data-skin="monolith"] .sl-track{background:var(--mo-raised);border-radius:3px}
 :root[data-skin="monolith"] .sl-status.bad{background:var(--mo-crimson-tint)}
@@ -431,7 +432,7 @@ button.pr-rule{cursor:pointer}
 :root[data-skin="monolith"] .sl-ranks li,:root[data-skin="monolith"] .sl-hold li,:root[data-skin="monolith"] .sl-bar,:root[data-skin="monolith"] .sl-bar i{border-radius:2px}
 :root[data-skin="monolith"] .pr-gt::after{background:var(--mo-rule)}
 :root[data-skin="monolith"] .fen-head,:root[data-skin="monolith"] .ed-play{border-top-color:var(--mo-rule)}
-:root[data-skin="monolith"] .ed-foot{background:var(--mo-well);border-top-color:var(--mo-rule)}
+:root[data-skin="monolith"] .ed-foot{border-top-color:var(--mo-rule)}
 :root[data-skin="monolith"] .pr-status{background:var(--mo-crimson-tint);border-radius:3px}
 :root[data-skin="monolith"] .pr-status.draw{background:var(--mo-raised)}
 :root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap{border-radius:4px}

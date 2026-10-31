@@ -50,7 +50,7 @@
    it was yours, a reading when it was theirs), and the move before it. A verdict's edge takes its
    grade's colour; a warning's takes the error colour. Maxims sit in italics under a lesson. */
 .coach-feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.cn{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px 12px 11px;border-radius:var(--r-ctl);background:var(--md-surface-1);border:1px solid var(--md-outline-var);border-left:3px solid var(--cq,var(--md-outline))}
+.cn{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px 12px 11px;border-radius:var(--r-ctl);background:var(--pnl-well);box-shadow:var(--pnl-sink);border:1px solid var(--pnl-well-line);border-left:3px solid var(--cq,var(--md-outline))}
 .cn-head{display:flex;align-items:baseline;gap:8px;min-width:0}
 .cn-badge{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cq,var(--md-on-surface-var))}
 .cn-move{min-width:0;font:500 12.5px var(--font-mono);color:var(--md-on-surface);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -71,7 +71,7 @@
 .cn.c-blunder .cn-badge{text-decoration:underline;text-underline-offset:3px}
 .mv .mk{margin-left:2px;font:700 10.5px var(--font-mono);vertical-align:2px}
 .mk-good{color:#4fd18b}.mk-brilliant{color:#2cc8d8}.mk-inaccuracy{color:#f5963b}.mk-mistake{color:#ef5b5b}.mk-blunder{color:#ef5b5b}
-:root[data-skin="monolith"] .cn{background:var(--mo-panel);border-color:var(--mo-rule);border-radius:2px}
+:root[data-skin="monolith"] .cn{border-color:var(--pnl-well-line);border-radius:2px}
 :root[data-skin="monolith"] .cn-badge{font:500 10px var(--font-tele);letter-spacing:.1em}
 :root[data-skin="monolith"] .cn-move,:root[data-skin="monolith"] .cn-score{font-family:var(--font-tele)}
 :root[data-skin="monolith"] .cn-maxim{color:var(--mo-ink2)}

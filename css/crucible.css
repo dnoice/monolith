@@ -142,7 +142,7 @@
 .cfg-grid{display:grid;grid-template-columns:auto minmax(0,1fr) 92px;gap:8px 8px;align-items:center}
 .cfg-grid > b{font:400 11px var(--font-tele);color:var(--md-on-surface-var)}
 .cfg-grid .select,.cfg-grid input{min-width:0;width:100%}
-.num-in{height:40px;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px;font-family:var(--font-tele);font-size:13px}
+.num-in{height:40px;border-radius:var(--r-ctl);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:0 10px;font-family:var(--font-tele);font-size:13px}
 .num-in:invalid{border-color:var(--md-error)}
 .cr-progress{height:4px;background:var(--mo-well);border:1px solid var(--mo-rule)}
 .cr-progress i{display:block;height:100%;background:var(--mo-steel);transition:width .3s}
