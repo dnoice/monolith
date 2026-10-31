@@ -558,10 +558,13 @@ ID_CONVENTION = (
 
 
 def _doc(svg, *, title, file_name, rel_path, version, description, features, keywords, width, height, changelog,
-         id_convention=ID_CONVENTION, other=()):
+         id_convention=ID_CONVENTION, other=(), day=None):
+    # day: the header's date for a file with a later entry of its own; the rest carry TODAY's
+    day = day or TODAY
     return wrap_document(
         svg, title=title, file_name=file_name, rel_path=rel_path, artifact_type="illustration", version=version,
-        date_mdy=DATE_MDY, date_iso=DATE_ISO, update_long=UPDATE_LONG, description=description,
+        date_mdy=day.strftime("%m/%d/%Y"), date_iso=day.isoformat(), update_long=day.strftime("%A, %B %d, %Y"),
+        description=description,
         key_features=features, other_info=["Dependencies: none; opens in Inkscape 1.4 and renders in any browser",
                                            *other],
         keywords=keywords, width=width, height=height, changelog=changelog, id_convention=id_convention,
@@ -627,16 +630,20 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
 OFFICIAL = {
     "logo": dict(
         n=4, layout="bare", file="monolith-logo.svg", root="logo-monolith", panel="logo",
-        version="1.0.2", title="MONOLITH Logo (MONOLITH Edition - v1.0)",
+        version="1.0.3", day=date(2026, 10, 31), title="MONOLITH Logo (MONOLITH Edition - v1.0)",
         description=("MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M "
                      "cut into a four by four grid of slate tiles with black mortar, no pieces. "
                      "The letter is measured from monolith-brand-kit.svg and written down in "
                      "assets/brand/MONOLITH_M_SYSTEM.md; "
                      "this file is the system's rendering of it at 1200 px, and the emblem is the "
-                     "same mark with twelve pieces standing on it. It is the source of the page's "
-                     "app bar logo: "
-                     "tools/build-emblem.mjs writes it into index.html, reading its board-logo group."),
-        changelog=[OFFICIAL_RENAMED.format(version="1.0.2", group="board-logo"),
+                     "same mark with twelve pieces standing on it. It is a brand file the page does "
+                     "not read: since 2.18.0 the app bar draws the emblem as the M of its wordmark, "
+                     "from the one drawing tools/build-emblem.mjs writes into index.html."),
+        changelog=["1.0.3 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The description "
+                   "says what the file is now: a brand file the page does not read. From 2.17.0 "
+                   "tools/build-emblem.mjs wrote its board-logo group into the app bar; since "
+                   "2.18.0 the app bar draws the emblem as the M of its wordmark.",
+                   OFFICIAL_RENAMED.format(version="1.0.2", group="board-logo"),
                    "1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis asked for "
                    "the logo in the "
                    "web app's header: the page's app bar carries it now, written in by tools/build-emblem.mjs, so "
@@ -680,7 +687,7 @@ def render_official(kind: str, size: float = 1200.0) -> tuple[str, str]:
     draw_mark(svg, mark, "slate", spec["panel"], root_id=spec["root"])
     doc = _doc(
         svg, title=spec["title"], file_name=spec["file"], rel_path=f"assets/{spec['file']}", version=spec["version"],
-        description=spec["description"],
+        description=spec["description"], day=spec.get("day"),
         features=[f"Canvas {size:g} x {size:g}; the MONOLITH M edge to edge on a 4 x 4 grid of "
                   f"{size / 4:g} px cells: {_stats(mark)}",
                   "Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per 1200 (paint-order "
