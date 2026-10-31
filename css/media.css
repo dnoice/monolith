@@ -97,7 +97,6 @@
   #scene{--safe-t:64px;--safe-r:10px;--safe-b:56px;--safe-l:10px}
   #stage:has(#evalbar:not([hidden])) #scene{--safe-l:28px}
   :root[data-tab="analyze"] #scene{--safe-t:92px;--safe-r:92px;--safe-b:12px}
-  :root[data-tab="crucible"] #scene{--safe-t:86px;--safe-b:12px}
   .player{padding:4px 10px 4px 4px;gap:8px}
   .player .avatar{width:28px;height:28px}
   .player .pinfo{flex-direction:row;align-items:center;gap:8px}

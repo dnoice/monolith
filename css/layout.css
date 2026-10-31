@@ -150,8 +150,8 @@
 #stage{container:stage/inline-size}
 #scene{touch-action:none;--safe-t:130px;--safe-r:12px;--safe-b:80px;--safe-l:12px}
 #stage:has(#evalbar:not([hidden])) #scene{--safe-l:32px}
-/* The Crucible's board: its game card in the top band (Analyze's bands are in css/monolith.css) */
-:root[data-tab="crucible"] #scene{--safe-t:86px;--safe-b:12px}
+/* The Crucible's board keeps its game card in the top band, set in css/crucible.css at every
+   width; Analyze's bands are in css/monolith.css */
 .player{position:absolute;left:calc(var(--gutter-l) + 22px);display:flex;align-items:center;gap:12px;min-width:0;max-width:min(420px,calc(100% - 64px));padding:8px 14px 8px 8px;border-radius:var(--r-card);background:rgba(28,26,32,.78);border:1px solid var(--md-outline-var);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,box-shadow .25s}
 .player.top{top:14px}
 .player.bottom{bottom:14px}
