@@ -42,6 +42,8 @@ page where the pieces can be moved without starting a game, and alignment and pl
 intentional. Each area was audited, then rebuilt in a package of its own (the stage, the frame,
 play, Analyze and the Crucible, and Position, the Grimoire and Settings), with a pass for phones
 and tablets after them; the cathedral's columns and the loading screen had passes of their own.
+Packages for the rules of play, the app's chrome and the pieces came last, with new names for the
+brand files.
 
 - **The board fits the stage.** The camera no longer sits at one fixed distance: it fits the board
   to the stage, so the frame, every coordinate and both back ranks stay in view at any window size,
@@ -72,11 +74,38 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   left. The Moves card is gone from Settings and the Grimoire, and before a game it folds to its
   title, so Start game is in view on a 1440 × 900 screen. Analyze and the Crucible carry an
   Instrument line over their titles, as the other tabs carry theirs, so every title sits at one
-  height. The match strip sits on the app bar's centre line and no longer cuts its numbers short
-  (move 25 read "Move 2." at laptop widths), and the release chip and the palette button share one
-  height and shape. Keyboard focus on a segmented choice, such as Opponent or World, rings the
-  whole control. In MONOLITH the move box, the selects, the release chip and Position's chips,
-  rows, tools and tiles take the same square corners as the buttons beside them.
+  height. The match strip no longer cuts its numbers short (move 25 read "Move 2." at laptop
+  widths). Keyboard focus on a segmented choice, such as Opponent or World, rings the whole
+  control. In MONOLITH the move box, the selects, the release chip and Position's chips, rows,
+  tools and tiles take the same square corners as the buttons beside them.
+- **The wordmark and the app bar.** At Dennis's request the emblem stands as the M of the wordmark
+  ("[logo]ONOLITH") and the app bar's actions move to the rail. The M is the MONOLITH M with its
+  twelve pieces, as tall as the word's capitals and on its baseline, in each world's colours. The
+  emblem's drawing is in the page once, for the loading screen to draw square by square and the
+  wordmark whole, about 3.6 KB lighter than the screen's own copy and the bare logo were; the bare
+  logo, `assets/monolith-logo.svg`, is no longer read. The command palette, Flip board, Sound and
+  the release chip stand at the foot of the rail, under the tabs, the palette as an icon button
+  with Ctrl K in its title. Under 900 px, where the rail is the bottom bar, the palette, Flip board
+  and Sound go back to the app bar's end, and the release is a line under the wordmark.
+- **The rail's selected tab.** At Dennis's request the selected destination is plainer to see: its
+  pill is filled, and its label written, in a colour of the rail's own (`--md-nav-active`), the
+  house gold in the cathedral and MONOLITH's ink in MONOLITH. The old fill was hard to tell from
+  the rail, a contrast of 1.51 in the cathedral and 1.10 in MONOLITH; the new one's is 10.27 and
+  14.35. A pointer over another tab lays the same colour faintly on its pill and lights its
+  label, keyboard focus shows the same, and a tap on a phone's bottom bar leaves no tint behind.
+- **The match strip.** At Dennis's request its words line up: in every segment the labels, the
+  values and the larger numbers sit on one baseline, where they were up to 2 px apart, and a
+  player with no note leaves no gap after the name. It stands at the app bar's right end, in the
+  room the actions left, so it keeps more on a narrower desktop: the levels go under 1100 px and
+  the last move under 1000, where they went under 1380 and 1240, and the players, or the tab's
+  title, stay at every desktop width, where they went under 1080.
+- **The subtitle names the world.** From 900 px up the app bar's subtitle names the world first:
+  Cathedral world · marble vs. obsidian, and MONOLITH world · Stockfish 19 instrument, the engine
+  named as it loads.
+- **The telemetry footer, from 900 px up.** The telemetry footer is set aside under 900 px
+  wide, on an upright tablet as on a phone, and the panels carry its readings (the engine card,
+  the Crucible's pane). In MONOLITH it pushed an upright tablet's bottom bar up 28 px, so the bar
+  moved as the world changed; the bar now stays put.
 - **Two players on one screen.** In a friend game the board turns to the side to move a beat after
   each move lands, a cut under Minimal or reduced motion. Undo and Back to live turn it at once,
   stepping through earlier moves leaves it still, and Flip board holds for the move on the board;
@@ -100,16 +129,37 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   `:review` do. Start game asks before it ends a game in progress, reads Start new game there, and
   stays in reach at the foot of the Play pane at every size. The move box takes SAN up to ten
   characters (exd8=Q+, Nbxd7+, O-O-O+).
+- **A draw against the computer.** Stockfish can be offered a draw on your turn (Draw, or
+  `:draw`), and it answers by a rule Dennis agreed. It judges the position at full strength,
+  whatever level it plays at, with a short search of its own (depth 14, at most 0.8 s): it accepts
+  when it stands a pawn or more worse or faces a forced mate, and accepts a level position (under
+  +0.40 for it) from move 20; otherwise it plays on, and says why. After a decline the
+  offer can be made again five of your moves later. While it considers, a notice, the move box and
+  the Draw button say so. Draw shows in every game but a study and a game loaded for analysis.
 - **Analyze loads games and plays lines.** A Load section takes a pasted FEN or PGN and opens it
   there, both sides moved by hand with no computer reply: a PGN game at its last move with its
-  moves listed, titled White – Black from its tags; in Analyze, `:fen` does the same with a FEN. A
-  pinned Synaptic PV line offers Play to here, which plays the engine line onto the board as an
-  explored line, the game unchanged, and the analysis carries on from where it leads; Enter on the
-  pinned chip or a double-click does the same, and Shift-click on a MultiPV row plays its first
-  move. On a touch screen the PV's header says to tap a move to pin its line, where it said hover
-  and click. Holding Space for the Tactical X-Ray works right after a click on the tab and no
-  longer stops Go infinite, and on a phone or tablet a tap on the board aims it and a second
-  releases it.
+  moves listed, titled White – Black from its tags; in Analyze, `:fen` does the same with a FEN,
+  and its row in the palette says so. A pinned Synaptic PV line offers Play to here, which plays
+  the engine line onto the board as an explored line, the game unchanged, and the analysis carries
+  on from where it leads; Enter on the pinned chip or a double-click does the same, and Shift-click
+  on a MultiPV row plays its first move. On a touch screen the PV's header says to tap a move to
+  pin its line, where it said hover and click. Holding Space for the Tactical X-Ray works right
+  after a click on the tab and no longer stops Go infinite, and on a phone or tablet a tap on the
+  board aims it and a second releases it.
+- **Explore in Analyze.** During a game, a move made in Analyze at the live position, by a click, a
+  drag or the move box, starts a line to explore from it and never touches the game; the explore
+  chip says "Exploring from the live position", and a typed move goes into a line already on the
+  board, as a click does. At Dennis's request it has a switch: Explore on Analyze's board, beside
+  the layer toggles, Explore in Analyze in Settings' Game card, and `:explore analyze`. It is on by
+  default; off, a move made there on your turn is played in the game, as before.
+- **The Analyze mark.** In a two-player game, a side that uses Analyze has consulted the engine,
+  and its next move carries the Analyze icon in the move list. It counts once Analyze has shown the
+  game's evaluation for 1.5 s, at any of its positions, so passing through the tab marks nothing,
+  and at once for a move tried in a line from the live position or a game move played from
+  Analyze with Explore off. As Dennis asked, the other player is told when their turn comes. The
+  PGN follows a marked move with a comment, `{Marble used Analyze before this move}`, the marks
+  survive a reload, and an undo keeps those of the positions it returns to. A game against the
+  computer, a study, a game loaded for analysis and a Crucible game carry no mark.
 - **Analyze reads more plainly.** The match strip shows Analyze's evaluation from White's side,
   with the depth and the search state under it, and the recorded run is named
   Kasparov – Topalov 1999. Source badges have a short form, set in Settings or with
@@ -146,27 +196,30 @@ and tablets after them; the cathedral's columns and the loading screen had passe
 - **The Grimoire.** The search box draws one focus ring instead of two, and / reaches it from
   anywhere on the Grimoire, the rail included. A search that finds nothing names the category and,
   when other categories hold the word, offers Show N in All beside Clear search. An article's Go
-  to lands on the control it names (Show legal moves, the graphics meter, the FEN box, Hint and so
-  on): the panel scrolls it to the middle, rings it for a moment and gives a switch or button the
-  focus. A new entry, Turn the board for each player, makes 149, and the entries on PGN, draws,
-  the free board, Play to here, the source badges, touch and Settings' cards describe the page as
-  it now is. Articles lose stray space around their section headings, and each viewpoint's icon
-  is centred on its heading.
+  to lands on the control it names (Show legal moves, the graphics meter, the FEN box, Hint, Turn
+  the board for each player, the PGN buttons, Draw and so on): the panel scrolls it to the middle,
+  rings it for a moment and gives a switch or button the focus. A new entry, Turn the board for
+  each player, makes 149, and the entries on PGN, draws, Explore, the annotation symbols (the
+  Analyze mark), the free board, Play to here, the source badges, touch, the app bar and the rail,
+  and Settings' cards describe the page as it now is. Articles lose stray space around their
+  section headings, and each viewpoint's icon is centred on its heading.
 - **Settings in five cards.** Settings was one long column whose first block had no title. It is
   now five titled cards built like Play's (Game, Board, Sound and motion, World and graphics, and
   Help and about) under a Preferences kicker, so its title sits where the other tabs' do. Coach
-  comments and Evaluation bar can be switched here without a game running, the Board card carries
-  Turn the board for each player, and World and graphics carries Short source badges. Keys and
-  mouse and the MONOLITH system fold away, the keys list gains / and F U H, and the World choice
-  writes MONOLITH as the rest of the page does. The new preferences start as auto-flip on, full
-  badges and Set up against Stockfish, and a saved value outside its choices is repaired on load.
+  comments and Evaluation bar can be switched here without a game running, the Game card carries
+  Explore in Analyze, the Board card Turn the board for each player, and World and graphics Short
+  source badges. Keys and mouse and the MONOLITH system fold away, the keys list gains / and F U H,
+  and the World choice writes MONOLITH as the rest of the page does. The new preferences start as
+  auto-flip on, Explore in Analyze on, full badges and Set up against Stockfish, and a saved value
+  outside its choices is repaired on load.
 - **The palette knows everyday words.** Ordinary words find commands: start and new game find
   `:new`, turn finds `:flip`, mute finds `:sound`, graphics finds `:quality`, take back finds
   `:undo` and give up finds `:resign`. A word no command knows, such as castling, opens its
   Grimoire entry. New commands: `:legal`, `:coords`, `:animation`, `:tips`, `:keys`, `:study`,
-  `:read`, `:setup`, `:resign` (it asks first), `:rematch`, `:badges`, `:autoflip`, `:draw`,
-  `:review` and the three PGN commands. With nothing typed, the tab in view puts its own groups
-  first, and the groups follow Settings' cards; `:explore` names the free board.
+  `:read`, `:setup`, `:resign` (it asks first), `:rematch`, `:badges`, `:autoflip`, `:draw` (to
+  the other player or to Stockfish), `:explore analyze`, `:review` and the three PGN commands.
+  With nothing typed, the tab in view puts its own groups first, and the groups follow Settings'
+  cards; `:explore` names the free board.
 - **A phone held sideways, a tablet held upright.** A phone on its side has a layout of its own:
   the sections down the left, the board the full height and the panel at the right, where Start
   game, Analyze's panel and the section bar were out of reach before. A tablet held upright has a
@@ -177,7 +230,7 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   its keyboard button, and messages take the screen's width and sit clear of the strip. Analyze's
   panel shows more (284 px instead of 239 at 390 × 844) with the board the same size. The bottom
   bar no longer moves when Analyze or the Crucible opens or the world changes, MONOLITH's labels in
-  it are a little larger, and the telemetry footer is set aside on screens under 600 px wide. The
+  it are a little larger, and the telemetry footer is set aside (now under 900 px, above). The
   Crucible's heartbeat shows its whole strip, its heading on one line, and the Crucible's board
   card keeps clear of the board at every width. The player cards line up with the chips when the
   evaluation bar is off, and a pinned line's Play to here stays on the screen.
@@ -196,6 +249,18 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   anti-aliasing draws them. The column shafts have 64 sides instead of 20, so their outlines stay
   round and steady as the camera orbits close. The full-size depth takes about 1 to 11 MB more
   video memory at Medium and above, kept down by a one-byte channel.
+- **The knight, rounded.** Dennis spotted that the knight read flat and matte beside the rest of the
+  set, and guessed the cause, its flat faces, which the renders confirmed: a flat face mirrors one
+  direction of the room, so each showed one even tone, while a turned piece carries its highlights
+  across itself. The knight's neck, head, muzzle, ears and mane are now blocks whose faces bow out
+  (a superellipsoid, n = 4) within the old boxes' bounds, so it keeps its blocky outline and its
+  height, and the light runs across it. The scene draws 7.5 % more triangles with the same draw
+  calls, about 1 % more GPU time at High.
+- **A softer finish on the dark pieces.** Dennis spotted hard white lines running down the dark
+  pieces in MONOLITH. They were the room's two strip lights, which obsidian's near-mirror clearcoat
+  drew as lines a few pixels wide down each turned body. The clearcoat is now 0.22 rough, not 0.08,
+  as rough as the slate beneath it, so the same light spreads into a broad, soft sheen and the set
+  stays glossy; the cathedral's pieces barely change.
 - **The loading screen's arc.** As the M is written, White's back rank, rook to rook, flies in
   along its own radii, overshoots and settles in an arc over the emblem, the rooks first and the
   king and queen last at the crown. It carries over the idea of Dennis's Firewatch dashboard
@@ -206,7 +271,7 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   emblem leaves the arc its headroom, so the whole stays centred and inside the window on
   desktops, laptops and phones either way up.
 - **The cathedral, by name.** At Dennis's request the cathedral is no longer called Gothic: the app
-  bar's subtitle (Marble vs. obsidian · Cathedral), the board's label for screen readers, the
+  bar's subtitle (Cathedral world · marble vs. obsidian), the board's label for screen readers, the
   palette's `:world cathedral`, the World setting's note, the Grimoire's Worlds entry, the
   documents and the mockups' taglines now call it the cathedral. The notes on earlier releases
   keep the name they were written with.
@@ -220,16 +285,19 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   generators and the files they write call the letter the MONOLITH M; the rebuilt files differ
   from the old only in their names, paths and headers, the official marks' geometry is untouched,
   and the notes on earlier releases keep the names they were written with.
-- **Left for a later call.** A draw against Stockfish is not offered, since it needs a rule for
-  when the engine accepts; during a game a click on Analyze still plays a real move on your turn;
-  and from 600 to 899 px wide the telemetry footer still sits under the bottom bar. Each is left
-  for Dennis to decide.
+- **Left for a later call.** In a two-player game the engine's other help (the evaluation bar,
+  Hint, Calculate moves) carries no Analyze mark; on a phone the handover's notice stays over the
+  move strip until OK or the next move; the palette button no longer shows its key, Ctrl K, which
+  is in its title and in Settings' keys list; and `assets/monolith-logo.svg`, the bare M, is read
+  by nothing now, so whether it stays is open while the logo is being decided. Each is left for
+  Dennis to decide.
 - **Headers and documents.** Every file the release changed carries its own version; the page
   header, `js/app/base.js` (the release on screen), README.md and this file carry 2.18.0. A new
   module, `js/game/pgn.js` 1.0.0, writes and reads PGN. README.md, ARCHITECTURE.md, GRAPHICS.md
   and STUDIES.md describe the release, MONOLITH_HYBRID.md, two mockups and their generator drop
-  "Gothic", and the Grimoire has its new entry. Shipped headers keep three entries; the 34 that
-  rolled out are below, under Entries moved from file headers.
+  "Gothic", and the Grimoire has its new entry. `tools/build-piece-models.py` 1.0.1 records in its
+  header that it is out of step with the knight and the clearcoat. Shipped headers keep three
+  entries; the 37 that rolled out are below, under Entries moved from file headers.
 
 **Checked.**
 
@@ -258,6 +326,30 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   GPU timer queries stayed within 0.2 ms of the old figures at every level, the draw calls are
   unchanged, and the video memory grows by 1.2 to 10.8 MB at Medium and above. Not verified: other
   GPUs, browsers and phones, and Dennis's own camera poses, which lie outside the camera's limits.
+- The rules, on their branch at 1600 × 1000 and 390 × 844 and again after the merge (92f2f52) at
+  1600 × 1000: a draw offered to the computer in nine cases, A to I (the start position; the
+  computer a queen down, a queen up, and level at move 25; a mate for either side; an undo while
+  it judges; an offer on its move, then an engine that fails while it judges; and two players);
+  the Explore switch, its Settings row and `:explore analyze`, through a reload; and the Analyze
+  mark: the marks, the badge, the handover, the PGN comment, a reload and an undo, and the games
+  that carry none. No console or page errors and no duplicate ids.
+- The chrome, on its branch: the loading screen's stills the same pixel for pixel with the emblem
+  drawn from the shared drawing; the wordmark's M on the word's baseline; every segment of the
+  match strip on one baseline; the selected tab's contrast (above); and the actions, in the rail
+  and in the app bar, at seven sizes in both worlds: 1600 × 1000, 960 × 700, 1180 × 820,
+  820 × 1180, 844 × 390, 390 × 844 and 360 × 780, the last five with touch.
+- The pieces, on the GPU in both worlds against renders from before: on a dark rook in MONOLITH
+  the brightest streak fell from a peak of 141 to 102 (of 255) and widened from 4 to 9 px; the
+  share of the knight in one flat tone fell from 0.64–0.84 to 0.18–0.31 in MONOLITH; the knight
+  has 4,803 vertices instead of 2,399, and the frame takes 0.01 to 0.02 ms more GPU time at High.
+  A knight's hop, a knight capturing and captured (the shatter), picking a knight by its head and
+  Analyze's phantom knights work as before, and the shared geometry is never freed.
+- After the rules, chrome and pieces were merged (6787621): the static checks again,
+  `tools/build-emblem.mjs` reporting the page current and `tools/verify-studies.mjs` passing; all
+  six tabs at 390 × 844, at 820 × 1180 with touch and at 1600 × 1000 in both worlds, with no
+  console or page errors; a friend game on a phone; and the chrome's own run at 1600 × 1000,
+  960 × 700, 390 × 844 and 844 × 390 in both worlds, the actions working in the rail and in the
+  app bar, the release reading v2.18.0 and each world's wordmark in place, with no errors.
 - Each package on its own branch before the merge, in headless Chromium (the earliest runs on
   software GL, SwiftShader; the rest on the GPU): its own scripted checks, most at 1600 × 1000
   and 390 × 844, with `tools/verify-studies.mjs` where play, studies or Analyze changed.
@@ -267,6 +359,12 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   set by the system rather than Minimal, and a live deployment on GitHub Pages. The PV header's
   touch hint (083cacc) was checked on its own, at 390 × 844 with touch and at 1600 × 1000. The
   README's screenshots are still the 2.12.0 capture.
+- Not verified for the rules, the chrome and the pieces either: other GPUs and browsers, and real
+  devices. Known: an action that has the keyboard focus can lose it when the window is resized
+  across 900 px, as the cathedral runs showed; and the piece models are out of step with the
+  knight and the clearcoat: `tools/build-piece-models.py` stops at its check that
+  `js/scene/board.js` still says what it copies and still writes obsidian's clearcoat at 0.08, and
+  the `.blend` files in `assets/models/` show the box knight.
 
 ## 2.17.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5]
 
@@ -2266,6 +2364,10 @@ word, under the file they came from.
 
 ### `js/game/engine.js`
 
+- 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the release audit Dennis asked
+  for: an engine that stops working after it has started answers its pending search, restarts once
+  and then reports the failure, instead of leaving searches waiting; a terminated engine starts
+  nothing more.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
   out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
@@ -2353,5 +2455,15 @@ word, under the file they came from.
 - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: the
   studies script block of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of
   concerns.
+
+### `js/scene/board.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
+
+### `js/scene/materials.js`
+
+- 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First release as its own file: split
+  out of wizards-chess.html 2.4.0 when Dennis asked for a proper separation of concerns.
 
 <!-- ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once! -->
