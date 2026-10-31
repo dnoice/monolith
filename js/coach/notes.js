@@ -77,6 +77,7 @@ import {
 import { hashStr, matePattern, moveFacts, voice, why } from './facts.js';
 import { bookAt, openingOf } from './book.js';
 import { stmScore } from '../game/input.js';
+import { markConsult } from '../game/flow.js';
 
 /* ---------- the coach's engine and its notes ---------- */
 export let coach; // set in init()
@@ -416,6 +417,7 @@ export async function giveHint() {
   const w = why(facts, seed), piece = PIECE_NAMES[st.board[mv.from].t];
   app.hint = { state: st, level: 1, from: mv.from, to: mv.to, san, piece: st.board[mv.from].t,
     steps: [voice(`hint.${nudgeKey}`, {}, seed), voice('hint.piece', { piece, sq: Chess.sqName(mv.from) }, seed), w ? voice('hint.move', { san, why: w }, seed) : voice('hint.move_plain', { san }, seed)] };
+  markConsult('hint', true);   // a two-player game: the hint on screen marks the side to move (js/game/flow.js)
   render(); refreshAnalysis();
 }
 

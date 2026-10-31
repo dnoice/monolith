@@ -187,7 +187,7 @@ function afterMove(next) {
   studyAfterMove();
   if (!game.result && Chess.inCheck(next)) { sound.chime(); checkShudder(Chess.kingSq(next.board, next.turn)); }
   render(); autoOrient();   // two players on one screen: the board turns to the side to move, a beat after the move lands
-  consultHandover();        // and the player now to move is told if the other used Analyze before this move
+  consultHandover();        // and the player now to move is told if the other used the engine's help before this move
   if (game.result) celebrate(game.result);   // the result card in the Play panel carries Rematch
   refreshAnalysis();
   maybeComputerMove();

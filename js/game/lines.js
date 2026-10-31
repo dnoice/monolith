@@ -53,7 +53,7 @@ import { $, prefs } from '../app/base.js';
 import { learn, render, shown } from '../app/state.js';
 import { engine } from './engine.js';
 import { posCmdFor, positionCmd, resultFor, stateIndex } from './play.js';
-import { explore, exploreState } from './flow.js';
+import { explore, exploreState, markConsult } from './flow.js';
 import { renderEvalOnly } from '../ui/panels.js';
 
 /* ---------- analysis: evaluation bar + best line, for the position on screen ---------- */
@@ -95,6 +95,7 @@ export async function calculateMoves() {
   $('#engine-lines').open = true;   // the candidates show inside the engine lines
   const count = Math.min(prefs.lines, Chess.allLegal(st).length);
   app.calc = { state: st, lines: new Array(count).fill(null), active: -1, running: true, depth: 0 };
+  markConsult('calc', true);   // a two-player game: Calculate marks the side to move at the live position (js/game/flow.js)
   render();
   let lastDraw = 0; const gen = engine.gen + 1;
   await engine.go(positionCmd(stateIndex(st)), { depth: 16, movetime: 3000, multipv: count }, inf => {
