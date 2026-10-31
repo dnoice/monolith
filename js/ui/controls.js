@@ -149,7 +149,7 @@ export function init() {
   // the game record: PGN out (copy, a file) and in (the setup's Load a game), the FEN of the board
   $('#btn-pgn-copy').addEventListener('click', copyPgn);
   $('#btn-pgn-save').addEventListener('click', downloadPgn);
-  $('#btn-fen-copy').addEventListener('click', copyFen);
+  $('#btn-game-fen').addEventListener('click', copyFen);
   $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
   $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
