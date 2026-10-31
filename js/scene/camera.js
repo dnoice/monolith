@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Camera Orbit (MONOLITH Edition - v1.0)
+    - Title: Camera Orbit (MONOLITH Edition - v1.1)
     - File Name: camera.js
     - Relative Path: js/scene/camera.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      board fits the stage inside its safe bands; a left drag or a finger
+      carries a piece or orbits; Reset view goes to the world's own pose.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -21,12 +24,32 @@
       Dennis asked for a proper separation of concerns.
 
 ✒ Description:
-    The camera's orbit around the board and the pointer: middle-drag to
-    orbit, scroll to zoom, and picking a square or piece under the pointer.
+    The camera and the pointer on the stage. The board is fitted to the
+    stage inside the bands its overlays leave free; a left drag carries a
+    piece to a square or orbits (a middle drag orbits too), the wheel and a
+    pinch zoom, and a click picks the square or piece under the pointer.
 
 ✒ Key Features:
-    - cam: theta, phi and distance, eased each frame (updateCamera).
-    - Orbit and zoom from the pointer and the wheel.
+    - cam: theta, phi, distance, fit and pan, eased each frame
+      (updateCamera), which also shows Reset view on the stage while a
+      view turned by hand is off the world's pose.
+    - fitFor(), fitCamera() and fitDist(): the board's whole footprint
+      (frame, coordinates, both sides' starting pieces) fitted inside the
+      safe bands at the world's pose and centred by an image-space pan; a
+      hand zoom is kept as a share of the fit.
+    - safeBands(): the --safe-t/r/b/l bands, read from the canvas.
+    - Refits on a resize (app/loop.js), on a change of destination or
+      world, and when the evaluation bar shows or hides; an orbit by hand
+      never refits.
+    - resetView(): the world's own pose at the fitted distance, square to
+      the side at the bottom; it ends an end-of-game swing first and leaves
+      theta to an auto-flip's turn.
+    - Drag-to-move: a press on a piece of the side to move picks it up;
+      dropped on a legal square it moves there, anywhere else it goes back.
+    - A left drag anywhere else, or a middle drag, orbits; the wheel and a
+      pinch zoom between 0.55 and 1.75 times the fit.
+    - Touch: one finger carries a piece or orbits, and a second finger
+      ends the carry and pinches.
     - rayCandidates() and resolveClick(): which square a click on the board
       means.
 
@@ -34,14 +57,18 @@
     An ES module of the page; nothing in it runs on import. js/main.js calls
     its init() once, as boot step 9 of 26. Other modules import from it, for
     example:
-        import { cam, rayCandidates } from '../scene/camera.js';
+        import { cam, fitDist, resetView } from '../scene/camera.js';
+    Every stage overlay sits inside a band: a destination that adds one sets
+    --safe-t/r/b/l on #scene (the canvas), not on #stage, and the fit keeps
+    the board clear of it.
 
 ✒ Other Important Information:
-    - Dependencies: imports app/store.js, scene/renderer.js, scene/board.js,
-      app/sound.js, app/state.js and game/board-ui.js; globals three.js r147
-      (THREE, from jsDelivr).
-    - Shared state (js/app/store.js): reads only app.shake, app.selected and
-      app.legalFor.
+    - Dependencies: imports app/store.js, app/base.js, scene/renderer.js,
+      scene/board.js, scene/motion.js, scene/worlds.js, app/sound.js,
+      app/state.js, game/board-ui.js, game/ceremony.js and game/flow.js;
+      globals three.js r147 (THREE, from jsDelivr).
+    - Shared state (js/app/store.js): reads only app.shake, app.selected,
+      app.legalFor, app.worldName, app.orient and app.busy.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.

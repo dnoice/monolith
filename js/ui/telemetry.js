@@ -4,15 +4,18 @@
     - File Name: telemetry.js
     - Relative Path: js/ui/telemetry.js
     - Artifact Type: javascript
-    - Version: 1.1.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.3
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — TB HITS
+      shows only when the engine reports them, and a footer the stylesheet
+      hides (on a phone) is neither read nor fitted.
     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,10 +23,6 @@
       release audit Dennis asked for: the speed sparkline follows the engine
       its number comes from (the play engine's own info outside Analyze),
       and a report without a speed adds no zero.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
-      Dennis's tiered graphics levels: RENDER names the level (with Auto
-      when Automatic chose it), and GPU shows the cleaned-up name the
-      levels detect from ("Intel Iris Xe Graphics", not "Intel").
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -32,11 +31,13 @@
     read absent unless a recorded run carries its host's own samples.
 
 ✒ Key Features:
-    - Engine figures from Stockfish's own info lines (nps, hash, tablebase
-      hits).
+    - Engine figures from Stockfish's own info lines (nps, hash, and
+      tablebase hits when the engine reports them).
     - Frame time from requestAnimationFrame; cores from hardwareConcurrency;
       heap and GPU name where the browser exposes them.
-    - Sparklines and the fit to the footer's width.
+    - Sparklines and the fit to the footer's width; nothing is read or
+      fitted while the stylesheet hides the footer (phones under 600 px
+      wide, or held sideways).
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls

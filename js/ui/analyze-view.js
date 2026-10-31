@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Analyze View (MONOLITH Edition - v1.1)
+    - Title: Analyze View (MONOLITH Edition - v1.2)
     - File Name: analyze-view.js
     - Relative Path: js/ui/analyze-view.js
     - Artifact Type: javascript
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Play
+      to here plays an engine line onto the board, badges have a short form,
+      a tap aims the X-Ray, and status, fork row and WDL labels keep clear.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -23,22 +26,28 @@
       1 only where it still follows the walk's trunk; and fitCanvas() keeps
       a canvas within what every browser can allocate, so a long run's Hive
       still draws.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     MONOLITH Analyze on screen: the stats, the search profile, the WDL
     ribbon, the Synaptic PV scrubber and its phantom preview, the stage
-    instruments and the X-Ray readout.
+    instruments and the X-Ray readout. It also writes the source badges
+    that Analyze and the Crucible share.
 
 ✒ Key Features:
-    - renderAnalyze(): the whole tab from the model.
+    - renderAnalyze(): the whole tab from the model; the search status in
+      two lines, what is happening over its detail.
     - previewLine() and clearScrub(): a scrubbed ply shown on the board as
       phantoms.
-    - renderSyn(): the Synaptic PV chips.
+    - renderSyn(): the Synaptic PV chips. Play to here on a pinned chip
+      (or Enter on it, or a double-click on any chip) plays the line to
+      that ply onto the board as an explored line, and Shift-click on a
+      MultiPV row plays its first move; the game itself never changes.
     - renderXray() and placeXrayChip(): the X-Ray readout and its chip on
-      the board.
+      the board; on a screen without hover a tap picks its square.
+    - setBadge(), badgeShort(), syncBadges() and setBadgesPref(): each
+      source badge in its full or short form ([SF · rec]), the full text
+      in a short badge's title.
     - TOK: the canvas colours; fitCanvas() for sharp canvases.
 
 ✒ Usage Instructions:
@@ -50,10 +59,10 @@
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/renderer.js,
       scene/board.js, scene/instruments.js, scene/phantoms.js, app/state.js,
-      game/board-ui.js, coach/coach.js, coach/facts.js, game/input.js,
-      ui/analyze.js, ui/grimoire.js and ui/panels.js; globals three.js r147
-      (THREE, from jsDelivr), Chess (js/core/chess.js) and Monolith
-      (js/core/monolith.js).
+      game/flow.js, game/board-ui.js, coach/coach.js, coach/facts.js,
+      game/input.js, ui/analyze.js, ui/grimoire.js and ui/panels.js;
+      globals three.js r147 (THREE, from jsDelivr), Chess (js/core/chess.js)
+      and Monolith (js/core/monolith.js).
     - Shared state (js/app/store.js): sets app.fieldOn; reads app.orient and
       app.view.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served

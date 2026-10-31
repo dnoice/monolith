@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Crucible Board (MONOLITH Edition - v1.0)
+    - Title: Crucible Board (MONOLITH Edition - v1.1)
     - File Name: crucible-board.js
     - Relative Path: js/ui/crucible-board.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      Moves card lists and steps the game on the board (renderCrMoves), the
+      move in view kept in sight, sideways too; the board card has two rows.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,13 +25,21 @@
 
 ✒ Description:
     A Crucible game expanded onto the 3D board: step through its moves,
-    explore from any of them, and go back to the deck.
+    explore from any of them, and go back to the deck. While it is on the
+    board, the Moves card lists and steps that game, not the Play game.
 
 ✒ Key Features:
     - crExpand() and crShowBoard(): a game onto the board.
     - crStep(): move through the game.
     - boardOverride: the position the board shows instead of the game's.
-    - renderBoardCard() and crLeaveBoard().
+    - renderCrMoves(): the Moves card lists the game on the board,
+      numbered from its first move, with the ply in view marked and kept
+      in sight (sideways on a phone's strip); a move goes there, and the
+      move box rests.
+    - renderBoardCard(): the card over the board in two rows, the game and
+      where you are in it, with the rest under Details; rebuilt only when
+      what it says changes, so a click on it is never lost.
+    - crLeaveBoard(): the board back to the Play game's position.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup

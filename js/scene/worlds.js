@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Worlds (MONOLITH Edition - v1.2)
+    - Title: Worlds (MONOLITH Edition - v1.3)
     - File Name: worlds.js
     - Relative Path: js/scene/worlds.js
     - Artifact Type: javascript
-    - Version: 1.2.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.3.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
+      world change eases to the fitted distance and pan, the fog thins with
+      the fit (applyBackdrop(), now exported), and the labels drop "Gothic".
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,24 +25,25 @@
       change left it (it held dark, then snapped clear); worldSettled() says
       when a change has finished; and a change warms the preview shaders
       again.
-    - 1.1.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Reads
-      the graphics level from js/scene/quality.js, the new home of Dennis's
-      tiered levels; the mirror floor shows wherever the level's
-      reflections are on.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     Cathedral and MONOLITH on one board. The world follows the destination
     (MONOLITH for Analyze and Crucible) or stays where Settings puts it; a
     change blends materials, lights, haze and bloom, swaps the sets at the
-    midpoint and eases the camera to the world's pose.
+    midpoint and eases the camera to the world's pose, at the distance and
+    pan fitted to the stage.
 
 ✒ Key Features:
     - PAL and pal: the marker palette of each world.
     - WORLD: each world's pose, fog, bloom and backdrop.
+    - applyBackdrop(): the backdrop and the fog, its density scaled by the
+      world's own distance over the camera's fit (js/scene/camera.js), so
+      the board reads the same at any stage size.
     - applyWorldMix(): the continuous blend between the worlds.
     - setWorld() and desiredWorld(): the transition, and which world a tab
-      wants.
+      wants; the camera eases to the fit and pan read live, so a stage that
+      changes size on the way is still fitted at the end.
     - resizeMirror() and syncWorldRender().
     - worldSettled(): whether a world change has finished.
 

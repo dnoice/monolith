@@ -29,13 +29,17 @@
       Black moved first), how it ended as a comment, wrapped at 80 columns.
     - parsePgn(): reads the tags, skips comments, variations, NAGs, move
       numbers and annotation marks, and replays the moves; an error names
-      the first move that is not legal, with its number.
+      the first move that is not legal, with its number. Play's Load a game
+      reads through it, and so does Analyze's Load box for a pasted PGN
+      (js/ui/analyze.js).
     - Moves written with more than SAN needs (Nbd7 where Nd7 is enough,
       e2e4, castling with zeros) are still read.
     - A bare FEN pasted in its place is read as a game from that position.
     - loadPgn(): the record begins a game with the setup's choices, asking
       first when a game is in progress; a decided result in the record
       ends the game there.
+    - openPgnLoad(): the setup with Load a game open and its box focused
+      (the palette's :load pgn).
     - copyPgn(), downloadPgn() and copyFen(), with a copy that still works
       where the clipboard API is missing.
 
@@ -43,7 +47,8 @@
     An ES module of the page; nothing in it runs on import. It has no setup
     of its own: its code runs when other modules call it, for example:
         import { copyPgn, parsePgn } from '../game/pgn.js';
-        const r = parsePgn(text);   // { states, moves, sans, tags, result } or { error }
+        const r = parsePgn(text);
+        // { start, states, moves, sans, tags, result }, or { error }
 
 ✒ Examples:
     gamePgn() after 1. e4 e5 2. Nf3 against the computer at level 4:
@@ -56,8 +61,9 @@
 
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, app/state.js,
-      ui/snackbar.js, game/input.js, game/flow.js and ui/studies.js; globals
-      Chess (js/core/chess.js) and LEVELS (js/core/levels.js).
+      ui/snackbar.js, game/board-ui.js, game/input.js, game/flow.js and
+      ui/studies.js; globals Chess (js/core/chess.js) and LEVELS
+      (js/core/levels.js).
     - Shared state (js/app/store.js): reads app.started.
     - The PGN Date tag is YYYY.MM.DD, the format PGN requires; the
       downloaded file is named monolith-YYYY-MM-DD.pgn.

@@ -1,24 +1,25 @@
 /*
 ✒ Metadata
-    - Title: App Base (MONOLITH Edition - v1.5)
+    - Title: App Base (MONOLITH Edition - v1.6)
     - File Name: base.js
     - Relative Path: js/app/base.js
     - Artifact Type: javascript
-    - Version: 1.5.4
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.6.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.6.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      release on screen is 2.18.0. New defaults: autoFlip on, badges
+      'full', edVs 'cpu'; a saved badges or edVs keeps to its choices.
     - 1.5.4 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       release on screen is 2.17.0.
     - 1.5.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       release on screen is 2.16.0.
-    - 1.5.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      release on screen is 2.15.0.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -62,8 +63,8 @@ export class BootHalt extends Error {}
 
 export const $ = s => document.querySelector(s);
 /* The release on screen (Dennis, 10/22/2026: "so I can always know if I am behind"). These repeat
-   the ✒ header's Version and Date; a release bumps all of them together. */
-export const APP_VERSION = '2.17.0', APP_DATE = '10/26/2026';
+   the Version and Date in index.html's ✒ header; a release bumps all of them together. */
+export const APP_VERSION = '2.18.0', APP_DATE = '10/30/2026';
 export let reduceMotion; // set in init()
 /* The element that scrolls a destination's panel: the panes beside the stage on a wide screen,
    the whole panel under it at phone width (css/media.css, 899 px and below). */

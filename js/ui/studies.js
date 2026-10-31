@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Studies (MONOLITH Edition - v1.0)
+    - Title: Studies (MONOLITH Edition - v1.1)
     - File Name: studies.js
     - Relative Path: js/ui/studies.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A set-up
+      marked vs: 'both' is a both-sides game on this screen, and a wrong
+      move's explanation stays in the card until the next move.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,26 +23,24 @@
       Coach's engine instead of passing unchecked (a study could read as
       solved), and says so when it cannot check; a solved date is read only
       as text.
-    - 1.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release: the study engine moved out of js/ui/position.js when Dennis
-      asked for a clearer, more visual Position tab, so the views and the
-      rules of a study live apart. Adds the study order (Up next) and the
-      progress counts the new views draw.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     How a study runs. A puzzle plays its replies from its line and takes a
     wrong move back; a practice game is played out against Stockfish at
     full strength and judged by its goal (mate, queen a pawn, hold the
-    draw); a set-up loads with the player's own game settings. Solved
-    studies are kept in this browser with the date. The Position tab draws
-    all of this (js/ui/position.js); nothing here touches the page beyond
-    the snackbar and render().
+    draw); a set-up loads with the player's own game settings, or for both
+    sides on this screen when it says so (vs: 'both'). Solved studies are
+    kept in this browser with the date. The Position tab draws all of this
+    (js/ui/position.js); nothing here touches the page beyond the snackbar
+    and render().
 
 ✒ Key Features:
     - studyStart(): starts a study as its own game, without touching the
       saved game settings, and asks first when a game is in progress.
     - studyScripted() and studyAfterMove(): the replies, the checks and the
-      verdict, move by move.
+      verdict, move by move; a wrong move is taken back and its
+      explanation stays in the card until the next move.
     - studyUpNext(): the first study not solved yet, in the study order
       (level 1 to level 3), overall or in one category.
     - studyNext(): the next unsolved study after one, in the same order and

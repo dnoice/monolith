@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Motion (MONOLITH Edition - v1.0)
+    - Title: Motion (MONOLITH Edition - v1.1)
     - File Name: motion.js
     - Relative Path: js/scene/motion.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
+      piece dropped on a square by hand settles from where it was let go,
+      and a capture shatters as it lands (dropAt()).
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,13 +25,17 @@
 
 ✒ Description:
     Tweens and the pieces' movement: glides, hops and lunges, facing the
-    target and back, and the idle breathing of the pieces between moves.
+    target and back, the settle of a piece dropped by hand, and the idle
+    breathing of the pieces between moves.
 
 ✒ Key Features:
     - tween() and stepTweens(): eased animations on one clock, scaled by the
       speed setting.
     - easeIn, easeOut and easeInOut.
     - animMove() and animAttack(): a move and a capture.
+    - dropAt(): a piece dropped over its square by hand (drag-to-move,
+      scene/camera.js) settles from where it was let go instead of
+      travelling from its own square; a capture shatters as it lands.
     - stepIdle(): the pieces' idle motion.
 
 ✒ Usage Instructions:

@@ -4,14 +4,17 @@
     - File Name: boot-tips.js
     - Relative Path: js/data/boot-tips.js
     - Artifact Type: data
-    - Version: 1.0.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      orbit tip names the left drag: drag a piece to move it, drag the board
+      to orbit. It led with the middle button.
     - 1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
       release, for the rotating tips and facts Dennis asked for on the
       loading screen: tips on the page's own keys, commands and

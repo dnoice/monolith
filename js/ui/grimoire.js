@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Grimoire (MONOLITH Edition - v1.2)
+    - Title: Grimoire (MONOLITH Edition - v1.3)
     - File Name: grimoire.js
     - Relative Path: js/ui/grimoire.js
     - Artifact Type: javascript
-    - Version: 1.2.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.3.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Go
+      to lands on the control an article names (GR_AT, grLand), and a search
+      that finds nothing offers Show N in All and Clear search.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,9 +23,6 @@
       reload onto it showed an empty index), keeps its place and focus on
       phones and after Back, lists its terms as list items holding
       buttons, and ignores a damaged saved category.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
-      Position term's Go to button opens the view its where names first
-      (Read, Set up or Studies).
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -33,7 +33,14 @@
 ✒ Key Features:
     - grFind(): scored search over term, other names and text.
     - grRender() and grOpen(): the index and articles, with history
-      (grBack).
+      (grBack). A search that finds nothing names its category, and
+      offers Show N in All where other categories hold the word, and
+      Clear search.
+    - grLand() and GR_AT: Go to lands on the control an article names,
+      opening a folded section around it, centring it in the panel and
+      ringing it; a switch or button takes the focus, a text field never.
+      A hidden control leaves the jump at the tab's top. The palette's
+      :keys uses grLand() too.
     - termify(): marks terms in the markup.
     - termOpen() and termClose(): the term card beside any marked term.
 

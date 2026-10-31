@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Controls (MONOLITH Edition - v1.1)
+    - Title: Controls (MONOLITH Edition - v1.2)
     - File Name: controls.js
     - Relative Path: js/ui/controls.js
     - Artifact Type: javascript
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Wires
+      the free board, auto-flip, Draw, rematch on the other side, Analyze
+      game, PGN and FEN, Reset view, a phone's move box and Analyze's Load.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,21 +23,32 @@
       Position tab's handlers (the FEN box, Load, Copy, the study card and
       the library) moved to js/ui/position.js with the tab's redesign,
       after Dennis found the tab awkward.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    Wires every control on the page: the rail, the Play pane, the move box,
-    Analyze, Crucible and Settings, the keyboard shortcuts, and the first
-    render. The Position tab wires its own (js/ui/position.js).
+    Wires every control on the page: the rail, the Play pane, the move list
+    and the move box, Analyze, Crucible and Settings, and the first render.
+    The Position tab wires its own (js/ui/position.js), and the page-wide
+    keys are in js/ui/splitters.js.
 
 ✒ Key Features:
     - buildNav() and the initial renders.
-    - Play: opponent, side, level, start, rematch, undo, resign and the move
-      box.
-    - Analyze and Crucible settings, saved as they change.
-    - Settings: sound, speed, tips, coordinates, the world and quality.
+    - Play: opponent, side, level, Start game (asking first over a game
+      in progress), rematch, rematch on the other side, Analyze game,
+      Draw, undo, hint, resign and the auto-flip switches.
+    - Explore's Undo and Back, and the free board's Play from here, which
+      opens the setup on its line.
+    - The game record: Copy PGN, Download PGN, Copy FEN and the setup's
+      Load a game.
+    - The Moves card: its steps walk the game, the free board's line or a
+      Crucible game on the board; the move box plays a move on your turn
+      or tries it in a line, and on a phone opens from its keyboard button.
+    - The Coach card's switches, engine lines and Calculate.
+    - Analyze and Crucible settings, saved as they change; Analyze's Load
+      and the short source badges; the Crucible deck's own Start run.
+    - Settings: sound, legal moves, Move pieces, coordinates, tips, speed
+      and Reset view (also on the stage); Coach comments and Evaluation bar
+      run the Coach card's own switches.
     - Arrow keys in radio groups, and the Hive's pointer and keyboard
       handling.
 
@@ -44,9 +58,9 @@
 
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/camera.js,
-      scene/motion.js, app/sound.js, app/state.js, ui/snackbar.js,
-      game/engine.js, game/board-ui.js, game/play.js, game/flow.js,
-      game/lines.js, coach/notes.js, game/input.js, ui/analyze.js,
+      app/sound.js, app/state.js, ui/snackbar.js, game/engine.js,
+      game/board-ui.js, game/play.js, game/flow.js, game/lines.js,
+      coach/notes.js, game/input.js, game/pgn.js, ui/analyze.js,
       ui/analyze-view.js, ui/crucible.js, ui/crucible-board.js,
       ui/crucible-view.js, ui/palette.js and ui/nav.js; globals Chess
       (js/core/chess.js).
@@ -194,7 +208,7 @@ export function init() {
   $('#opt-field').addEventListener('change', e => optSave('fieldDepth', +e.target.value));
   $('#opt-walk').addEventListener('change', e => optSave('walkDepth', +e.target.value));
   $('#btn-reference').addEventListener('click', loadReference);
-  // Load: a pasted FEN, analysed here; Enter loads it (Shift Enter keeps a new line)
+  // Load: a pasted FEN or PGN game, analysed here; Enter loads it (Shift Enter keeps a new line)
   $('#btn-an-load').addEventListener('click', () => loadForAnalysis($('#an-load-text').value));
   $('#an-load-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); loadForAnalysis(e.target.value); } });
   $('#set-badges')?.addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));

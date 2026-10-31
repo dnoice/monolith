@@ -4,15 +4,18 @@
     - File Name: monolith.js
     - Relative Path: js/core/monolith.js
     - Artifact Type: library
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] —
+      fmtPct() and fmtCount() join a figure to its unit with a no-break
+      space, so a readout never wraps between them.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -24,9 +27,7 @@
       elo1 10); the Elo interval is unbounded after one pair and never has
       no width; and the sharpness compares lines 1 and 2 themselves, with
       none when line 2 is missing. The recorded run's trace is unchanged.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The instrument's arithmetic as pure functions: expected score,
@@ -39,6 +40,8 @@
       field.
     - Score conventions: { cp, mate } in one stated view; fmtScore() and its
       siblings display White's view with U+2212 for minus and #n for mate.
+    - fmtPct() and fmtCount(): a share or a count with its unit (%, k, M,
+      G), joined by a no-break space.
     - fromInfo() and fromRecord(): engine and recorded scores to White's
       view; flip().
     - wdlWhite() and sharpness(): the WDL ribbon and its halo.

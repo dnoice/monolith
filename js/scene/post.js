@@ -4,15 +4,18 @@
     - File Name: post.js
     - Relative Path: js/scene/post.js
     - Artifact Type: javascript
-    - Version: 1.2.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      haze is laid over the scene by depth, mixing both surfaces' light at
+      silhouettes, so columns keep clean edges; the depth draw is full size.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,11 +25,6 @@
       built again, the panels redrawn), and what it held is let go while it
       is lost, when WebGL's delete calls are silent: freed after the
       restore, the stale objects drew 70 console warnings.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — For
-      Dennis's tiered graphics levels: the pipeline is built from the
-      level's settings (bloom and shadows can each be off, the light at
-      three resolutions), and the frame-time watch moved to
-      js/scene/quality.js, which this file now starts.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -41,7 +39,12 @@
       use (js/scene/quality.js): pixel ratio, multisampling, the light
       pass's resolution and steps, bloom on or off, the key light's shadow
       map size or no shadows.
-    - The haze: ray-marched beams, composited with the scene.
+    - The haze: ray-marched beams at the level's fraction of the view,
+      each ray ending at the depth of a full-resolution pre-pass (whose
+      unused colour takes one byte a pixel).
+    - A depth-matched composite: each pixel takes the haze of the texels
+      whose rays ended at its own depth, and a pixel on a silhouette mixes
+      both surfaces' haze by how much of it each covers.
     - The output shader: sRGB, vignette and dither.
     - Planar shafts wherever the light is not ray-marched.
     - Recovery from a lost WebGL context: when the browser restores it, the

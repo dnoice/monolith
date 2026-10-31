@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Splitters (MONOLITH Edition - v1.3)
+    - Title: Splitters (MONOLITH Edition - v1.4)
     - File Name: splitters.js
     - Relative Path: js/ui/splitters.js
     - Artifact Type: javascript
-    - Version: 1.3.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.4.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The panel
+      width is kept per world (older widths carry over); Play's F U H keys,
+      Space and / from the rail, a tap aims the X-Ray, free-board keys.
     - 1.3.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -21,21 +24,31 @@
       longer also steps the game (the arrows in the Set up editor were
       rewinding the game behind it), and a drag on a game's heartbeat ends
       when the browser takes the pointer.
-    - 1.2.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      level buttons it wires are now the cells of Dennis's graphics meter.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     Drag handles on the dock, the side panel and the move list, with
-    keyboard control and saved sizes; also the dock's scrubber and heartbeat
-    pointer handling.
+    keyboard control and saved sizes; the page's keyboard shortcuts; and
+    the dock's scrubber and heartbeat pointer handling.
 
 ✒ Key Features:
     - Drag, arrow keys (Shift for bigger steps), Home or double-click to
       reset.
-    - Sizes saved per viewer and restored (applyLayoutSizes).
+    - Sizes saved per destination and restored (applyLayoutSizes), the
+      side panel's width per world; widths saved per tab by older releases
+      carry over to their world once. Below 1200 px a drag keeps the panel
+      at 344 px or wider and the stage at 60% of the width or more.
     - ARIA values kept in step for screen readers.
     - Synaptic PV scrolling and the heartbeat's pointer scrub.
+    - The page's keys: Ctrl K or ⌘K for the palette; on Analyze Space
+      holds the X-Ray and F, V, X toggle the layers; on Play F, U, H and
+      Ctrl or ⌘ Z (F on Position too); / searches the Grimoire; the arrows,
+      Home and End step the game or a Crucible game, and ← and Home take
+      back or reset the free board's line. Space, / and Play's keys work
+      with the focus on the rail.
+    - A mouse click leaves no focus on Go infinite or a layer toggle, so
+      Space never presses them; a touch on the stage is noted (xr.touch)
+      so a tap can aim the X-Ray.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls
@@ -48,7 +61,7 @@
       game/board-ui.js, game/flow.js, ui/analyze.js, ui/analyze-view.js,
       ui/crucible.js, ui/crucible-board.js, ui/crucible-view.js,
       ui/palette.js, ui/grimoire.js, ui/nav.js, scene/pillars.js,
-      scene/quality.js and app/loop.js.
+      scene/quality.js, scene/worlds.js and app/loop.js.
     - Shared state (js/app/store.js): reads only app.started and app.busy.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do

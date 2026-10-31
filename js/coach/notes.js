@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Coach Notes (MONOLITH Edition - v1.0)
+    - Title: Coach Notes (MONOLITH Edition - v1.1)
     - File Name: notes.js
     - Relative Path: js/coach/notes.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      end note offers Show <move> and Analyze it at the turning point, and
+      turningPly() hands that ply to Analyze game.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,9 +23,7 @@
       release audit Dennis asked for: asking for a hint while one is being
       worked out no longer cancels both; coachQueued() lets a study wait its
       turn behind the Coach's reading.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Coach at work: its own engine, the note for each move (your move
@@ -39,7 +40,10 @@
     - Opening habits said once a game.
     - giveHint(): a hint in steps, from a nudge to the move.
     - coachReview() and coachEnd(): accuracy and the moves worth another
-      look.
+      look; the end note's actions show the turning point on the board or
+      in Analyze.
+    - turningPly(): the finished game's turning point as a ply, or null
+      (Analyze game in js/game/flow.js opens there).
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls

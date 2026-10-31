@@ -1,37 +1,49 @@
 /*
 ✒ Metadata
-    - Title: Crucible View (MONOLITH Edition - v1.1)
+    - Title: Crucible View (MONOLITH Edition - v1.2)
     - File Name: crucible-view.js
     - Relative Path: js/ui/crucible-view.js
     - Artifact Type: javascript
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      verdict in a plain sentence, Start run in reach and on the empty deck,
+      a readout on a hovered Hive tile, and the heartbeat drawn on phones.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       live-run note speaks of MONOLITH levels, under the app's new name,
       which Dennis chose.
     - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a run stopped at its limit says why,
       and the run note explains the book and the limits.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Crucible on screen: the verdict, the LLR oscilloscope, the Hive of
-    games and the heartbeat of a game's evaluation.
+    games and the heartbeat of a game's evaluation. The verdict also reads
+    as one plain sentence, and before a live run the deck offers its own
+    Start run.
 
 ✒ Key Features:
-    - renderCrucible(): the deck and pane from the model.
+    - renderCrucible(): the deck and pane from the model; the run note in
+      one line, the rest under How a live run plays here.
+    - The verdict's code and its plain sentence: which engine is stronger
+      and by how much, or that nothing is decided yet.
+    - The deck before a live run: what to do next, its own Start run, and
+      what is wrong with the settings when something is.
     - The oscilloscope: the LLR trace with monotone curves and the bounds.
-    - The Hive: one cell per game, hit-tested for hover.
-    - The heartbeat: a game's evaluation swings, coloured by size.
+    - The Hive: one cell per game, hit-tested for hover, with a two-line
+      readout of the game under the pointer.
+    - The heartbeat: a game's evaluation swings, coloured by size; it draws
+      once its dock has a size.
+    - Source badges through setBadge() (js/ui/analyze-view.js), full or
+      short.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls

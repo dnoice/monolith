@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Resize And Loop (MONOLITH Edition - v1.2)
+    - Title: Resize And Loop (MONOLITH Edition - v1.3)
     - File Name: loop.js
     - Relative Path: js/app/loop.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.3.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
+      resize refits the camera to the stage (fitCamera()), so the board
+      stays whole as the window or the panel changes size.
     - 1.2.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — While the
       loading screen sets its pieces over a board already drawn, the loop
       draws nothing under it, so the screen's animation has the frames;
@@ -21,9 +24,6 @@
       frame drawn after start() lifts the loading screen Dennis asked for;
       under the Crucible deck, which leaves nothing to draw, the loop's
       first pass does.
-    - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
-      with the project: Wizard's Chess is now MONOLITH, the name Dennis
-      chose.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -34,7 +34,8 @@
 
 ✒ Key Features:
     - resize() and requestResize(): renderer, camera, post-processing and
-      mirror sizes.
+      mirror sizes, and the camera's fit to the stage (fitCamera() in
+      js/scene/camera.js).
     - Canvas redraws for Analyze and the Crucible after a resize, coalesced.
     - loop(): tweens, idle motion, fragments, arrows, motes, the field,
       vectors, the X-Ray, phantoms, candles, the check pulse, the camera and

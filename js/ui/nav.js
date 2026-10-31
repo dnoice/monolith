@@ -1,27 +1,27 @@
 /*
 ✒ Metadata
-    - Title: Navigation (MONOLITH Edition - v1.1)
+    - Title: Navigation (MONOLITH Edition - v1.2)
     - File Name: nav.js
     - Relative Path: js/ui/nav.js
     - Artifact Type: javascript
-    - Version: 1.1.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Each
+      pane keeps its own scroll place across tab switches, and the World
+      setting applies that world's panel width at once.
     - 1.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
     - 1.1.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: changing destinations closes an open
       promotion chooser.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] —
-      setQualityPref() moved to js/scene/quality.js with the rest of
-      Dennis's tiered graphics levels.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -32,9 +32,10 @@
     - NAV and buildNav(): the destinations.
     - setTab(): shows a destination and saves it, sizes the layout for it,
       puts Analyze's searches away on the way out, and lets the world
-      follow.
-    - setWorldPref(): the world setting. (The graphics setting is
-      setQualityPref() in js/scene/quality.js.)
+      follow; each pane opens at its own top, or where it was left.
+    - setWorldPref(): the world setting, which applies that world's panel
+      width at once. (The graphics setting is setQualityPref() in
+      js/scene/quality.js.)
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup
@@ -45,7 +46,8 @@
 ✒ Other Important Information:
     - Dependencies: imports app/base.js, app/state.js, game/board-ui.js,
       game/lines.js, scene/worlds.js, ui/analyze.js, ui/crucible.js,
-      ui/crucible-board.js, ui/grimoire.js and ui/splitters.js.
+      ui/crucible-board.js, ui/grimoire.js, ui/splitters.js and
+      ui/snackbar.js.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.

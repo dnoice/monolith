@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Playing Moves (MONOLITH Edition - v1.0)
+    - Title: Playing Moves (MONOLITH Edition - v1.1)
     - File Name: play.js
     - Relative Path: js/game/play.js
     - Artifact Type: javascript
-    - Version: 1.0.3
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — After a
+      move a friend game's board turns. A move ends a line explored over it,
+      spares a Crucible game's pieces, and lands if its animation fails.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -21,9 +24,6 @@
       finishes after an undo, a new game or a board change no longer lands
       in the new position, and the promotion chooser belongs to the position
       it was opened for.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] —
-      studyAfterMove() and studyScripted() come from js/ui/studies.js,
-      where the study engine moved with the Position redesign.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -33,8 +33,13 @@
 
 ✒ Key Features:
     - playMove() and animateBoardMove(): glides, hops, captures and
-      promotion.
-    - afterMove(): the result, sounds, the Coach and the next turn.
+      promotion. A line explored over the live position ends before the
+      game's move; a move whose animation fails still lands, its pieces
+      placed; a Crucible game on the board keeps its pieces while a reply
+      is recorded underneath.
+    - afterMove(): the result, sounds, the Coach and the next turn; in a
+      friend game the board then turns to the side to move (autoOrient()
+      in js/game/flow.js).
     - maybeComputerMove(): the engine's reply at the level's limits, with
       chooseMove for levels 1 to 5.
     - playLevel() and levelNote(): a level, adjusted when the engine has no
@@ -51,8 +56,8 @@
     - Dependencies: imports app/store.js, app/base.js, scene/board.js,
       scene/motion.js, app/sound.js, app/state.js, ui/snackbar.js,
       game/engine.js, game/board-ui.js, game/ceremony.js, game/lines.js,
-      coach/notes.js and ui/studies.js; globals Chess (js/core/chess.js)
-      and LEVELS (js/core/levels.js).
+      coach/notes.js, ui/studies.js, ui/crucible-board.js and game/flow.js;
+      globals Chess (js/core/chess.js) and LEVELS (js/core/levels.js).
     - Shared state (js/app/store.js): sets app.busy, app.hint, app.lastMove,
       app.fenDirty and app.cpuThinking; reads app.view and app.rolling.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served

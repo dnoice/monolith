@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Analyze Model (MONOLITH Edition - v1.0)
+    - Title: Analyze Model (MONOLITH Edition - v1.1)
     - File Name: analyze.js
     - Relative Path: js/ui/analyze.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Load
+      takes a pasted FEN or PGN game (parsePgn) and opens it in Analyze; the
+      reference and Load share analyzeLine(), and xr keeps a tapped square.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,22 +25,27 @@
       screen under the live badge; a search stopped partway through a depth
       closes the hole it can leave in the line table; and loading the
       reference game takes the board at once.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     MONOLITH Analyze's searches and state: the deep MultiPV search with WDL,
     the field search over every legal move, the fork walk along line 1, and
-    the recorded reference run.
+    the recorded reference run. Load brings a pasted FEN or PGN game into
+    Analyze the way the reference game comes in.
 
 ✒ Key Features:
-    - an: the tab's state; xr: the X-Ray's.
+    - an: the tab's state; xr: the X-Ray's, with the square a tap picked
+      on a touch screen (cleared when the position changes).
     - deep and field: two engines for the instrument.
     - anSync(), anGoToggle() and anStopSearch(): the search for the position
       shown, and Go infinite.
     - The fork walk: MultiPV 2 along line 1 to find the fork and
       instabilities.
+    - analyzeLine(): a game or position taken into Analyze, both sides by
+      hand, ending a running study.
+    - loadForAnalysis(): Load's pasted FEN, or a PGN game read by
+      parsePgn() (titled White – Black from its tags, or Game from a PGN);
+      a game in progress is asked about first, and bad text says why.
     - loadReference(): Kasparov – Topalov 1999 with its recorded Stockfish
       19 run (data/analyze.json).
 
@@ -51,11 +59,12 @@
     - Dependencies: imports app/store.js, app/base.js, scene/board.js,
       scene/instruments.js, app/state.js, ui/snackbar.js, game/engine.js,
       game/board-ui.js, game/play.js, game/ceremony.js, game/flow.js,
-      game/lines.js, game/input.js, ui/analyze-view.js and ui/nav.js; globals Chess (js/core/chess.js) and Monolith
-      (js/core/monolith.js).
+      game/lines.js, game/input.js, game/pgn.js, ui/analyze-view.js,
+      ui/nav.js and ui/studies.js; globals Chess (js/core/chess.js) and
+      Monolith (js/core/monolith.js).
     - Shared state (js/app/store.js): sets app.fieldOn, app.cpuThinking,
-      app.started, app.setupOpen, app.view, app.hint, app.calc, app.fenDirty
-      and app.lastMove.
+      app.busy, app.started, app.setupOpen, app.view, app.hint, app.calc,
+      app.fenDirty and app.lastMove.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.
@@ -274,7 +283,7 @@ async function anStartWalk(gen, l1) {
 /* A game or a position taken into Analyze, both sides moved by hand: the board is replaced at once,
    since nothing else owns it, and Analyze opens on its last position. states, moves and sans are
    the game record's; title is game.title; orient the side at the bottom. The reference and Load
-   (a pasted FEN) come in here, and a replayed PGN game can too. */
+   (a pasted FEN, or a game in PGN) come in here. */
 export function analyzeLine(states, moves, sans, title, orient = 'w') {
   engine.abort(); app.cpuThinking = false; app.busy = false; hideSnack(); deselect(); clearCeremony();
   Object.assign(game, { states, moves, sans, result: null, title });

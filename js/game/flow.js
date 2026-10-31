@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Game Flow (MONOLITH Edition - v1.0)
+    - Title: Game Flow (MONOLITH Edition - v1.1)
     - File Name: flow.js
     - Relative Path: js/game/flow.js
     - Artifact Type: javascript
-    - Version: 1.0.3
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      board turns for each player and is free before a game; startGame()
+      takes a line (Play from here, PGN); draws by agreement; analyzeGame().
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -21,25 +24,39 @@
       Explore move that finishes after the game has moved on leaves it
       alone; a new game, a view change and Explore's undo close an open
       promotion chooser; clearing the fragments moved to js/scene/board.js.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      study state comes from js/ui/studies.js; startGame() no longer
-      redraws the studies library itself, since the Position tab redraws
-      it from render().
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     Starting, ending and rewinding games, reviewing earlier moves, and
     exploring: moves tried on a board the game does not own, from any
-    position on screen.
+    position on screen, or on the free board before any game. In a game
+    between two people on one screen, the board turns to the side to move.
 
 ✒ Key Features:
-    - startGame(), rematch(), openSetup(), undo() and resign().
+    - startGame(), rematch(), openSetup(), undo() and resign(); a new game
+      and the setup open the Play pane at its top.
+    - startGame(startState, opts, line): a line (Play from here, a loaded
+      PGN) begins a game part-way with its moves kept, and a decided result
+      in it ends the game there.
+    - rematch({ swap: true }): the next game on the other side.
     - setOrientation(): the board and the world turn to your side; the die
-      for a random side.
+      for a random side, skipped when the board turns for each player.
+    - autoFlipOn(), autoOrient() and setAutoFlip(): in a friend game the
+      side to move comes to the bottom a beat after each move (a cut under
+      Minimal or reduced motion); turning is true while the board turns,
+      and clicks on it wait.
+    - canOfferDraw() and offerDraw(): a draw by agreement between two
+      players on one screen.
+    - analyzeGame(): the game opened in Analyze at the Coach's turning
+      point, else at its end.
     - showView() and goLive(): review an earlier move without changing the
-      game.
+      game; they, and undo(), leave the Play game alone while a Crucible
+      game is on the board.
     - Explore: a scratch line from a game, an earlier move, a finished game
-      or a Crucible game.
+      or a Crucible game; exploreTyped() takes a typed move into it, and
+      exploreAppend() plays an engine line onto it at once (Play to here).
+    - The free board: before any game a line starts from the starting
+      position (sandbox()), and draftLine() hands it to Play from here.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup
@@ -57,7 +74,7 @@
     - Shared state (js/app/store.js): sets app.orient, app.rolling,
       app.cpuThinking, app.lastMove, app.view, app.hint, app.calc,
       app.fenDirty, app.started, app.setupOpen, app.busy, app.selected and
-      app.legalFor.
+      app.legalFor; reads app.SPEED and app.worldName.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.
@@ -138,12 +155,12 @@ function rollDie(done) {
   const spin = () => { if (g !== rollGen) return; if (++k > steps) return land(); showFace(1 + Math.floor(Math.random() * 6)); die.style.transform = `rotate(${Math.round(Math.random() * 70 - 35)}deg) scale(1.06)`; setTimeout(spin, 50 + k * 13); };
   spin();
 }
-/* opts (a study): { opponent, side, level, study } set this game's match without touching the
-   saved game settings, which the next ordinary game goes back to. line: { states, moves, sans }, a
-   game begun part-way with its moves kept (Play from here, a loaded PGN), so the move list, Undo,
-   the captures, the opening's name and repetitions all have its history; a line from the free
-   board (free) is already standing on the board, so it is not dealt in, and a record that says
-   how the game ended (result) ends it there. */
+/* opts (a study, or Set up's Who plays it): { opponent, side, level, study } set this game's match
+   without touching the saved game settings, which the next ordinary game goes back to.
+   line: { states, moves, sans }, a game begun part-way with its moves kept (Play from here, a
+   loaded PGN), so the move list, Undo, the captures, the opening's name and repetitions all have
+   its history; a line from the free board (free) is already standing on the board, so it is not
+   dealt in, and a record that says how the game ended (result) ends it there. */
 export function startGame(startState, opts = null, line = null) {
   learn('start'); learn('setup-intro');
   rollGen++; app.rolling = false;   // a roll still tumbling for an earlier start is dropped

@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Studies Dataset (MONOLITH Edition - v1.1)
+    - Title: Studies Dataset (MONOLITH Edition - v1.2)
     - File Name: studies.js
     - Relative Path: js/data/studies.js
     - Artifact Type: data
-    - Version: 1.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A free
+      study may set vs: 'both' to be played as a game where you move both
+      sides; the Castling drill does.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -20,10 +23,7 @@
       the release audit Dennis asked for: heldUnchecked, said when a hold
       study's checkpoint gets no verdict from the engine (before, such a
       check counted as a held draw without saying so).
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: the studies script block of
-      wizards-chess.html 2.4.0 when Dennis asked for a proper separation of
-      concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Position tab's 18 studies: puzzles, practice games and set-ups, each
@@ -34,6 +34,7 @@
     - Five categories: basic mates, mating patterns, tactics, endgames and
       set-ups.
     - Modes puzzle, practice and free; goals line, mate, promote and hold.
+      A free study with vs: 'both' is played as both sides on one screen.
     - Pars for the mate drills (Stockfish's quickest mate) and checkpoints
       for the holds.
     - Ideas, graded hints and Grimoire links for each study.

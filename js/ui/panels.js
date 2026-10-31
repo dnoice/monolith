@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Panel Renderers (MONOLITH Edition - v1.5)
+    - Title: Panel Renderers (MONOLITH Edition - v1.6)
     - File Name: panels.js
     - Relative Path: js/ui/panels.js
     - Artifact Type: javascript
-    - Version: 1.5.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.6.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.6.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The free
+      board, Play from here, auto-flip, Draw and Analyze's evaluation; the
+      Moves card folds when empty, lists Crucible games, scrolls sideways.
     - 1.5.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -23,25 +26,33 @@
       no longer jumps to the move list on every render; the strength slider
       is hidden in a study; and Start game waits for the engine in a game
       against the computer.
-    - 1.4.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — Settings
-      → Graphics draws Dennis's graphics meter (js/ui/gfx-meter.js) in
-      place of the bar ladder, its needle on the level in use.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    The renderers that keep the panels in step with the game: the Play pane,
-    the match strip, the players' cards with their captures, the evaluation
-    bar, the move list, the Coach's feed and Settings. Each registers with
-    onRender().
+    The renderers that keep the panels in step with the game, or with the
+    free board before one: the Play pane, the match strip, the players'
+    cards with their captures, the evaluation bar, the move list, the
+    Coach's feed and Settings. Each registers with onRender().
 
 ✒ Key Features:
-    - renderMatchbar(): the match strip in the app bar, including the game
-      that Start game will begin before one starts.
+    - renderMatchbar(): the match strip in the app bar: the game, the free
+      board's line, or the game that Start game will begin; on Analyze the
+      evaluation from White's side, with the depth and the search's state.
     - Player cards: names, captures counted from the start position, the
-      side to move.
+      side to move; an explored line or the free board is what they show.
+    - The Play pane: the setup (Play from here, and the board's turn for
+      two players on one screen), Draw and the Board card in a friend game,
+      and the result card's other side next time (Play obsidian, or Switch
+      sides in a friend game whose board stays put).
+    - The Moves card: the game, the free board's line or a Crucible game's
+      moves (renderCrMoves()); it folds to its head with nothing to list,
+      and a phone's one-row strip scrolls sideways to the move in view.
     - The Coach's feed: a badge and a note for each moment (verdict, reply,
-      watch, end).
+      watch, end), with its actions (a move to show, or Analyze it).
     - radio(): segmented choices kept in step with the draft.
+    - Settings: every row in step with the preferences, Turn the board for
+      each player, Coach comments, Evaluation bar and Short source badges
+      included.
     - Settings → Graphics: the level meter (js/ui/gfx-meter.js), Automatic,
       and the Fine-tune rows (built once from js/scene/quality.js's
       SETTINGS).

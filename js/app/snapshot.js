@@ -1,41 +1,55 @@
 /*
 ✒ Metadata
-    - Title: Hot Snapshot (MONOLITH Edition - v1.0)
+    - Title: Hot Snapshot (MONOLITH Edition - v1.1)
     - File Name: snapshot.js
     - Relative Path: js/app/snapshot.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A game
+      survives a reload: kept in localStorage (monolith-game-v1), it is
+      replayed and repaired on start, the side to move below with auto-flip.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
     - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a hot-update snapshot whose game
       record has a shape this version does not read is set aside whole.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    Keeps the game through a hot update of the artifact: snapshot() hands
-    the viewer the game and match on every render, and start() restores them
-    and brings the page up. start() is the last step of the boot, called by
-    the loop module.
+    Keeps the game through a hot update of the artifact and through a
+    reload: snapshot() hands the viewer the game and match on every render
+    and keeps the game in this browser, and start() restores one or the
+    other and brings the page up. start() is the last step of the boot,
+    called by the loop module.
 
 ✒ Key Features:
     - snapshot(): the game's states, moves, result, match and draft, for the
       viewer to keep.
-    - start(data): restores a snapshot, sets the camera and world, places
-      the pieces, opens the saved tab and starts the engine.
-    - Without a viewer that keeps snapshots, start() runs with nothing to
-      restore.
+    - The kept game (localStorage monolith-game-v1): the start FEN, the
+      moves in UCI, the result, title, match settings and orientation,
+      written only when they change. A study is not kept, nor an explored
+      line or the free board; with no game the key is removed.
+    - start(data): restores a snapshot, or else the kept game, sets the
+      camera and world, places the pieces, opens the saved tab and starts
+      the engine. A hot-update snapshot wins over the kept game.
+    - The kept game is repaired, not trusted: its moves replay from the
+      start position and stop at the first that is not legal, and every
+      setting keeps to its choices; a finished game comes back finished.
+    - With the board turning for each player (autoFlipOn() in
+      js/game/flow.js), the side to move starts at the bottom.
+    - MONOLITH starts at its pose's angle; its distance is fitted to the
+      stage (js/scene/camera.js).
+    - Without a viewer that keeps snapshots, start() falls back to the kept
+      game, or runs with nothing to restore.
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. It has no setup
@@ -46,8 +60,9 @@
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/sets.js,
       scene/board.js, scene/post.js, scene/camera.js, app/state.js,
-      game/engine.js, game/ceremony.js, game/flow.js, scene/worlds.js,
-      ui/telemetry.js and ui/nav.js.
+      game/engine.js, game/play.js, game/ceremony.js, game/flow.js,
+      scene/worlds.js, ui/telemetry.js and ui/nav.js; globals Chess
+      (js/core/chess.js) and LEVELS (js/core/levels.js).
     - Shared state (js/app/store.js): sets app.started, app.setupOpen,
       app.orient, app.lastMove and app.worldName.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served

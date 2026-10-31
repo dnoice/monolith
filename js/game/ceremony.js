@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Ceremony (MONOLITH Edition - v1.0)
+    - Title: Ceremony (MONOLITH Edition - v1.1)
     - File Name: ceremony.js
     - Relative Path: js/game/ceremony.js
     - Artifact Type: javascript
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      end-of-game swing keeps its distance as a share of the camera's fit,
+      and endSwing() lets Reset view stop it where it stands.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -23,9 +26,7 @@
       shading and gets its own material back when the ceremony clears; an
       interrupted camera swing puts the camera back; and motes last less as
       the Animation setting quickens, like every other effect.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The game's ceremonies: pieces dealt in at the start, the shudder of a
@@ -35,7 +36,10 @@
 ✒ Key Features:
     - dealIn(): the pieces arrive at the start of a game.
     - checkShudder() and promotionFlash().
-    - celebrate(): topple, crown, army wave, bow and camera swing.
+    - celebrate(): topple, crown, army wave, bow and camera swing. The
+      swing's distance is a share of the camera's fit to the stage, so a
+      resize during it is not undone.
+    - endSwing(): Reset view (js/scene/camera.js) ends a swing where it is.
     - restPose(): the board as a finished game leaves it.
     - Motes and ring bursts, cleared when a new game starts; the winner's
       glow, one light kept at zero between games.

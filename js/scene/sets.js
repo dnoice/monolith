@@ -4,15 +4,18 @@
     - File Name: sets.js
     - Relative Path: js/scene/sets.js
     - Artifact Type: javascript
-    - Version: 1.2.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.3
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      cathedral's column shafts have 64 sides instead of 20, so they stay
+      round as the camera turns; the Description drops "Gothic".
     - 1.2.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -20,11 +23,6 @@
       release audit Dennis asked for: the candle lights hang on the rig
       rather than in the cathedral set, so hiding the set in MONOLITH no
       longer changes the light count and recompiles every lit shader.
-    - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      pillar places are shared (monoSlots) so Dennis's Blender models can
-      stand on them (js/scene/pillars.js), the built pillars kept as the
-      fallback; the lancet mullions face the nave only, so a camera out
-      past the aisle walls no longer sees them float as thin bars.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -35,8 +33,9 @@
 
 ✒ Key Features:
     - rig and setWorldYaw(): the world turns to the side you play.
-    - The cathedral: floor, plinth, shafts and capitals, arcades and ribs,
-      lancets, the rose window and candle lights.
+    - The cathedral: floor, plinth, 64-sided column shafts that keep their
+      outline as the camera turns, capitals, arcades and ribs, lancets, the
+      rose window and candle lights.
     - MONOLITH: its materials, steel edges that hold at any distance, the
       mirror floor (or a plain one) and three pillar places, each with a
       built pillar (base, body, raised face panel, cap) that Dennis's

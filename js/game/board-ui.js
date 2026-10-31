@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Board Interaction (MONOLITH Edition - v1.0)
+    - Title: Board Interaction (MONOLITH Edition - v1.1)
     - File Name: board-ui.js
     - Relative Path: js/game/board-ui.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Pieces
+      can be dragged (grabbable()); before a game a click plays the free
+      board or says how to start, and the tab stays; a tap aims the X-Ray.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -22,8 +25,8 @@
 
 ✒ Description:
     What the player sees and does on the board: highlights, castling lanes,
-    hint and candidate arrows, selection, hover and the square a click
-    means.
+    hint and candidate arrows, selection, hover, the square a click means
+    and the piece a press can drag.
 
 ✒ Key Features:
     - showHighlights(): selection, legal moves, captures, the last move,
@@ -31,7 +34,16 @@
     - Castling lanes from the king to the rook it would bring across.
     - Arrows: the hint (amber, one) and calculated candidates (blue, ranked
       by quality).
-    - select(), deselect() and onSquare(): the click-to-move flow.
+    - select(), deselect() and onSquare(): the click-to-move flow, which a
+      dragged piece takes too.
+    - grabbable(): whether a press on a square picks up a piece to drag
+      (js/scene/camera.js carries it); an open-hand cursor shows over one.
+    - Before any game a click plays on the free board while Move pieces on
+      any board is switched on; with it off, a click says how to start and
+      leaves the tab alone.
+    - While the board turns for the other player, clicks on it wait.
+    - With the X-Ray on in Analyze, a tap aims it at a square, and a second
+      tap there lets it go.
     - boardState(): the position the board shows (game, review, explore or a
       Crucible game).
 
@@ -257,8 +269,9 @@ function clickableAt(sq) {
   return isTarget(sq) || !!(p && p.c === cur().turn);
 }
 /* A piece a press can pick up and drag (scene/camera.js): one of the side to move, wherever a click
-   on it would select it, in the game, an explored line or a study. Before a game a click only
-   explains how to start, so nothing is picked up then. */
+   on it would select it, in the game, an explored line, a study or the free board before a game.
+   With Move pieces on any board off, a click before a game only explains how to start, so nothing
+   is picked up then. */
 export function grabbable(sq) {
   if (!clickableAt(sq) || (!app.started && !explore.on && !(prefs.explore && exploreAvailable()))) return false;
   const st = boardState(), p = st.board[sq];

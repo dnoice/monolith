@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Position (MONOLITH Edition - v2.1)
+    - Title: Position (MONOLITH Edition - v2.2)
     - File Name: position.js
     - Relative Path: js/ui/position.js
     - Artifact Type: javascript
-    - Version: 2.1.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 2.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Set up
+      asks who plays a position and leaves Play's settings alone; on a
+      phone a study opens at its title; both-sides studies; tidier rings.
     - 2.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -23,14 +26,6 @@
       phase is a labelled group whose term link can be reached, and a row
       that lights squares holds no link inside it; a solved date is written
       as text. renderStudies(), which nothing used, is gone.
-    - 2.0.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The tab
-      redesigned after Dennis found it awkward, "a stack of text blocks":
-      three views (Studies, Read, Set up) behind one switch that follows
-      what you do; studies as diagram cards with progress rings and an Up
-      next pick; the board read as bars, piece rows and a structure map;
-      a click-to-place board editor tied both ways to a colour-coded FEN.
-      The study engine moved to js/ui/studies.js; the FEN wiring came here
-      from js/ui/controls.js and js/ui/panels.js.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -40,7 +35,7 @@
     the library as cards with their positions. Read: the board you see,
     drawn: whose move and how many moves each side has, the material, the
     phase, a structure map, and the rules state. Set up: a board to build
-    a position on, its FEN coloured field by field, and Play.
+    a position on, its FEN coloured field by field, who plays it, and Play.
 
 ✒ Key Features:
     - One switch for the three views, remembered (prefs.posView). A study
@@ -48,15 +43,21 @@
       palette's :fen open Set up. Badges say when a study runs, when the
       board is in check or over, and when the set-up is edited.
     - Studies: Up next (the first unsolved study, level 1 first, in the
-      category shown), category tiles with progress rings, cards with
-      diagrams, a detail view with a large diagram and a pager.
+      category shown), category tiles with progress rings (the Set-ups
+      ring dashed), cards with diagrams, a detail view with a large diagram
+      and a pager; on a phone's short panel the detail opens with its title
+      and Start study in view, and a both-sides study says so.
     - The Study card draws its goal: a step track for puzzles, a par bar
       for mates, a rank track for queening, a meter for holds; hint dots.
+      Skip to the next stays quiet; Next study is filled once solved.
     - Read: everything with squares lights them on the 3D board and on
       the structure map while you point at it, and stays lit on a click.
     - Set up: move, erase or place pieces by click, keyboard or piece
       letter; side to move, castling and en passant derived from the board;
       the FEN box and the board edit each other; fields explained.
+    - Who plays it: you against Stockfish, on the side to move or the
+      other, or both sides on this screen. Play this position starts that
+      game, as the line beside it says, and leaves Play's settings alone.
     - readBoard() and fenAnatomy(): the facts behind the visuals, kept as
       plain data (the test build reads them).
 
@@ -69,13 +70,15 @@
 
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/board.js,
-      app/state.js, ui/snackbar.js, game/board-ui.js, game/play.js,
-      game/flow.js, coach/coach.js, coach/book.js, ui/crucible-board.js,
-      ui/grimoire.js, ui/diagram.js and ui/studies.js; globals Chess
-      (js/core/chess.js) and STUDIES (js/data/studies.js).
+      app/state.js, ui/snackbar.js, game/engine.js, game/board-ui.js,
+      game/play.js, game/flow.js, coach/coach.js, coach/book.js,
+      ui/crucible-board.js, ui/grimoire.js, ui/nav.js, ui/diagram.js and
+      ui/studies.js; globals Chess (js/core/chess.js), LEVELS
+      (js/core/levels.js) and STUDIES (js/data/studies.js).
     - Shared state (js/app/store.js): sets app.fenSel and app.fenDirty;
       reads app.view, app.started, app.busy and app.orient.
-    - Saved state: prefs.posView ('studies', 'read' or 'setup').
+    - Saved state: prefs.posView ('studies', 'read' or 'setup') and
+      prefs.edVs, Set up's opponent ('cpu' or 'human').
     - Styling: css/position.css.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do

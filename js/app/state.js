@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: App State (MONOLITH Edition - v1.0)
+    - Title: App State (MONOLITH Edition - v1.1)
     - File Name: state.js
     - Relative Path: js/app/state.js
     - Artifact Type: javascript
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] —
+      canMoveNow() is false while a Crucible game is on the board, and
+      draft.from marks a game begun from the free board (Play from here).
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
@@ -29,8 +32,11 @@
 ✒ Key Features:
     - game: the states, moves, SANs and result of the game on the board.
     - match and draft: the game being played, and the settings being chosen
-      for the next one.
-    - cur(), shown(), cpuSide(), isCpuTurn() and canMoveNow().
+      for the next one; draft.from marks Play from here, a game that begins
+      from the free board's line.
+    - cur(), shown(), cpuSide(), isCpuTurn() and canMoveNow(), which is
+      false while a Crucible game is on the board (its pieces are not the
+      game's).
     - Vocabulary: SIDE (Marble, Obsidian), SIDE_COLOR, GLYPH and the king
       icon.
     - Tips: tip(id) and learn(id), with the once, always and off modes.
@@ -45,8 +51,8 @@
 
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/board.js,
-      game/board-ui.js, game/flow.js and app/snapshot.js; globals Chess
-      (js/core/chess.js).
+      game/board-ui.js, game/flow.js, ui/crucible-board.js and
+      app/snapshot.js; globals Chess (js/core/chess.js).
     - Shared state (js/app/store.js): sets app.SPEED, app.muted and
       app.orient; reads app.started, app.setupOpen, app.rolling,
       app.selected, app.legalFor, app.busy, app.lastMove, app.view,

@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Command Palette (MONOLITH Edition - v1.4)
+    - Title: Command Palette (MONOLITH Edition - v1.5)
     - File Name: palette.js
     - Relative Path: js/ui/palette.js
     - Artifact Type: javascript
-    - Version: 1.4.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.5.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.5.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Everyday
+      words find commands, a term opens its Grimoire entry and :fen opens
+      Set up; commands for games, PGN, Settings, Position and badges.
     - 1.4.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — :version
       names the app MONOLITH, the name Dennis chose.
     - 1.4.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
@@ -20,23 +23,25 @@
       the Grimoire; :calc and :sprt start say why they cannot run; an empty
       list names no active option; and the graphics levels say what they
       lack here.
-    - 1.3.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] —
-      :quality ultra, high, medium, low and minimal, for Dennis's five
-      graphics levels, with auto; :quality balanced is now medium.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Command Palette: glass, one at a time, Ctrl K (⌘K on Apple
-    keyboards). Commands are typed with a colon; a command that cannot run
-    right now stays listed with the reason.
+    keyboards). Commands are typed with a colon or found by an everyday
+    word, and a term no command knows is offered from the Grimoire. A
+    command that cannot run right now stays listed with the reason.
 
 ✒ Key Features:
     - COMMANDS: every command, with when it can run.
-    - Matching by prefix, then substring, then subsequence, then
-      description.
-    - Groups, arrow-key navigation and single-key shortcuts for the MONOLITH
-      layers (F, V, X).
-    - A FEN pasted into the palette loads the position.
+    - Matching by prefix, then everyday words (PAL_WORDS), then substring,
+      a word's start, subsequence and description; a word no command knows
+      that names a Grimoire term offers :define for it.
+    - Groups, arrow-key navigation and the keys that also run a command:
+      F, V and X for the MONOLITH layers, F, U and H on Play.
+    - With nothing typed, the tab in view puts its own groups first
+      (TAB_GROUPS), Settings in the order of its cards.
+    - :fen with a FEN opens it in Set up, to choose who plays it; on
+      Analyze it is analysed in place (its Load section).
     - layerToggle(): a MONOLITH layer on or off, opening Analyze first.
 
 ✒ Usage Instructions:
@@ -48,13 +53,13 @@
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/renderer.js,
       app/sound.js, app/state.js, ui/snackbar.js, game/engine.js,
-      game/play.js, game/flow.js, game/lines.js, coach/notes.js,
-      ui/analyze.js, ui/analyze-view.js, ui/crucible.js,
+      game/play.js, game/flow.js, game/pgn.js, game/lines.js,
+      coach/notes.js, ui/analyze.js, ui/analyze-view.js, ui/crucible.js,
       ui/crucible-board.js, ui/grimoire.js, ui/nav.js, ui/position.js,
-      scene/pillars.js and scene/quality.js; globals Chess
+      ui/studies.js, scene/pillars.js and scene/quality.js; globals Chess
       (js/core/chess.js).
     - Shared state (js/app/store.js): reads app.orient, app.hint,
-      app.started and app.busy.
+      app.started, app.busy, app.calc and app.cpuThinking.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do
       not load from file://.
@@ -211,7 +216,7 @@ const PAL_WORDS = {
 };
 const palWords = c => c.words || PAL_WORDS[c.cmd] || PAL_WORDS[c.cmd.split(' ')[0]] || [];
 function palFen(arg) {
-  // in Analyze a FEN is analysed where it is (its Load section); elsewhere it starts a game (Position)
+  // in Analyze a FEN is analysed where it is (its Load section); elsewhere Set up opens with it
   if (prefs.tab === 'analyze') {
     $('#an-load').open = true; if (arg) $('#an-load-text').value = arg;
     if (!arg) setTimeout(() => $('#an-load-text').focus(), 0); else { const err = loadForAnalysis(arg); if (err) snack(err); }
