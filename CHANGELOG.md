@@ -248,15 +248,15 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   GPU timer queries stayed within 0.2 ms of the old figures at every level, the draw calls are
   unchanged, and the video memory grows by 1.2 to 10.8 MB at Medium and above. Not verified: other
   GPUs, browsers and phones, and Dennis's own camera poses, which lie outside the camera's limits.
-- Each package on its own branch before the merge, in headless Chromium on software GL
-  (SwiftShader): its own scripted checks, most at 1600 × 1000 and 390 × 844, with
-  `tools/verify-studies.mjs` where play, studies or Analyze changed.
+- Each package on its own branch before the merge, in headless Chromium (the earliest runs on
+  software GL, SwiftShader; the rest on the GPU): its own scripted checks, most at 1600 × 1000
+  and 390 × 844, with `tools/verify-studies.mjs` where play, studies or Analyze changed.
 - Not tested here: phones and tablets were checked as emulated viewports in headless desktop
   Chromium on one GPU (an RTX 5050 through ANGLE D3D11), not on real devices or in other browsers.
   Also not tested: Copy PGN and Download PGN against a real clipboard and download, reduced motion
-  set by the system rather than Minimal, the PV header's touch hint (083cacc came after the last
-  sweep), and a live deployment on GitHub Pages. The README's screenshots are still the 2.12.0
-  capture.
+  set by the system rather than Minimal, and a live deployment on GitHub Pages. The PV header's
+  touch hint (083cacc) was checked on its own, at 390 × 844 with touch and at 1600 × 1000. The
+  README's screenshots are still the 2.12.0 capture.
 
 ## 2.17.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5]
 
