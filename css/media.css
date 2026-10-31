@@ -52,11 +52,11 @@
   #app{grid-template-rows:56px minmax(0,1fr)}
   .appbar{display:flex}   /* no match strip here, so no centre column */
   .brand small{display:none}
-  .brand h1{font-size:18px}
-  .brand{min-width:0}   /* on phones the title may ellipsize; the version keeps its own line */
-  .brand-text{flex-direction:column;align-items:flex-start;gap:2px}
+  .brand-word{font-size:28px}
+  .brand{min-width:0}   /* the version keeps its own line under the wordmark */
+  .brand-text{flex-direction:column;align-items:flex-start;gap:4px}
   .brand-text h1{max-width:100%}
-  :root[data-skin="monolith"] .brand h1{font-size:11px;letter-spacing:.1em}   /* Michroma runs wide */
+  :root[data-skin="monolith"] .brand-word{font-size:22px;letter-spacing:.08em;gap:.1em}   /* Michroma runs wide */
   .app-ver{display:none}
   .app-ver-sub{display:block;font:400 10px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var)}
   :root[data-skin="monolith"] .app-ver-sub{font-family:var(--font-tele);color:var(--mo-ink3)}
@@ -178,7 +178,8 @@
 @media (max-width:420px){
   .pname .psub{display:none}
   .brand{gap:8px}
-  :root[data-skin="monolith"] .brand h1{font-size:10.5px;letter-spacing:.06em}
+  .brand-word{font-size:26px}
+  :root[data-skin="monolith"] .brand-word{font-size:21px;letter-spacing:.06em;gap:.08em}
   .side-card{padding:12px 4px 10px}
   .side-card small{font-size:11px}
 }

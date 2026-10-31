@@ -80,18 +80,24 @@
 .appbar{position:relative;z-index:3;display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:12px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);padding-block:0;background:var(--md-surface-1);border-bottom:1px solid var(--md-outline-var)}
 /* min-content: the brand never gives up width it needs */
 .brand{display:flex;align-items:center;gap:12px;min-width:min-content;flex:1}
-.brand .logo{width:32px;height:32px;flex:none;--logo-d:var(--dg-d)}
-/* The logo: Dennis's Conical M (assets/monolith-logo.svg, written into the page by
-   tools/build-emblem.mjs), its squares in the board diagrams' tones, as the loading screen's emblem
-   is (in the cathedral the dark square is the very slate he drew the M in; MONOLITH lifts it in
-   css/monolith.css), and its mortar in the bar's own colour, one pixel wide at any size so the
-   twelve squares still read at 32 px, where the drawing's own mortar would be a thirtieth of a
-   pixel. */
-.brand .logo .l{fill:var(--dg-l)}.brand .logo .d{fill:var(--logo-d)}
-.brand .logo .bd{stroke:var(--md-surface-1);stroke-linejoin:round}
-.brand .logo .bd>*{stroke-width:1px;vector-effect:non-scaling-stroke}
-/* The release on screen (Dennis, 10/22/2026): a rounded chip beside the palette button, a label
-   rather than a control. On phones, where the app bar has no room, it is a line under the title
+/* The wordmark (Dennis, 10/30/2026): his emblem, the Conical M with its twelve pieces, stands as
+   the M of MONOLITH, on the word's baseline and as tall as its capitals, 8 % over as a round
+   letter overshoots (the emblem's rounded shoulders and its fine detail read smaller than a
+   letter's flat top), the letters in the lighter weight, so the two read as one word. The
+   wordmark's name is MONOLITH (role img); the heading's is that and the world under it. The
+   emblem is a <use> of the drawing tools/build-emblem.mjs writes once into the page (the sprite
+   below), in the custom properties set here: the loading screen's colours (the board diagrams'
+   squares and woods; MONOLITH lifts the squares, css/monolith.css), and mortar in the bar's own
+   colour about half a pixel wide. --emb-sw is in the drawing's units, 1200 to the emblem's height,
+   so 24 is half a pixel at 26 px: a whole pixel greyed the twelve squares into a grid, and the
+   drawing's own mortar is a hairline. */
+.brand h1{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;font-size:20px;font-weight:500;white-space:nowrap}
+.brand-word{display:flex;align-items:baseline;gap:.06em;font-size:34px;line-height:1;font-weight:400;letter-spacing:.01em}
+.brand .logo{flex:none;width:.77em;height:.77em;width:calc(1cap * 1.08);height:calc(1cap * 1.08);overflow:visible;--emb-d:var(--dg-d);--emb-l:var(--dg-l);--emb-mortar:var(--md-surface-1);--emb-sw:24}
+/* the emblem's drawing: in the page once, out of the layout, drawn wherever a <use> names it */
+.emb-defs{position:absolute;width:0;height:0;overflow:hidden}
+/* The release on screen (Dennis, 10/22/2026): a chip, a label rather than a control, at the foot of
+   the rail under the actions; on phones, where the bar has no room for it, a line under the title
    instead. Both read APP_VERSION. */
 .brand-text{display:flex;align-items:center;gap:10px;min-width:0}
 .app-ver{display:inline-flex;align-items:center;flex:none;height:32px;padding:0 12px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);font:500 11px/1 var(--font-mono);letter-spacing:.03em;color:var(--md-on-surface-var);white-space:nowrap;cursor:default}
@@ -462,9 +468,10 @@
    Dennis's emblem (10/24/2026): his M of chessboard squares carrying the house piece set, on the
    stage colour of the world the page opens in (js/ui/boot-screen.js runs the order). Its squares
    and woods are the board diagrams' (css/position.css), so it changes with the world as they do,
-   and the seams between squares are the stage colour. The emblem is inline in the page, written
-   there by tools/build-emblem.mjs, which gives every square and piece its moment as a class:
-   a0..a20 (when a square lights), g0..g12 (when the glint reaches it), i0..i11 (a piece's turn).
+   and the seams between squares are the stage colour. The emblem is in the page from its first
+   paint, written there by tools/build-emblem.mjs: a <use> for every square and piece of the
+   drawing it shares with the app bar's wordmark, each with its moment as a class: a0..a20 (when a
+   square lights), g0..g12 (when the glint reaches it), i0..i11 (a piece's turn).
    At Dennis's request (10/24/2026) it takes its time, with a loading meter and rotating tips:
      1. From the first paint, 2.65 s: White's back rank flies in and settles in an arc over the
         emblem as the M is written square by square, stroke by stroke, each square lit in the
@@ -505,7 +512,8 @@
 .boot-emblem .bd{stroke:var(--stage-bg);stroke-linejoin:round;stroke-linecap:round}
 .boot-emblem .l{fill:var(--dg-l)}.boot-emblem .d{fill:var(--dg-d)}
 .boot-emblem .pw{--pc-face:var(--pc-wf);--pc-line:var(--pc-wl)}.boot-emblem .pb{--pc-face:var(--pc-bf);--pc-line:var(--pc-bl)}
-.boot-emblem .f{fill:var(--pc-face)}.boot-emblem .c{fill:var(--pc-line)}
+/* a piece's face takes the fill, and its contour the colour (the drawing's currentColor) */
+.boot-emblem :is(.pw,.pb){fill:var(--pc-face);color:var(--pc-line)}
 /* the name's tracking is balanced by an equal indent, so it sits centred under the emblem */
 .boot-name{margin:0;font:400 clamp(13px,2vmin,16px)/1 var(--font-struct);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--md-on-surface)}
 .boot-name span{display:inline-block}
@@ -583,7 +591,7 @@
 .boot.go .boot-emblem .pc{opacity:1;animation:boot-place calc(750ms * var(--bt)) cubic-bezier(.2,.9,.3,1.12) calc((200ms + var(--i,0) * 125ms) * var(--bt)) backwards}
 .boot.go .boot-emblem .l{animation:boot-lay-l calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-l calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
 .boot.go .boot-emblem .d{animation:boot-lay-d calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-d calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
-.boot.go .boot-emblem .pc .f{animation:boot-glint-f calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
+.boot.go .boot-emblem .pc :is(.pw,.pb){animation:boot-glint-f calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
 /* and the arc bows to it, a to h, each piece lifting off the ring and catching the light as the
    glint crosses beneath */
 .boot.go .boot-arc-pc{animation:boot-arc-in calc(1500ms * var(--bt)) cubic-bezier(.34,1.56,.64,1) calc((250ms + var(--k) * 170ms) * var(--bt)) backwards,boot-arc-breathe 2.2s ease-in-out calc((2700ms + var(--g) * 150ms) * var(--bt)) infinite alternate,boot-arc-bow calc(800ms * var(--bt)) cubic-bezier(.3,0,.2,1) calc((1900ms + var(--g) * 90ms) * var(--bt))}

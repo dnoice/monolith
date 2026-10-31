@@ -174,4 +174,3 @@
 body.splitting,body.splitting *{user-select:none}
 body.splitting-y,body.splitting-y *{cursor:row-resize!important}
 body.splitting-x,body.splitting-x *{cursor:col-resize!important}
-@media (max-width:1180px){:root[data-skin="monolith"] .brand h1{font-size:12px;letter-spacing:.2em}}
