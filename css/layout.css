@@ -221,6 +221,13 @@
 :root[data-tab="crucible"] .stage-reset{top:14px;bottom:auto}
 :root[data-tab="crucible"] #stage:has(#stage-reset:not([hidden])) > #explore-chip{right:calc(var(--gutter-r) + 128px)}
 @container stage (max-width:759px){:root[data-tab="analyze"] .stage-reset{width:30px;padding:0;justify-content:center}:root[data-tab="analyze"] .stage-reset span{display:none}}
+/* A stage under 700 px has no room for an explored line's chip beside the Crucible's game card
+   (css/crucible.css, up to 420 px): the chip takes the card's place while it shows, as a chip
+   takes the top player card's on a phone, and Back brings the card back */
+@container stage (max-width:699px){:root[data-tab="crucible"] #stage > #explore-chip{left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto}:root[data-tab="crucible"] #stage:has(> #explore-chip:not([hidden])) #board-card{visibility:hidden}}
+/* Under 580 px Reset view has no room beside the card either (it covered Back to the deck on a
+   phone): it is the icon alone, just under the top band, where the board's far corner leaves room */
+@container stage (max-width:579px){:root[data-tab="crucible"] .stage-reset{top:132px;width:30px;padding:0;justify-content:center}:root[data-tab="crucible"] .stage-reset span{display:none}:root[data-tab="crucible"] #stage:has(#stage-reset:not([hidden])) > #explore-chip{right:16px}}
 .evalbar{position:absolute;left:var(--gutter-l);top:14px;bottom:14px;width:10px;border-radius:5px;background:var(--md-obsidian);border:1px solid var(--md-outline);overflow:hidden}
 .evalbar-fill{position:absolute;left:0;right:0;bottom:0;height:50%;background:var(--md-marble);transition:height .4s var(--ease-std)}
 .evalbar.flipped .evalbar-fill{bottom:auto;top:0}
