@@ -62,12 +62,13 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, PI, prefs } from '../app/base.js';
+import { $, PI, prefs, savePrefs } from '../app/base.js';
 import { camera, renderer } from '../scene/renderer.js';
 import { PIECE_NAMES, sqPos } from '../scene/board.js';
 import { INK, PIECE_TOP, setField, setVectors, setXray } from '../scene/instruments.js';
 import { setPhantoms } from '../scene/phantoms.js';
-import { game, shown } from '../app/state.js';
+import { game, render, shown } from '../app/state.js';
+import { exploreAppend } from '../game/flow.js';
 import { boardState, lineQuality } from '../game/board-ui.js';
 import { PVAL, see } from '../coach/coach.js';
 import { cap1 } from '../coach/facts.js';
@@ -76,36 +77,66 @@ import { an, deep, fieldEng, xr } from './analyze.js';
 import { termify } from './grimoire.js';
 import { renderMatchbar } from './panels.js';
 
+/* ---------- source badges ----------
+   Every readout names its source. The short form (Settings, or :badges short) keeps the source
+   and its recorded or live mark and moves the rest to the badge's title: [SF: MultiPV 5 · d26 ·
+   recorded] reads [SF · rec]. The footer's badges (telemetry.js) take their compact form with it. */
+export const badgeShort = full => full.replace(/:\s*[^\]]*?(·\s*(?:rec(?:orded)?|live))?\]$/, (m, r) => r ? ` · ${/live/.test(r) ? 'live' : 'rec'}]` : ']');
+export function setBadge(el, full) {
+  const form = prefs.badges === 'short' ? 'short' : 'full';
+  if (el.dataset.full === full && el.dataset.form === form) return;
+  el.dataset.full = full; el.dataset.form = form;
+  el.textContent = form === 'short' ? badgeShort(full) : full; el.title = form === 'short' ? full : '';
+}
+export function syncBadges() {
+  document.documentElement.dataset.badges = prefs.badges === 'short' ? 'short' : 'full';
+  for (const b of document.querySelectorAll('.badge')) if (!b.closest('.tm')) setBadge(b, b.dataset.full || b.textContent);
+}
+export function setBadgesPref(form) { prefs.badges = form === 'short' ? 'short' : 'full'; savePrefs(); syncBadges(); render(); }
+
 /* ---------- Analyze: scrub preview (phantoms) ---------- */
 export function clearScrub() {
   cancelEndPreview(); an.scrub = null; an.pin = null;
   setPhantoms(null, ''); const pc = $('#phantom-chip'); if (pc) pc.hidden = true;
   for (const c of document.querySelectorAll('.syn-chip.on')) c.classList.remove('on');
 }
-function previewLine(line, ply, pin = false) {
-  const st = an.st; if (!st) return;
+// a chip's line up to its ply, as the chips show it: a numbered line, or the fork row (the trunk to
+// the fork, then the walk's second choice there)
+function chipLine(line, ply) {
+  const st = an.st; if (!st) return null;
   const LN = an.synLines || an.lines, WK = an.synWalk || an.walk;   // what the chips show
-  const src = line === 'fork' ? null : LN[line];
-  let seq, label;
   if (line === 'fork') {
-    const w = WK && WK.plies[ply]; if (!w) return;
+    const w = WK && WK.plies[ply]; if (!w) return null;
     const trunk = sanList(st, WK.trunk, ply); const base = trunk.length ? trunk[trunk.length - 1].state : st;
-    const alt = sanList(base, w.alts[1].pv, 1);
-    seq = trunk.concat(alt); label = `Fork row, ply ${ply + 1}`;
-  } else {
-    if (!src) return;
-    seq = sanList(st, src.pv, ply + 1); label = `Line ${line + 1}, ply ${ply + 1}`;
+    return { seq: trunk.concat(sanList(base, w.alts[1].pv, 1)), label: `Fork row, ply ${ply + 1}` };
   }
-  if (!seq.length) return;
+  return LN[line] ? { seq: sanList(st, LN[line].pv, ply + 1), label: `Line ${line + 1}, ply ${ply + 1}` } : null;
+}
+/* Play to here: an engine line played onto the board as an explored line, so the analysis goes on
+   from where it leads. It never touches the game: at the live position of a game it explores too,
+   and Back returns to the board it came from. */
+function stepInto(seq) { if (an.st && seq && seq.length) exploreAppend(an.st, seq); }
+function previewLine(line, ply, pin = false) {
+  const st = an.st, L = chipLine(line, ply); if (!L || !L.seq.length) return;
+  const { seq, label } = L;
   const proj = seq[seq.length - 1].state, dm = materialOf(proj) - materialOf(st);
   an.scrub = { line, ply }; if (pin) an.pin = an.pin && an.pin.line === line && an.pin.ply === ply ? null : { line, ply };
   if (pin && !an.pin) { clearScrub(); return; }
   setPhantoms(proj, Chess.fen(proj), st);   // keyed by the projected position: the same position is never rebuilt
   const pc = $('#phantom-chip'); pc.hidden = false;
-  pc.innerHTML = '';
-  const b = document.createElement('b'); b.textContent = `${an.pin ? 'Pinned' : 'Hover'} ${label.toLowerCase()} · ${seq.slice(-4).map(x => x.num + x.san).join(' ')}`;
-  const sub = document.createElement('span'); sub.textContent = `hologram: where pieces land · faint: squares they leave · crimson: captured · material ${dm > 0 ? '+' : dm < 0 ? MIN : '±'}${Math.abs(dm)} (White's view, pawns)`;
-  pc.append(b, sub);
+  /* built once and then only rewritten: a search redraws a pinned line several times a second, and
+     a chip rebuilt between the press and the release of Play to here lost the click */
+  let go = $('#btn-step-in');
+  if (!go) {
+    pc.innerHTML = ''; pc.append(document.createElement('b'), document.createElement('span'));
+    go = document.createElement('button'); go.type = 'button'; go.className = 'btn text small'; go.id = 'btn-step-in'; go.textContent = 'Play to here';
+    go.title = 'Play this line to here on the board and analyse on from there; the game itself does not change';
+    go.addEventListener('click', () => { const P = an.pin && chipLine(an.pin.line, an.pin.ply); if (P) stepInto(P.seq); }); pc.appendChild(go);
+  }
+  const [b, sub] = pc.children, say = (el, t) => { if (el.textContent !== t) el.textContent = t; };
+  say(b, `${an.pin ? 'Pinned' : 'Hover'} ${label.toLowerCase()} · ${seq.slice(-4).map(x => x.num + x.san).join(' ')}`);
+  say(sub, `hologram: where pieces land · faint: squares they leave · crimson: captured · material ${dm > 0 ? '+' : dm < 0 ? MIN : '±'}${Math.abs(dm)} (White's view, pawns)`);
+  go.hidden = !(an.pin && an.pin.line === line && an.pin.ply === ply);
   for (const c of document.querySelectorAll('.syn-chip.on')) c.classList.remove('on');
   const chip = document.querySelector(`.syn-chip[data-line="${line}"][data-ply="${ply}"]`); if (chip) chip.classList.add('on');
 }
@@ -181,12 +212,18 @@ export function renderAnalyze() {
   $('#go-label').textContent = searching && an.infinite ? 'Stop' : 'Go infinite';
   $('#ico-go').setAttribute('d', searching && an.infinite ? 'M6 6h12v12H6z' : 'M8 5v14l11-7z');
   go.title = searching && an.infinite ? 'Stop the search' : searching ? 'Keep searching without a time limit' : 'Search without a time limit';
-  $('#an-stopped').textContent = an.status === 'over' ? an.reason
-    : an.status === 'loading' ? 'engine loading…' : an.status === 'failed' ? 'engine unavailable'
-    : rec ? `stopped at ${an.meta.seconds.toFixed(1)} s (limit)`
-    : searching ? (an.infinite ? `searching · ${tSec.toFixed(1)} s` : `searching · limit ${prefs.mo.limit} s`)
-    : an.reason === 'user' ? `stopped by you at ${tSec.toFixed(1)} s` : an.reason === 'limit' ? `stopped at ${tSec.toFixed(1)} s (limit)` : '';
-  $('#an-badge-uci').textContent = `[SF: UCI info${recTag}]`;
+  /* The search status in two parts, what is happening over its detail, so the break always falls
+     between them (one string wrapped wherever 21ch ran out, leaving 's' or '(limit)' alone); a
+     number keeps its unit by a no-break space. Rewritten only when it changes. */
+  const sec = x => `${x.toFixed(1)}\u00a0s`;
+  const [stA, stB] = an.status === 'over' ? ['game over', String(an.reason).split('. ')[0].replace(/\.$/, '').toLowerCase()]
+    : an.status === 'loading' ? ['engine', 'loading…'] : an.status === 'failed' ? ['engine', 'unavailable']
+    : rec ? ['recorded', `${sec(an.meta.seconds)} · limit`]
+    : searching ? ['searching', an.infinite ? `${sec(tSec)} · infinite` : `limit ${prefs.mo.limit}\u00a0s`]
+    : an.reason === 'user' ? ['stopped by you', `at ${sec(tSec)}`] : an.reason === 'limit' ? ['stopped', `at ${sec(tSec)} · limit`] : ['', ''];
+  const so = $('#an-stopped');
+  if (so.dataset.v !== `${stA}|${stB}`) { so.dataset.v = `${stA}|${stB}`; so.textContent = ''; if (stA) { const x = document.createElement('b'), y = document.createElement('span'); x.textContent = stA; y.textContent = stB; so.append(x, ' ', y); } }
+  setBadge($('#an-badge-uci'), `[SF: UCI info${recTag}]`);
   $('#st-depth').textContent = s.depth ? `${s.depth}/${s.seldepth || s.depth}` : '—';
   $('#st-nodes').textContent = Monolith.fmtCount(s.nodes);
   $('#st-nps').textContent = Monolith.fmtCount(s.nps);
@@ -195,8 +232,8 @@ export function renderAnalyze() {
   $('#st-tb').title = s.tbhits === undefined && s.nodes !== undefined ? 'This Stockfish build has no Syzygy tablebase support, so it reports no tbhits.' : '';
   $('#st-time').textContent = s.time !== undefined ? `${tSec.toFixed(1)} s` : '—';
   const dTop = l1 ? l1.depth : 0;
-  $('#an-badge-pv').textContent = `[SF: MultiPV ${lines.length || prefs.mo.multipv}${dTop ? ` · d${dTop}` : ''}${recTag}]`;
-  $('#pv-sub').textContent = lines.length ? 'White\'s view · graded by loss against line 1' : '';
+  setBadge($('#an-badge-pv'), `[SF: MultiPV ${lines.length || prefs.mo.multipv}${dTop ? ` · d${dTop}` : ''}${recTag}]`);
+  $('#pv-sub').textContent = lines.length ? 'White\'s view · graded vs line 1' : '';
   // MultiPV table
   if (anDomVer !== an.ver) {
     anDomVer = an.ver;
@@ -210,7 +247,7 @@ export function renderAnalyze() {
       const item = document.createElement('div'), row = document.createElement('button'); item.setAttribute('role', 'listitem'); row.type = 'button'; item.appendChild(row);
       row.className = 'pv-row' + (i === 0 ? ' best' : '') + (an.focus === i ? ' focus' : ''); row.style.setProperty('--q', q.css);
       row.setAttribute('aria-pressed', String(an.focus === i));
-      row.title = an.focus === i ? 'Show every line' : 'Show only this line on the board';
+      row.title = `${an.focus === i ? 'Show every line' : 'Show only this line on the board'} · Shift-click plays its first move`;
       const idx = document.createElement('span'); idx.className = 'i'; idx.textContent = i + 1;
       const mv = document.createElement('span'); mv.className = 'pv-mv'; mv.textContent = seq.length ? seq[0].san : inf.pv[0];
       const gr = document.createElement('span'); gr.className = 'pv-grade'; gr.textContent = q.label; mv.appendChild(gr);
@@ -220,7 +257,7 @@ export function renderAnalyze() {
       else wm.innerHTML = '<span class="wdl-num">WDL —</span>';
       const ln = document.createElement('span'); ln.className = 'pv-ln'; ln.textContent = seq.slice(1).map(x => x.num + x.san).join(' ');
       row.append(idx, mv, ev, wm, ln);
-      row.addEventListener('click', () => { an.focus = an.focus === i ? -1 : i; an.ver++; renderAnalyze(); });
+      row.addEventListener('click', e => { if (e.shiftKey) return stepInto(sanList(st, inf.pv, 1)); an.focus = an.focus === i ? -1 : i; an.ver++; renderAnalyze(); });
       table.appendChild(item);
     });
     renderSyn();
@@ -231,8 +268,8 @@ export function renderAnalyze() {
   $('#sh-13').textContent = sharp && sharp.d13 !== null ? Monolith.fmtPct(sharp.d13) : '—';
   const chip = $('#sh-chip'); chip.className = 'chip' + (sharp && sharp.halo ? ' amber' : ''); chip.textContent = !sharp ? 'one line' : sharp.halo ? 'Knife-edge · halo on' : 'Calm · halo off';
   $('#sh-note').textContent = `halo threshold 10 %${an.field ? ` · ${an.field.near} of ${an.field.total} moves within 5 %` : ''}`;
-  $('#an-badge-sharp').textContent = `[SF: MultiPV ${lines.length || prefs.mo.multipv}${recTag}]`;
-  $('#an-badge-stream').textContent = `[SF: info stream · ${an.stream.length} update${an.stream.length === 1 ? '' : 's'}${recTag}]`;
+  setBadge($('#an-badge-sharp'), `[SF: MultiPV ${lines.length || prefs.mo.multipv}${recTag}]`);
+  setBadge($('#an-badge-stream'), `[SF: info stream · ${an.stream.length} update${an.stream.length === 1 ? '' : 's'}${recTag}]`);
   drawProfile();
   // options
   $('#opt-hash').value = String(prefs.mo.hash); $('#opt-multipv').value = String(prefs.mo.multipv); $('#opt-wdl').checked = prefs.mo.wdl;
@@ -252,7 +289,7 @@ function renderStageInstruments(st, sharp, rec) {
     const k = b.dataset.layer, onK = k === 'xray' ? (xr.sticky || xr.held) : prefs.mo[k];
     b.setAttribute('aria-pressed', String(!!onK));
   }
-  $('#xray-mode').textContent = xr.sticky ? '· on' : '· hold Space';
+  $('#xray-mode').textContent = xr.sticky ? (tapOnly() ? '· tap a square' : '· on') : tapOnly() ? '' : '· hold Space';
   // WDL ribbon (White's view)
   const wdl = l1 ? Monolith.wdlWhite(l1.wdl, st.turn) : null, ribbon = $('#wdl');
   ribbon.hidden = !wdl; $('#wdl-none').hidden = !!wdl || !l1;
@@ -269,7 +306,7 @@ function renderStageInstruments(st, sharp, rec) {
     const sb = $('#wdl-sharp'); sb.classList.toggle('calm', !(sharp && sharp.halo));
     $('#wdl-sharp-val').textContent = sharp ? Monolith.fmtPct(sharp.d12) : '—';
     $('#wdl-sharp-sub').textContent = sharp ? (sharp.halo ? `line 1 · d${l1.depth}` : 'halo off') : 'one line';
-    $('#wdl-badge-wdl').textContent = `[SF: WDL${recTag}]`; $('#wdl-badge-pv').textContent = `[SF: MultiPV${recTag}]`;
+    setBadge($('#wdl-badge-wdl'), `[SF: WDL${recTag}]`); setBadge($('#wdl-badge-pv'), `[SF: MultiPV${recTag}]`);
     const halo = $('#wdl-halo'); halo.hidden = !(sharp && sharp.halo);
     const H = halo.clientHeight;
     if (H && halo.dataset.h !== String(H)) {
@@ -281,7 +318,7 @@ function renderStageInstruments(st, sharp, rec) {
   // field legend
   const fl = $('#field-legend'); fl.hidden = !prefs.mo.field;
   const F = an.field;
-  $('#fl-badge').textContent = `[SF: Root MultiPV Field${F ? ` · d${F.depth}` : ''}${recTag}]`;
+  setBadge($('#fl-badge'), `[SF: Root MultiPV Field${F ? ` · d${F.depth}` : ''}${recTag}]`);
   $('#fl-text').textContent = F && F.done ? `${F.total} legal moves · depth ${F.depth} each · brightest move per square · ${F.near} of ${F.total} within 5 % of best · ${F.lit} square${F.lit === 1 ? '' : 's'} lit`
     : an.fieldProg ? `Scoring all ${an.fieldProg.total} legal moves · depth ${an.fieldProg.depth || 1} of ${an.fieldProg.target}…`
     : an.status === 'over' ? 'No legal moves to score.' : fieldEng && fieldEng.failed ? 'The field engine could not start here.' : 'The field starts with the search.';
@@ -303,6 +340,7 @@ function renderStageInstruments(st, sharp, rec) {
 function xrayTarget(st) {
   if (!(xr.held || xr.sticky)) return -1;
   if (xr.hover >= 0) return xr.hover;
+  if (xr.pin >= 0) return xr.pin;
   const m = app.view === null ? game.moves[game.moves.length - 1] : app.view > 0 ? game.moves[app.view - 1] : null;
   return m && game.states.includes(st) ? m.to : (an.field ? an.field.best.to : -1);
 }
@@ -341,7 +379,7 @@ export function renderXray(st) {
   const head = el('div', 'xr-head');
   el('span', 'xr-title', 'X-Ray', head).dataset.term = 'tactical-xray';
   el('span', 'xr-sq', Chess.sqName(sq), head);
-  el('span', 'xr-mode', xr.sticky ? 'on · X turns it off' : 'held · Space', head);
+  el('span', 'xr-mode', xr.sticky ? (tapOnly() ? 'on · tap a square' : 'on · X turns it off') : 'held · Space', head);
   const g = el('div', 'xr-gauge'), bar = el('i', '', undefined, g); bar.style.setProperty('--xg', `${((best ? 1 : share || 0) * 100).toFixed(1)}%`);
   const gl = el('span', '', best ? 'best move' : share === null ? (F ? 'no move lands' : 'scoring…') : `${Monolith.fmtPct(share)} lost`, g);
   if (!best && share !== null) gl.dataset.term = 'expected-score';
@@ -359,7 +397,7 @@ export function renderXray(st) {
     const row = el('div', 'xr-side', undefined, sides); el('i', `xr-bead ${c}`, undefined, row).setAttribute('aria-hidden', 'true');
     el('span', 'k', c === 'w' ? 'White' : 'Black', row); const list = el('em', '', R[c].length ? R[c].join(', ') : '—', row); list.title = list.textContent;
   }
-  el('span', 'badge', F ? `[SF: Root MultiPV Field · d${F.depth}${an.source === 'recorded' ? ' · rec' : ''}]` : '[SF: field pending]').dataset.term = 'source-badges';
+  const bd = el('span', 'badge'); bd.dataset.term = 'source-badges'; setBadge(bd, F ? `[SF: Root MultiPV Field · d${F.depth}${an.source === 'recorded' ? ' · rec' : ''}]` : '[SF: field pending]');
   termify(chip);
   xrChip.w = chip.offsetWidth || 224; xrChip.h = chip.offsetHeight || 200; xrChip.key = '';   // measured once per rebuild
   placeXrayChip(sq);
@@ -370,7 +408,9 @@ export function renderXray(st) {
    is rebuilt, the stage's from the renderer) and does nothing until the camera, the square or a
    size has changed. */
 const xrProj = new THREE.Vector3(), xrSize = new THREE.Vector2(), xrChip = { w: 224, h: 200, key: '' };
-let narrowMQ = null; // made on first use
+let narrowMQ = null, hoverMQ = null; // made on first use
+// a screen with no hover (a phone, a tablet): the X-Ray is aimed by a tap, not held under Space
+const tapOnly = () => (hoverMQ || (hoverMQ = matchMedia('(hover: none)'))).matches;
 export function placeXrayChip(sq) {
   const chip = $('#xray-chip'); if (chip.hidden) return;
   if ((narrowMQ || (narrowMQ = matchMedia('(max-width: 899px)'))).matches) { chip.classList.remove('right'); xrChip.key = ''; return; }
@@ -403,10 +443,12 @@ export function renderSyn() {
   const LN = an.synLines;
   grid.innerHTML = '';
   const st = an.st, rec = an.source === 'recorded', W = an.synWalk;
-  $('#syn-badge-pv').textContent = `[SF: MultiPV ${LN.filter(Boolean).length || prefs.mo.multipv}${LN[0] ? ` · d${LN[0].depth}` : ''}${rec ? ' · rec' : ''}]`;
-  $('#syn-badge-walk').textContent = `[SF: fork walk · MultiPV 2${W && W.depth ? ` · d${W.depth}` : ''}${rec ? ' · rec' : ''}]`;
+  setBadge($('#syn-badge-pv'), `[SF: MultiPV ${LN.filter(Boolean).length || prefs.mo.multipv}${LN[0] ? ` · d${LN[0].depth}` : ''}${rec ? ' · rec' : ''}]`);
+  setBadge($('#syn-badge-walk'), `[SF: fork walk · MultiPV 2${W && W.depth ? ` · d${W.depth}` : ''}${rec ? ' · rec' : ''}]`);
+  // a mate in the lines is named here; the tablebase count, a constant 'not reported' in this build,
+  // stays with the stats card (its TB hits cell says why) and the footer
   const mates = LN.map((l, i) => l && l.kind === 'mate' ? `${Monolith.fmtScore(whiteScore(l, st.turn))} in line ${i + 1}` : null).filter(Boolean);
-  $('#syn-tb').textContent = `TB / Mate: ${mates.length ? mates.join(', ') : 'none'} · tbhits ${an.stats.tbhits !== undefined ? an.stats.tbhits : an.stats.nodes !== undefined ? 'not reported (no Syzygy in this build)' : '—'}`;
+  $('#syn-tb').hidden = !mates.length; $('#syn-tb').textContent = mates.length ? `Mate: ${mates.join(', ')}` : '';
   const notes = $('#syn-notes'); notes.innerHTML = '';
   if (!st || !LN.some(Boolean)) { const e = document.createElement('div'); e.className = 'syn-empty'; e.textContent = an.status === 'over' ? 'No lines: the game is over here.' : 'Lines appear here as the engine searches.'; grid.appendChild(e); return; }
   const chipFor = (line, k, san, small, cls = '') => {
@@ -419,6 +461,10 @@ export function renderSyn() {
     c.addEventListener('focus', () => { cancelEndPreview(); previewLine(line === 'fork' ? 'fork' : +line, k); });
     c.addEventListener('mouseleave', scheduleEndPreview); c.addEventListener('blur', scheduleEndPreview);
     c.addEventListener('click', () => { cancelEndPreview(); previewLine(line === 'fork' ? 'fork' : +line, k, true); });
+    // Enter on the pinned chip, or a double-click on any, plays the line to it (Play to here)
+    const ln = line === 'fork' ? 'fork' : +line, into = () => { const L = chipLine(ln, k); if (L) stepInto(L.seq); };
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' && an.pin && an.pin.line === ln && an.pin.ply === k) { e.preventDefault(); into(); } });
+    c.addEventListener('dblclick', into);
     return c;
   };
   LN.forEach((inf, i) => {
@@ -439,8 +485,11 @@ export function renderSyn() {
     grid.append(idx, ev, bar, chips);
     if (i === 0 && W) {
       const lab = document.createElement('span'); lab.className = 'syn-lab'; lab.style.gridColumn = '1 / 4';
-      lab.textContent = (W.done && W.fork >= 0 ? `fork · ply ${W.fork + 1}` : an.walkProg ? `walking ${an.walkProg.at}/${an.walkProg.total}…` : 'fork walk') + (same < W.plies.length ? ' · an earlier line 1' : '');
+      // the label keeps to its three columns; that the walk followed an earlier line 1 is said by a
+      // quiet chip at the head of the row, where it fits on a phone too (it ran under the chips)
+      lab.textContent = W.done && W.fork >= 0 ? `fork · ply ${W.fork + 1}` : an.walkProg ? `walking ${an.walkProg.at}/${an.walkProg.total}…` : 'fork walk';
       const row = document.createElement('div'); row.className = 'syn-chips';
+      if (same < W.plies.length) { const e = document.createElement('span'); e.className = 'syn-chip gap'; e.textContent = 'earlier line 1'; e.title = 'The fork walk followed line 1 as it stood earlier; line 1 has changed since'; row.appendChild(e); }
       W.plies.forEach((p, k) => row.appendChild(chipFor('fork', k, p.alts[1].san[0], `${(p.gap * 100).toFixed(1)}%`, 'alt' + (W.fork === k && W.done ? ' fork' : ''))));
       grid.append(lab, row);
     }

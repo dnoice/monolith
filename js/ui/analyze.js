@@ -76,6 +76,7 @@ import { emptyCalc } from '../game/lines.js';
 import { sanList, sanMove, stmScore } from '../game/input.js';
 import { clearScrub, renderAnalyze } from './analyze-view.js';
 import { setTab } from './nav.js';
+import { study } from './studies.js';
 
 /* =====================================================================================
    MONOLITH · Analyze. Three searches feed one instrument.
@@ -96,7 +97,7 @@ export const an = {
   lines: [], stats: {}, stream: [], field: null, fieldProg: null, walk: null, walkProg: null, focus: -1, scrub: null, pin: null, meta: null,
   rec: null, recState: 'idle', recErr: '', recPromise: null, ver: 0
 };
-export const xr = { held: false, sticky: false, hover: -1 };
+export const xr = { held: false, sticky: false, hover: -1, pin: -1, touch: false };   // pin: the square a tap chose
 let anTimer = 0;
 const anTouch = () => { an.ver++; if (!anTimer) anTimer = setTimeout(() => { anTimer = 0; renderAnalyze(); }, an.status === 'searching' ? 180 : 60); };
 function ensureAnalysisEngines() {
@@ -129,7 +130,7 @@ export function anSync(force = false) {
   ensureAnalysisEngines(); getRecorded();
   const st = explore.on ? exploreState() : shown(), idx = stateIndex(st), key = posCmdFor(st);
   if (!force && key === an.key) return;
-  const gen = ++an.gen;
+  const gen = ++an.gen; xr.pin = -1;   // a square chosen by a tap belongs to the position it was chosen in
   Object.assign(an, { key, st, idx, synLines: null, synWalk: null, synKey: '', source: null, status: 'idle', reason: '', infinite: false, stopAsked: false, lines: [], stats: {}, stream: [], field: null, fieldProg: null, walk: null, walkProg: null, focus: -1, meta: null });
   clearScrub();
   if (deep) deep.abort(); if (fieldEng) fieldEng.abort();
@@ -269,6 +270,41 @@ async function anStartWalk(gen, l1) {
   an.walk.done = true; an.walk.fork = Monolith.fork(an.walk.plies); an.walkProg = null; anTouch();
 }
 
+/* A game or a position taken into Analyze, both sides moved by hand: the board is replaced at once,
+   since nothing else owns it, and Analyze opens on its last position. states, moves and sans are
+   the game record's; title is game.title; orient the side at the bottom. The reference and Load
+   (a pasted FEN) come in here, and a replayed PGN game can too. */
+export function analyzeLine(states, moves, sans, title, orient = 'w') {
+  engine.abort(); app.cpuThinking = false; app.busy = false; hideSnack(); deselect(); clearCeremony();
+  Object.assign(game, { states, moves, sans, result: null, title });
+  Object.assign(match, { opponent: 'human', choice: 'w', human: 'w', study: false }); study.cur = null;
+  game.result = resultFor(cur());
+  app.started = true; app.setupOpen = false; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
+  const last = moves[moves.length - 1]; app.lastMove = last ? { from: last.from, to: last.to } : null;
+  clearFragments(); placePieces(cur()); setOrientation(orient);
+  if (prefs.tab !== 'analyze') setTab('analyze'); else { render(); anSync(true); }
+}
+// a game in progress is asked about first; the reference or a loaded position is simply replaced
+const replacing = (q, label, go) => {
+  if (app.started && game.sans.length && !game.result && !game.title) snack(`${q} The current game ends.`, [{ label: 'Keep playing', act: () => {} }, { label, filled: true, act: go }], true);
+  else go();
+};
+/* Load: a pasted FEN analysed where it is, without leaving Analyze (the palette's :fen does the
+   same here). Returns what was wrong with the text, or '' once it is loading. */
+export function loadForAnalysis(text) {
+  const note = $('#an-load-note'), t = String(text || '').trim();
+  const say = (msg, err = false) => { note.className = 'help' + (err ? ' err' : ''); note.textContent = msg; return err ? msg : ''; };
+  if (!t) return say('Paste a FEN first.', true);
+  const r = Chess.parseFen(t);
+  if (r.error) return say(/^\s*(\[|1\.)/.test(t) ? 'That looks like a PGN game. This box takes a FEN.' : r.error, true);
+  const side = r.state.turn === 'w' ? 'White' : 'Black';
+  replacing('Analyze this position?', 'Analyze it', () => {
+    analyzeLine([r.state], [], [], { name: 'Position from a FEN', sub: 'Loaded for analysis from a FEN, both sides by hand' }, r.state.turn);
+    say(`Loaded, ${side} to move. Moves on the board are made by hand for both sides.`);
+  });
+  return '';
+}
+
 /* the reference game: Kasparov – Topalov with its recorded run */
 let pendingTitle = null;
 export function loadReference() {
@@ -281,16 +317,9 @@ export function loadReference() {
       const nx = Chess.apply(st, mv); moves.push(mv); sans.push(Chess.san(st, mv, nx)); states.push(nx); st = nx;
     }
     const go = () => {
-      engine.abort(); app.cpuThinking = false; app.busy = false; hideSnack(); deselect(); clearCeremony();   // the board is replaced at once: nothing else owns it
-      Object.assign(game, { states, moves, sans, result: null, title: { name: 'Kasparov – Topalov', players: { w: 'Kasparov', b: 'Topalov' }, sub: `Wijk aan Zee 1999 · ${R.position.eco || ''} · loaded for analysis, both sides by hand`.replace(' ·  ·', ' ·') } });
-      Object.assign(match, { opponent: 'human', choice: 'w', human: 'w' });
-      app.started = true; app.setupOpen = false; app.view = null; app.hint = null; app.calc = emptyCalc(); app.fenDirty = false;
-      app.lastMove = { from: moves[moves.length - 1].from, to: moves[moves.length - 1].to };
-      clearFragments(); placePieces(cur()); setOrientation('w');
       note.className = 'help'; note.textContent = 'Loaded. The board shows the position after 24…cxd4; step back through the move list to see the game.';
-      if (prefs.tab !== 'analyze') setTab('analyze'); else { render(); anSync(true); }
+      analyzeLine(states, moves, sans, { name: 'Kasparov – Topalov', players: { w: 'Kasparov', b: 'Topalov' }, sub: `Wijk aan Zee 1999 · ${R.position.eco || ''} · loaded for analysis, both sides by hand`.replace(' ·  ·', ' ·') });
     };
-    if (app.started && game.sans.length && !game.result && !game.title) snack('Load the reference game? The current game ends.', [{ label: 'Keep playing', act: () => {} }, { label: 'Load', filled: true, act: go }], true);
-    else go();
+    replacing('Load the reference game?', 'Load', go);
   });
 }

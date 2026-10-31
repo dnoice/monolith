@@ -74,10 +74,10 @@ import {
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
 import { coachKick, giveHint } from '../coach/notes.js';
 import { parseTyped } from '../game/input.js';
-import { an, anGoToggle, anSync, loadReference } from './analyze.js';
-import { renderAnalyze } from './analyze-view.js';
+import { an, anGoToggle, anSync, loadForAnalysis, loadReference } from './analyze.js';
+import { renderAnalyze, setBadgesPref, syncBadges } from './analyze-view.js';
 import { cr, crCopyJson, crModel, crStartLive, crStopLive, getGauntlet } from './crucible.js';
-import { crExpand, crLeaveBoard } from './crucible-board.js';
+import { boardOverride, crExpand, crLeaveBoard, crStep } from './crucible-board.js';
 import { drawHive, hiveGeom, hiveIndexAt, renderCrucible } from './crucible-view.js';
 import { layerToggle } from './palette.js';
 import { buildNav } from './nav.js';
@@ -163,6 +163,11 @@ export function init() {
   $('#opt-field').addEventListener('change', e => optSave('fieldDepth', +e.target.value));
   $('#opt-walk').addEventListener('change', e => optSave('walkDepth', +e.target.value));
   $('#btn-reference').addEventListener('click', loadReference);
+  // Load: a pasted FEN, analysed here; Enter loads it (Shift Enter keeps a new line)
+  $('#btn-an-load').addEventListener('click', () => loadForAnalysis($('#an-load-text').value));
+  $('#an-load-text').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); loadForAnalysis(e.target.value); } });
+  $('#set-badges')?.addEventListener('change', e => setBadgesPref(e.target.checked ? 'short' : 'full'));
+  syncBadges();   // the badges written in the page take the saved form too
   // Crucible controls
   for (const b of document.querySelectorAll('[data-crsrc]')) b.addEventListener('click', () => {
     cr.src = b.dataset.crsrc; prefs.cr.src = cr.src; savePrefs(); cr.expanded = -1; cr.sel = -1; cr.view = 'deck'; crLeaveBoard();
@@ -177,8 +182,12 @@ export function init() {
   crNum('#cfg-a-val', 'aVal'); crNum('#cfg-b-val', 'bVal'); crNum('#cfg-elo0', 'elo0'); crNum('#cfg-elo1', 'elo1'); crNum('#cfg-pairs', 'pairs'); crNum('#cfg-par', 'par'); crNum('#cfg-alpha', 'alpha');
   for (const [sel, kk, vk] of [['#cfg-a-kind', 'aKind', 'aVal'], ['#cfg-b-kind', 'bKind', 'bVal']]) $(sel).addEventListener('change', e => { prefs.cr[kk] = e.target.value; prefs.cr[vk] = KIND_DEFAULT[e.target.value] - (kk === 'bKind' && e.target.value !== 'level' ? (e.target.value === 'nodes' ? 1000 : 200) : 0); savePrefs(); renderCrucible(); });
   $('#btn-cr-run').addEventListener('click', crStartLive);
+  $('#btn-cr-run-2').addEventListener('click', crStartLive);   // the deck's own, before a live run
   $('#btn-cr-stop').addEventListener('click', () => crStopLive('user'));
   $('#btn-cr-copy').addEventListener('click', crCopyJson);
+  // with a Crucible game on the board the Moves card's steps walk that game (showView and goLive
+  // leave the Play game alone then)
+  for (const [id, d] of [['#nav-first', -Infinity], ['#nav-prev', -1], ['#nav-next', 1], ['#nav-last', Infinity]]) $(id).addEventListener('click', () => { if (boardOverride) crStep(d); });
   hive = $('#hive');
   hive.addEventListener('pointermove', e => { const r = hive.getBoundingClientRect(), i = hiveIndexAt(e.clientX - r.left, e.clientY - r.top); if (i !== cr.hover) { cr.hover = i; hive.style.cursor = i >= 0 ? 'pointer' : ''; drawHive(); } });
   hive.addEventListener('pointerleave', () => { if (cr.hover !== -1) { cr.hover = -1; drawHive(); } });

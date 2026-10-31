@@ -151,7 +151,7 @@ export function openSetup() {
   app.setupOpen = true; setTab('play'); render();
 }
 export function undo() {
-  if (app.busy || game.states.length < 2 || !app.started) return;
+  if (app.busy || game.states.length < 2 || !app.started || boardOverride) return;
   if (app.view !== null) goLive();
   engine.abort(); app.cpuThinking = false; hideSnack();
   // against the computer, undo returns to your last turn (its reply and your move)
@@ -173,8 +173,10 @@ export function resign() {
 }
 
 /* ---------- review: step through the game without changing it ---------- */
+/* While a Crucible game is on the board (boardOverride) the review, Live and Undo leave the Play
+   game alone: they would place its pieces over that game's. The Moves card steps that game then. */
 export function showView(idx) {
-  if (app.busy) return;
+  if (app.busy || boardOverride) return;
   hideSnack('promotion');
   if (idx >= game.states.length - 1) return goLive();
   app.view = Math.max(0, idx); deselect();
@@ -182,7 +184,7 @@ export function showView(idx) {
   placePieces(shown()); render(); refreshAnalysis();
 }
 export function goLive() {
-  if (app.busy) return;
+  if (app.busy || boardOverride) return;
   hideSnack('promotion');
   app.view = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
@@ -222,6 +224,16 @@ export function exploreUndo() {
   if (!explore.moves.length) return exploreEnd();
   explore.states.pop(); explore.moves.pop(); explore.sans.pop();
   deselect(); placePieces(exploreState()); render(); refreshAnalysis();
+}
+/* A line played onto the board at once (Analyze's Play to here): each move ({ mv, san, state }, as
+   sanList gives them) joins the explored line without animation, as a jump in the review does. It
+   starts from `from`, the position Analyze shows: the explored line's end, or the board under it. */
+export function exploreAppend(from, seq) {
+  if (app.busy || !seq.length || from !== (explore.on ? exploreState() : underlyingState())) return false;
+  if (!explore.on) exploreStart();
+  for (const x of seq) { explore.states.push(x.state); explore.moves.push(x.mv); explore.sans.push(x.san); }
+  deselect(); hideSnack(); placePieces(exploreState()); render(); refreshAnalysis();
+  return true;
 }
 // called from render: the board the line started from has changed underneath it
 export function exploreCheck() { if (explore.on && underlyingState() !== explore.base) exploreEnd(false); }

@@ -81,6 +81,8 @@
 :root[data-skin="monolith"] .result.win::after{display:none}
 :root[data-skin="monolith"] .evalbar{border-color:var(--mo-steel)}
 #stage-fade{position:absolute;inset:0;background:var(--stage-bg);opacity:0;pointer-events:none}
+/* Analyze's evaluation in the match strip reads at the size of the move number beside it */
+.mb-last b.num{font-size:15px}
 
 /* ---------- MONOLITH instrument components ---------- */
 .badge{display:inline-flex;align-items:center;height:18px;padding:0 6px;border:1px solid var(--mo-rule);border-radius:2px;background:var(--mo-well);color:var(--mo-ink3);font:400 10.5px/1 var(--font-tele);letter-spacing:.01em;white-space:nowrap;flex:none}
@@ -93,6 +95,8 @@
    sliver beside a badge */
 .mo-sub{flex:1 1 9em;min-width:0;font-size:12px;color:var(--mo-ink3)}
 .mo-head > .badge:last-child{margin-left:auto}
+/* the MultiPV subtitle stays one line: its badge moves under it rather than squeeze it in two */
+#pv-sub{flex:1 0 auto}
 .mo-details > summary{list-style:none;cursor:pointer;border-radius:2px}
 .mo-details > summary::-webkit-details-marker{display:none}
 .mo-details > summary::after{content:'';flex:none;width:7px;height:7px;border-right:1.5px solid var(--mo-ink3);border-bottom:1.5px solid var(--mo-ink3);transform:rotate(45deg);margin:0 4px 3px auto}
@@ -103,7 +107,10 @@
 .an-id b{font-size:20px;font-weight:500;line-height:1.15}
 .an-id span{font-size:12px;color:var(--md-on-surface-var)}
 .an-go{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none;text-align:right}
-.an-go .help{font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3);max-width:21ch}
+/* the search status: what is happening over its detail, right-aligned under Go, each part on
+   one line (a lone 's' or '(limit)' used to wrap away from its number) */
+.an-go .help{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3);max-width:24ch}
+.an-go .help b{font-weight:500;color:var(--mo-ink2);white-space:nowrap}
 .mo-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 12px;margin:0;padding:12px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
 .mo-stats dt{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);margin-bottom:6px}
 .mo-stats dd{margin:0;font-size:16px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--mo-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -129,7 +136,9 @@
 .sharp{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:4px 18px;align-items:end}
 .sharp > div{display:flex;flex-direction:column;gap:4px;min-width:0}
 .sharp span{font-size:11.5px;color:var(--mo-ink3)}
-.sharp .sharp-chip{align-items:flex-end;text-align:right}
+/* the verdict chip and the halo note take their own row under the two numbers (the chip, wider
+   than its column, ran over the second number) */
+.sharp .sharp-chip{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px}
 .mo-big{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;color:var(--md-on-surface)}
 .mo-big.amber{color:var(--mo-amber)}
 .chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;border:1px solid var(--mo-rule);background:var(--mo-raised);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -143,6 +152,9 @@
 .opt small{font-size:11.5px;color:var(--mo-ink3)}
 .opt .select{height:32px;min-width:96px}
 .opt .val{font-family:var(--font-tele);font-size:12px;color:var(--mo-ink2)}
+/* Load: the FEN box, a well like the stats card's, in the telemetry face */
+.an-load-text{display:block;width:100%;min-height:52px;resize:vertical;padding:8px 10px;border:1px solid var(--mo-rule);border-radius:3px;background:var(--mo-well);color:var(--mo-ink);font:400 12px/1.45 var(--font-tele);word-break:break-all}
+.an-load-text::placeholder{color:var(--mo-ink3)}
 
 /* stage instruments. Analyze's bands: the top one holds the chips at its left and the layer
    toggles at its right; the right one holds the field's key under the toggles, the WDL column and,
@@ -195,6 +207,8 @@
 .phantom-chip{position:absolute;left:var(--gutter-l);top:8px;z-index:2;display:flex;align-items:baseline;gap:10px;max-width:calc(100% - 380px);padding:7px 14px;background:var(--mo-panel);border:1px solid var(--mo-steel);border-radius:3px;font-size:12.5px;color:var(--mo-ink);text-align:center;pointer-events:none}
 .phantom-chip b{flex:none;font-weight:500}
 .phantom-chip span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--mo-ink2)}
+/* a pinned line's Play to here: the one part of the chip that takes the pointer */
+.phantom-chip button{flex:none;pointer-events:auto}
 
 /* dock: Synaptic PV scrubber (Analyze) and heartbeat (Crucible) */
 #dock{grid-area:dock;min-width:0;background:var(--mo-panel);border-top:1px solid var(--mo-rule);color:var(--mo-ink)}
@@ -202,6 +216,11 @@
 .syn-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--mo-ink3);min-width:0}
 .syn-head .mo-title{margin-right:4px}
 .syn-head .grow{flex:1}
+/* the dock's two badges wrap as one, never leaving the last alone on a line */
+.syn-badges{display:inline-flex;gap:8px;flex-wrap:nowrap}
+/* the short source badges (Settings) set the footer's compact form too */
+:root[data-badges="short"] .tm .badge .bf{display:none}
+:root[data-badges="short"] .tm .badge .bs{display:inline}
 .syn-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
 .syn-grid{display:grid;grid-template-columns:22px 52px 54px auto;gap:5px 8px;align-items:center;width:max-content;min-width:100%}
 .syn-i{font:400 11px var(--font-tele);color:var(--mo-ink3);text-align:right}
@@ -221,7 +240,7 @@
 .syn-chip.instab small{color:var(--mo-amber)}
 .syn-chip.alt{color:var(--mo-ink2);background:transparent;border-style:dashed}
 .syn-chip.gap{cursor:default;background:transparent;border-color:transparent;color:var(--mo-ink3)}
-.syn-lab{font:400 10.5px var(--font-tele);color:var(--mo-ink3);white-space:nowrap}
+.syn-lab{font:400 10.5px var(--font-tele);color:var(--mo-ink3);white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .syn-notes{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--mo-ink3)}
 .syn-notes .amber{color:var(--mo-amber)}
 .syn-empty{font-size:12.5px;color:var(--mo-ink3);padding:4px 0}

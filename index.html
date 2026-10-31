@@ -409,6 +409,7 @@
             <span class="hive-legend"><span><i></i>1–0</span><span><i class="d"></i>½</span><span><i class="l"></i>0–1</span><span><i class="a"></i>anomaly</span></span><span class="badge" id="hive-badge">[Runner]</span></div>
           <canvas id="hive" tabindex="0" aria-label="Final positions of every game; select one to open it on the board"></canvas>
         </section>
+        <div class="deck-empty" id="deck-empty" hidden><b>No live run yet</b><span id="deck-empty-sub">Set A and B in the panel, then start the run.</span><button class="btn filled small" id="btn-cr-run-2" type="button">Start run</button></div>
       </div>
       <div class="webgl-fail" id="webgl-fail">This browser could not start WebGL, so the 3D board cannot be drawn.</div>
       <div class="webgl-fail" id="serve-fail">MONOLITH runs from a web server. Open this folder with VS Code's Live Server, or any static server, and load the page there: browsers do not run its modules from a file opened directly.</div>
@@ -416,7 +417,7 @@
 
     <section id="dock" hidden aria-label="Instrument dock">
       <div class="syn" id="syn" hidden>
-        <div class="syn-head"><span class="mo-title"><span data-term="synaptic-pv">Synaptic PV</span></span><span>scrub to preview · root at playhead</span><span class="syn-hold" id="syn-hold" hidden>held while you read · updates when you leave</span><span class="badge" id="syn-badge-pv">[SF: MultiPV]</span><span class="badge" id="syn-badge-walk">[SF: fork walk]</span><span class="grow"></span><span id="syn-tb">TB / Mate: —</span><span class="badge">[SF]</span></div>
+        <div class="syn-head"><span class="mo-title"><span data-term="synaptic-pv">Synaptic PV</span></span><span>hover to preview · click to pin</span><span class="syn-hold" id="syn-hold" hidden>held while you read · updates when you leave</span><span class="syn-badges"><span class="badge" id="syn-badge-pv">[SF: MultiPV]</span><span class="badge" id="syn-badge-walk">[SF: fork walk]</span></span><span class="grow"></span><span id="syn-tb" hidden></span></div>
         <div class="syn-scroll"><div class="syn-grid" id="syn-grid"></div></div>
         <div class="syn-notes" id="syn-notes"></div>
       </div>
@@ -514,6 +515,12 @@
               <div><dt><span data-term="search-limit">Time</span></dt><dd id="st-time">—</dd></div>
             </dl>
           </div>
+          <details class="mo-section mo-details" id="an-load">
+            <summary class="mo-head"><span class="mo-title">Load</span><span class="mo-sub">a position from a FEN</span></summary>
+            <textarea class="an-load-text" id="an-load-text" rows="2" spellcheck="false" autocomplete="off" aria-label="FEN to analyze" placeholder="Paste a FEN, such as r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"></textarea>
+            <div class="row"><button class="btn tonal small" id="btn-an-load" type="button">Analyze it</button></div>
+            <p class="help" id="an-load-note"></p>
+          </details>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="multipv">MultiPV</span></span><span class="mo-sub" id="pv-sub"></span><span class="badge" id="an-badge-pv">[SF: MultiPV]</span></div>
             <div class="pv-table" id="pv-table" role="list" aria-label="Engine lines, White's view"></div>
@@ -562,7 +569,7 @@
           </div>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="crucible">Match</span></span><span class="mo-sub" id="cr-match-sub"></span><span class="badge" id="cr-badge-match">[Runner: GSPRT]</span></div>
-            <div class="cr-verdict"><b id="cr-verdict">—</b><span id="cr-verdict-1"></span><span id="cr-verdict-2"></span></div>
+            <div class="cr-verdict"><b id="cr-verdict">—</b><span class="cr-plain" id="cr-verdict-0"></span><span id="cr-verdict-1"></span><span id="cr-verdict-2"></span></div>
             <div class="cr-progress" id="cr-progress" hidden><i id="cr-progress-bar"></i></div>
           </div>
           <div class="mo-section" id="cr-config" hidden>
@@ -583,8 +590,9 @@
             </div>
             <div class="cfg-grid" id="cfg-fixed" hidden><b><span data-term="game-pair">Pairs</span></b><input class="num-in" id="cfg-pairs" type="number" min="1" max="200" aria-label="Pairs to play"><span class="help">2 games each</span></div>
             <div class="cfg-grid"><b><span data-term="parallel-games">Parallel</span></b><select class="select" id="cfg-par" aria-label="Games played at once"></select><span class="help">games at once</span></div>
-            <p class="help" id="cr-run-note"></p>
             <div class="row"><button class="btn filled small" id="btn-cr-run">Start run</button><button class="btn outlined small" id="btn-cr-stop">Stop</button></div>
+            <p class="help" id="cr-run-note"></p>
+            <details class="mo-details cr-run-more"><summary class="mo-head"><span class="mo-sub">How a live run plays here</span></summary><p class="help" id="cr-run-facts"></p></details>
           </div>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="parameter-matrix">UCI parameter matrix</span></span></div>
@@ -769,6 +777,7 @@
               <button role="radio" data-world="monolith"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Monolith</button>
             </div>
             <p class="help" id="world-help"></p>
+            <div class="switch-row"><label for="set-badges">Short source badges<span>Each MONOLITH readout names only its source, such as [SF] or [Runner]; the full badge shows on hover</span></label><input type="checkbox" class="switch" role="switch" id="set-badges"></div>
           </div>
           <div class="group"><div class="group-title">MONOLITH pillars</div>
             <div class="seg" role="radiogroup" aria-label="MONOLITH pillars">
@@ -822,6 +831,7 @@
               <dt id="kbd-palette">Ctrl K</dt><dd>Command palette</dd>
               <dt>Space</dt><dd>Hold for the Tactical X-Ray (Analyze)</dd>
               <dt>F V X</dt><dd>Field, vectors, X-Ray (Analyze)</dd>
+              <dt>F U H</dt><dd>Flip the board, undo, hint (Play)</dd>
             </dl>
           </div>
           <details class="group mo-details" id="system-sheet">

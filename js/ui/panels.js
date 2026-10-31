@@ -91,7 +91,7 @@ import { coach, coachMark, coachOn, coachSides } from '../coach/notes.js';
 import { an, anSync } from './analyze.js';
 import { renderAnalyze } from './analyze-view.js';
 import { cr, crModel, pad2 } from './crucible.js';
-import { boardOverride } from './crucible-board.js';
+import { boardOverride, renderCrMoves } from './crucible-board.js';
 import { renderCrucible } from './crucible-view.js';
 import { buildSystemSheet } from './system-sheet.js';
 import { study } from './studies.js';
@@ -151,8 +151,10 @@ function mbSeg(el, k, v, sub, cls) {
   if (el.hidden) return;
   const kEl = el.querySelector('.mb-k'), vEl = el.querySelector('b'), sEl = el.querySelector('.mb-s');
   if (kEl) kEl.textContent = k; vEl.textContent = v;
-  // a number (the move, a score, a count) reads larger; words keep the strip's text size
+  // a number (the move, a score, a count) reads larger; words keep the strip's text size; the last
+  // segment's value is a number only as Analyze's evaluation (Play's last move stays text)
   if (el === mbEls().move) vEl.classList.toggle('num', /^[#\d½]/.test(String(v)));
+  else if (el === mbEls().last) vEl.classList.toggle('num', prefs.tab === 'analyze' && /^(?:[+−#]|0\.00$)/.test(String(v)));
   if (sEl) { sEl.textContent = sub || ''; sEl.className = 'mb-s' + (cls ? ' ' + cls : ''); sEl.hidden = !sub; }
 }
 const sanLabel = (st, san) => `${st.fullmove}${st.turn === 'w' ? '.' : '…'}${san}`;
@@ -161,10 +163,14 @@ export function renderMatchbar() {
   const sideName = c => mono ? (c === 'w' ? 'White' : 'Black') : SIDE[c];
   let title = null, players = null, move = null, last = null;
   if (tab === 'analyze') {
-    const st = an.st || shown(), rec = an.source === 'recorded', s = an.stats;
-    title = ['Analyze', rec ? an.meta.name : explore.on ? 'Explored line' : game.title ? game.title.name : app.started ? (app.view !== null ? 'Earlier position' : 'Live game') : 'Board position'];
+    const st = an.st || shown(), rec = an.source === 'recorded', s = an.stats, l1 = an.lines[0];
+    // the recorded run's name to its players and year ('Kasparov – Topalov 1999'); the pane's
+    // Reference card keeps the whole of it
+    title = ['Analyze', rec ? an.meta.name.replace(/,[^,·]*?(\d{4})\b.*$/, ' $1') : explore.on ? 'Explored line' : game.title ? game.title.name : app.started ? (app.view !== null ? 'Earlier position' : 'Live game') : 'Board position'];
     move = ['Move', st.fullmove, an.status === 'over' ? String(an.reason || 'Game over').replace(/\.$/, '') : `${st.turn === 'w' ? 'White' : 'Black'} to move`];
-    last = ['Depth', s.depth !== undefined ? String(s.depth) : '—', an.status === 'searching' ? (an.infinite ? 'infinite' : 'searching') : an.status === 'stopped' ? 'stopped' : an.status === 'loading' ? 'engine loading' : '', an.status === 'searching' ? 'think' : ''];
+    // the evaluation, the number a reader wants first, with the depth and the search's state
+    const state = rec ? 'recorded' : an.status === 'searching' ? (an.infinite ? 'infinite' : 'searching') : an.status === 'stopped' ? 'stopped' : an.status === 'loading' ? 'engine loading' : '';
+    last = ['Eval', l1 && an.status !== 'over' ? Monolith.fmtScore(Monolith.fromInfo(l1, st.turn)) : '—', [s.depth !== undefined ? `d${s.depth}` : '', state].filter(Boolean).join(' · '), an.status === 'searching' ? 'think' : ''];
   } else if (tab === 'crucible') {
     const m = crModel(), games = m && m.trace && m.trace.length ? m.trace[m.trace.length - 1].games : m ? m.games.filter(g => g && g.done).length : 0;
     title = ['Crucible', m ? `${m.config.A.name} vs ${m.config.B.name}` : cr.src === 'recorded' ? 'Recorded run' : 'Live run'];
@@ -420,6 +426,7 @@ export function init() {
     for (const b of document.querySelectorAll('[data-world]')) radio(b, b.dataset.world === prefs.world);
     $('#world-help').textContent = prefs.world === 'auto' ? `Follows the destination: MONOLITH for Analyze and Crucible, the cathedral for the rest. Now: ${app.worldName === 'monolith' ? 'MONOLITH' : 'cathedral'}.`
       : prefs.world === 'monolith' ? 'MONOLITH everywhere: solved tokens, mirror floor, cool rim light; colour is semantic only.' : 'The cathedral everywhere, Analyze and Crucible included.';
+    const sbg = $('#set-badges'); if (sbg) sbg.checked = prefs.badges === 'short';
     for (const b of document.querySelectorAll('[data-pillars]')) radio(b, b.dataset.pillars === pillars.style);
     $('#pillars-help').textContent = (pillars.style === 'classic' ? 'A twisted Solomonic column between a fluted Doric and a plain Tuscan.' : pillars.style === 'modern' ? 'A Prism lit by spiralling cyan lines, between a ringed Halo and a bladed Fin.' : 'The stele, the rift and the spire, each made for its place.')
       + ' Dennis\'s Blender models, seen in MONOLITH.' + (pillars.status === 'loading' ? ' Loading…' : pillars.status === 'failed' ? ` ${pillars.failed.length === 1 ? 'One model' : 'Some models'} could not load here, so the built pillars stand in.` : '');
@@ -443,6 +450,7 @@ export function init() {
 
   // Moves card
   onRender(() => {
+    if (boardOverride) return renderCrMoves();   // a Crucible game on the board lists its own moves
     const list = $('#moves'), vp = viewedPly();
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
     const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp]), () => {
