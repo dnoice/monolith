@@ -92,6 +92,8 @@ export function learn(id) {
 const SPEEDS = { normal: 1, fast: 0.55, minimal: 0.25 };
 export function applyPrefs() {
   app.SPEED = Math.min(SPEEDS[prefs.speed] || 1, reduceMotion ? 0.3 : 1);
+  // the Minimal speed, for the stylesheets: the panel's transitions go with it, as under reduced motion
+  if (prefs.speed === 'minimal') document.documentElement.dataset.motion = 'minimal'; else delete document.documentElement.dataset.motion;
   app.muted = !prefs.sound;
   for (const l of [lblS, lblN, lblW, lblE]) l.visible = prefs.coords;
 }

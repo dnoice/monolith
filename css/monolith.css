@@ -78,7 +78,8 @@
 :root[data-skin="monolith"] .pane-head h2{font-family:var(--font-struct);font-size:14px;letter-spacing:.24em;text-transform:uppercase;line-height:1.5}
 :root[data-skin="monolith"] :is(.group > legend,.group-title,.moves-head h2){font-family:var(--font-struct);font-weight:400;font-size:10px;letter-spacing:.2em}
 :root[data-skin="monolith"] .nav-item{font-family:var(--font-ui-mo);font-weight:500;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
-:root[data-skin="monolith"][data-tab="analyze"] .moves-card{max-height:30%;min-height:150px}
+/* the desktop list's share in Analyze; a phone's strip is one row and keeps its own height */
+@media (min-width:900px){:root[data-skin="monolith"][data-tab="analyze"] .moves-card{max-height:30%;min-height:150px}}
 :root[data-skin="monolith"] .player{background:var(--mo-panel);backdrop-filter:none;-webkit-backdrop-filter:none}
 :root[data-skin="monolith"] .player.active{border-color:var(--mo-steel);box-shadow:none}
 :root[data-skin="monolith"] .avatar.b{border-color:var(--mo-steel);color:var(--mo-steel)}
@@ -100,21 +101,38 @@
 /* ---------- MONOLITH instrument components ---------- */
 .badge{display:inline-flex;align-items:center;height:18px;padding:0 6px;border:1px solid var(--mo-rule);border-radius:2px;background:var(--mo-well);color:var(--mo-ink3);font:400 10.5px/1 var(--font-tele);letter-spacing:.01em;white-space:nowrap;flex:none}
 .badge.rec{color:var(--mo-ink2);border-color:#3A4352}
+/* In the panel and the dock a source badge is a term (js/ui/grimoire.js tags every one; a click
+   opens Source badges), so it reads as one: the dotted underline, no box, the brackets its frame,
+   and full ink under the pointer. On the stage and in the footer it keeps its box. */
+:is(.panel,#dock) .badge{height:auto;padding:0;border:0;background:none;color:var(--pnl-ink-3);line-height:1.3}
+:is(.panel,#dock) .badge[data-term]{color:var(--pnl-ink-2);text-decoration:underline dotted;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent);text-underline-offset:3px}
+:is(.panel,#dock) .badge[data-term]:hover,:is(.panel,#dock) .badge[data-term][aria-expanded="true"]{color:var(--pnl-ink);text-decoration-color:currentColor}
 .mo-pane{gap:20px}
 .mo-section{display:flex;flex-direction:column;gap:10px;min-width:0}
+/* in the panel an instrument's section is a card (css/play.css), its first head the band, which
+   holds at the panel's top while the section scrolls under it */
+.panel .mo-pane > .mo-section{gap:12px;padding:var(--pnl-pad);border-radius:var(--r-card);overflow:clip;overflow-clip-margin:2px;background:linear-gradient(180deg,var(--pnl-card-hi) 0 44px,var(--pnl-card) 180px);border:1px solid var(--pnl-line);box-shadow:var(--pnl-rim),var(--pnl-lift)}
+.panel .mo-pane > .mo-section > .mo-head:first-child:not(summary){position:sticky;top:var(--pnl-sticky-top);z-index:2;min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
+/* a details section's summary stands where the band would, a row reaching the card's edges */
+.panel .mo-pane > details.mo-section > summary{margin:-8px -10px}
+.panel .mo-pane > details.mo-section[open] > summary{margin-bottom:4px}
+/* a second head in a section (Pentanomial under Result) is a sub-head, parted by a hairline */
+.panel .mo-section > .mo-head ~ .mo-head{margin-top:4px;padding-top:12px;border-top:1px solid var(--pnl-line-soft)}
 .mo-head{display:flex;align-items:center;gap:10px;min-height:20px;flex-wrap:wrap;min-width:0}
 .mo-title{font:400 10px/1.2 var(--font-struct);letter-spacing:.2em;text-transform:uppercase;color:var(--md-on-surface-var)}
-/* a sub-heading keeps a readable width and wraps to its own line before it would shrink to a
-   sliver beside a badge */
-.mo-sub{flex:1 1 9em;min-width:0;font-size:12px;color:var(--mo-ink3)}
+/* a sub-heading is a caption; in a row (the deck's heads) it keeps a readable width and wraps to
+   its own line before it would shrink to a sliver beside a badge */
+.mo-sub{flex:1 1 9em;min-width:0;font-size:11.5px;line-height:1.35;color:var(--pnl-ink-3);text-wrap:pretty}
 .mo-head > .badge:last-child{margin-left:auto}
-/* the MultiPV subtitle stays one line: its badge moves under it rather than squeeze it in two */
-#pv-sub{flex:1 0 auto}
-.mo-details > summary{list-style:none;cursor:pointer;border-radius:2px}
-.mo-details > summary::-webkit-details-marker{display:none}
-.mo-details > summary::after{content:'';flex:none;width:7px;height:7px;border-right:1.5px solid var(--mo-ink3);border-bottom:1.5px solid var(--mo-ink3);transform:rotate(45deg);margin:0 4px 3px auto}
-.mo-details[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
-.mo-details > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+/* The instruments' heads in the panel, and the Heartbeat's in the dock: the title and its badge on
+   the first line, the subtitle under them as a caption (set beside the title it read as a
+   breadcrumb or a link). The title keeps its line; a long badge wraps at the right instead. */
+.panel .mo-head:not(summary),#dock .beat > .mo-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:12px;row-gap:3px}
+.panel .mo-head:not(summary) > .mo-title,#dock .beat > .mo-head > .mo-title{grid-column:1;grid-row:1}
+.panel .mo-head:not(summary) > .mo-title{white-space:nowrap}
+.panel .mo-head:not(summary) > .badge,#dock .beat > .mo-head > .badge{grid-column:2;grid-row:1;justify-self:end;margin-left:0;min-width:0;white-space:normal;text-align:right;overflow-wrap:anywhere}
+.panel .mo-head:not(summary) > .mo-sub,#dock .beat > .mo-head > .mo-sub{grid-column:1 / -1;grid-row:2;flex:none}
+.panel .mo-title{color:var(--pnl-ink)}
 .an-card{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .an-id{display:flex;flex-direction:column;gap:3px;min-width:0}
 .an-id b{font-size:20px;font-weight:500;line-height:1.15}
@@ -124,21 +142,25 @@
    one line (a lone 's' or '(limit)' used to wrap away from its number) */
 .an-go .help{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3);max-width:24ch}
 .an-go .help b{font-weight:500;color:var(--mo-ink2);white-space:nowrap}
-.mo-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 12px;margin:0;padding:12px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
+.mo-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 12px;margin:0;padding:12px;background:var(--pnl-well);border:1px solid var(--pnl-well-line);border-radius:3px;box-shadow:var(--pnl-sink)}
 .mo-stats dt{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);margin-bottom:6px}
 .mo-stats dd{margin:0;font-size:16px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--mo-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pv-table{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
-.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border-bottom:1px solid var(--mo-rule);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
-.pv-row:hover{background:var(--mo-raised)}
-.pv-row:focus-visible{outline:2px solid var(--md-primary);outline-offset:-2px}
-.pv-row.focus{background:var(--mo-raised);border-left-color:var(--mo-steel)}
+.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border:0;border-bottom:1px solid var(--pnl-line-soft);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
+/* a row: no face at rest, a state layer under the pointer, pressed while it is the line shown */
+.pv-row:hover{background:var(--pnl-hover)}
+.pv-row:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:-2px}
+.pv-row.focus{background:var(--pnl-press);border-left-color:var(--mo-steel)}
 .pv-row.best{border-left-color:var(--mo-cyan)}
 .pv-row .i{font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3)}
 .pv-row .pv-mv{font-weight:600;color:var(--q,var(--mo-ink));white-space:nowrap}
 .pv-row .pv-ev{font-family:var(--font-tele);font-size:12px;color:var(--q,var(--mo-ink));white-space:nowrap}
 .pv-row .pv-ln{color:var(--mo-ink2);font-size:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .pv-row .pv-grade{display:block;font-size:10px;font-weight:400;color:var(--mo-ink3);letter-spacing:.02em}
-.pv-empty{padding:12px 4px;font-size:12.5px;color:var(--mo-ink3);border-bottom:1px solid var(--mo-rule)}
+/* no lines to list (the game over in this position, a search to come): one sentence in a dashed
+   outline, the table's own rule set aside */
+.pv-empty{margin-top:4px;padding:14px 12px;border:1px dashed var(--pnl-line);border-radius:var(--r-inner);font-size:12.5px;text-align:center;text-wrap:pretty;color:var(--pnl-ink-3)}
+.pv-table:has(> .pv-empty){border-top:0}
 .wdl-mini{display:flex;flex-direction:column;gap:4px;min-width:0}
 .wdl-bar{display:flex;height:6px;border-radius:1px;overflow:hidden;background:var(--mo-well)}
 .wdl-bar i{display:block;height:100%}
@@ -154,19 +176,22 @@
 .sharp .sharp-chip{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px}
 .mo-big{font-size:26px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;color:var(--md-on-surface)}
 .mo-big.amber{color:var(--mo-amber)}
-.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;border:1px solid var(--mo-rule);background:var(--mo-raised);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-.chip.amber{color:var(--mo-amber);background:var(--mo-amber-tint);border-color:#5b4521}
-.chip.cyan{color:var(--mo-cyan);background:var(--mo-cyan-tint);border-color:#1f525a}
-.chip.crimson{color:var(--mo-crimson);background:var(--mo-crimson-tint);border-color:#5d2d35}
+/* a status tag (the Sharpness verdict): a tint of its colour and a leading dot, no edge, so it is
+   never taken for a button */
+.chip{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 8px 0 7px;border-radius:2px;border:1px solid transparent;background:color-mix(in srgb,currentColor 11%,transparent);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.chip::before{content:'';flex:none;width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.amber{color:var(--mo-amber)}
+.chip.cyan{color:var(--mo-cyan)}
+.chip.crimson{color:var(--mo-crimson)}
 .profile{display:block;width:100%;height:120px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
 .opt-list{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
 .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:4px 0;border-bottom:1px solid var(--mo-rule)}
-.opt > label,.opt > .opt-l{display:flex;flex-direction:column;font-size:13px;min-width:0}
+.opt > label,.opt > .opt-l{display:flex;flex-direction:column;justify-content:center;align-self:stretch;font-size:13px;min-width:0}
 .opt small{font-size:11.5px;color:var(--mo-ink3)}
 .opt .select{height:32px;min-width:96px}
 .opt .val{font-family:var(--font-tele);font-size:12px;color:var(--mo-ink2)}
 /* Load: the FEN box, a well like the stats card's, in the telemetry face */
-.an-load-text{display:block;width:100%;min-height:52px;resize:vertical;padding:8px 10px;border:1px solid var(--mo-rule);border-radius:3px;background:var(--mo-well);color:var(--mo-ink);font:400 12px/1.45 var(--font-tele);word-break:break-all}
+.an-load-text{display:block;width:100%;min-height:52px;resize:vertical;padding:8px 10px;border:1px solid var(--pnl-well-line);border-radius:3px;background:var(--pnl-well);box-shadow:var(--pnl-sink);color:var(--mo-ink);font:400 12px/1.45 var(--font-tele);word-break:break-all}
 .an-load-text::placeholder{color:var(--mo-ink3)}
 
 /* stage instruments. Analyze's bands: the top one holds the chips at its left and the layer
@@ -232,7 +257,8 @@
 @container stage (max-width:759px){.phantom-chip,:root[data-tab="analyze"] #stage > :is(#review-chip,#explore-chip){max-width:calc(100% - 288px)}}
 
 /* dock: Synaptic PV scrubber (Analyze) and heartbeat (Crucible) */
-#dock{grid-area:dock;min-width:0;background:var(--mo-panel);border-top:1px solid var(--mo-rule);color:var(--mo-ink)}
+/* the dock stands on the world's panel ground, so the cathedral's Analyze has no navy strip */
+#dock{grid-area:dock;min-width:0;background:var(--pnl-ground);border-top:1px solid var(--pnl-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.03);color:var(--mo-ink)}
 .syn{display:flex;flex-direction:column;gap:7px;padding:10px var(--gutter-r) 10px 16px;min-width:0}
 .syn-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--mo-ink3);min-width:0}
 .syn-head .mo-title{margin-right:4px}
@@ -245,7 +271,7 @@
 /* the short source badges (Settings) set the footer's compact form too */
 :root[data-badges="short"] .tm .badge .bf{display:none}
 :root[data-badges="short"] .tm .badge .bs{display:inline}
-.syn-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
+.syn-scroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
 .syn-grid{display:grid;grid-template-columns:22px 52px 54px auto;gap:5px 8px;align-items:center;width:max-content;min-width:100%}
 .syn-i{font:400 11px var(--font-tele);color:var(--mo-ink3);text-align:right}
 .syn-ev{font:400 12px var(--font-tele);text-align:right;white-space:nowrap}
@@ -253,17 +279,20 @@
 .syn-bar i{position:absolute;left:0;top:0;bottom:0;background:var(--mo-steel)}
 .syn-bar.l1 i{background:var(--mo-cyan)}
 .syn-chips{display:flex;gap:4px;flex-wrap:nowrap}
-.syn-chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 8px;border:1px solid var(--mo-rule);border-radius:2px;background:var(--mo-raised);color:var(--mo-ink);font:500 12px/1 var(--font-ui-mo);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer}
+/* the moves are keys: raised off the strip (a face, a rim, a 1 px drop), lifting under the pointer
+   and sunk while pinned */
+.syn-chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 8px;border:1px solid var(--mo-rule);border-radius:2px;background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card));box-shadow:var(--pnl-rim),var(--pnl-key);color:var(--mo-ink);font:500 12px/1 var(--font-ui-mo);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;transition:border-color var(--dur-1),background-color var(--dur-1),transform var(--dur-1) var(--ease-std)}
 .syn-chip small{font:400 10px var(--font-tele);color:var(--mo-ink3)}
 .syn-chip:hover,.syn-chip.on{border-color:var(--mo-steel)}
-.syn-chip.on{background:#26303C}
-.syn-chip:focus-visible{outline:2px solid var(--mo-ink);outline-offset:1px}
+.syn-chip:hover{transform:translateY(-1px)}
+.syn-chip.on{background:var(--pnl-well);box-shadow:var(--pnl-sink);transform:none}
+.syn-chip:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:1px}
 .syn-l1 .syn-chip{color:var(--mo-cyan)}
-.syn-chip.fork{box-shadow:inset 0 -2px 0 var(--mo-ink)}
+.syn-chip.fork{box-shadow:var(--pnl-rim),var(--pnl-key),inset 0 -2px 0 var(--mo-ink)}
 .syn-chip.instab{border-color:var(--mo-amber)}
 .syn-chip.instab small{color:var(--mo-amber)}
-.syn-chip.alt{color:var(--mo-ink2);background:transparent;border-style:dashed}
-.syn-chip.gap{cursor:default;background:transparent;border-color:transparent;color:var(--mo-ink3)}
+.syn-chip.alt{color:var(--mo-ink2);background:transparent;box-shadow:none;border-style:dashed}
+.syn-chip.gap{cursor:default;background:transparent;box-shadow:none;transform:none;border-color:transparent;color:var(--mo-ink3)}
 .syn-lab{font:400 10.5px var(--font-tele);color:var(--mo-ink3);white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .syn-notes{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--mo-ink3)}
 .syn-notes .amber{color:var(--mo-amber)}

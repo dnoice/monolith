@@ -90,7 +90,8 @@
   /* the heartbeat's head keeps to one row (its sentence wrapped to three and the dock showed 40 px
      of the strip); the badge goes, as the Synaptic PV's do */
   .beat{gap:4px;padding-block:8px}
-  .beat .mo-sub{flex:1 1 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #dock .beat > .mo-head{display:flex}
+  #dock .beat > .mo-head > .mo-sub{flex:1 1 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .beat .badge{display:none}
   .split{display:none}
   .moves-card,:root[data-moves-sized] .moves-card{height:auto}
@@ -115,26 +116,26 @@
   #telemetry{display:none}
   .rail{padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));padding-left:var(--gutter-l);padding-right:var(--gutter-r);border-right:0;border-top:1px solid var(--md-outline-var)}
   .rail-tabs{flex-direction:row;justify-content:space-around;gap:0;padding-block:0}
-  .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
+  .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto;overscroll-behavior:contain}
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
+  /* the panel scrolls here, so the shade at its top edge is the panel's (css/layout.css), and the
+     panel is what a tab's crossfade captures */
+  .panes::before{display:none}
+  .panel::before{display:block;flex:none;top:0;margin-bottom:-14px}
+  :root[data-vt] .panes{view-transition-name:none}
+  :root[data-vt] .panel{view-transition-name:panes}
   .moves-card{max-height:none;min-height:0;padding-left:var(--gutter-l)}
   .moves{max-height:132px}
   /* The move list as a strip held at the panel's foot, the steps beside it: in a game it sat under
-     the whole pane, 300 px below the fold at 390x844. One row of moves scrolls sideways, and the
-     move box waits behind its keyboard button. The strip lets go of the foot while the pane holds
-     its own row there (the setup's Start game, the board editor's Play this position), and with
-     nothing to list the card keeps its folded form. */
-  .moves-card:not([data-idle]){position:sticky;bottom:0;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;padding-block:6px}
+     the whole pane, 300 px below the fold at 390x844. The strip itself (one row of moves scrolling
+     sideways, the move box behind its keyboard button) is css/workspace.css's, which a wider screen
+     uses too when its list is folded; here it is always one, so the fold button goes. The strip
+     lets go of the foot while the pane holds its own row there (the setup's Start game, the board
+     editor's Play this position), and with nothing to list the card keeps its folded form. */
+  .moves-card:not([data-idle]){position:sticky;bottom:0;z-index:3}
   .panel:has(#pane-play:not([hidden]) > #setup:not([hidden]),#pane-position:not([hidden]) #pos-setup-view:not([hidden])) .moves-card{position:static}
-  .moves-card:not([data-idle]) .moves-head{grid-area:1/2;gap:2px}
-  .moves-card:not([data-idle]) .moves-head h2{display:none}
   .moves-head .icon-btn{width:40px;height:40px}
-  .moves-type{display:grid}
-  .moves-card:not([data-idle]) .moves{grid-area:1/1;display:flex;align-items:center;gap:2px;max-height:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
-  .moves-card:not([data-idle]) .moves > *{flex:none;white-space:nowrap}
-  .moves-card:not([data-idle]) .moves .num{padding:3px 0 3px 6px}
-  .moves-card:not([data-idle]) .move-entry{grid-column:1/-1}
-  .moves-card:not(.typing):not([data-idle]) .move-entry{display:none}
+  .moves-fold{display:none}
   #app:has(.moves-card:not([data-idle])) #snackbar{bottom:calc(140px + env(safe-area-inset-bottom,0px))}   /* over the strip, not on its steps */
   .player{left:calc(var(--gutter-l) + 18px);padding:6px 10px 6px 6px;gap:10px}
   .player .avatar{width:30px;height:30px}
@@ -214,7 +215,16 @@
   .switch.small{width:52px;height:32px}
   .switch.small::before{left:6px;width:16px;height:16px}
   .switch.small:checked::before{left:24px;width:22px;height:22px}
-  .pos-switch [role="tab"]{height:40px}
+  .pos-switch [role="tab"],.seg button,.ed-play .seg button,.set-index button{height:40px}
+  /* the panel's chips: the Grimoire's categories and See also, the Read view's features, Set up's
+     castling rights; and a card head's switch, whose label is the target */
+  .gr-cat,.gr-see-list button,.pr-chip,.ed-cs{height:40px}
+  .head-switch{min-height:40px}
+  /* the study card's Start and Details, the Grimoire's article pager, and a UCI option's row, whose
+     label is its switch's target */
+  .st-next-act .btn.small{height:40px}
+  .gr-a-nav .icon-btn{width:40px;height:40px}
+  .opt{min-height:49px}
   .opt .select,.gfx-grid .select,.ed-ep select{height:40px}
   :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea){font-size:16px}
 }
@@ -225,3 +235,19 @@
   .wdl-halo svg{animation:none}
   .wdl-v i,.penta i,.cr-progress i{transition:none}
 }
+/* The panel's own motion, off under reduced motion and under the Minimal Animation speed
+   (data-motion, js/app/state.js): a disclosure's row, chevron and well, a segment's selection, the
+   keys' and the preset's lift, the Settings index, a disclosure opening, the shade at the top edge
+   and a tab's crossfade. The world's .45 s cross-fade of colours (css/tokens.css) stays, as it does
+   for every surface. */
+@media (prefers-reduced-motion:reduce){
+  .panel :is(.mo-details,.pgn-load,.engine-lines) > summary,.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before,.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after,.seg button,.syn-chip,.preset,.set-index button{transition:none}
+  .syn-chip:hover,.preset:hover{transform:none}
+  .panel details::details-content{transition:none}
+  .panes::before,.panel::before{animation:none;opacity:0}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none}
+}
+:root[data-motion="minimal"] :is(.panel :is(.mo-details,.pgn-load,.engine-lines) > summary,.seg button,.syn-chip,.preset,.set-index button),:root[data-motion="minimal"] .panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before,:root[data-motion="minimal"] .panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after{transition:none}
+:root[data-motion="minimal"] :is(.syn-chip,.preset):hover{transform:none}
+:root[data-motion="minimal"] .panel details::details-content{transition:none}
+:root[data-motion="minimal"] :is(.panes,.panel)::before{animation:none;opacity:0}

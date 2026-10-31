@@ -75,10 +75,17 @@
    or state that block is about (the level's name, the engine's status). The turn card carries
    the moves you make most (Hint, Undo); New game and Resign sit apart at the foot. Group titles
    elsewhere end in a hairline, so a section starts visibly instead of floating. */
-.card{display:flex;flex-direction:column;gap:12px;min-width:0;margin:0;padding:14px 16px 16px;border-radius:var(--r-card);background:var(--md-surface-2);border:1px solid var(--md-outline-var)}
+/* A card is raised on the panel's ground (css/tokens.css, --pnl-*): a lighter face that settles
+   down its first 180 px, a rim of light on its top edge and a soft drop. Its head is a band across
+   the top, parted from the body by a hairline, its icon in a tile of the accent; a long title wraps
+   inside the band (the clip would cut it at the card's edge). The band holds at the top of the
+   panel while the rest of its card scrolls under it (--pnl-sticky-top, css/tokens.css); the clip
+   makes no scroll container, so the band sticks to the panel's scroller. */
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;margin:0;padding:var(--pnl-pad);border-radius:var(--r-card);overflow:clip;overflow-clip-margin:2px;background:linear-gradient(180deg,var(--pnl-card-hi) 0 44px,var(--pnl-card) 180px);border:1px solid var(--pnl-line);box-shadow:var(--pnl-rim),var(--pnl-lift)}
 .card-head{display:flex;align-items:center;gap:10px;min-height:24px;min-width:0}
-.card-head > svg{width:18px;height:18px;flex:none;fill:currentColor;color:var(--md-primary)}
-.card-head h3{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--md-on-surface);white-space:nowrap}
+.card > header.card-head{position:sticky;top:var(--pnl-sticky-top);z-index:2;min-height:48px;margin:calc(-1 * var(--pnl-pad)) calc(-1 * var(--pnl-pad)) 0;padding:10px var(--pnl-pad);background:var(--pnl-card-hi);border-bottom:1px solid var(--pnl-line-soft)}
+.card-head > svg{box-sizing:content-box;width:16px;height:16px;padding:5px;flex:none;fill:currentColor;border-radius:calc(var(--r-inner) - 4px);background:var(--pnl-accent-soft);color:var(--pnl-accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pnl-accent) 24%,transparent)}
+.card-head h3{min-width:0;font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--pnl-ink);text-wrap:balance}
 .card-aside{margin-left:auto;min-width:0;text-align:right;font-size:12.5px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card-aside.level-name{font-weight:600;font-size:13px;color:var(--md-primary)}
 .card .switch-row{min-height:40px}
@@ -90,20 +97,17 @@
 .switch.small::before{left:4px;width:12px;height:12px}
 .switch.small:checked::before{left:18px;width:16px;height:16px}
 .engine-lines{margin:0 -16px -6px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
-.engine-lines > summary{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;list-style:none;border-radius:4px}
-.engine-lines > summary::-webkit-details-marker{display:none}
-.engine-lines > summary::before{content:'';flex:none;width:7px;height:7px;margin:0 3px 3px 1px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(-45deg);transition:transform .15s var(--ease-std)}
-.engine-lines[open] > summary::before{transform:rotate(45deg);margin-bottom:5px}
-.engine-lines > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
 .el-title{font-size:13px;font-weight:500;color:var(--md-on-surface)}
 .engine-lines .engine-foot{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .el-body{display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
 :root[data-skin="monolith"] .engine-lines{border-top-color:var(--mo-rule)}
-.status-card{gap:14px;padding-top:16px}
+/* the turn card is where the game is now: a faint wash of the accent from its top edge */
+.status-card{gap:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--pnl-accent) 8%,var(--pnl-card-hi)),var(--pnl-card) 140px)}
 .status-card .turn-banner{padding:0;border:0;border-radius:0;background:none}
 .turn-banner{display:flex;align-items:center;gap:12px;min-width:0}
 .turn-text{min-width:0;flex:1}
-.turn-move{flex:none;align-self:flex-start;padding:3px 9px;border-radius:var(--r-pill);background:var(--md-surface-3);font:500 11px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--md-on-surface-var);white-space:nowrap}
+/* the move number is a reading beside the turn, plain text (a pill read as a control) */
+.turn-move{flex:none;align-self:flex-start;font:500 11px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--pnl-ink-2);white-space:nowrap}
 .turn-move:empty{display:none}
 .turn-opening{display:flex;align-items:baseline;gap:8px;margin:-4px 0 0;min-width:0;font-size:12.5px;color:var(--md-on-surface-var)}
 .to-eco{flex:none;font:500 11px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--md-secondary)}
@@ -122,11 +126,10 @@
 @container (max-width:400px){.game-actions:has(> #btn-draw:not([hidden])) .btn svg{display:none}}
 .group-title:not(summary){display:flex;align-items:center;gap:10px}
 .group-title:not(summary)::after{content:'';flex:1;height:1px;background:var(--md-outline-var)}
-:root[data-skin="monolith"] .card{background:var(--mo-well);border-color:var(--mo-rule)}
-:root[data-skin="monolith"] .card-head > svg{color:var(--mo-steel)}
-:root[data-skin="monolith"] .card-head h3{font:400 10px/1.2 var(--font-struct);letter-spacing:.2em;color:var(--mo-ink2)}
+:root[data-skin="monolith"] .card-head > svg{border-radius:3px;background:var(--pnl-well);color:var(--mo-steel);box-shadow:inset 0 0 0 1px var(--mo-rule)}
+:root[data-skin="monolith"] .card-head h3{font:400 10px/1.2 var(--font-struct);letter-spacing:.2em}
 :root[data-skin="monolith"] .card-aside.level-name{color:var(--mo-ink);font-weight:500}
-:root[data-skin="monolith"] .turn-move{background:var(--mo-raised);font-family:var(--font-tele);color:var(--mo-ink2);border-radius:2px}
+:root[data-skin="monolith"] .turn-move{font-family:var(--font-tele)}
 :root[data-skin="monolith"] .to-eco{font-family:var(--font-tele);color:var(--mo-steel)}
 :root[data-skin="monolith"] .turn-opening{color:var(--mo-ink2)}
 
@@ -217,7 +220,7 @@
    The setup is taller than the panel at most sizes and Start game is its last line, so the action
    row holds at the foot of the pane while the cards scroll under it. -20px cancels the panes'
    padding, as the Position switch does at the top; on phones the panel scrolls, unpadded. */
-#setup > .row.end{position:sticky;bottom:-20px;z-index:2;margin-block:-12px -20px;padding:12px 0 32px;background:linear-gradient(to top,var(--md-surface-1) 72%,transparent)}
+#setup > .row.end{position:sticky;bottom:-20px;z-index:2;margin-block:-12px -20px;padding:12px 0 32px;background:linear-gradient(to top,var(--pnl-ground) 72%,transparent)}
 @media (max-width:899px){#setup > .row.end{bottom:0;margin-bottom:-12px;padding-bottom:12px}}
 
 /* ---------- the game record (2.18.0) ----------
@@ -225,13 +228,11 @@
    buttons sit quietly under New game and Resign. A details element keeps the card's own flex
    off, since its parts are not all flex items in every browser. */
 .pgn-load{display:block;scroll-margin-bottom:84px}
-.pgn-load > summary{list-style:none;cursor:pointer;border-radius:4px}
-.pgn-load > summary::-webkit-details-marker{display:none}
-.pgn-load > summary::after{content:'';flex:none;width:7px;height:7px;margin:0 4px 3px 2px;border-right:1.5px solid var(--md-on-surface-var);border-bottom:1.5px solid var(--md-on-surface-var);transform:rotate(45deg);transition:transform .15s var(--ease-std)}
-.pgn-load[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px}
-.pgn-load > summary:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+/* its summary is the card's head, so it keeps the head's size and its row reaches the card's edges */
+.pgn-load > summary.card-head{min-height:44px;margin:-8px -10px}
+.pgn-load[open] > summary.card-head{margin-bottom:0}
 .pgn-body{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-.pgn-box{width:100%;min-height:88px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--md-outline);background:var(--md-surface-1);color:var(--md-on-surface);font:12.5px/1.5 var(--font-mono)}
+.pgn-box{width:100%;min-height:88px;resize:vertical;padding:8px 10px;border-radius:8px;border:1px solid var(--pnl-well-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);color:var(--md-on-surface);font:12.5px/1.5 var(--font-mono)}
 .pgn-box::placeholder{color:var(--md-on-surface-var)}
 .game-record{display:flex;flex-wrap:wrap;gap:2px 4px;margin:-12px 0 0 -10px}
-:root[data-skin="monolith"] .pgn-box{background:var(--mo-panel);border-color:var(--mo-rule);font-family:var(--font-tele)}
+:root[data-skin="monolith"] .pgn-box{font-family:var(--font-tele)}

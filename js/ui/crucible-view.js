@@ -179,7 +179,7 @@ export function renderCrucible() {
   const list = $('#cr-anoms'); list.innerHTML = '';
   const flagged = m ? m.games.map((g, i) => ({ g, i })).filter(x => x.g && x.g.anomaly) : [];
   $('#cr-anom-count').textContent = m ? `${flagged.length} flagged` : '';
-  $('#cr-anom-count').style.color = flagged.length ? TOK.crimson : '';
+  $('#cr-anom-count').classList.toggle('flagged', flagged.length > 0);
   for (const { g, i } of flagged) {
     const li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; if (cr.expanded === i && cr.view === 'board') b.className = 'on';
     b.innerHTML = `<span>#${pad2(g.index)}</span><span class="jump"></span><span class="ply"></span>`;

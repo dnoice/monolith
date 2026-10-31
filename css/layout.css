@@ -147,9 +147,46 @@
 .btn:hover:not(:disabled){filter:brightness(1.1)}
 .btn:disabled{opacity:.38;cursor:default}
 .btn.small{height:32px;padding:0 14px;font-size:13px}
-:is(.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset,input,select,textarea,.mv):focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+/* in the panel a filled or tonal button catches the light on its top edge, and an outlined one has
+   a faint face, so each reads as pressable at rest */
+.panel :is(.btn.filled,.btn.tonal){box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(0,0,0,.35)}
+.panel .btn.outlined{border-color:var(--pnl-line);background:color-mix(in srgb,var(--pnl-card-hi) 40%,transparent)}
+.panel .btn.outlined:hover:not(:disabled){border-color:var(--md-outline);background:var(--pnl-hover);filter:none}
+/* one focus ring, in the rail's accent (--pnl-accent), for every control; rows ring inside their edge */
+:is(.icon-btn,.btn,.seg button,.side-card,.nav-item,.cand,.preset,input,select,textarea,.mv,.anoms button):focus-visible{outline:2px solid var(--pnl-accent);outline-offset:2px}
 .ripple{position:absolute;border-radius:50%;transform:scale(0);background:currentColor;opacity:.2;pointer-events:none;animation:ripple .5s var(--ease-std) forwards}
 @keyframes ripple{to{transform:scale(2.6);opacity:0}}
+/* Disclosures: every details element in the panel is the same row, whatever it folds (Load a game,
+   Engine lines, Analyze's Load and UCI options, a live run's facts, Fine-tune, Keys and mouse, the
+   system sheet). The row runs a little past its text on both sides, takes a state layer under the
+   pointer, and holds its chevron in a small well at the right: down when closed, up when open. */
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary{position:relative;display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 42px 6px 10px;margin-inline:-10px;border-radius:var(--r-field);list-style:none;cursor:pointer;transition:background-color var(--dur-1) var(--ease-std)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::-webkit-details-marker{display:none}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::after{content:'';position:absolute;right:8px;top:50%;width:24px;height:24px;margin-top:-12px;border:1px solid var(--pnl-line);border-radius:calc(var(--r-field) - 2px);background:var(--pnl-well);box-shadow:var(--pnl-sink);transition:border-color var(--dur-1) var(--ease-std)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary::before{content:'';position:absolute;z-index:1;right:17px;top:50%;width:6px;height:6px;margin-top:-5px;border-right:1.5px solid var(--pnl-ink-2);border-bottom:1.5px solid var(--pnl-ink-2);transform:rotate(45deg);transition:transform var(--dur-2) var(--ease-std),border-color var(--dur-1)}
+.panel :is(.mo-details,.pgn-load,.engine-lines)[open] > summary::before{transform:translateY(3px) rotate(-135deg)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover{background:var(--pnl-hover)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover::after{border-color:var(--pnl-accent-line)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:hover::before{border-color:var(--pnl-ink)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:active{background:var(--pnl-press)}
+.panel :is(.mo-details,.pgn-load,.engine-lines) > summary:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:0}
+/* a summary's words are a control's label: full ink, never a caption's grey */
+.panel :is(.set-more,.gfx-fine) > summary{font-size:13.5px;font-weight:500;color:var(--pnl-ink)}
+/* an instrument's disclosure keeps its title and caption, on two lines */
+.panel summary.mo-head{display:grid;grid-template-columns:minmax(0,1fr);row-gap:3px;align-items:center}
+.panel summary.mo-head > .mo-sub{font-size:12px;color:var(--pnl-ink-2)}
+/* closed, a details section is its summary alone: no gap held for the folded content */
+.panel details.mo-section:not([open]){row-gap:0}
+/* A disclosure opens and closes over 280 ms where the browser can size its content to auto;
+   elsewhere it opens at once. Set on the panel, not the root: interpolate-size is inherited, and
+   would reach every height transition in the page. The clip keeps 6 px round the content for the
+   focus rings and shadows at its edges; no floor under the content, or a details laid out as a
+   flex column (Analyze's Load and UCI options) would hold it at full height and open at once. */
+@supports (interpolate-size:allow-keywords) and selector(::details-content){
+  .panel{interpolate-size:allow-keywords}
+  .panel details::details-content{block-size:0;min-block-size:0;overflow:clip;overflow-clip-margin:6px;transition:block-size var(--dur-3) var(--ease-std),content-visibility var(--dur-3) allow-discrete}
+  .panel details[open]::details-content{block-size:auto}
+}
 
 /* ---------- body layout ---------- */
 .body{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) max(var(--panel-min),min(var(--panel-w),calc(100vw - var(--rail-w) - var(--stage-min))));grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"rail stage panel" "rail dock panel";min-height:0}
@@ -294,12 +331,32 @@
 #serve-fail.show{position:fixed;z-index:100;padding-inline:max(24px,calc(50vw - 320px));background:var(--md-surface);font-size:15px;line-height:1.6}
 
 /* panel */
-.panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--md-surface-1);border-left:1px solid var(--md-outline-var)}
-.panes{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
+/* the panel is the ground its cards are raised on (--pnl-ground, a step under the bars' surface) */
+.panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--pnl-ground);border-left:1px solid var(--md-outline-var)}
+.panes{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
+/* what scrolls into view (a focused control) stops below a card's head band held at the top */
+.panes,.panel{scroll-padding-top:60px}
+/* The panel's top edge shades once its content has scrolled under it, over its first 40 px of
+   scroll, on the compositor; where scroll-driven animations are missing there is no shade, and a
+   held band's hairline still marks the edge. It lies under a held band (z 1 against the band's 2),
+   so the band stays clean and the shade falls only on what passes between cards. It takes no room:
+   its 14 px and its margins cancel the panes' top padding. Phones shade the panel instead, the
+   element that scrolls there (css/media.css). */
+.panes::before,.panel::before{content:'';position:sticky;top:-20px;z-index:1;display:block;height:14px;pointer-events:none;opacity:0;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent)}
+.panes::before{margin:-20px calc(-1 * var(--gutter-r)) 6px -20px}
+.panel::before{display:none}
+@supports (animation-timeline:scroll()){.panes::before,.panel::before{animation:pnl-shade linear both;animation-timeline:scroll(nearest block);animation-range:0 40px}}
+@keyframes pnl-shade{to{opacity:1}}
+/* A destination chosen in the rail crossfades the panes, old into new (js/ui/nav.js sets data-vt
+   while it runs). Only the panes are captured, never the page's root, so the board keeps drawing;
+   on phones, where the panel scrolls, the panel is (css/media.css). */
+:root[data-vt]{view-transition-name:none}
+:root[data-vt] .panes{view-transition-name:panes}
+::view-transition-group(panes),::view-transition-old(panes),::view-transition-new(panes){animation-duration:160ms;animation-timing-function:var(--ease-std)}
 .pane{display:flex;flex-direction:column;gap:20px}
 .pane-head{display:flex;flex-direction:column;gap:4px}
 .pane-head h2{font-size:22px;font-weight:400;line-height:1.25;text-wrap:balance}
-.pane-head p{color:var(--md-on-surface-var);font-size:13.5px}
+.pane-head p{color:var(--md-on-surface-var);font-size:13.5px;text-wrap:pretty}
 /* the line over a pane's title: where the pane belongs (Play, Instrument, Learn, Reference), or on
    Play its state. Every pane carries one, so the titles hold one line from tab to tab (MONOLITH's
    smaller type keeps the same 11 px line). */
@@ -308,24 +365,23 @@
 :root[data-skin="monolith"] .kicker{font:400 10px/11px var(--font-tele);letter-spacing:.16em;color:var(--mo-ink3)}
 .group{display:flex;flex-direction:column;gap:10px;border:0;margin:0;padding:0;min-width:0}
 .group > legend,.group-title{padding:0;margin-bottom:10px;font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var)}
-.help{font-size:12.5px;color:var(--md-on-surface-var)}
+.help{font-size:12.5px;color:var(--md-on-surface-var);text-wrap:pretty}
 .help.err{color:var(--md-error)}
 .help:empty{display:none}
 .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .row.end{justify-content:flex-end}
 
-/* segmented button */
-.seg{display:flex;border:1px solid var(--md-outline);border-radius:var(--r-pill);overflow:hidden}
-.seg button{flex:1;min-width:0;height:40px;border:0;background:transparent;color:var(--md-on-surface);font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap}
-.seg button + button{border-left:1px solid var(--md-outline)}
+/* segmented button: a track sunk into its card, the chosen segment raised in it with the check in the
+   accent, the others answering the pointer with a state layer (the Position switch's form) */
+.seg{display:flex;gap:3px;padding:3px;border:1px solid var(--pnl-well-line);border-radius:var(--r-pill);background:var(--pnl-well);box-shadow:var(--pnl-sink);overflow:hidden}
+.seg button{flex:1;min-width:0;height:34px;border:0;background:transparent;border-radius:calc(var(--r-pill) - 2px);color:var(--pnl-ink-2);font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap;transition:background-color var(--dur-2) var(--ease-std),color var(--dur-2)}
 .seg button svg{width:18px;height:18px;fill:currentColor;display:none;flex:none}
-.seg button[aria-checked="true"]{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
-.seg button[aria-checked="true"] svg{display:block}
-/* The pill clips its buttons (overflow:hidden keeps the round ends), and with it any ring drawn
-   outside one. So the keyboard ring goes round the whole control, and a bar inside marks the
-   segment that has the focus. */
-.seg:has(button:focus-visible){outline:2px solid var(--md-primary);outline-offset:2px}
-.seg button:focus-visible{outline:none;box-shadow:inset 0 -3px 0 var(--md-primary)}
+.seg button:hover:not(:disabled,[aria-checked="true"]){background:var(--pnl-hover);color:var(--pnl-ink)}
+.seg button[aria-checked="true"]{background:linear-gradient(180deg,color-mix(in srgb,var(--pnl-float) 90%,#fff),var(--pnl-float));color:var(--pnl-ink);box-shadow:var(--pnl-rim),0 1px 3px rgba(0,0,0,.45)}
+.seg button[aria-checked="true"] svg{display:block;color:var(--pnl-accent)}
+/* The track clips its buttons (overflow:hidden keeps the round ends), and with it any ring drawn
+   outside one, so the focused segment is ringed inside its own edge. */
+.seg button:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--pnl-accent)}
 
 /* graphics: the level meter, after its drawing, version 1.2 (js/ui/gfx-meter.js). Five cells on
    a dial a little more than a half circle, each a real button sized to its cell; only the cell's
@@ -361,7 +417,6 @@
 .gfx-read b{font-size:15px;font-weight:600;color:var(--md-on-surface)}
 .gfx-read b:empty,.gfx-read span:empty{display:none}
 @media (prefers-reduced-motion:reduce){.gfx-needle,.gfx-frame,.gfx-panel{transition:none}}
-.gfx-fine > summary{display:flex;align-items:center;min-height:36px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
 .gfx-fine-body{display:flex;flex-direction:column;gap:10px;padding-top:6px}
 .gfx-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:8px 12px;align-items:center}
 .gfx-grid label{font-size:13px;color:var(--md-on-surface)}
@@ -370,9 +425,10 @@
 
 /* side choice cards */
 .side-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.side-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px 12px;border-radius:var(--r-card);border:1px solid var(--md-outline-var);background:var(--md-surface-2);text-align:center;transition:border-color .15s,background .15s}
-.side-card:hover{background:var(--md-surface-3)}
-.side-card[aria-checked="true"]{border-color:var(--md-primary);background:var(--md-primary-container);color:var(--md-on-primary-container)}
+/* side cards are keys raised in their card; the chosen one takes the accent's edge and a tint of it */
+.side-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px 12px;border-radius:var(--r-card);border:1px solid var(--md-outline-var);background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card));box-shadow:var(--pnl-rim),var(--pnl-key);text-align:center;transition:border-color .15s,background .15s}
+.side-card:hover{border-color:var(--md-outline);background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card-hi))}
+.side-card[aria-checked="true"]{border-color:var(--pnl-accent);background:var(--pnl-accent-soft);box-shadow:inset 0 0 0 1px var(--pnl-accent);color:var(--md-on-primary-container)}
 .side-card b{font-weight:500;font-size:14px}
 .side-card small{font-size:11.5px;color:var(--md-on-surface-var);line-height:1.3}
 .side-card[aria-checked="true"] small{color:var(--md-on-primary-container);opacity:.85}
@@ -407,18 +463,23 @@
 
 /* switch rows */
 .switch-row{display:flex;align-items:center;gap:16px;justify-content:space-between;min-height:48px}
-.switch-row label{display:flex;flex-direction:column;cursor:pointer}
+/* the label fills the row's height, so the whole row is the switch's target */
+.switch-row label{display:flex;flex-direction:column;justify-content:center;align-self:stretch;cursor:pointer}
 .switch-row label > span:not(.sr-label){font-size:12.5px;color:var(--md-on-surface-var)}
-.switch{appearance:none;-webkit-appearance:none;flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--md-outline);background:var(--md-surface-3);position:relative;cursor:pointer;margin:0;transition:background .2s,border-color .2s}
-.switch::before{content:'';position:absolute;top:50%;left:6px;width:16px;height:16px;border-radius:50%;background:var(--md-outline);transform:translateY(-50%);transition:left .2s var(--ease-std),width .2s,height .2s,background .2s}
-.switch:checked{background:var(--md-primary);border-color:var(--md-primary)}
-.switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-primary)}
+/* off, a track sunk into its card with a light thumb and edge, at 3:1 or better against both (a
+   dim thumb on a dim track read as disabled); on, the accent's track in the cathedral and steel in
+   MONOLITH (css/monolith.css), whose ink accent would make every row a white pill */
+.switch{appearance:none;-webkit-appearance:none;flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--pnl-ink-3);background:var(--pnl-well);box-shadow:var(--pnl-sink);position:relative;cursor:pointer;margin:0;transition:background .2s,border-color .2s}
+.switch::before{content:'';position:absolute;top:50%;left:6px;width:16px;height:16px;border-radius:50%;background:var(--pnl-ink-2);transform:translateY(-50%);transition:left .2s var(--ease-std),width .2s,height .2s,background .2s}
+.switch:checked{background:var(--pnl-accent);border-color:var(--pnl-accent);box-shadow:none}
+.switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-nav-active)}
 
 /* analysis */
-.bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px;min-width:0}
+/* readings, notes and fields sit in wells sunk into their card (--pnl-well, a 1 px inner shade) */
+.bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--pnl-well);border:1px solid var(--pnl-well-line);box-shadow:var(--pnl-sink);font-family:var(--font-mono);font-size:12.5px;min-width:0}
 .bestline b{color:var(--md-primary);font-weight:500;font-variant-numeric:tabular-nums}
 .bestline span{color:var(--md-on-surface);overflow-wrap:anywhere}
-.select{height:40px;border-radius:var(--r-field);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 10px}
+.select{height:40px;border-radius:var(--r-field);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:0 10px}
 .cands{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .cand{display:grid;grid-template-columns:auto 48px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 8px 8px 10px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px}
 .cand:hover{background:var(--md-surface-3)}
@@ -433,9 +494,12 @@
 .engine-foot.err .led{background:var(--md-error)}
 
 /* position */
-.fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
-.preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:10px 14px;border-radius:var(--r-ctl);border:1px solid var(--md-outline-var);background:var(--md-surface-2)}
-.preset:hover{background:var(--md-surface-3)}
+.fen-box{width:100%;min-height:76px;resize:vertical;border-radius:var(--r-ctl);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
+/* a preset (Analyze's recorded run) is a key: a raised face with a trailing chevron, lifting under
+   the pointer (it read as an information card) */
+.preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:10px 44px 10px 14px;border-radius:var(--r-ctl);border:1px solid var(--pnl-line);background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card));box-shadow:var(--pnl-rim),var(--pnl-key);transition:border-color var(--dur-1),transform var(--dur-1) var(--ease-std)}
+.preset::after{content:'';position:absolute;right:18px;top:50%;width:8px;height:8px;margin-top:-4px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg);opacity:.7}
+.preset:hover{border-color:var(--pnl-accent-line);transform:translateY(-1px);background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card-hi))}
 .preset b{font-weight:500}
 .preset small{color:var(--md-on-surface-var);font-size:12px}
 
@@ -445,13 +509,22 @@
 .keys dd{margin:0;color:var(--md-on-surface-var)}
 .about{font-size:12.5px;color:var(--md-on-surface-var)}
 .about a{color:var(--md-secondary)}
+/* Settings' index: a row of buttons under the pane's title, one for each card, that brings the
+   card's head to the top of the panel and the focus to its title (js/ui/controls.js) */
+.set-index{display:flex;flex-wrap:wrap;gap:6px;margin-top:-6px}
+.set-index button{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:1px solid var(--pnl-line);border-radius:var(--r-pill);background:transparent;color:var(--pnl-ink-2);font:500 12px/1 var(--font-body);cursor:pointer;transition:background-color var(--dur-1),color var(--dur-1),border-color var(--dur-1)}
+.set-index button:hover{background:var(--pnl-hover);color:var(--pnl-ink);border-color:var(--md-outline)}
+.set-index button:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:2px}
+:root[data-skin="monolith"] .set-index button{border-radius:2px;font:400 10.5px/1 var(--font-tele);letter-spacing:.12em;text-transform:uppercase}
+/* the title the index lands on: ringed in the accent when the keyboard brought it there */
+#pane-settings .card-head h3:focus{outline:none}
+#pane-settings .card-head h3:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:3px;border-radius:2px}
 /* Settings in five cards, as Play is built: a choice carries a sentence-case label like a switch
    row's, the blocks of one card part at a hairline, and the references fold away under the help */
 .set-item{display:flex;flex-direction:column;gap:8px;min-width:0}
 .set-lab{font-size:14px;color:var(--md-on-surface)}
 .card > .set-item + .set-item,.set-about{padding-top:12px;border-top:1px solid var(--md-outline-var)}
 .set-more{margin:0 -16px;padding:0 16px;border-top:1px solid var(--md-outline-var)}
-.set-more > summary{display:flex;align-items:center;min-height:44px;font-size:13.5px;font-weight:500;color:var(--md-on-surface)}
 .set-more > .keys,.set-more-body{padding-bottom:14px}
 .set-more-body{display:flex;flex-direction:column;gap:10px}
 .set-more + :is(.set-more,.set-about){margin-top:-12px}
@@ -466,7 +539,7 @@
 .moves-head h2{font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var);flex:1}
 .moves-head .icon-btn{width:34px;height:34px}
 .moves-head .icon-btn svg{width:20px;height:20px}
-.moves-type{display:none}   /* a phone's: the move box waits behind it there (css/media.css) */
+.moves-type{display:none}   /* the strip's: the move box waits behind it there (css/workspace.css) */
 .moves{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;font-family:var(--font-mono);font-size:13px;display:grid;grid-template-columns:4ch 1fr 1fr;align-content:start;column-gap:6px;row-gap:2px;font-variant-numeric:tabular-nums}
 .moves .num{color:var(--md-on-surface-var);padding:3px 0}
 .mv{padding:3px 8px;border-radius:6px;cursor:pointer}
@@ -475,7 +548,7 @@
 .moves .empty{grid-column:1/-1;color:var(--md-on-surface-var);font-family:var(--font-body);font-size:13px}
 .move-entry{display:flex;gap:8px}
 .move-entry label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.move-entry input{flex:1;min-width:0;height:40px;border-radius:var(--r-field);border:1px solid var(--md-outline);background:var(--md-surface-2);padding:0 12px;font-family:var(--font-mono);font-size:14px}
+.move-entry input{flex:1;min-width:0;height:40px;border-radius:var(--r-field);border:1px solid var(--pnl-line);background:var(--pnl-well);box-shadow:var(--pnl-sink);padding:0 12px;font-family:var(--font-mono);font-size:14px}
 .move-entry input::placeholder{color:var(--md-on-surface-var)}
 .move-entry input:disabled{opacity:.5}
 

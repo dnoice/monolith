@@ -90,7 +90,8 @@
   --md-secondary-container:#2c3a52;
   --md-on-secondary-container:#d6e3fa;
   /* the rail's selected destination (its pill, its label; faint on a hovered pill): the house gold,
-     apart from the cool secondary the panels' choices take */
+     which the panel's chosen segments, side cards and categories and its focus rings take too
+     (--pnl-accent, below) */
   --md-nav-active:#e8c377;
   --md-on-nav-active:#2b1e00;
   --md-error:#ffa59c;
@@ -140,6 +141,40 @@
   --font-struct:'Michroma','Geist',system-ui,sans-serif;
   --font-ui-mo:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;
   --font-tele:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  /* The side panel's and the dock's surfaces, one ladder in both worlds: the ground (the panel),
+     the card raised on it (a lighter face, a rim of light on its top edge, a soft drop), the well
+     sunk into a card (readouts, notes, fields, a segment's track) and a key raised inside a card
+     (the chosen segment, a Synaptic PV move). The accent is the rail's, --md-nav-active; state
+     layers lay the ink over a surface. MONOLITH sets its own values below. */
+  --pnl-accent:var(--md-nav-active);
+  --pnl-accent-soft:color-mix(in srgb,var(--pnl-accent) 14%,transparent);
+  --pnl-accent-line:color-mix(in srgb,var(--pnl-accent) 55%,transparent);
+  --pnl-ground:color-mix(in srgb,var(--md-surface-1) 70%,var(--md-surface));
+  --pnl-card:var(--md-surface-2);
+  --pnl-card-hi:color-mix(in srgb,var(--md-surface-2) 93%,#fff);
+  --pnl-line:var(--md-outline-var);
+  --pnl-line-soft:color-mix(in srgb,var(--md-outline-var) 70%,transparent);
+  --pnl-rim:inset 0 1px 0 rgba(255,255,255,.055);
+  --pnl-lift:0 1px 1px rgba(0,0,0,.24),0 10px 22px -14px rgba(0,0,0,.7);
+  --pnl-well:color-mix(in srgb,var(--md-surface-1) 78%,#000);
+  --pnl-well-line:color-mix(in srgb,var(--md-outline-var) 75%,#000);
+  --pnl-sink:inset 0 1px 2px rgba(0,0,0,.42);
+  --pnl-float:var(--md-surface-3);
+  --pnl-key:0 1px 0 rgba(0,0,0,.45);
+  --pnl-hover:color-mix(in srgb,var(--md-on-surface) 6%,transparent);
+  --pnl-press:color-mix(in srgb,var(--md-on-surface) 10%,transparent);
+  --pnl-ink:var(--md-on-surface);
+  --pnl-ink-2:var(--md-on-surface-var);
+  --pnl-ink-3:color-mix(in srgb,var(--md-on-surface-var) 72%,var(--md-surface-1));
+  /* a card's padding (the negative margins that bleed a row to its edges cancel it), and where a
+     card's head band stops under the top of the panel's scroller: the panes' 20 px padding on a
+     wide screen, the switch's height on Position, the panel's own top on phones */
+  --pnl-pad:16px;
+  --pnl-sticky-top:-20px;
+  /* motion: hover layers and colour changes, a selection or a chevron's turn, a disclosure opening */
+  --dur-1:120ms;
+  --dur-2:200ms;
+  --dur-3:280ms;
   color-scheme:dark;
 }
 /* MONOLITH world: the shared Material tokens take the solved stops. Docked surfaces stay opaque. */
@@ -176,7 +211,33 @@
   --r-ctl:3px;
   --r-field:3px;
   --r-inner:4px;
+  /* the panel's ladder, after the loading screen's tip card but quieter; the accent stays the rail's ink */
+  --pnl-ground:var(--mo-panel);
+  --pnl-card:#171C24;
+  --pnl-card-hi:var(--mo-raised);
+  --pnl-line:var(--mo-rule);
+  --pnl-line-soft:#20262F;
+  --pnl-rim:inset 0 1px 0 rgba(227,231,238,.065);
+  --pnl-lift:0 1px 0 rgba(0,0,0,.55),0 14px 26px -18px rgba(0,0,0,.95);
+  --pnl-well:var(--mo-well);
+  --pnl-well-line:#1D232C;
+  --pnl-sink:inset 0 1px 2px rgba(0,0,0,.6);
+  --pnl-float:#222934;
+  --pnl-key:0 1px 0 rgba(0,0,0,.6);
+  --pnl-hover:rgba(227,231,238,.07);
+  --pnl-press:rgba(227,231,238,.1);
+  --pnl-ink:var(--mo-ink);
+  --pnl-ink-2:var(--mo-ink2);
+  --pnl-ink-3:var(--mo-ink3);
 }
+:root[data-tab="position"]{--pnl-sticky-top:32px}
+@media (max-width:899px){:root{--pnl-sticky-top:0px}:root[data-tab="position"]{--pnl-sticky-top:52px}}
+/* The panel's faces are gradients of these colours, and a gradient does not transition; registered
+   as colours they interpolate, so a card's face cross-fades with the world like the solid colours */
+@property --pnl-ground{syntax:'<color>';inherits:true;initial-value:#1a181d}
+@property --pnl-card{syntax:'<color>';inherits:true;initial-value:#242129}
+@property --pnl-card-hi{syntax:'<color>';inherits:true;initial-value:#333138}
+@property --pnl-accent{syntax:'<color>';inherits:true;initial-value:#e8c377}
 /* One panel width per world, so a tab switch inside a world never moves the stage's edge; the
    width changes only with the world, under the transition's veil. The Grimoire keeps the world
    it opens in, and so its width. */
@@ -193,3 +254,5 @@ button,input,select,textarea{font:inherit;color:inherit}
 h1,h2,h3,h4,p{margin:0}
 #app{height:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:64px minmax(0,1fr) auto}
 .appbar,.rail,.panel,.moves-card,#dock,#telemetry,.player,.btn,.seg,.side-card,.turn-banner,.cand,.preset{transition:background-color .45s var(--ease-std),border-color .45s var(--ease-std),color .45s var(--ease-std)}
+/* the panel's cards and instrument sections, their gradient faces with them (the colours above) */
+.card,.mo-section{transition:background-color .45s var(--ease-std),border-color .45s var(--ease-std),color .45s var(--ease-std),--pnl-card .45s var(--ease-std),--pnl-card-hi .45s var(--ease-std),--pnl-accent .45s var(--ease-std)}

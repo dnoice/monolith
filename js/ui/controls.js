@@ -76,7 +76,7 @@
 ---------
 */
 import { app } from '../app/store.js';
-import { $, panelScroller, PI, prefs, savePrefs } from '../app/base.js';
+import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/base.js';
 import { resetView } from '../scene/camera.js';
 import { ensureAudio } from '../app/sound.js';
 import { applyPrefs, canMoveNow, cur, draft, game, match, render } from '../app/state.js';
@@ -171,15 +171,37 @@ export function init() {
   $('#btn-pgn-save').addEventListener('click', downloadPgn);
   $('#btn-game-fen').addEventListener('click', copyFen);
   $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
-  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
+  // the panel's disclosures open as they were left (prefs.open, by id; Engine lines, never set, with
+  // the evaluation). Load a game, opened, comes clear of the Start game row, but not when it is only
+  // being reopened as the page loads; where it opens over 280 ms (css/layout.css) the panel follows
+  // it down as it grows.
+  const reopened = new Set(), pgn = $('#pgn-load'), clearPgn = () => pgn.scrollIntoView({ block: 'nearest' });
+  let follow = null;
+  pgn.addEventListener('toggle', () => {
+    follow?.disconnect(); follow = null;
+    if (!pgn.open || reopened.has(pgn)) return;
+    clearPgn(); follow = new ResizeObserver(clearPgn); follow.observe(pgn);
+    setTimeout(() => { follow?.disconnect(); follow = null; }, 400);
+  });
+  for (const d of document.querySelectorAll('.panel details[id]')) {
+    const open = d.id in prefs.open ? prefs.open[d.id] : d.id === 'engine-lines' ? !!prefs.evalOn : d.open;
+    if (open !== d.open) { d.open = open; reopened.add(d); }
+    d.addEventListener('toggle', () => { reopened.delete(d); prefs.open[d.id] = d.open; savePrefs(); });
+  }
+  // Settings' index: a button brings its card's head to the top of the panel's scroller (scrolled
+  // there, not into view, which would move the page on a phone) and the focus to the card's title
+  for (const b of document.querySelectorAll('.set-index [data-goto]')) b.addEventListener('click', () => {
+    const card = document.getElementById(b.dataset.goto), sc = panelScroller(); if (!card) return;
+    const top = sc.scrollTop + card.getBoundingClientRect().top - sc.getBoundingClientRect().top - sc.clientTop;
+    sc.scrollTo({ top: Math.max(0, top), behavior: reduceMotion || prefs.speed === 'minimal' ? 'auto' : 'smooth' });
+    card.querySelector('.card-head h3')?.focus({ preventScroll: true });
+  });
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
   for (const b of document.querySelectorAll('[data-speed]')) b.addEventListener('click', () => { prefs.speed = b.dataset.speed; savePrefs(); applyPrefs(); render(); });
   // Settings' Coach comments and Evaluation bar are the Coach card's switches, so each runs theirs
   for (const [set, own] of [['#set-coach', '#coach-switch'], ['#set-eval', '#eval-switch']]) $(set).addEventListener('change', e => { const s = $(own); s.checked = e.target.checked; s.dispatchEvent(new Event('change')); });
-  $('#engine-lines').open = prefs.engineOpen !== undefined ? !!prefs.engineOpen : !!prefs.evalOn;
-  $('#engine-lines').addEventListener('toggle', e => { prefs.engineOpen = e.target.open; savePrefs(); });
   $('#coach-switch').addEventListener('change', e => { prefs.coach = e.target.checked; savePrefs(); render(); if (prefs.coach) coachKick(); });
   $('#eval-switch').addEventListener('change', e => {
     prefs.evalOn = e.target.checked; savePrefs();
@@ -192,7 +214,21 @@ export function init() {
   $('#nav-prev').addEventListener('click', () => sandbox() ? exploreUndo() : showView(viewedPly() - 1));
   $('#nav-next').addEventListener('click', () => showView(viewedPly() + 1));
   $('#nav-last').addEventListener('click', goLive);
-  // on a phone the move box waits behind its keyboard button (css/media.css), which opens it ready to type
+  /* The move list as one row (css/workspace.css): always under 900 px, and on a wider screen when
+     the Moves head's fold button says so (prefs.movesStrip). The move in view stays in sight as the
+     list changes shape, scrolled in the list itself, never the panel around it. */
+  const NARROW = matchMedia('(max-width: 899px)'), card = $('.moves-card'), fold = $('#btn-moves-strip');
+  const strip = () => {
+    card.toggleAttribute('data-strip', NARROW.matches || prefs.movesStrip);
+    fold.setAttribute('aria-pressed', String(prefs.movesStrip)); fold.title = prefs.movesStrip ? 'Unfold the move list' : 'Fold the move list to one row';
+    const list = $('#moves'), c = list.querySelector('.cur'); if (!c) return;
+    const r = c.getBoundingClientRect(), b = list.getBoundingClientRect();
+    list.scrollLeft += r.left < b.left ? r.left - b.left : r.right > b.right ? r.right - b.right : 0;
+    list.scrollTop += r.top < b.top ? r.top - b.top : r.bottom > b.bottom ? r.bottom - b.bottom : 0;
+  };
+  strip(); NARROW.addEventListener('change', strip);
+  fold.addEventListener('click', () => { prefs.movesStrip = !prefs.movesStrip; savePrefs(); card.classList.remove('typing'); $('#btn-type-move').setAttribute('aria-expanded', 'false'); strip(); });
+  // in the strip the move box waits behind its keyboard button, which opens it ready to type
   $('#btn-type-move').addEventListener('click', e => { const on = $('.moves-card').classList.toggle('typing'); e.currentTarget.setAttribute('aria-expanded', String(on)); if (on) $('#move-input').focus(); });
   $('#move-form').addEventListener('submit', e => {
     // the game on your turn; otherwise, as a click would, a line: the one on the board, Analyze at the
