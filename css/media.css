@@ -82,7 +82,11 @@
   .deck{grid-template-rows:200px minmax(0,1fr)}
   .matchbar{display:none}
   .btn-pal kbd{display:none}
-  #telemetry{height:28px}
+  /* The telemetry footer is the desktop's: under 900 px the panels carry its readings (the
+     engine card, the Crucible's pane), and in MONOLITH it pushed the bottom bar up 28 px on an
+     upright tablet, so the bar moved as the world changed (js/ui/telemetry.js reads nothing
+     while it is set aside) */
+  #telemetry{display:none}
   .rail{flex-direction:row;justify-content:space-around;gap:0;padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));padding-left:var(--gutter-l);padding-right:var(--gutter-r);border-right:0;border-top:1px solid var(--md-outline-var)}
   .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
@@ -146,7 +150,6 @@
   .nav-item{align-self:stretch}
   .panel{border-top:0;border-left:1px solid var(--md-outline-var)}
   #dock{border-top:0;border-left:1px solid var(--mo-rule);border-bottom:1px solid var(--mo-rule)}
-  #telemetry{display:none}
   #snackbar{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
   #app:has(.moves-card:not([data-idle])) #snackbar{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 }
@@ -159,12 +162,10 @@
   .panes,.moves-card{padding-inline:max(var(--gutter-l),calc((100% - 680px) / 2))}
 }
 /* ---------- phones: Analyze's panel more than a porthole ----------
-   The telemetry footer sat under the bottom bar, which moved up 25 px on entering MONOLITH, and it
-   ran off the right edge; the engine card and the Crucible's pane carry its readings here. With
-   the dock open Analyze's stage takes a smaller share: the board's width binds on a phone, so it
-   keeps its size and the panel gains the rows. */
+   With the dock open Analyze's stage takes a smaller share: the board's width binds on a phone, so
+   it keeps its size and the panel gains the rows. (The telemetry footer, which sat under the bottom
+   bar here and ran off the right edge, is set aside under 900 px, above.) */
 @media (max-width:599px){
-  #telemetry{display:none}
   :root[data-tab="analyze"] .body{grid-template-rows:minmax(200px,38%) auto minmax(0,1fr) auto}
 }
 @media (max-width:420px){
