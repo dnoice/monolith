@@ -108,7 +108,7 @@
             path/to/logo.svg path/to/piece-set.js
     Never edit the blocks in the page by hand; they are replaced on each
     run. The marks themselves are written by the brand system,
-    assets/generator/conical_m.py, and the piece set by
+    assets/generator/monolith_m.py, and the piece set by
     tools/build-piece-set.mjs.
 
 ✒ Other Important Information:

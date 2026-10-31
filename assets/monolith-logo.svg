@@ -5,14 +5,20 @@
     - File Name: monolith-logo.svg
     - Relative Path: assets/monolith-logo.svg
     - Artifact Type: illustration
-    - Version: 1.0.1
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.0.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — At
+      Dennis's request the brand files dropped "conical" from their names
+      while the logo is still being decided; the letter is the MONOLITH M,
+      built by monolith_m.py and written up in MONOLITH_M_SYSTEM.md, and the
+      kit it was measured from is monolith-brand-kit.svg. The path and the
+      board-logo group stay put.
     - 1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       asked for the logo in the web app's header: the page's app bar carries
       it now, written in by tools/build-emblem.mjs, so its path and its
@@ -22,22 +28,22 @@
       system.
 
 ✒ Description:
-    MONOLITH's official logo, chosen by Dennis on 10/26/2026: the Conical M
+    MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M
     cut into a four by four grid of slate tiles with black mortar, no pieces.
-    The letter is his (measured from conical-monolith-brand-kit.svg and
-    written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); this file is the
-    system's rendering of it at 1200 px, and the emblem is the same mark with
-    his twelve pieces standing on it. It is the source of the page's app bar
-    logo: tools/build-emblem.mjs writes it into index.html, reading its
-    board-logo group.
+    The letter is his (measured from monolith-brand-kit.svg and written down
+    in assets/brand/MONOLITH_M_SYSTEM.md); this file is the system's rendering
+    of it at 1200 px, and the emblem is the same mark with his twelve pieces
+    standing on it. It is the source of the page's app bar logo:
+    tools/build-emblem.mjs writes it into index.html, reading its board-logo
+    group.
 
 ✒ Key Features:
-    - Canvas 1200 x 1200; the Conical M edge to edge on a 4 x 4 grid of 300
+    - Canvas 1200 x 1200; the MONOLITH M edge to edge on a 4 x 4 grid of 300
       px cells: 4 whole tiles, 8 cut to the outline
     - Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per
       1200 (paint-order markers fill stroke), as Dennis draws the grout
     - One flat layer: groups only, no Inkscape layers
-    - Regenerate by running assets/generator/conical_m.py; its official
+    - Regenerate by running assets/generator/monolith_m.py; its official
       target rebuilds just the two marks
 
 ✒ Id Convention:
@@ -53,9 +59,9 @@
 
 ✒ Other Important Information:
     - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
-    - Official: the 4 x 4 Conical M is the MONOLITH mark; every mock-up
+    - Official: the 4 x 4 MONOLITH M is the MONOLITH mark; every mock-up
       under assets/mockups is built on this file's geometry
-    - Source of truth: assets/generator/conical_m.py emits this file; edit
+    - Source of truth: assets/generator/monolith_m.py emits this file; edit
       the script or its parameters, not the SVG, then rerun it
     - XML note: an SVG header cannot carry the standard's closing dash rule,
       because a double hyphen is illegal inside an XML comment
@@ -128,7 +134,7 @@
       <cc:Work
          rdf:about="">
         <dc:title>MONOLITH Logo (MONOLITH Edition - v1.0)</dc:title>
-        <dc:date>2026-10-26</dc:date>
+        <dc:date>2026-10-30</dc:date>
         <dc:creator>
           <cc:Agent>
             <dc:title>Dennis 'dendogg' Smaltz</dc:title>
@@ -145,7 +151,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>MONOLITH's official logo, chosen by Dennis on 10/26/2026: the Conical M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is his (measured from conical-monolith-brand-kit.svg and written down in assets/brand/CONICAL_MONOLITH_SYSTEM.md); this file is the system's rendering of it at 1200 px, and the emblem is the same mark with his twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
+        <dc:description>MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is his (measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md); this file is the system's rendering of it at 1200 px, and the emblem is the same mark with his twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

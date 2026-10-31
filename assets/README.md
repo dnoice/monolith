@@ -4,14 +4,21 @@
     - File Name: README.md
     - Relative Path: assets/README.md
     - Artifact Type: docs
-    - Version: 1.0.2
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.0.3
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      brand rows, the generators and the commands name the renamed files
+      (MONOLITH_M_SYSTEM.md, monolith-brand-kit.svg and its generated
+      twin, the variants as monolith-m-<n>-<layout>-<skin>.svg,
+      monolith_m.py and load_monolith_m()) and call the letter the
+      MONOLITH M: at Dennis's request the brand files dropped "conical"
+      from their names while the logo is still being decided.
     - 1.0.2 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       works in it: the mock-ups' row names his file and the generated
@@ -56,15 +63,15 @@ them, and nothing they write is edited by hand.
 
 | Path | Kind | What it is |
 |---|---|---|
-| `monolith-logo.svg` | generated | **The official logo**: the Conical M tiled 4 × 4, slate tiles, black mortar, no pieces. The page's app bar carries it (`tools/build-emblem.mjs` writes it into `index.html`, reading its `board-logo` group), so its path and that group stay put. |
+| `monolith-logo.svg` | generated | **The official logo**: the MONOLITH M tiled 4 × 4, slate tiles, black mortar, no pieces. The page's app bar carries it (`tools/build-emblem.mjs` writes it into `index.html`, reading its `board-logo` group), so its path and that group stay put. |
 | `monolith-emblem.svg` | generated | **The official emblem**: the same mark with the quartet of twelve pieces. The page's loading screen is built from this file (`tools/build-emblem.mjs` copies it into `index.html`), so its path and id scheme stay put. |
 | `chess-pieces.svg` | source | Dennis's house piece set on a full board. Every piece in every mark and mock-up is stamped from it verbatim; `tools/build-piece-set.mjs` builds the board diagrams' pieces from it. Shared with ChessWorkstation, whose copy differs only in its header's Relative Path. |
 | `graphics-meter-design-v1.2.svg` | source | Dennis's graphics-quality gauge for the Settings panel. |
 | `brand/` | | The brand system. |
-| `brand/CONICAL_MONOLITH_SYSTEM.md` | doc | The system: the letter's parameters and equations, the tiling, the skins, the layouts, the official marks. |
-| `brand/conical-monolith-brand-kit.svg` | source | Dennis's hand-built kit, the reference the system was measured from. |
-| `brand/conical-monolith-brand-kit-generated.svg` | generated | The kit rebuilt by the system, panel for panel. |
-| `brand/variants/` | generated | The Conical M at other densities and layouts: construction grids at 4, 8 and 16; bare at 8, 16 and 24; the ranks at 8; the scatter at 16. |
+| `brand/MONOLITH_M_SYSTEM.md` | doc | The system: the letter's parameters and equations, the tiling, the skins, the layouts, the official marks. |
+| `brand/monolith-brand-kit.svg` | source | Dennis's hand-built kit, the reference the system was measured from. |
+| `brand/monolith-brand-kit-generated.svg` | generated | The kit rebuilt by the system, panel for panel. |
+| `brand/variants/` | generated | The MONOLITH M at other densities and layouts, as `monolith-m-<n>-<layout>-<skin>.svg`: construction grids at 4, 8 and 16; bare at 8, 16 and 24; the ranks at 8; the scatter at 16. |
 | `brand/review/` | rendered | PNGs of the marks, the variants and both kits. |
 | `mockups/` | generated | Loading screens, hero, splash, the gauge widget and palette studies, all on the official marks; see `mockups/README.md`. One file there is Dennis's own: `loading-01-rising-columns.svg`, his design work, which the build never writes; its generated screen is `loading-01-rising-columns-generated.svg`. |
 | `mockups/review/` | rendered | PNGs of every mock-up and GIFs of the four loading screens. |
@@ -77,9 +84,9 @@ them, and nothing they write is edited by hand.
 
 | File | What it does |
 |---|---|
-| `generator/conical_m.py` | The system: the letter, the tiling, the skins, the layouts. Writes the official logo and emblem, the variants and the generated kit. |
+| `generator/monolith_m.py` | The system: the letter, the tiling, the skins, the layouts. Writes the official logo and emblem, the variants and the generated kit. |
 | `generator/build_mockups.py` | Writes every mock-up from the official marks, the meter and the piece set. |
-| `generator/mono_assets.py` | The loader every generator reads through: the piece set, the meter, and `load_conical()`, `load_logo()`, `load_emblem()` for the tiled M; the palettes. |
+| `generator/mono_assets.py` | The loader every generator reads through: the piece set, the meter, and `load_monolith_m()`, `load_logo()`, `load_emblem()` for the tiled M; the palettes. |
 | `generator/mono_svg.py` | The SVG emitter: ids, groups, primitives, and the house header, title, namedview and metadata. |
 | `generator/relabel_sources.py` | Gives every element of a hand-drawn source a descriptive id without touching a node; run it after an Inkscape pass on the kit or the meter. |
 | `generator/render_review.py` | Renders the review PNGs and GIFs with headless Chromium. |
@@ -91,7 +98,7 @@ them, and nothing they write is edited by hand.
 ```bash
 python assets/generator/build_all.py                      # rebuild everything generated, then audit
 python assets/generator/build_all.py --relabel --render   # after an Inkscape pass: relabel, rebuild, render, audit
-python assets/generator/conical_m.py --only official      # just the logo and the emblem
+python assets/generator/monolith_m.py --only official     # just the logo and the emblem
 python assets/generator/audit_assets.py                   # check the folder
 ```
 

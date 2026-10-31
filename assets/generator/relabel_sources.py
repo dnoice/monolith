@@ -6,15 +6,20 @@
     - File Name: relabel_sources.py
     - Relative Path: assets/generator/relabel_sources.py
     - Artifact Type: python
-    - Version: 2.0.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 2.0.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The kit
+      is brand/monolith-brand-kit.svg and its document's own ids (svg-,
+      title-, defs-, metadata-, namedview-) follow the name: at Dennis's
+      request the brand files dropped "conical" from their names while
+      the logo is still being decided.
     - 2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rewritten
       for the sources that remain after Dennis retired the logo concepts:
       his hand-built brand kit (brand/conical-monolith-brand-kit.svg) and
@@ -59,7 +64,7 @@
 
 ✒ Other Important Information:
     - Dependencies: Python 3.10+, lxml, svgpathtools, numpy
-    - Files: brand/conical-monolith-brand-kit.svg and
+    - Files: brand/monolith-brand-kit.svg and
       graphics-meter-design-v1.2.svg; chess-pieces.svg already carries its
       own labels and is shared with ChessWorkstation, so it is not touched;
       the logo, the emblem and everything under brand/variants and mockups
@@ -282,7 +287,7 @@ def relabel_kit(path: str, dry: bool):
     root = tree.getroot()
     L = Labeller(root, dry)
     exact, aspect = kind_tables()
-    stem = "conical-monolith-brand-kit"
+    stem = "monolith-brand-kit"
     for e, iid in ((root, f"svg-{stem}"),):
         L.claim(e, iid)
     for e in _elems(root):
@@ -404,7 +409,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
-    for rel, fn in (("brand/conical-monolith-brand-kit.svg", relabel_kit), ("graphics-meter-design-v1.2.svg", relabel_meter)):
+    for rel, fn in (("brand/monolith-brand-kit.svg", relabel_kit),
+                    ("graphics-meter-design-v1.2.svg", relabel_meter)):
         path = os.path.join(A.ASSETS, rel)
         tree, L = fn(path, args.dry_run)
         if not args.dry_run:

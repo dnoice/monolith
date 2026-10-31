@@ -15,6 +15,9 @@
     - 1.8.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.18.0:
       the free board, PGN, draws, Settings' five cards, keys and palette
       words, Who plays it, phones and touch; the cathedral drops "Gothic".
+      At Dennis's request the brand files drop "conical" from their names:
+      the documents list assets/brand/MONOLITH_M_SYSTEM.md, and the
+      loading screen's paragraph calls the letter the MONOLITH M.
     - 1.7.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.17.0:
       the Conical M Dennis made MONOLITH's official mark heads the app bar
       as the logo and opens the page as the emblem. The loading screen's
@@ -210,8 +213,9 @@ MONOLITH's three pillars are Dennis's Blender models, in three styles you choose
 
 The built pillars stand in for any model that cannot load.
 
-The page opens on Dennis's emblem, the Conical M of slate squares carrying his house piece set (the
-bare M is the logo in the app bar), and takes its time: the M is written square by square (in gold in the cathedral, in ink in MONOLITH),
+The page opens on Dennis's emblem, the MONOLITH M of slate squares carrying his house piece set
+(the bare M is the logo in the app bar), and takes its time: the M is written square by square
+(in gold in the cathedral, in ink in MONOLITH),
 the board is built while it rests, the pieces are set down one by one, and a glint crosses it
 before it lifts. Beneath it a loading meter fills a segment for each step as it really finishes
 (the scripts, the board, the first frame, the pillar models, Stockfish), and a card turns over a tip
@@ -321,7 +325,7 @@ monolith/
 | [CALIBRATION.md](CALIBRATION.md) | The level calibrator: how to run it, recipes, and how to read and trust its results. |
 | [MONOLITH_HYBRID.md](MONOLITH_HYBRID.md) | How Dennis's MONOLITH plates became the second world. Covers what came across, the rulings kept and the rendering techniques. |
 | [assets/README.md](assets/README.md) | The assets folder: what Dennis draws, what the generators write from it, and the one command that rebuilds and audits it all. |
-| [assets/brand/CONICAL_MONOLITH_SYSTEM.md](assets/brand/CONICAL_MONOLITH_SYSTEM.md) | The Conical M: the letter's parameters and equations, its tiling, skins and layouts, and the official logo and emblem. |
+| [assets/brand/MONOLITH_M_SYSTEM.md](assets/brand/MONOLITH_M_SYSTEM.md) | The MONOLITH M: the letter's parameters and equations, its tiling, skins and layouts, and the official logo and emblem. |
 | [assets/models/MANIFEST.md](assets/models/MANIFEST.md) | The models the page loads: which file fits which slot, placement, nodes and materials. |
 | [engine/README.md](engine/README.md) | The vendored Stockfish build: its source, how to verify it and how the page loads it. |
 

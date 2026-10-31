@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
 ✒ Metadata
-    - Title: Conical Monolith M 4 x 4 grid slate (MONOLITH Edition - v1.2)
-    - File Name: conical-m-4-grid-slate.svg
-    - Relative Path: assets/brand/variants/conical-m-4-grid-slate.svg
+    - Title: MONOLITH M 4 x 4 grid slate (MONOLITH Edition - v1.2)
+    - File Name: monolith-m-4-grid-slate.svg
+    - Relative Path: assets/brand/variants/monolith-m-4-grid-slate.svg
     - Artifact Type: illustration
-    - Version: 1.2.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.2.1
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
+      from conical-m-4-grid-slate.svg: at Dennis's request the brand files
+      dropped "conical" from their names while the logo is still being
+      decided; the letter is the MONOLITH M, built by monolith_m.py and
+      written up in MONOLITH_M_SYSTEM.md.
     - 1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       grid's lines are invisible guide paths over the outline, as Dennis
       ruled for a construction template; the filled rects of 1.1.0 painted
@@ -25,11 +30,10 @@
       conical-monolith-brand-kit.svg.
 
 ✒ Description:
-    The Conical Monolith M on a 4 by 4 grid of 300 px cells in the slate skin,
-    the construction template: the outline with the full grid over it as
-    invisible guide lines. Built by assets/generator/conical_m.py from the
-    letter's parameters; the system is described in
-    assets/brand/CONICAL_MONOLITH_SYSTEM.md.
+    The MONOLITH M on a 4 by 4 grid of 300 px cells in the slate skin, the
+    construction template: the outline with the full grid over it as invisible
+    guide lines. Built by assets/generator/monolith_m.py from the letter's
+    parameters; the system is described in assets/brand/MONOLITH_M_SYSTEM.md.
 
 ✒ Key Features:
     - Canvas 1200 x 1200; grid 4 x 4; cell 300 px
@@ -55,7 +59,7 @@
 
 ✒ Other Important Information:
     - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
-    - Source of truth: assets/generator/conical_m.py emits this file; edit
+    - Source of truth: assets/generator/monolith_m.py emits this file; edit
       the script or its parameters, not the SVG, then rerun it
     - XML note: an SVG header cannot carry the standard's closing dash rule,
       because a double hyphen is illegal inside an XML comment
@@ -66,9 +70,9 @@
    height="1200"
    viewBox="0 0 1200 1200"
    version="1.1"
-   id="svg-conical-m-4-grid-slate"
+   id="svg-monolith-m-4-grid-slate"
    inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
-   sodipodi:docname="conical-m-4-grid-slate.svg"
+   sodipodi:docname="monolith-m-4-grid-slate.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -78,9 +82,9 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
-     id="title-conical-m-4-grid-slate">Conical Monolith M 4 x 4 grid slate (MONOLITH Edition - v1.2)</title>
+     id="title-monolith-m-4-grid-slate">MONOLITH M 4 x 4 grid slate (MONOLITH Edition - v1.2)</title>
   <sodipodi:namedview
-     id="namedview-conical-m-4-grid-slate"
+     id="namedview-monolith-m-4-grid-slate"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -94,9 +98,9 @@
      inkscape:cx="600"
      inkscape:cy="600"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg-conical-m-4-grid-slate" />
+     inkscape:current-layer="svg-monolith-m-4-grid-slate" />
   <defs
-     id="defs-conical-m-4-grid-slate">
+     id="defs-monolith-m-4-grid-slate">
   </defs>
   <g id="mark-4-grid">
     <path id="outline-4-grid" d="M 0,26.239 A 26.239,26.239 0 0 1 26.239,0 L 273.761,0 C 333.111,0 434.915,146.43 507.305,146.43 L 692.695,146.43 C 765.085,146.43 866.889,0 926.239,0 L 1173.761,0 A 26.239,26.239 0 0 1 1200,26.239 L 1200,1173.761 A 26.239,26.239 0 0 1 1173.761,1200 L 926.239,1200 A 26.239,26.239 0 0 1 900,1173.761 L 900,535.09 A 25.41,25.41 0 0 0 874.59,509.68 L 720.84,509.68 C 673.6,509.68 673.6,600 626.36,600 L 573.64,600 C 526.4,600 526.4,509.68 479.16,509.68 L 325.41,509.68 A 25.41,25.41 0 0 0 300,535.09 L 300,1173.761 A 26.239,26.239 0 0 1 273.761,1200 L 26.239,1200 A 26.239,26.239 0 0 1 0,1173.761 Z" style="fill:#6f8a91;stroke:none" />
@@ -118,12 +122,12 @@
     </g>
   </g>
   <metadata
-     id="metadata-conical-m-4-grid-slate">
+     id="metadata-monolith-m-4-grid-slate">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
-        <dc:title>Conical Monolith M 4 x 4 grid slate (MONOLITH Edition - v1.2)</dc:title>
-        <dc:date>2026-10-26</dc:date>
+        <dc:title>MONOLITH M 4 x 4 grid slate (MONOLITH Edition - v1.2)</dc:title>
+        <dc:date>2026-10-30</dc:date>
         <dc:creator>
           <cc:Agent>
             <dc:title>Dennis 'dendogg' Smaltz</dc:title>
@@ -140,7 +144,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>The Conical Monolith M on a 4 by 4 grid of 300 px cells in the slate skin, the construction template: the outline with the full grid over it as invisible guide lines. Built by assets/generator/conical_m.py from the letter's parameters; the system is described in assets/brand/CONICAL_MONOLITH_SYSTEM.md.</dc:description>
+        <dc:description>The MONOLITH M on a 4 by 4 grid of 300 px cells in the slate skin, the construction template: the outline with the full grid over it as invisible guide lines. Built by assets/generator/monolith_m.py from the letter's parameters; the system is described in assets/brand/MONOLITH_M_SYSTEM.md.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

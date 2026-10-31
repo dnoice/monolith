@@ -15,6 +15,9 @@
     - 1.11.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.18.0: js/game/pgn.js, the kept game, the stage's safe bands, the
       new exports and imports; the cathedral is no longer called Gothic.
+      At Dennis's request the brand files dropped "conical" from their
+      names: the loading screen's section calls the letter the MONOLITH M,
+      and the tools name assets/generator/monolith_m.py.
     - 1.10.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.17.0: the Conical M Dennis made MONOLITH's official mark, its logo
       in the app bar and its emblem on the loading screen, both written in
@@ -314,7 +317,7 @@ The screen also goes by these routes, whichever comes first:
 hidden from screen readers. The emblem is written into the page by `tools/build-emblem.mjs` from
 `assets/monolith-emblem.svg`, never edited there by hand. Its squares and woods are the board
 diagrams' custom properties (`css/position.css`) and its seams the stage colour, so it changes with
-the world as the diagrams do. Since 2.17.0 it is the Conical M, its squares one slate, which the
+the world as the diagrams do. Since 2.17.0 it is the MONOLITH M, its squares one slate, which the
 builder reads as the diagrams' dark square: in the cathedral that is the slate Dennis drew it in.
 The same builder writes the app bar's logo, the bare M from `assets/monolith-logo.svg`, between
 the page's `brand-logo` markers: its squares in the same tone (MONOLITH lifts them to its light
@@ -518,8 +521,8 @@ controls and splitters.
   logo; the square fills (one tone is read as the dark squares, two as light and dark) and the two
   woods become classes the stylesheet colours per world, and every square and piece of the emblem
   gets its moment in the loading screen's animation as a class (`a0`..`a20`, `g0`..`g12`,
-  `i0`..`i11`). The marks are drawn by the brand system (`assets/generator/conical_m.py`); run the
-  builder after either changes.
+  `i0`..`i11`). The marks are drawn by the brand system (`assets/generator/monolith_m.py`); run
+  the builder after either changes.
 - `blender --background --python tools/build-piece-models.py -- assets/models` builds the 3D pieces as
   `.blend` files (`piece-pawn.blend` … `piece-king.blend`, and `pieces.blend`) from `js/scene/board.js`'s
   own numbers: its profiles through three.js's spline sampling under a Screw modifier of the lathe's
