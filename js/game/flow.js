@@ -85,13 +85,13 @@ import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/bas
 import { setWorldYaw, worldYaw } from '../scene/sets.js';
 import { clearFragments, placePieces } from '../scene/board.js';
 import { cam } from '../scene/camera.js';
-import { tween } from '../scene/motion.js';
+import { tween, wait } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
 import { cur, draft, game, learn, match, render, shown, SIDE } from '../app/state.js';
 import { hideSnack, snack } from '../ui/snackbar.js';
 import { engine } from './engine.js';
 import { deselect, rookSqOf, select } from './board-ui.js';
-import { animateBoardMove, askPromotion, maybeComputerMove, resultFor } from './play.js';
+import { animateBoardMove, askPromotion, maybeComputerMove, positionCmd, resultFor } from './play.js';
 import { celebrate, ceremonyGen, checkShudder, dealIn, restPose } from './ceremony.js';
 import { emptyCalc, refreshAnalysis } from './lines.js';
 import { coachKick, turningPly } from '../coach/notes.js';
@@ -99,6 +99,7 @@ import { pad2 } from '../ui/crucible.js';
 import { boardOverride } from '../ui/crucible-board.js';
 import { setTab } from '../ui/nav.js';
 import { study, studyStart, userSetup } from '../ui/studies.js';
+import { anEvalShown } from '../ui/analyze.js';
 
 /* ---------- starting, ending and rewinding games ---------- */
 /* A flip turns the camera and the world rig together, the same way round, so the scenery holds
@@ -131,10 +132,12 @@ function turnBoard(side, animate) {
    holds for the move on the board, and the next move turns it again. */
 let autoGen = 0;
 export const autoFlipOn = () => app.started && match.opponent === 'human' && !study.cur && !game.title && prefs.autoFlip !== false;
+// the beat between a move landing and the board turning (ms); the notice at the handover keeps it too
+const autoBeat = () => reduceMotion || prefs.speed === 'minimal' ? 300 : 400 * app.SPEED + 100;
 export function autoOrient(beat = true) {
   const g = ++autoGen, still = reduceMotion || prefs.speed === 'minimal';
   const go = () => { if (g === autoGen && autoFlipOn() && !game.result && app.view === null && !explore.on && !boardOverride && cur().turn !== app.orient) turnBoard(cur().turn, !still); };
-  if (beat) setTimeout(go, still ? 300 : 400 * app.SPEED + 100); else go();
+  if (beat) setTimeout(go, autoBeat()); else go();
 }
 export function setAutoFlip(on) { prefs.autoFlip = on; savePrefs(); if (on) autoOrient(false); render(); }
 const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
@@ -207,22 +210,90 @@ export function undo() {
   // against the computer, undo returns to your last turn (its reply and your move)
   let popped = 0;
   while (game.states.length > 1 && (popped === 0 || (match.opponent === 'cpu' && cur().turn !== match.human))) { game.states.pop(); game.moves.pop(); game.sans.pop(); popped++; }
+  consultPrune();
   game.result = null; deselect(); app.hint = null;
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
   placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
 }
-/* A draw by agreement between two players on one screen: the side to move offers, the other side
-   answers. canOfferDraw() is true, or the reason it cannot be offered (a declaration, so the
-   palette's table can name it while the modules are still loading). */
-export function canOfferDraw() { return !app.started ? 'Start a game first' : game.result ? 'The game is over' : match.opponent !== 'human' || study.cur || game.title ? 'Two-player games only' : true; }
+/* A draw by agreement. Between two players on one screen the side to move offers and the other
+   side answers. Against the computer (2.18.0) you offer on your own turn and the computer judges
+   the position (judgeDraw below). canOfferDraw() is true, or the reason it cannot be offered (a
+   declaration, so the palette's table can name it while the modules are still loading). */
+export function canOfferDraw() {
+  if (!app.started) return 'Start a game first';
+  if (game.result) return 'The game is over';
+  if (study.cur) return 'Not in a study';
+  if (game.title) return 'Not in a game loaded for analysis';
+  if (match.opponent === 'human') return true;
+  if (drawJudging()) return 'Stockfish is considering your offer';
+  if (cur().turn !== match.human || app.cpuThinking) return 'Offer on your turn';
+  if (!engine.ready) return engine.failed ? 'The engine could not start here' : 'The engine is still loading';
+  const again = drawAgainAt();
+  return again ? `Stockfish declined. Offer again at move ${again}` : true;
+}
 export function offerDraw() {
-  if (canOfferDraw() !== true || app.busy) return;
+  if (app.busy) return;
+  const ok = canOfferDraw();
+  if (ok !== true) { if (match.opponent === 'cpu' && app.started && !game.result) snack(`${ok}.`); return; }
+  if (match.opponent === 'cpu') return judgeDraw();
   const by = cur().turn, rec = game.states, n = rec.length;
   snack(`${SIDE[by]} offers a draw. Does ${SIDE[Chess.other(by)].toLowerCase()} agree?`, [{ label: 'Keep playing', act: () => {} }, { label: 'Agree to a draw', filled: true, act: () => {
     if (game.states !== rec || rec.length !== n || game.result) return;   // asked about a position the game has since left
     game.result = { text: 'Draw agreed.', winner: null, agreed: true };
     render(); celebrate(game.result); coachKick();
   } }], true);
+}
+/* The computer's answer (Dennis's rule, 2.18.0). It judges the position at full strength whatever
+   level it plays at: a short search on the play engine (no Elo limit, MultiPV 1), its last scored
+   line read from its own side (the engine scores for the side to move, which is you).
+   - A pawn or more worse (DRAW_WORSE_CP), or facing a forced mate: it accepts.
+   - Roughly level, no more than DRAW_LEVEL_CP better: it accepts from move DRAW_FROM_MOVE on, and
+     before that declines as too early to agree a draw.
+   - Better than that, or a forced mate of its own: it declines and plays on for the win.
+   After a decline the offer can be made again DRAW_RETRY_MOVES of your moves later; the wait
+   belongs to the game record (game.states), so a new or loaded game starts without one. */
+export const DRAW_WORSE_CP = 100, DRAW_LEVEL_CP = 40, DRAW_FROM_MOVE = 20, DRAW_RETRY_MOVES = 5;
+const DRAW_SEARCH = { depth: 14, movetime: 800, multipv: 1 }, DRAW_BEAT = 0.6;   // seconds: an answer found at once still reads as considered
+let drawAsk = null;   // the offer being judged: { rec, st }
+let drawWait = null;  // after a decline: { rec, at }, the move from which it can be offered again
+// still judging only while the game is the one the offer was made in, at the same position
+export const drawJudging = () => !!drawAsk && drawAsk.rec === game.states && drawAsk.st === cur() && !game.result;
+const drawAgainAt = () => drawWait && drawWait.rec === game.states && cur().fullmove < drawWait.at ? drawWait.at : 0;
+// the computer as the player card names it (js/ui/panels.js playerName(): 'Stockfish' in both worlds)
+const CPU_NAME = 'Stockfish';
+async function judgeDraw() {
+  const rec = game.states, st = cur(), ask = drawAsk = { rec, st };
+  app.cpuThinking = true; deselect();
+  snack(`${CPU_NAME} is considering your draw offer…`, [], true, 'draw-offer');
+  render();
+  let last = null, best = null; const t0 = performance.now();
+  try {
+    best = await engine.go(positionCmd(rec.length - 1), DRAW_SEARCH, inf => { if (inf.multipv === 1) last = inf; });
+    await wait(Math.max(0, DRAW_BEAT - (performance.now() - t0) / 1000));
+  } catch (e) { console.error(e); best = null; }
+  finally {
+    if (drawAsk === ask) drawAsk = null;
+    // the flag is this offer's only while the game is the same one: a new game's own search keeps its flag
+    if (game.states === rec) app.cpuThinking = false;
+  }
+  // an undo, a new or loaded game, a resignation or a move while it judged: the offer lapses quietly
+  if (game.states !== rec || cur() !== st || game.result) { hideSnack('draw-offer'); render(); return; }
+  if (best === null || !last) { snack(`${CPU_NAME} gave no answer to the draw offer. Play on, or offer again.`); render(); refreshAnalysis(); return; }
+  const own = last.kind === 'mate' ? null : -last.value;   // centipawns from the computer's side
+  let accept, why;
+  if (last.kind === 'mate') { accept = last.value > 0; why = accept ? 'it faces a forced mate' : 'it sees a forced mate and plays on for the win'; }
+  else if (own <= -DRAW_WORSE_CP) { accept = true; why = 'it stands a pawn or more worse'; }
+  else if (own < DRAW_LEVEL_CP) { accept = st.fullmove >= DRAW_FROM_MOVE; why = accept ? 'the position is level' : 'it is too early in the game to agree a draw'; }
+  else { accept = false; why = 'it stands better and plays on for the win'; }
+  if (accept) {
+    game.result = { text: 'Draw agreed.', winner: null, agreed: true };
+    snack(`${CPU_NAME} accepts the draw: ${why}.`);
+    render(); if (app.view === null) celebrate(game.result); coachKick(); refreshAnalysis();
+    return;
+  }
+  drawWait = { rec, at: st.fullmove + DRAW_RETRY_MOVES };
+  snack(`${CPU_NAME} declines: ${why}. You can offer again at move ${drawWait.at}.`);
+  render(); refreshAnalysis();
 }
 /* A finished game in Analyze: at its turning point when the Coach found one, else at the last
    move (the final position of a mate or a stalemate has nothing left to search). */
@@ -277,9 +348,22 @@ export const underlyingState = () => boardOverride ? boardOverride.state : shown
    on every tab, and Play from here turns the line into a game. */
 export const exploreAvailable = () => !!boardOverride || !app.started || app.view !== null || !!game.result;
 export const sandbox = () => explore.on && !app.started && !boardOverride;
+/* Analyze explores during a game (Dennis, 2.18.0; on by default: Settings → Explore in Analyze, the
+   Explore switch on the Analyze board, :explore analyze). At the live position of a running game a
+   click, a drag or a typed move in Analyze starts a line from the position shown and never touches
+   the game. Off, a move made there on your turn is played in the game, as before. The positions
+   Move pieces on any board covers (earlier moves, a finished game) keep following that setting. */
+export const analyzeExplores = () => prefs.tab === 'analyze' && prefs.analyzeExplore !== false && app.started && app.view === null && !game.result && !boardOverride;
+// a click or a typed move goes into a line (the one on the board, or a new one), not the game
+export const exploresHere = () => explore.on || analyzeExplores() || (prefs.explore !== false && exploreAvailable());
 // Play from here: the free board's line as it stands when Start game is pressed (draft.from marks the choice)
 export const draftLine = () => draft.from && sandbox() && explore.moves.length ? { states: explore.states.slice(), moves: explore.moves.slice(), sans: explore.sans.slice(), free: true } : null;
 export function setExplorePref(on) { prefs.explore = on; savePrefs(); if (!on && explore.on) exploreEnd(); else render(); }
+// switched off, a line standing on the live position goes, so the next move there is the game's
+export function setAnalyzeExplorePref(on) {
+  prefs.analyzeExplore = on; savePrefs();
+  if (!on && explore.on && !boardOverride && app.view === null && explore.base === cur()) exploreEnd(); else render();
+}
 function exploreStart() {
   const base = underlyingState();
   Object.assign(explore, { on: true, base, states: [base], moves: [], sans: [] }); draft.from = false;   // a new line is not yet one to play from
@@ -308,7 +392,7 @@ export function exploreAppend(from, seq) {
   if (app.busy || !seq.length || from !== (explore.on ? exploreState() : underlyingState())) return false;
   if (!explore.on) exploreStart();
   for (const x of seq) { explore.states.push(x.state); explore.moves.push(x.mv); explore.sans.push(x.san); }
-  deselect(); hideSnack(); placePieces(exploreState()); render(); refreshAnalysis();
+  deselect(); hideSnack(); consultOnLine(); placePieces(exploreState()); render(); refreshAnalysis();
   return true;
 }
 // called from render: the board the line started from has changed underneath it
@@ -340,6 +424,7 @@ async function exploreMove(mv) {
   explore.states.push(next); explore.moves.push(mv); explore.sans.push(san);
   app.busy = false;
   if (Chess.inCheck(next)) { sound.chime(); checkShudder(Chess.kingSq(next.board, next.turn)); }
+  consultOnLine();
   render(); refreshAnalysis();
 }
 /* "12… Nf6 13. e5": the explored moves numbered from the position they started in. */
@@ -356,5 +441,62 @@ export function exploreOrigin() {
   if (!boardOverride && !app.started) return 'the starting position';
   if (boardOverride && boardOverride.game) return `game #${pad2(boardOverride.game.index)}, ply ${boardOverride.ply}`;
   if (app.view !== null) return app.view === 0 ? 'the starting position' : `move ${Math.ceil(app.view / 2)}${app.view % 2 ? '' : '…'} ${game.sans[app.view - 1]}`;
-  return 'the final position';
+  return game.result ? 'the final position' : 'the live position';
+}
+
+/* ---------- looking at the engine in a two-player game (2.18.0) ----------
+   Dennis: with two people on one screen, one of them using Analyze during the game is consulting
+   the engine, and the other is told. It counts for the side to move at the live position, and only
+   in a live two-player game: never a finished game, a game against the computer, the free board, a
+   study, a game loaded for analysis or a Crucible game on the board (consultable()).
+   The trigger, chosen so that passing through the tab marks nothing:
+   - Analyze open on the game for CONSULT_DWELL_MS with the engine's evaluation on screen, at any of
+     its positions (the live one, an earlier move, a line from it): consultWatch() in
+     js/ui/analyze-view.js. Crossing the rail with the arrow keys, or a click on the way to another
+     tab, takes less than that.
+   - At once: a move tried in a line from the live position (a click, a drag, a typed move, Play to
+     here), or a move played in the game from Analyze with its evaluation on screen.
+   The mark belongs to the position (its ply in the record) and lands on the move then played from
+   it: a badge in the move list, a comment in the PGN, kept through a reload (js/app/snapshot.js).
+   An undo keeps the mark of the position it returns to and drops those of positions it took away.
+   The other player is told at the handover: as the board turns to them, or as their turn starts
+   when the board does not turn. */
+export const CONSULT_DWELL_MS = 1500;
+const consults = new WeakMap();   // game.states → Set of plies whose side to move used Analyze there
+export const consultable = () => app.started && match.opponent === 'human' && !study.cur && !game.title && !game.result && !boardOverride;
+export const consultedAt = ply => { const s = consults.get(game.states); return !!s && s.has(ply); };
+export const consultPlies = () => [...(consults.get(game.states) || [])].sort((a, b) => a - b);
+// marks saved with a game (a reload, a hot update) back on its record, each a position it has
+export function setConsultPlies(list) {
+  const n = game.states.length, s = new Set((Array.isArray(list) ? list : []).filter(p => Number.isInteger(p) && p >= 0 && p < n));
+  if (s.size) consults.set(game.states, s); else consults.delete(game.states);
+}
+function consultPrune() { const s = consults.get(game.states); if (s) for (const p of [...s]) if (p > game.states.length - 1) s.delete(p); }
+const sideWord = c => app.worldName === 'monolith' ? (c === 'w' ? 'White' : 'Black') : SIDE[c];
+// marks the live position for its side to move, saying so once; quiet: the caller renders
+export function markConsult(quiet = false) {
+  if (!consultable()) return false;
+  const ply = game.states.length - 1, st = cur();
+  let s = consults.get(game.states); if (!s) consults.set(game.states, s = new Set());
+  if (s.has(ply)) return false;
+  s.add(ply);
+  snack(`${sideWord(st.turn)} used Analyze: their move ${st.fullmove} is marked, and ${sideWord(Chess.other(st.turn))} will be told.`);
+  if (!quiet) render();
+  return true;
+}
+// a move into a line from the live position
+function consultOnLine() { if (explore.on && !boardOverride && app.view === null && explore.base === cur()) markConsult(true); }
+// a move played in the game from Analyze with its evaluation on screen (js/game/play.js playMove)
+export function consultOnMove() { if (anEvalShown()) markConsult(true); }
+/* At the handover (js/game/play.js afterMove): the move just played carries a mark, so the player now
+   to move is told, as the board turns to them, or at once when it does not turn. A move that ended
+   the game has no handover; the badge and the PGN keep its mark. */
+export function consultHandover() {
+  const k = game.moves.length - 1;
+  if (k < 0 || game.result || !consultedAt(k) || match.opponent !== 'human' || study.cur || game.title) return;
+  const rec = game.states, n = rec.length, by = rec[k];
+  setTimeout(() => {
+    if (game.states !== rec || rec.length !== n || game.result) return;   // the game moved on meanwhile
+    snack(`${sideWord(by.turn)} used Analyze before their move ${by.fullmove}.`, [{ label: 'OK', act: () => {} }], true, 'consult');
+  }, autoFlipOn() ? autoBeat() : 0);
 }

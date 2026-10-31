@@ -75,7 +75,8 @@ import { hideSnack, snack } from './snackbar.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
 import {
-  analyzeGame, canOfferDraw, explore, exploreEnd, offerDraw, openSetup, setAutoFlip, setExplorePref, undo
+  analyzeGame, canOfferDraw, explore, exploreEnd, offerDraw, openSetup, setAnalyzeExplorePref, setAutoFlip, setExplorePref,
+  undo
 } from '../game/flow.js';
 import { copyPgn, downloadPgn, openPgnLoad } from '../game/pgn.js';
 import { calculateMoves, refreshAnalysis } from '../game/lines.js';
@@ -150,6 +151,7 @@ const COMMANDS = [
   { cmd: ':reset view', desc: 'Camera back to the default angle', run: () => $('#btn-reset-view').click(), when: yes },
   { cmd: ':explore', desc: 'Move pieces on any board on or off (before a game, Crucible games, earlier moves, finished games)', run: () => { setExplorePref(prefs.explore === false); snack(prefs.explore ? 'Move pieces on any board: on.' : 'Move pieces on any board: off.'); }, when: yes },
   { cmd: ':explore back', desc: 'Leave the explored line and return to the board it started from', run: () => exploreEnd(), when: () => explore.on || 'No line is being explored' },
+  { cmd: ':explore analyze', desc: 'Explore in Analyze on or off (during a game, a move made in Analyze starts a line instead of playing)', run: () => { setAnalyzeExplorePref(prefs.analyzeExplore === false); snack(prefs.analyzeExplore ? 'Explore in Analyze: on.' : 'Explore in Analyze: off.'); }, when: yes, words: ['analyze explore', 'analysis board', 'try moves', 'what if'] },
   /* learn: Resign and Rematch, Settings, Position and Help */
   { cmd: ':resign', desc: 'Resign the game (it asks first)', run: () => $('#btn-resign').click(), when: () => !app.started ? 'No game to resign' : game.result ? 'The game is over' : app.busy ? 'A move is still playing' : true },
   { cmd: ':rematch', desc: 'Rematch: a new game against the same opponent, once this one is over', run: () => $('#btn-rematch').click(), when: () => (app.started && !!game.result) || (app.started ? 'The game is still going' : 'No game yet') },
@@ -169,16 +171,16 @@ const COMMANDS = [
   { cmd: ':copy pgn', desc: 'Copy the game as PGN, for another site or app (explored lines are not part of it)', run: copyPgn, when: () => app.started || 'No game yet' },
   { cmd: ':download pgn', desc: 'Save the game as a .pgn file', run: downloadPgn, when: () => app.started || 'No game yet' },
   { cmd: ':load pgn', desc: 'Paste a game in PGN (or a FEN) to review it or play on from it', run: openPgnLoad, when: yes },
-  { cmd: ':draw', desc: 'Offer a draw (two players on one screen)', run: offerDraw, when: canOfferDraw },
+  { cmd: ':draw', desc: 'Offer a draw: to the other player on one screen, or to Stockfish on your turn, which judges the position', run: offerDraw, when: canOfferDraw },
   { cmd: ':review', desc: 'Open the finished game in Analyze, at its turning point', run: analyzeGame, when: () => (app.started && !!game.result) || 'No finished game' }
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
 const PAL_GROUPS = [
-  ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference', ':badges short', ':badges full']],
+  ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':explore analyze', ':reference', ':badges short', ':badges full']],
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
-  ['Game', [':new', ':hint', ':undo', ':resign', ':rematch', ':coach', ':calc', ':eval', ':explore', ':explore back']],
+  ['Game', [':new', ':hint', ':undo', ':resign', ':draw', ':rematch', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':legal', ':coords', ':fen', ':copy fen', ':reset view']],
-  ['Two players', [':autoflip', ':draw']],
+  ['Two players', [':autoflip']],
   ['Game record', [':copy pgn', ':download pgn', ':load pgn', ':review']],
   ['Position', [':study', ':read', ':setup']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],

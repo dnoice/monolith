@@ -79,8 +79,8 @@ import { canMoveNow, cur, game, shown, tip } from '../app/state.js';
 import { snack } from '../ui/snackbar.js';
 import { askPromotion, playMove } from './play.js';
 import {
-  explore, exploreAvailable, exploreCheck, exploreSquare, exploreState, goLive, setExplorePref,
-  turning, underlyingState
+  explore, exploreCheck, exploreSquare, exploreState, exploresHere, goLive, setExplorePref, turning,
+  underlyingState
 } from './flow.js';
 import { markerMono, pal } from '../scene/worlds.js';
 import { an, xr } from '../ui/analyze.js';
@@ -258,7 +258,7 @@ function setHover(sq, clickable = false) {
 }
 function clickableAt(sq) {
   if (sq < 0 || turning) return false;   // the board is turning to the other side: a square under the pointer is still moving
-  if (explore.on || (prefs.explore && exploreAvailable())) {
+  if (exploresHere()) {
     if (app.busy) return false; const st = explore.on ? exploreState() : underlyingState(), p = st.board[sq];
     return isTarget(sq) || !!(p && p.c === st.turn);
   }
@@ -273,7 +273,7 @@ function clickableAt(sq) {
    With Move pieces on any board off, a click before a game only explains how to start, so nothing
    is picked up then. */
 export function grabbable(sq) {
-  if (!clickableAt(sq) || (!app.started && !explore.on && !(prefs.explore && exploreAvailable()))) return false;
+  if (!clickableAt(sq) || (!app.started && !exploresHere())) return false;
   const st = boardState(), p = st.board[sq];
   return !!(p && p.c === st.turn);
 }
@@ -282,7 +282,8 @@ export function onSquare(sq) {
   // with the X-Ray on in Analyze, a tap chooses its square (touch has no hover to aim it; a second
   // tap on it lets it go); a mouse click still moves pieces while the X-Ray follows the pointer
   if (prefs.tab === 'analyze' && (xr.sticky || xr.held) && xr.touch) { xr.pin = xr.pin === sq ? -1 : sq; renderXray(an.st || shown()); return; }
-  if (explore.on || (prefs.explore && exploreAvailable())) return exploreSquare(sq);
+  // a line, the free board, or Analyze at the live position (Explore in Analyze): a move into a line
+  if (exploresHere()) return exploreSquare(sq);
   const tryIt = { label: 'Move pieces', act: () => { setExplorePref(true); exploreSquare(sq); } };
   if (boardOverride) { snack('This board shows a Crucible game. Your game waits on the Play tab.', [tryIt, { label: 'Play tab', act: () => setTab('play') }]); return; }
   if (!app.started) { nudgeStart(tryIt); return; }

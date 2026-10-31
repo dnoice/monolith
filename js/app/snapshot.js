@@ -80,14 +80,14 @@ import { applyPrefs, cur, draft, game, match, render } from './state.js';
 import { engine } from '../game/engine.js';
 import { resultFor } from '../game/play.js';
 import { restPose } from '../game/ceremony.js';
-import { autoFlipOn, showFace } from '../game/flow.js';
+import { autoFlipOn, consultPlies, setConsultPlies, showFace } from '../game/flow.js';
 import { applyWorldMix, desiredWorld, setWorld, WORLD } from '../scene/worlds.js';
 import { buildTelemetry } from '../ui/telemetry.js';
 import { setTab } from '../ui/nav.js';
 
 /* ---------- viewer hot-update snapshot ---------- */
 export function snapshot() {
-  try { window.claude?.hot?.snapshot?.(() => ({ v: 2, states: game.states, moves: game.moves, sans: game.sans, result: game.result, title: game.title || null, started: app.started, match: Object.assign({}, match), draft: Object.assign({}, draft), setupOpen: app.setupOpen, orient: app.orient, theta: cam.theta })); } catch (e) {}
+  try { window.claude?.hot?.snapshot?.(() => ({ v: 2, states: game.states, moves: game.moves, sans: game.sans, result: game.result, title: game.title || null, consult: consultPlies(), started: app.started, match: Object.assign({}, match), draft: Object.assign({}, draft), setupOpen: app.setupOpen, orient: app.orient, theta: cam.theta })); } catch (e) {}
   saveGame();
 }
 
@@ -100,12 +100,13 @@ export function snapshot() {
 const GAME_KEY = 'monolith-game-v1';
 let savedSig = '';   // '' at load, so the first render (before start() reads the key) leaves it alone
 function saveGame() {
-  const sig = !app.started || match.study ? '' : [game.states.length, Chess.fen(game.states[0]), game.result && game.result.text, match.opponent, match.choice, match.human, match.level, app.orient, game.title && game.title.name].join('|');
+  const sig = !app.started || match.study ? '' : [game.states.length, Chess.fen(game.states[0]), game.result && game.result.text, match.opponent, match.choice, match.human, match.level, app.orient, game.title && game.title.name, consultPlies().join(',')].join('|');
   if (sig === savedSig) return;
   savedSig = sig;
   try {
     if (!sig) localStorage.removeItem(GAME_KEY);
-    else localStorage.setItem(GAME_KEY, JSON.stringify({ v: 1, fen: Chess.fen(game.states[0]), uci: game.moves.map(Chess.toUci), result: game.result, title: game.title || null,
+    // consult: the plies whose side to move used Analyze in a two-player game (js/game/flow.js)
+    else localStorage.setItem(GAME_KEY, JSON.stringify({ v: 1, fen: Chess.fen(game.states[0]), uci: game.moves.map(Chess.toUci), result: game.result, title: game.title || null, consult: consultPlies(),
       match: { opponent: match.opponent, choice: match.choice, human: match.human, level: match.level }, orient: app.orient }));
   } catch (e) {}
 }
@@ -123,6 +124,7 @@ function loadGame() {
   }
   const m = d.match && typeof d.match === 'object' ? d.match : {}, side = c => c === 'b' ? 'b' : 'w', res = d.result;
   Object.assign(game, { states, moves, sans, title: d.title && typeof d.title.name === 'string' ? d.title : null });
+  setConsultPlies(d.consult);   // each a position the moves replayed to
   game.result = moves.length === d.uci.length && res && typeof res.text === 'string' && [null, 'w', 'b'].includes(res.winner) ? res : resultFor(cur());
   Object.assign(match, { opponent: m.opponent === 'human' ? 'human' : 'cpu', choice: ['w', 'b', 'r'].includes(m.choice) ? m.choice : 'w', human: side(m.human),
     level: Number.isInteger(m.level) && m.level >= 1 && m.level <= LEVELS.length ? m.level : prefs.level, study: false });
@@ -144,6 +146,7 @@ export function start(data) {
   applyPrefs();
   if (validSnapshot(data)) {
     game.states = data.states; game.moves = data.moves || []; game.sans = data.sans || []; game.result = data.result || null; game.title = data.title || null;
+    setConsultPlies(data.consult);
     app.started = !!data.started; app.setupOpen = !!data.setupOpen;
     if (data.match) Object.assign(match, data.match); if (data.draft) Object.assign(draft, data.draft);
     app.orient = data.orient === 'b' ? 'b' : 'w';

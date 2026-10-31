@@ -439,10 +439,11 @@
       <div class="stage-chip plain" id="setup-chip" data-tip="start" hidden>Choose your game on the Play tab, then press Start game</div>
       <div class="stage-hint" data-tip="orbit"><span class="for-mouse">Drag the board to orbit · scroll to zoom</span><span class="for-touch">Drag the board to orbit · pinch to zoom</span></div>
       <button class="stage-reset" id="stage-reset" type="button" aria-label="Reset view" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg><span>Reset view</span></button>
-      <div class="layer-toggles" id="layer-toggles" hidden role="group" aria-label="Board layers">
+      <div class="layer-toggles" id="layer-toggles" hidden role="group" aria-label="Board layers and Explore">
         <button class="layer-btn" data-layer="field" aria-pressed="true" title="Root move-value field (F)">Field</button>
         <button class="layer-btn" data-layer="vectors" aria-pressed="true" title="Ballistic vectors of the engine lines (V)">Vectors</button>
         <button class="layer-btn" data-layer="xray" aria-pressed="false" title="Tactical X-Ray: click to keep it on, or hold Space (X)">X-Ray <small id="xray-mode">· hold Space</small></button>
+        <button class="layer-btn layer-explore" id="btn-an-explore" type="button" role="switch" aria-checked="true" title="Explore: during a game, a move made here starts a line and the game does not change">Explore</button>
       </div>
       <div class="wdl" id="wdl" hidden aria-label="Win, draw and loss chances from White's view">
         <div class="wdl-text">
@@ -575,7 +576,7 @@
             </section>
             <div class="game-actions">
               <button class="btn outlined" id="btn-new"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New game</button>
-              <button class="btn outlined" id="btn-draw" hidden title="Offer a draw: the other player agrees or plays on"><svg viewBox="0 0 24 24"><path d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/></svg>Draw</button>
+              <button class="btn outlined" id="btn-draw" hidden title="Offer a draw: the other player, or Stockfish, agrees or plays on"><svg viewBox="0 0 24 24"><path d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/></svg>Draw</button>
               <button class="btn danger" id="btn-resign"><svg viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>Resign</button>
             </div>
             <div class="game-record" role="group" aria-label="Game record">
@@ -588,7 +589,7 @@
 
         <!-- ANALYZE (MONOLITH) -->
         <section class="pane mo-pane" id="pane-analyze" role="tabpanel" aria-labelledby="nav-analyze" hidden>
-          <header class="pane-head"><span class="kicker">Instrument</span><h2>Analyze</h2><p data-tip="analyze-intro">Stockfish searches the position on the board while a second engine scores every legal move. Step through the move list to analyze earlier positions.</p></header>
+          <header class="pane-head"><span class="kicker">Instrument</span><h2>Analyze</h2><p data-tip="analyze-intro">Stockfish searches the position on the board while a second engine scores every legal move. Step through the move list to analyze earlier positions. During a game, a move made here starts a line to explore and the game waits (the Explore switch on the board).</p></header>
           <div class="mo-section">
             <div class="mo-head"><span class="mo-title"><span data-term="uci">Engine</span></span><span class="mo-sub">UCI · single search</span><span class="badge" id="an-badge-uci">[SF: UCI info]</span></div>
             <div class="an-card">
@@ -866,6 +867,7 @@
             <div class="switch-row"><label for="set-coach">Coach comments<span>A verdict on each of your moves, the threats on the board, a tip when it is quiet</span></label><input type="checkbox" class="switch" role="switch" id="set-coach"></div>
             <div class="switch-row"><label for="set-eval">Evaluation bar<span>Bar beside the board and the engine's best line</span></label><input type="checkbox" class="switch" role="switch" id="set-eval"></div>
             <div class="switch-row"><label for="set-explore">Move pieces on any board<span>Try your own moves before a game, on Crucible games, earlier moves and finished games; the game and the record never change</span></label><input type="checkbox" class="switch" role="switch" id="set-explore"></div>
+            <div class="switch-row"><label for="set-an-explore">Explore in Analyze<span>During a game, a move made in Analyze starts a line from the position shown and the game waits; off, a move there on your turn is played in the game</span></label><input type="checkbox" class="switch" role="switch" id="set-an-explore"></div>
           </section>
           <section class="card" id="set-board" aria-labelledby="set-board-title">
             <header class="card-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18V3H3zm8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"/></svg><h3 id="set-board-title">Board</h3></header>

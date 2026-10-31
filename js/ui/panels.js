@@ -96,8 +96,8 @@ import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView,
-  viewedPly
+  analyzeExplores, analyzeGame, autoFlipOn, canOfferDraw, consultedAt, consultPlies, drawJudging, explore,
+  exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView, viewedPly
 } from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
@@ -295,6 +295,8 @@ export function init() {
       const state = el.querySelector('.pstate'); let txt = '', cls = 'pstate';
       const r = ex ? resultFor(bs) : live ? game.result : resultFor(st), on = app.started || ex;
       if (on && r) { if (r.winner === c) { txt = 'Won'; cls += ' won'; } else if (!r.winner) txt = 'Draw'; else txt = r.resigned === c ? 'Resigned' : 'Lost'; }
+      // a draw offer being judged: the computer thinks on your turn
+      else if (on && live && !ex && drawJudging() && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
       else if (on && bs.turn === c) {
         if (live && !ex && app.cpuThinking && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
         else if (Chess.inCheck(bs)) { txt = 'Check'; cls += ' check'; }
@@ -389,7 +391,7 @@ export function init() {
     const banner = $('#turn-banner'); banner.hidden = !!r;
     const c = cur().turn, av = banner.querySelector('.avatar'); av.className = `avatar ${c}`; if (!av.querySelector('.king-icon')) av.innerHTML = KING_ICON;
     const yours = !cpu || c === match.human;
-    $('#turn-title').textContent = app.cpuThinking ? 'Stockfish is thinking' : cpu ? (yours ? 'Your move' : 'Stockfish to move') : `${SIDE[c]} to move`;
+    $('#turn-title').textContent = drawJudging() ? 'Stockfish is considering your offer' : app.cpuThinking ? 'Stockfish is thinking' : cpu ? (yours ? 'Your move' : 'Stockfish to move') : `${SIDE[c]} to move`;
     $('#turn-move').textContent = r ? '' : `Move ${cur().fullmove}`;
     // the opening, by name, as the book knows it at the move on the board (custom positions have none)
     const op = game.title ? null : openingOf(viewedPly()), toEl = $('#turn-opening');
@@ -407,7 +409,12 @@ export function init() {
     $('#btn-hint').title = !showing ? 'A nudge first; press again for the piece, then the move' : app.hint.level < 3 ? 'One more step of help' : 'Hide the hint';
     $('#btn-undo').disabled = app.busy || game.states.length < 2;
     $('#btn-resign').disabled = !!r || app.busy;
-    $('#btn-draw').hidden = cpu || !!sc || !!game.title; $('#btn-draw').disabled = !!r || app.busy;   // a draw by agreement, two players on one screen
+    /* a draw by agreement: two players on one screen, or against the computer on your turn (2.18.0);
+       the wait after the computer declined leaves it enabled, and a click names the move it ends at */
+    const dr = $('#btn-draw'), drOk = canOfferDraw();
+    dr.hidden = !!sc || !!game.title;
+    dr.disabled = !!r || app.busy || (cpu && (app.cpuThinking || c !== match.human || !engine.ready));
+    dr.title = !cpu ? 'Offer a draw: the other player agrees or plays on' : drOk === true ? 'Offer a draw: Stockfish judges the position, then agrees or plays on' : drOk;
     // strength can change mid-game; Stockfish reads the level when it starts each move
     $('#live-level-group').hidden = !cpu || !!sc;   // a study plays at its own strength
     // two players: the board's turn for each of them, switched here where it is used
@@ -479,6 +486,7 @@ export function init() {
   // Settings
   onRender(() => {
     $('#set-sound').checked = prefs.sound; $('#set-legal').checked = prefs.legal; $('#set-explore').checked = prefs.explore !== false; $('#set-coords').checked = prefs.coords;
+    $('#set-an-explore').checked = prefs.analyzeExplore !== false;
     $('#set-autoflip').checked = prefs.autoFlip !== false;
     $('#set-coach').checked = coachOn(); $('#set-eval').checked = prefs.evalOn; $('#set-eval').disabled = !engine.ready;
     for (const b of document.querySelectorAll('[data-speed]')) radio(b, b.dataset.speed === prefs.speed);
@@ -519,7 +527,8 @@ export function init() {
     if (boardOverride) { renderCrMoves(); $('#move-form button').disabled = $('#move-input').disabled; $('.moves-card').removeAttribute('data-idle'); return; }
     const list = $('#moves'), vp = viewedPly(), sb = sandbox(), tryOn = prefs.explore !== false;
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
-    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp, sb && explore.sans, tryOn]), () => {
+    const used = consultPlies(), mono = app.worldName === 'monolith';   // moves made after using Analyze (a two-player game)
+    const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, used, mono, vp, sb && explore.sans, tryOn]), () => {
     if (sb) return freeMoves(list);
     if (!game.sans.length) { const e = document.createElement('span'); e.className = 'empty'; e.textContent = app.started ? 'No moves yet.' : tryOn ? 'Try a move on the board; the moves show here.' : 'Moves appear here once the game starts.'; list.appendChild(e); }
     for (let i = 0; i < game.sans.length; i += 2) {
@@ -530,7 +539,10 @@ export function init() {
           s.className = 'mv' + (j + 1 === vp ? ' cur' : ''); s.textContent = game.sans[j]; s.tabIndex = 0; s.setAttribute('role', 'button'); s.dataset.key = `m${j}`;
           const mark = marks[j];
           if (mark) { const mk = document.createElement('sup'); mk.className = `mk mk-${mark === '!!' ? 'brilliant' : mark === '!' ? 'good' : mark === '?!' ? 'inaccuracy' : mark === '?' ? 'mistake' : 'blunder'}`; mk.textContent = mark; s.appendChild(mk); }
-          s.setAttribute('aria-label', `Show the position after ${game.sans[j]}${mark ? `, marked ${mark}` : ''}`);
+          // the side that played it used Analyze first: the Analyze icon, with who in its title
+          const who = consultedAt(j) ? (mono ? (game.states[j].turn === 'w' ? 'White' : 'Black') : SIDE[game.states[j].turn]) : '';
+          if (who) { const ub = document.createElement('span'); ub.className = 'mk-consult'; ub.title = `${who} looked at the engine (Analyze) before this move`; ub.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>'; s.appendChild(ub); }
+          s.setAttribute('aria-label', `Show the position after ${game.sans[j]}${mark ? `, marked ${mark}` : ''}${who ? `, ${who} used Analyze before it` : ''}`);
           const go = () => showView(j + 1);
           s.addEventListener('click', go); s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
         }
@@ -548,10 +560,11 @@ export function init() {
     // on the free board First resets the line and Previous takes a move back; there is nothing ahead
     $('#nav-first').disabled = (!sb && at === 0) || app.busy; $('#nav-prev').disabled = (!sb && at === 0) || app.busy;
     $('#nav-next').disabled = sb || at >= last || app.busy; $('#nav-last').disabled = sb || at >= last || app.busy;
-    // a typed move goes where a click would: the game on your turn, else a line on a board the game does not own
-    const typeTry = !canMoveNow() && (explore.on || (tryOn && exploreAvailable()));
+    // a typed move goes where a click would: the line on the board, Analyze at the live position
+    // (Explore in Analyze), the game on your turn, else a line on a board the game does not own
+    const typeTry = explore.on || analyzeExplores() || (!canMoveNow() && tryOn && exploreAvailable());
     $('#move-input').disabled = $('#move-form button').disabled = !canMoveNow() && !typeTry;
-    $('#move-input').placeholder = canMoveNow() ? 'e2e4, Nf3 or O-O' : typeTry ? 'Try a move: e4, Nf3' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
+    $('#move-input').placeholder = typeTry ? 'Try a move: e4, Nf3' : canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : drawJudging() ? 'Stockfish is considering your offer' : 'Waiting for the reply';
     // with nothing to list (no game, no line tried, no Crucible game on the board) the card folds
     // to its head (css/workspace.css)
     $('.moves-card').toggleAttribute('data-idle', !app.started && !explore.on && !boardOverride);

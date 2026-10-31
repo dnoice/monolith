@@ -79,7 +79,7 @@ import { refreshAnalysis } from './lines.js';
 import { coachKick } from '../coach/notes.js';
 import { studyAfterMove, studyScripted } from '../ui/studies.js';
 import { boardOverride } from '../ui/crucible-board.js';
-import { autoOrient, explore, exploreEnd } from './flow.js';
+import { autoOrient, consultHandover, consultOnMove, explore, exploreEnd } from './flow.js';
 
 /* ---------- playing moves ---------- */
 export async function playMove(mv) {
@@ -87,6 +87,7 @@ export async function playMove(mv) {
   // the pieces on the board are the line's, not the game's
   if (explore.on && !boardOverride) exploreEnd();
   app.busy = true; const st = cur(), rec = game.states; deselect(); hideSnack(); app.hint = null;
+  consultOnMove();   // a two-player game's move made from Analyze, its evaluation on screen, carries a mark
   const next = Chess.apply(st, mv), san = Chess.san(st, mv, next);
   /* A Crucible game on the board (boardOverride) owns its pieces: a reply that lands meanwhile is
      recorded without moving them, and the Play board is placed again when that game closes. A
@@ -184,6 +185,7 @@ function afterMove(next) {
   studyAfterMove();
   if (!game.result && Chess.inCheck(next)) { sound.chime(); checkShudder(Chess.kingSq(next.board, next.turn)); }
   render(); autoOrient();   // two players on one screen: the board turns to the side to move, a beat after the move lands
+  consultHandover();        // and the player now to move is told if the other used Analyze before this move
   if (game.result) celebrate(game.result);   // the result card in the Play panel carries Rematch
   refreshAnalysis();
   maybeComputerMove();

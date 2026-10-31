@@ -78,7 +78,7 @@ import { game, match, SIDE } from '../app/state.js';
 import { snack } from '../ui/snackbar.js';
 import { boardState } from './board-ui.js';
 import { sanMove } from './input.js';
-import { openSetup, startGame } from './flow.js';
+import { consultedAt, openSetup, startGame } from './flow.js';
 import { study } from '../ui/studies.js';
 
 /* ---------- PGN out ---------- */
@@ -96,9 +96,15 @@ export function gamePgn(now = new Date()) {
   const s0 = game.states[0], p = players(), res = resultToken(game.result);
   const tags = [['Event', study.cur ? study.cur.s.title : game.title ? game.title.name : 'MONOLITH game'], ['Site', 'MONOLITH'], ['Date', ymd(now, '.')], ['Round', '-'], ['White', p.w], ['Black', p.b], ['Result', res]];
   if (Chess.fen(s0) !== Chess.fen(Chess.newGame())) tags.push(['SetUp', '1'], ['FEN', Chess.fen(s0)]);
-  // the move number stays with its move, so a line never breaks between them
-  const words = []; let num = s0.fullmove, turn = s0.turn;
-  game.sans.forEach((san, i) => { words.push(turn === 'w' ? `${num}. ${san}` : i === 0 ? `${num}... ${san}` : san); if (turn === 'b') num++; turn = turn === 'w' ? 'b' : 'w'; });
+  /* the move number stays with its move, so a line never breaks between them; a move played after
+     using Analyze in a two-player game (js/game/flow.js markConsult) is followed by a comment saying
+     so, and a move of Black's after a comment takes its number again, as PGN asks */
+  const words = []; let num = s0.fullmove, turn = s0.turn, said = false;
+  game.sans.forEach((san, i) => {
+    words.push(turn === 'w' ? `${num}. ${san}` : i === 0 || said ? `${num}... ${san}` : san);
+    said = consultedAt(i); if (said) words.push(`{${SIDE[turn]} used Analyze before this move}`);
+    if (turn === 'b') num++; turn = turn === 'w' ? 'b' : 'w';
+  });
   if (game.result) words.push(`{${game.result.text.replace(/[{}]/g, '')}}`);
   words.push(res);
   const lines = []; let line = '';

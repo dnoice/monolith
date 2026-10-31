@@ -175,8 +175,11 @@
 .layer-btn{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border:1px solid var(--mo-rule);border-radius:3px;background:var(--mo-panel);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .layer-btn::before{content:'';flex:none;width:8px;height:8px;border:1px solid var(--mo-ink3);border-radius:1px}
 .layer-btn:hover{border-color:#3A4352;color:var(--mo-ink)}
-.layer-btn[aria-pressed="true"]{color:var(--mo-ink);border-color:#3A4352}
-.layer-btn[aria-pressed="true"]::before{background:var(--mo-ink);border-color:var(--mo-ink)}
+.layer-btn[aria-pressed="true"],.layer-btn[aria-checked="true"]{color:var(--mo-ink);border-color:#3A4352}
+.layer-btn[aria-pressed="true"]::before,.layer-btn[aria-checked="true"]::before{background:var(--mo-ink);border-color:var(--mo-ink)}
+/* Explore (2.18.0): not a layer but where a move goes, so it stands a little apart, its mark a dot */
+.layer-btn.layer-explore{margin-left:6px}
+.layer-btn.layer-explore::before{border-radius:50%}
 .layer-btn small{font:inherit;letter-spacing:.02em;text-transform:none;color:var(--mo-ink3)}
 .layer-btn:focus-visible{outline:2px solid var(--mo-ink);outline-offset:2px}
 .wdl{position:absolute;right:var(--gutter-r);top:122px;bottom:54px;display:flex;align-items:stretch;gap:6px;pointer-events:none;z-index:1}
