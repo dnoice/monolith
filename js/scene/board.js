@@ -115,8 +115,8 @@ function lathe(points, segs = 40) {
    drawn on the superellipsoid |x/a|^n + |y/b|^n + |z/c|^n = 1 (a, b, c its half sizes), with the
    surface's own normals, so the shading runs smoothly over faces and edges alike. Its bounding
    box is the box's, so the knight stands as tall and wide as before (the camera's fit and
-   PIECE_TOP measure the same); n = 4 keeps the blocky silhouette while no face stays flat. */
-function block(w, h, d, n = 4, step = 0.03) {
+   PIECE_TOP measure the same); n = 4.5 keeps the blocky silhouette while no face stays flat. */
+function block(w, h, d, n, step = 0.03) {
   // an even count across each side puts a vertex on every face's centre, where the block reaches
   // the box's own extent
   const a = [w / 2, h / 2, d / 2], seg = a.map(v => 2 * Math.max(2, Math.round(v / step)));
@@ -263,8 +263,8 @@ export function init() {
   GEO.pearl = new THREE.SphereGeometry(0.05, 10, 10);
   GEO.finial = new THREE.SphereGeometry(0.07, 12, 12);
   GEO.crossV = new THREE.BoxGeometry(0.06, 0.3, 0.06); GEO.crossH = new THREE.BoxGeometry(0.2, 0.06, 0.06);
-  GEO.neck = block(0.26, 0.52, 0.22); GEO.head = block(0.24, 0.24, 0.46);
-  GEO.muzzle = block(0.18, 0.14, 0.16); GEO.ear = block(0.06, 0.14, 0.07); GEO.mane = block(0.08, 0.5, 0.14);
+  GEO.neck = block(0.26, 0.52, 0.22, 4.5); GEO.head = block(0.24, 0.24, 0.46, 4.5);
+  GEO.muzzle = block(0.18, 0.14, 0.16, 4.5); GEO.ear = block(0.06, 0.14, 0.07, 4.5); GEO.mane = block(0.08, 0.5, 0.14, 4.5);
   piecesGroup = new THREE.Group(); piecesGroup.name = 'pieces'; scene.add(piecesGroup);
   // ---------- fragments (shatter)
   fragGeos = [new THREE.TetrahedronGeometry(0.09), new THREE.TetrahedronGeometry(0.06), new THREE.BoxGeometry(0.1, 0.07, 0.08), new THREE.DodecahedronGeometry(0.07)];
