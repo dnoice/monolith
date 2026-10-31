@@ -330,7 +330,7 @@ Headless Chromium (software GL):
 
 - Stockfish 19 is GPL-3.0 (`engine/COPYING.txt`); three.js is MIT; Geist, Geist Mono and Michroma are
   SIL OFL 1.1, served by Google Fonts.
-- The MONOLITH plates, tokens and rulings are Dennis's.
+- The MONOLITH plates, tokens and rulings are the project's own, under its MIT License (`LICENSE`).
 
 <!-- ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once! -->
 

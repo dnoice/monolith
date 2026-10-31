@@ -113,8 +113,8 @@ the CC0 licence.
 Publishing this folder from a server (a public repository, GitHub Pages) conveys the engine's object
 code. GPL-3.0 section 6(d) allows the source to sit on another server, as it does here, provided
 these directions stay beside the object code and the source stays available for as long as the
-object code is offered. The fork keeps that availability in Dennis's hands whatever happens
-upstream, and the upstream link records where the build came from.
+object code is offered. MONOLITH's fork keeps that source available, in the project's own hands,
+whatever happens upstream, and the upstream link records where the build came from.
 
 ## How the page loads it
 
