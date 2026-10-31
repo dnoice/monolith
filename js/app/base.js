@@ -78,6 +78,8 @@ const PREF_KEY = 'monolith-prefs-v2';
 const OLD_PREF_KEY = 'wizards-chess-prefs-v2';   // the key before the app was MONOLITH (2.13.0)
 const MO_DEFAULTS = { hash: 64, multipv: 5, wdl: true, limit: 20, fieldDepth: 10, walkDepth: 12, field: true, vectors: true };
 const CR_DEFAULTS = { src: 'recorded', aKind: 'nodes', aVal: 3000, bKind: 'nodes', bVal: 2000, mode: 'sprt', elo0: 0, elo1: 10, alpha: 0.05, pairs: 20, par: 2 };
+/* the panel's disclosures, whose open or closed state is kept (prefs.open, by id; js/ui/controls.js) */
+const OPEN_IDS = ['pgn-load', 'engine-lines', 'an-load', 'uci-options', 'cr-run-more', 'gfx-fine', 'set-keys', 'system-sheet'];
 export let prefs; // set in init()
 export function savePrefs() { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} }
 const isObj = v => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -93,7 +95,7 @@ export function init() {
   $('#about-version').textContent = `MONOLITH ${APP_VERSION}, released ${APP_DATE}.`;
   reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   app.SPEED = reduceMotion ? 0.3 : 1;
-  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, analyzeExplore: true, autoFlip: true, badges: 'full', edVs: 'cpu', coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
+  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, analyzeExplore: true, autoFlip: true, badges: 'full', edVs: 'cpu', coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, open: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
   prefs = Object.assign({}, DEFAULTS, (() => { try { const v = JSON.parse(localStorage.getItem(PREF_KEY) ?? localStorage.getItem(OLD_PREF_KEY)); return isObj(v) ? v : {}; } catch (e) { return {}; } })());
   /* Saved values are repaired, not trusted: storage can hold a value from an older release, or one
      edited by hand, and one bad value must never stop the page from starting (a level of 0 or a
@@ -105,7 +107,12 @@ export function init() {
   oneOf(prefs, 'world', ['auto', 'cathedral', 'monolith']); oneOf(prefs, 'pillars', ['monoliths', 'classic', 'modern']);
   oneOf(prefs, 'badges', ['full', 'short']); oneOf(prefs, 'edVs', ['cpu', 'human']); oneOf(prefs, 'analyzeExplore', [true, false]);
   inRange(prefs, 'level', 1, typeof LEVELS !== 'undefined' && LEVELS.length || 8, DEFAULTS.level); inRange(prefs, 'lines', 1, 5, DEFAULTS.lines);
-  for (const k of ['coach', 'engineOpen']) if (k in prefs && typeof prefs[k] !== 'boolean') delete prefs[k];
+  if ('coach' in prefs && typeof prefs.coach !== 'boolean') delete prefs.coach;
+  /* Each disclosure opens as it was left: prefs.open holds true or false for the known ids and
+     nothing else. Engine lines kept its own flag before, engineOpen, which moves into the map. */
+  if (typeof prefs.engineOpen === 'boolean' && !('engine-lines' in prefs.open)) prefs.open['engine-lines'] = prefs.engineOpen;
+  delete prefs.engineOpen;
+  for (const [k, v] of Object.entries(prefs.open)) if (!OPEN_IDS.includes(k) || typeof v !== 'boolean') delete prefs.open[k];
   prefs.mo = Object.assign({}, MO_DEFAULTS, isObj(prefs.mo) ? prefs.mo : {});
   for (const [k, v] of Object.entries(MO_DEFAULTS)) if (typeof prefs.mo[k] !== typeof v) prefs.mo[k] = v;
   for (const [k, lo, hi] of [['hash', 1, 1024], ['multipv', 1, 5], ['limit', 1, 3600], ['fieldDepth', 1, 30], ['walkDepth', 1, 30]]) inRange(prefs.mo, k, lo, hi, MO_DEFAULTS[k]);

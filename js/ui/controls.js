@@ -171,15 +171,22 @@ export function init() {
   $('#btn-pgn-save').addEventListener('click', downloadPgn);
   $('#btn-game-fen').addEventListener('click', copyFen);
   $('#btn-pgn-load').addEventListener('click', () => { ensureAudio(); loadPgn($('#pgn-box').value); });
-  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open) e.target.scrollIntoView({ block: 'nearest' }); });   // clear of the Start game row
+  // the panel's disclosures open as they were left (prefs.open, by id; Engine lines, never set, with
+  // the evaluation). Load a game, opened, comes clear of the Start game row, but not when it is only
+  // being reopened as the page loads.
+  const reopened = new Set();
+  $('#pgn-load').addEventListener('toggle', e => { if (e.target.open && !reopened.has(e.target)) e.target.scrollIntoView({ block: 'nearest' }); });
+  for (const d of document.querySelectorAll('.panel details[id]')) {
+    const open = d.id in prefs.open ? prefs.open[d.id] : d.id === 'engine-lines' ? !!prefs.evalOn : d.open;
+    if (open !== d.open) { d.open = open; reopened.add(d); }
+    d.addEventListener('toggle', () => { reopened.delete(d); prefs.open[d.id] = d.open; savePrefs(); });
+  }
   $('#set-coords').addEventListener('change', e => { prefs.coords = e.target.checked; savePrefs(); applyPrefs(); render(); });
   for (const b of document.querySelectorAll('[data-tips]')) b.addEventListener('click', () => { prefs.tips = b.dataset.tips; savePrefs(); render(); });
   $('#btn-tips-reset').addEventListener('click', () => { prefs.learned = {}; savePrefs(); render(); snack('Tips will show again.'); });
   for (const b of document.querySelectorAll('[data-speed]')) b.addEventListener('click', () => { prefs.speed = b.dataset.speed; savePrefs(); applyPrefs(); render(); });
   // Settings' Coach comments and Evaluation bar are the Coach card's switches, so each runs theirs
   for (const [set, own] of [['#set-coach', '#coach-switch'], ['#set-eval', '#eval-switch']]) $(set).addEventListener('change', e => { const s = $(own); s.checked = e.target.checked; s.dispatchEvent(new Event('change')); });
-  $('#engine-lines').open = prefs.engineOpen !== undefined ? !!prefs.engineOpen : !!prefs.evalOn;
-  $('#engine-lines').addEventListener('toggle', e => { prefs.engineOpen = e.target.open; savePrefs(); });
   $('#coach-switch').addEventListener('change', e => { prefs.coach = e.target.checked; savePrefs(); render(); if (prefs.coach) coachKick(); });
   $('#eval-switch').addEventListener('change', e => {
     prefs.evalOn = e.target.checked; savePrefs();
