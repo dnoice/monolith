@@ -186,7 +186,7 @@
 .profile{display:block;width:100%;height:120px;background:var(--mo-well);border:1px solid var(--mo-rule);border-radius:3px}
 .opt-list{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
 .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:4px 0;border-bottom:1px solid var(--mo-rule)}
-.opt > label,.opt > .opt-l{display:flex;flex-direction:column;font-size:13px;min-width:0}
+.opt > label,.opt > .opt-l{display:flex;flex-direction:column;justify-content:center;align-self:stretch;font-size:13px;min-width:0}
 .opt small{font-size:11.5px;color:var(--mo-ink3)}
 .opt .select{height:32px;min-width:96px}
 .opt .val{font-family:var(--font-tele);font-size:12px;color:var(--mo-ink2)}
@@ -271,7 +271,7 @@
 /* the short source badges (Settings) set the footer's compact form too */
 :root[data-badges="short"] .tm .badge .bf{display:none}
 :root[data-badges="short"] .tm .badge .bs{display:inline}
-.syn-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
+.syn-scroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--mo-rule) transparent;padding-bottom:2px}
 .syn-grid{display:grid;grid-template-columns:22px 52px 54px auto;gap:5px 8px;align-items:center;width:max-content;min-width:100%}
 .syn-i{font:400 11px var(--font-tele);color:var(--mo-ink3);text-align:right}
 .syn-ev{font:400 12px var(--font-tele);text-align:right;white-space:nowrap}

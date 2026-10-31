@@ -227,6 +227,22 @@ export function grBack() {
    filtered, and remembered. */
 export function grSearch(q) { gr.q = q || ''; $('#gr-q').value = gr.q; gr.id = null; grSave(); grRender(); }
 
+/* A group of terms that is one stop for the keyboard (data-roving: Analyze's six search readouts,
+   ten stops before the engine lines otherwise): Tab comes in at the term last used there, the
+   arrows move between them, Home and End go to the first and the last. */
+function roving(group) {
+  const terms = () => [...group.querySelectorAll('[data-term]')];
+  const keep = t => { for (const x of terms()) x.tabIndex = x === t ? 0 : -1; };
+  keep(terms()[0]);
+  group.addEventListener('focusin', e => { if (e.target.matches('[data-term]')) keep(e.target); });
+  group.addEventListener('keydown', e => {
+    const list = terms(), i = list.indexOf(document.activeElement); if (i < 0) return;
+    const j = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: list.length - 1 }[e.key];
+    if (j === undefined) return;
+    e.preventDefault(); e.stopPropagation(); list[(j + list.length) % list.length].focus();
+  });
+}
+
 /* Term cards: one at a time, beside the term that opened it. */
 const tp = { anchor: null, id: null };
 export function termify(root = document) {
@@ -299,5 +315,6 @@ export function init() {
   $('#tp-open').addEventListener('click', () => { const id = tp.id; termClose(false); setTab('grimoire'); grOpen(id); });
   for (const b of document.querySelectorAll('.badge')) if (!b.dataset.term) b.dataset.term = 'source-badges';
   grBuildCats(); termify();
+  for (const g of document.querySelectorAll('[data-roving]')) roving(g);
   grRender();   // drawn now, so a reload onto the Grimoire (or its saved article) shows it at once
 }

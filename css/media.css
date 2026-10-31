@@ -116,7 +116,7 @@
   #telemetry{display:none}
   .rail{padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));padding-left:var(--gutter-l);padding-right:var(--gutter-r);border-right:0;border-top:1px solid var(--md-outline-var)}
   .rail-tabs{flex-direction:row;justify-content:space-around;gap:0;padding-block:0}
-  .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto}
+  .panel{border-left:0;border-top:1px solid var(--md-outline-var);overflow:auto;overscroll-behavior:contain}
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
   /* the panel scrolls here, so the shade at its top edge is the panel's (css/layout.css), and the
      panel is what a tab's crossfade captures */
@@ -137,7 +137,7 @@
   .moves-card:not([data-idle]) .moves-head h2{display:none}
   .moves-head .icon-btn{width:40px;height:40px}
   .moves-type{display:grid}
-  .moves-card:not([data-idle]) .moves{grid-area:1/1;display:flex;align-items:center;gap:2px;max-height:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+  .moves-card:not([data-idle]) .moves{grid-area:1/1;display:flex;align-items:center;gap:2px;max-height:none;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none}
   .moves-card:not([data-idle]) .moves > *{flex:none;white-space:nowrap}
   .moves-card:not([data-idle]) .moves .num{padding:3px 0 3px 6px}
   .moves-card:not([data-idle]) .move-entry{grid-column:1/-1}
@@ -222,6 +222,15 @@
   .switch.small::before{left:6px;width:16px;height:16px}
   .switch.small:checked::before{left:24px;width:22px;height:22px}
   .pos-switch [role="tab"],.seg button,.ed-play .seg button,.set-index button{height:40px}
+  /* the panel's chips: the Grimoire's categories and See also, the Read view's features, Set up's
+     castling rights; and a card head's switch, whose label is the target */
+  .gr-cat,.gr-see-list button,.pr-chip,.ed-cs{height:40px}
+  .head-switch{min-height:40px}
+  /* the study card's Start and Details, the Grimoire's article pager, and a UCI option's row, whose
+     label is its switch's target */
+  .st-next-act .btn.small{height:40px}
+  .gr-a-nav .icon-btn{width:40px;height:40px}
+  .opt{min-height:49px}
   .opt .select,.gfx-grid .select,.ed-ep select{height:40px}
   :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea){font-size:16px}
 }

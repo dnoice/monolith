@@ -316,6 +316,8 @@ button.pr-mob{cursor:pointer}
 .pr-chip>span{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .pr-chip small{margin-left:auto;font:500 11px var(--font-mono);color:var(--md-on-surface-var)}
 .pr-chip.none{color:var(--md-on-surface-var)}
+/* lit on the board: the accent's tint and edge (the rows keep their bar) */
+.pr-chip[aria-pressed="true"]{border-color:var(--pnl-accent-line);background:var(--pnl-accent-soft);box-shadow:none}
 .pr-chip:disabled{opacity:.42;cursor:default}
 .pr-chip.k-passed{--mk:var(--mk-passed)}.pr-chip.k-isolated{--mk:var(--mk-isolated)}.pr-chip.k-doubled{--mk:var(--mk-doubled)}.pr-chip.k-open{--mk:var(--mk-open)}.pr-chip.k-shelter{--mk:var(--mk-shelter)}.pr-chip.k-bishop{--mk:var(--mk-bishop)}
 .pr-detail{min-height:3em;font-size:13px;line-height:1.5;color:var(--md-on-surface)}
@@ -375,7 +377,8 @@ button.pr-rule{cursor:pointer}
 .ed-castle .ed-lab{grid-column:1 / -1}
 .ed-cs{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:0;height:30px;padding:0 6px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:transparent;color:var(--md-on-surface-var);font:500 11.5px/1 var(--font-mono);cursor:pointer}
 .ed-cs .pr-av{width:10px;height:10px}
-.ed-cs[aria-pressed="true"]{border-color:transparent;background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+/* a right that is on: the accent's tint and edge, as a chosen chip is everywhere in the panel */
+.ed-cs[aria-pressed="true"]{border-color:var(--pnl-accent-line);background:var(--pnl-accent-soft);color:var(--pnl-ink)}
 .ed-cs:disabled{opacity:.38;cursor:default}
 .ed-cs:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:2px}
 .ed-ep{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -441,6 +444,7 @@ button.pr-rule{cursor:pointer}
 :root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap{border-radius:4px}
 :root[data-skin="monolith"] .st-next,:root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap,:root[data-skin="monolith"] .ed-tool{background:var(--mo-panel)}
 :root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .st-tile,:root[data-skin="monolith"] .fen-f,:root[data-skin="monolith"] .pr-chip,:root[data-skin="monolith"] .ed-tool{border-color:var(--mo-rule)}
+:root[data-skin="monolith"] .pr-chip[aria-pressed="true"]{border-color:var(--pnl-accent-line)}
 :root[data-skin="monolith"] .st-card{border-top-color:color-mix(in srgb,var(--sc) 55%,var(--mo-rule))}
 :root[data-skin="monolith"] .pr-badge,:root[data-skin="monolith"] .st-facts li{border-radius:3px}
 :root[data-skin="monolith"] .st-d-head h4,:root[data-skin="monolith"] .sl-head b{font-family:var(--font-ui-mo)}

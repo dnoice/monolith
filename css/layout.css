@@ -333,7 +333,7 @@
 /* panel */
 /* the panel is the ground its cards are raised on (--pnl-ground, a step under the bars' surface) */
 .panel{grid-area:panel;position:relative;display:flex;flex-direction:column;min-height:0;background:var(--pnl-ground);border-left:1px solid var(--md-outline-var)}
-.panes{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
+.panes{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;scrollbar-gutter:stable;padding-left:20px;padding-right:var(--gutter-r);padding-block:20px}
 /* what scrolls into view (a focused control) stops below a card's head band held at the top */
 .panes,.panel{scroll-padding-top:60px}
 /* The panel's top edge shades once its content has scrolled under it, over its first 40 px of
@@ -463,7 +463,8 @@
 
 /* switch rows */
 .switch-row{display:flex;align-items:center;gap:16px;justify-content:space-between;min-height:48px}
-.switch-row label{display:flex;flex-direction:column;cursor:pointer}
+/* the label fills the row's height, so the whole row is the switch's target */
+.switch-row label{display:flex;flex-direction:column;justify-content:center;align-self:stretch;cursor:pointer}
 .switch-row label > span:not(.sr-label){font-size:12.5px;color:var(--md-on-surface-var)}
 /* off, a track sunk into its card with a light thumb and edge, at 3:1 or better against both (a
    dim thumb on a dim track read as disabled); on, the accent's track in the cathedral and steel in
