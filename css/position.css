@@ -184,7 +184,7 @@
 
 /* ---------- Studies: Up next, tiles, the grid ---------- */
 .st-index{display:flex;flex-direction:column;gap:14px}
-.st-next{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:12px;padding:10px;border:1px solid color-mix(in srgb,var(--sc,var(--md-outline)) 45%,var(--md-outline-var));border-radius:12px;background:var(--md-surface-1)}
+.st-next{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:12px;padding:10px;border:1px solid color-mix(in srgb,var(--sc,var(--md-outline)) 45%,var(--md-outline-var));border-radius:var(--r-inner);background:var(--md-surface-1)}
 .st-next-dg .dg{border-radius:4px}
 .st-next.done .st-next-dg{display:grid;place-items:center}
 .st-next.done .st-ring{width:72px;height:72px}
@@ -371,7 +371,7 @@ button.pr-rule{cursor:pointer}
 .ed-ep select{height:32px;min-width:96px;padding:0 10px;border:1px solid var(--md-outline);border-radius:var(--r-field);background:var(--md-surface-1);color:var(--md-on-surface);font:500 12.5px var(--font-mono)}
 .ed-ep select:disabled{opacity:.5}
 .ed-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-.ed-tools .btn.small{flex-direction:column;justify-content:flex-start;gap:3px;height:auto;min-width:0;padding:7px 2px;border-radius:10px;font-size:11.5px;line-height:1.2;text-align:center;white-space:normal}
+.ed-tools .btn.small{flex-direction:column;justify-content:flex-start;gap:3px;height:auto;min-width:0;padding:7px 2px;border-radius:var(--r-inner);font-size:11.5px;line-height:1.2;text-align:center;white-space:normal}
 .ed-tools .btn svg{width:18px;height:18px}
 #ed-flip[aria-pressed="true"]{background:color-mix(in srgb,var(--md-primary) 14%,transparent)}
 /* who plays it, and the card's foot: Play this position and the sentence saying how it will be
@@ -426,11 +426,11 @@ button.pr-rule{cursor:pointer}
 :root[data-skin="monolith"] .ed-foot{background:var(--mo-well);border-top-color:var(--mo-rule)}
 :root[data-skin="monolith"] .pr-status{background:var(--mo-crimson-tint);border-radius:3px}
 :root[data-skin="monolith"] .pr-status.draw{background:var(--mo-raised)}
-:root[data-skin="monolith"] .st-next,:root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .st-tile,:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap,:root[data-skin="monolith"] .ed-tool{border-radius:4px}
+:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap{border-radius:4px}
 :root[data-skin="monolith"] .st-next,:root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .pr-side.me,:root[data-skin="monolith"] .fen-wrap,:root[data-skin="monolith"] .ed-tool{background:var(--mo-panel)}
 :root[data-skin="monolith"] .st-card,:root[data-skin="monolith"] .st-tile,:root[data-skin="monolith"] .fen-f,:root[data-skin="monolith"] .pr-chip,:root[data-skin="monolith"] .ed-tool{border-color:var(--mo-rule)}
 :root[data-skin="monolith"] .st-card{border-top-color:color-mix(in srgb,var(--sc) 55%,var(--mo-rule))}
-:root[data-skin="monolith"] .fen-f,:root[data-skin="monolith"] .pr-chip,:root[data-skin="monolith"] .pr-badge,:root[data-skin="monolith"] .st-facts li{border-radius:3px}
+:root[data-skin="monolith"] .pr-badge,:root[data-skin="monolith"] .st-facts li{border-radius:3px}
 :root[data-skin="monolith"] .st-d-head h4,:root[data-skin="monolith"] .sl-head b{font-family:var(--font-ui-mo)}
 :root[data-skin="monolith"] .pr-tag,:root[data-skin="monolith"] .st-kick{font-family:var(--font-tele);font-weight:400}
 :root[data-skin="monolith"] .pr-side.me .pr-mob-track i,:root[data-skin="monolith"] .pr-ph.on::before{background:var(--mo-cyan)}
