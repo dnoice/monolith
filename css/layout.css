@@ -497,7 +497,7 @@
      1. From the first paint, 2.65 s: White's back rank flies in and settles in an arc over the
         emblem as the M is written square by square, stroke by stroke, each square lit in the
         world's primary colour and cooling to its own; the name gathers in, then the meter and
-        the tip card rise beneath it.
+        the tip rise beneath it.
      2. The board is built behind it (the page's boot, which holds the main thread); the meter's
         working segment keeps its sheen moving, and the arc breathing, on the compositor.
      3. Once the board has drawn, 3.6 s: the pieces are set down in turn, the sides alternating,
@@ -514,7 +514,7 @@
 :root[data-boot-pace="fast"] .boot{--bt:.55}
 .boot-core{flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vmin,26px)}
 /* The emblem (--em wide) as wide as the window allows with the arc over it, short of the name, the
-   meter and the tip card below: the arc is 1.72 emblems wide, and it and the emblem 1.4 tall. The
+   meter and the tip below: the arc is 1.72 emblems wide, and it and the emblem 1.4 tall. The
    mark's top padding is the arc's headroom, so the core centres the whole of it. */
 .boot-mark{--em:min(calc((100vw - 32px) / 1.72),340px,calc((100vh - 320px) / 1.4));--arc-r:calc(var(--em) * .78);--arc-pc:calc(var(--em) * .155);position:relative;display:grid;place-items:center;padding-top:calc(var(--arc-r) * .975 - var(--em) / 2 + var(--arc-pc) / 2 + 4px)}
 /* a slow breath of light behind the emblem, on the compositor */
