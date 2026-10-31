@@ -36,7 +36,7 @@
     with a round hub, and six pieces, rook, knight, bishop, king and queen
     leaning along the arc from MINIMAL to ULTRA and a pawn upright on the hub.
     The arcs are drawn without a stroke colour so the page can paint them.
-    Drawn by Dennis in Inkscape.
+    Drawn by hand in Inkscape.
 
 ✒ Key Features:
     - Geometry: a 306 x 170 canvas; outer radius 153.32, inner 85.94, the hub
@@ -56,7 +56,7 @@
 
 ✒ Other Important Information:
     - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
-    - Source of truth: this file is Dennis's hand-drawn source; the mock-ups
+    - Source of truth: this file is the hand-drawn source; the mock-ups
       under assets/mockups stamp from it and nothing regenerates it
     - Colours: the arcs carry no colour of their own; boxwood #decd87 and
       ebony #1a1a1a on the pieces, each the other's contour
@@ -74,7 +74,7 @@
         <dc:contributor><cc:Agent><dc:title>Anthropic - Claude Fable 5.1</dc:title></cc:Agent></dc:contributor>
         <dc:rights><cc:Agent><dc:title>Dennis 'dendogg' Smaltz</dc:title></cc:Agent></dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>The Settings panel's graphics-quality gauge drawn with the house pieces: five sectors of a half ring, five inner sectors inset from them, a needle with a round hub, and six pieces, rook, knight, bishop, king and queen leaning along the arc from MINIMAL to ULTRA and a pawn upright on the hub. The arcs are drawn without a stroke colour so the page can paint them. Drawn by Dennis in Inkscape.</dc:description>
+        <dc:description>The Settings panel's graphics-quality gauge drawn with the house pieces: five sectors of a half ring, five inner sectors inset from them, a needle with a round hub, and six pieces, rook, knight, bishop, king and queen leaning along the arc from MINIMAL to ULTRA and a pawn upright on the hub. The arcs are drawn without a stroke colour so the page can paint them. Drawn by hand in Inkscape.</dc:description>
         <dc:subject><rdf:Bag><rdf:li>MONOLITH</rdf:li><rdf:li>chess</rdf:li><rdf:li>logo</rdf:li><rdf:li>illustration</rdf:li></rdf:Bag></dc:subject>
       </cc:Work>
     </rdf:RDF>

@@ -29,11 +29,11 @@
       generated kit.
 
 ✒ Description:
-    Dennis's brand kit rebuilt by the system, panel for panel: the
-    construction drawings on 4, 8 and 16 grids across the top; the quartet,
-    the ranks and the bare 16 below them; the scatter under those on the
-    right. Every tile is computed from the letter's parameters and every piece
-    stands where he placed it. His hand-built kit,
+    The brand kit rebuilt by the system, panel for panel: the construction
+    drawings on 4, 8 and 16 grids across the top; the quartet, the ranks and
+    the bare 16 below them; the scatter under those on the right. Every tile
+    is computed from the letter's parameters and every piece stands where the
+    hand-built kit places it. The hand-built kit,
     brand/monolith-brand-kit.svg, is the reference this reproduces.
 
 ✒ Key Features:
@@ -970,7 +970,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>Dennis's brand kit rebuilt by the system, panel for panel: the construction drawings on 4, 8 and 16 grids across the top; the quartet, the ranks and the bare 16 below them; the scatter under those on the right. Every tile is computed from the letter's parameters and every piece stands where he placed it. His hand-built kit, brand/monolith-brand-kit.svg, is the reference this reproduces.</dc:description>
+        <dc:description>The brand kit rebuilt by the system, panel for panel: the construction drawings on 4, 8 and 16 grids across the top; the quartet, the ranks and the bare 16 below them; the scatter under those on the right. Every tile is computed from the letter's parameters and every piece stands where the hand-built kit places it. The hand-built kit, brand/monolith-brand-kit.svg, is the reference this reproduces.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

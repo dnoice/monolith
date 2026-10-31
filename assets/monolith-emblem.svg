@@ -37,22 +37,23 @@
       screen.
 
 ✒ Description:
-    MONOLITH's official emblem, chosen by Dennis on 10/26/2026: the MONOLITH M
-    cut into a four by four grid of slate tiles with black mortar, with his
-    quartet of twelve pieces standing on it, one of each kind per side. The
-    letter and the placements are his (measured from monolith-brand-kit.svg
-    and written down in assets/brand/MONOLITH_M_SYSTEM.md); this file is the
-    system's rendering of them at 1200 px. It is the source of the page's
-    loading screen: tools/build-emblem.mjs copies it into index.html.
+    MONOLITH's official emblem, chosen on 10/26/2026: the MONOLITH M cut into
+    a four by four grid of slate tiles with black mortar, with the quartet of
+    twelve pieces standing on it, one of each kind per side. The letter and
+    the placements are measured from monolith-brand-kit.svg and written down
+    in assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering
+    of them at 1200 px. It is the source of the page's loading screen:
+    tools/build-emblem.mjs copies it into index.html.
 
 ✒ Key Features:
     - Canvas 1200 x 1200; the MONOLITH M edge to edge on a 4 x 4 grid of 300
       px cells: 4 whole tiles, 8 cut to the outline, 12 pieces
     - Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per
-      1200 (paint-order markers fill stroke), as Dennis draws the grout
-    - Pieces: chess-pieces.svg stamped verbatim at Dennis's placements;
-      White is boxwood-faced (#decd87 face, #1a1a1a contour), Black
-      ebony-faced; pawns 3 % smaller, as drawn
+      1200 (paint-order markers fill stroke), as the brand kit draws the
+      grout
+    - Pieces: chess-pieces.svg stamped verbatim at the brand kit's
+      placements; White is boxwood-faced (#decd87 face, #1a1a1a contour),
+      Black ebony-faced; pawns 3 % smaller, as drawn
     - One flat layer: groups only, no Inkscape layers
     - Regenerate by running assets/generator/monolith_m.py; its official
       target rebuilds just the two marks
@@ -216,7 +217,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>MONOLITH's official emblem, chosen by Dennis on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, with his quartet of twelve pieces standing on it, one of each kind per side. The letter and the placements are his (measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md); this file is the system's rendering of them at 1200 px. It is the source of the page's loading screen: tools/build-emblem.mjs copies it into index.html.</dc:description>
+        <dc:description>MONOLITH's official emblem, chosen on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, with the quartet of twelve pieces standing on it, one of each kind per side. The letter and the placements are measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of them at 1200 px. It is the source of the page's loading screen: tools/build-emblem.mjs copies it into index.html.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

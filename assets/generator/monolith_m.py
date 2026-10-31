@@ -55,14 +55,14 @@
       the letter as parameters, the tiling computed, his layouts as tables.
 
 ✒ Description:
-    The MONOLITH brand mark as a system: one letter, the MONOLITH M that
-    Dennis landed on in monolith-brand-kit.svg, written down as
+    The MONOLITH brand mark as a system: one letter, the MONOLITH M as
+    drawn in monolith-brand-kit.svg, written down as
     parameters and equations, and every variant of the tiled M built from
     it. The outline is computed from a dozen numbers (leg width, corner
     radius, the valley's floor and flank handles, the crossbar's underside,
     the notch); a grid of n by n cells is laid over the square and every
     cell is a whole tile, a tile cut to the outline, or dropped; the piece
-    layouts he composed are tables of his own placements. Run it and it
+    layouts are tables of the kit's own placements. Run it and it
     writes the two official marks, the variants and the generated kit;
     import it and build_mark() gives any size, density, skin or layout.
     The companion document is assets/brand/MONOLITH_M_SYSTEM.md.
@@ -70,12 +70,12 @@
 ✒ Key Features:
     - Geometry: Outline(P) is the letter as an exact SVG path (lines, arcs,
       cubics) and as a shapely polygon; every number is a named parameter
-      with Dennis's value as the default
+      with the kit's value as the default
     - Tiling: tiles(n, outline, plinths) lays the n x n grid, clips it, and
       merges plinth blocks (2 x 2 or 3 x 3) under pieces that stand on them
-    - Skins: slate (his kit: one slate, black mortar), checker, legs
+    - Skins: slate (the kit's: one slate, black mortar), checker, legs
     - Layouts: bare, grid (construction), quartet (n = 4, the emblem),
-      ranks (n = 8), scatter (n = 16), each placement measured from his kit
+      ranks (n = 8), scatter (n = 16), each placement measured from the kit
     - Construction grid: the outline with n + 1 invisible guide lines each
       way over it (GUIDE_STYLE: no fill, no stroke, no width), a template
       to snap to rather than drawing; the frame's own edges included
@@ -99,7 +99,7 @@
     - Dependencies: Python 3.10+, shapely, numpy, lxml, svgpathtools; the
       emitter and the piece loader are mono_svg.py and mono_assets.py
       beside this file
-    - Pieces: assets/chess-pieces.svg stamped verbatim (Dennis's nodes)
+    - Pieces: assets/chess-pieces.svg stamped verbatim (the drawn nodes)
     - Every file this writes carries the house header and is regenerated,
       never hand-edited; the officials and the page's emblem build follow
 ---------
@@ -135,7 +135,7 @@ OFFICIAL_RENAMED = ("{version} (10/30/2026) [dendogg + Anthropic - Claude Opus 5
 
 
 # ---------------------------------------------------------------------------
-# 1. The letter: parameters in a 1200-unit square, as Dennis drew it
+# 1. The letter: parameters in a 1200-unit square, as drawn in the kit
 # ---------------------------------------------------------------------------
 
 @dataclass(frozen=True)
@@ -363,7 +363,7 @@ def tile_fill(t: Tile, skin: dict, n: int) -> str:
 
 
 # ---------------------------------------------------------------------------
-# 4. Layouts: Dennis's compositions, measured from his kit
+# 4. Layouts: the compositions, measured from the kit
 # ---------------------------------------------------------------------------
 
 @dataclass
@@ -489,10 +489,11 @@ def build_mark(n: int, layout: str = "bare", P_: MParams = MONOLITH_M) -> Mark:
 # 5. Drawing
 # ---------------------------------------------------------------------------
 
-# A guide line: an open path that renders nothing. Dennis's ruling (10/26/2026, after his
+# A guide line: an open path that renders nothing. The rule (10/26/2026, after
 # grid-template-invisible-line-elements.svg): a construction grid is a template, so its lines carry no
 # fill, no stroke and no width. They still snap and select in Inkscape (and show in its outline view),
-# add nothing to a group's bounding box beyond the square itself, and paint no pixels. The style is his.
+# add nothing to a group's bounding box beyond the square itself, and paint no pixels. The style is
+# that file's.
 GUIDE_STYLE = ("fill:none;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:round;"
                "stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke")
 GUIDE_NOTE = ("The grid's lines are invisible guide paths (no fill, no stroke, no width): a template to snap "
@@ -604,7 +605,8 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
                   f"{SKINS[skin]['mortar']}",
                   (f"Grid: {n + 1} guide lines each way, the frame's edges included, laid over the outline; "
                    "no fill, no stroke, no width" if grid else
-                   "Pieces: chess-pieces.svg stamped verbatim at Dennis's placements; White is boxwood-faced")],
+                   "Pieces: chess-pieces.svg stamped verbatim at the brand kit's placements; "
+                   "White is boxwood-faced")],
         keywords=["MONOLITH", "brand", "logo", "tiled M", "chess"], width=size, height=size,
         id_convention=ID_CONVENTION + (" " + GUIDE_NOTE if grid else ""),
         changelog=[f"{version} ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Renamed "
@@ -626,12 +628,13 @@ OFFICIAL = {
     "logo": dict(
         n=4, layout="bare", file="monolith-logo.svg", root="logo-monolith", panel="logo",
         version="1.0.2", title="MONOLITH Logo (MONOLITH Edition - v1.0)",
-        description=("MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M "
+        description=("MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M "
                      "cut into a four by four grid of slate tiles with black mortar, no pieces. "
-                     "The letter is his (measured from monolith-brand-kit.svg and written down in "
-                     "assets/brand/MONOLITH_M_SYSTEM.md); "
-                     "this file is the system's rendering of it at 1200 px, and the emblem is the same mark with "
-                     "his twelve pieces standing on it. It is the source of the page's app bar logo: "
+                     "The letter is measured from monolith-brand-kit.svg and written down in "
+                     "assets/brand/MONOLITH_M_SYSTEM.md; "
+                     "this file is the system's rendering of it at 1200 px, and the emblem is the "
+                     "same mark with twelve pieces standing on it. It is the source of the page's "
+                     "app bar logo: "
                      "tools/build-emblem.mjs writes it into index.html, reading its board-logo group."),
         changelog=[OFFICIAL_RENAMED.format(version="1.0.2", group="board-logo"),
                    "1.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis asked for "
@@ -644,12 +647,12 @@ OFFICIAL = {
     "emblem": dict(
         n=4, layout="quartet", file="monolith-emblem.svg", root="emblem-monolith", panel="emblem",
         version="2.0.1", title="MONOLITH Emblem (MONOLITH Edition - v2.0)",
-        description=("MONOLITH's official emblem, chosen by Dennis on 10/26/2026: the MONOLITH M "
-                     "cut into a four by four grid of slate tiles with black mortar, with his "
+        description=("MONOLITH's official emblem, chosen on 10/26/2026: the MONOLITH M "
+                     "cut into a four by four grid of slate tiles with black mortar, with the "
                      "quartet of twelve pieces standing on it, one of each kind per side. The "
-                     "letter and the placements are his (measured from monolith-brand-kit.svg and "
+                     "letter and the placements are measured from monolith-brand-kit.svg and "
                      "written down in "
-                     "assets/brand/MONOLITH_M_SYSTEM.md); "
+                     "assets/brand/MONOLITH_M_SYSTEM.md; "
                      "this file is the system's rendering of them at 1200 px. It is the source of the page's "
                      "loading screen: tools/build-emblem.mjs copies it into index.html."),
         changelog=[
@@ -681,8 +684,9 @@ def render_official(kind: str, size: float = 1200.0) -> tuple[str, str]:
         features=[f"Canvas {size:g} x {size:g}; the MONOLITH M edge to edge on a 4 x 4 grid of "
                   f"{size / 4:g} px cells: {_stats(mark)}",
                   "Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per 1200 (paint-order "
-                  "markers fill stroke), as Dennis draws the grout",
-                  *(["Pieces: chess-pieces.svg stamped verbatim at Dennis's placements; White is boxwood-faced "
+                  "markers fill stroke), as the brand kit draws the grout",
+                  *(["Pieces: chess-pieces.svg stamped verbatim at the brand kit's placements; "
+                     "White is boxwood-faced "
                      "(#decd87 face, #1a1a1a contour), Black ebony-faced; pawns 3 % smaller, as drawn"]
                     if mark.pieces else []),
                   "One flat layer: groups only, no Inkscape layers",
@@ -701,7 +705,7 @@ KIT_ROWS = [[(4, "grid"), (8, "grid"), (16, "grid")],
 
 
 def render_kit(size: float = 1200.0, gap: float = 44.0, skin: str = "slate") -> tuple[str, str]:
-    """The kit sheet, laid out as Dennis's: construction panels on top, then the
+    """The kit sheet, laid out as the hand-built one: construction panels on top, then the
     quartet, the ranks and the bare 16, then the scatter under them on the right."""
     W = H = 3 * size + 2 * gap
     svg = Svg()
@@ -720,10 +724,11 @@ def render_kit(size: float = 1200.0, gap: float = 44.0, skin: str = "slate") -> 
     doc = _doc(
         svg, title="MONOLITH Brand Kit Generated (MONOLITH Edition - v1.2)", file_name=fname,
         rel_path=f"assets/brand/{fname}", version="1.2.1",
-        description=("Dennis's brand kit rebuilt by the system, panel for panel: the construction drawings on 4, 8 "
+        description=("The brand kit rebuilt by the system, panel for panel: the construction "
+                     "drawings on 4, 8 "
                      "and 16 grids across the top; the quartet, the ranks and the bare 16 below them; the scatter "
                      "under those on the right. Every tile is computed from the letter's parameters and every "
-                     "piece stands where he placed it. His hand-built kit, "
+                     "piece stands where the hand-built kit places it. The hand-built kit, "
                      "brand/monolith-brand-kit.svg, is the reference this reproduces."),
         features=[f"Seven panels of {size:g} px, {gap:g} px apart; canvas {W:g} x {H:g}", *stats],
         keywords=["MONOLITH", "brand kit", "logo", "tiled M", "chess"], width=W, height=H,

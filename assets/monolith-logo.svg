@@ -28,20 +28,20 @@
       system.
 
 ✒ Description:
-    MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M
-    cut into a four by four grid of slate tiles with black mortar, no pieces.
-    The letter is his (measured from monolith-brand-kit.svg and written down
-    in assets/brand/MONOLITH_M_SYSTEM.md); this file is the system's rendering
-    of it at 1200 px, and the emblem is the same mark with his twelve pieces
-    standing on it. It is the source of the page's app bar logo:
-    tools/build-emblem.mjs writes it into index.html, reading its board-logo
-    group.
+    MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M cut into a
+    four by four grid of slate tiles with black mortar, no pieces. The letter
+    is measured from monolith-brand-kit.svg and written down in
+    assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of
+    it at 1200 px, and the emblem is the same mark with twelve pieces standing
+    on it. It is the source of the page's app bar logo: tools/build-emblem.mjs
+    writes it into index.html, reading its board-logo group.
 
 ✒ Key Features:
     - Canvas 1200 x 1200; the MONOLITH M edge to edge on a 4 x 4 grid of 300
       px cells: 4 whole tiles, 8 cut to the outline
     - Tiles: slate #6f8a91, mortar #000000 stroked over the fill at 1 px per
-      1200 (paint-order markers fill stroke), as Dennis draws the grout
+      1200 (paint-order markers fill stroke), as the brand kit draws the
+      grout
     - One flat layer: groups only, no Inkscape layers
     - Regenerate by running assets/generator/monolith_m.py; its official
       target rebuilds just the two marks
@@ -151,7 +151,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>MONOLITH's official logo, chosen by Dennis on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is his (measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md); this file is the system's rendering of it at 1200 px, and the emblem is the same mark with his twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
+        <dc:description>MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of it at 1200 px, and the emblem is the same mark with twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

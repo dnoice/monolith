@@ -37,8 +37,8 @@
       185.39 wide with cubic flanks (handles 59.35 and 72.39), crossbar
       underside at 509.68, notch to 600 (1200 units, scaled)
     - Skin slate: tiles #6f8a91 and #6f8a91, mortar #000000
-    - Pieces: chess-pieces.svg stamped verbatim at Dennis's placements;
-      White is boxwood-faced
+    - Pieces: chess-pieces.svg stamped verbatim at the brand kit's
+      placements; White is boxwood-faced
 
 ✒ Id Convention:
     component-subcomponent-panel, the panel suffix last: board-<panel> holds

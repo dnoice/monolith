@@ -34,7 +34,7 @@
 
 ✒ Description:
     What is in assets/mockups, how each screen is built from the official
-    marks and Dennis's hand-drawn sources, and how to rebuild, audit and
+    marks and the hand-drawn sources, and how to rebuild, audit and
     render the set.
 
 ✒ Key Features:
@@ -48,8 +48,8 @@
     - Compatible platforms: any OS with CPython; the SVGs open in Inkscape
       1.4 and animate in Chromium, Firefox and WebKit
     - Every SVG here is generated (edit assets/generator/build_mockups.py,
-      never the files) but one: loading-01-rising-columns.svg is Dennis's
-      own design file, which the build never writes
+      never the files) but one: loading-01-rising-columns.svg is a
+      hand-made design file, which the build never writes
 ---------
 -->
 
@@ -58,7 +58,7 @@
 Screen mock-ups built on the official MONOLITH mark, the 4 × 4 MONOLITH M:
 the logo (`assets/monolith-logo.svg`, no pieces) and the emblem
 (`assets/monolith-emblem.svg`, with its twelve pieces). Every tile is the
-system's geometry and every piece is Dennis's path data from
+system's geometry and every piece is the drawn path data from
 `assets/chess-pieces.svg`, stamped with one composed matrix; nothing here
 is redrawn. The generator is the source of truth: edit
 `assets/generator/build_mockups.py`, not the SVGs, and port any Inkscape
@@ -74,16 +74,16 @@ hand pass back into it.
 | `loading-04-pieces-drop.svg` | emblem | The M is standing; the twelve pieces drop onto it from above, left to right, each landing with a soft overshoot. |
 | `hero-01-mirror-floor.svg` | emblem | 1920 × 1080. The emblem on a mirror floor, its reflection fading into the ground; wordmark, rule, subtitle, two lines of copy, Play and Analyze. |
 | `splash-01-emblem.svg` | emblem | 1600 × 1000. The emblem centred over the wordmark, tagline, hairline bar, status line and version chip. |
-| `meter-01-graphics-gauge.svg` | the meter | The Settings panel with Dennis's gauge (`assets/graphics-meter-design-v1.2.svg`) drawn up as the widget: sectors filled, HIGH in the accent, his five pieces on the arc, the pawn on the needle hub. |
+| `meter-01-graphics-gauge.svg` | the meter | The Settings panel with the graphics gauge (`assets/graphics-meter-design-v1.2.svg`) drawn up as the widget: sectors filled, HIGH in the accent, its five pieces on the arc, the pawn on the needle hub. |
 | `palette-study-01-logo.svg` | logo and emblem | Both marks in five palettes, with a swatch row each. |
 | `palette-study-02-splash.svg` | emblem | The splash in the five palettes at 30 %, with a role key. |
 | `palette-study-03-meter.svg` | the meter | The gauge widget in the five palettes. |
 
-`loading-01-rising-columns.svg` is Dennis's own design file. On 10/26/2026 he saved his design
-ideas over the generated screen and kept working in it, so the build writes loading-01 beside it as
-`loading-01-rising-columns-generated.svg` and never touches his. The audit checks his file with the
-rest, so it flags work in progress there (an Inkscape default id, a moved piece that animates) until
-he settles it.
+`loading-01-rising-columns.svg` is a hand-made design file. On 10/26/2026 design ideas were saved
+over the generated screen and the work went on in it, so the build writes loading-01 beside it as
+`loading-01-rising-columns-generated.svg` and never touches the design file. The audit checks that
+file with the rest, so it flags work in progress there (an Inkscape default id, a moved piece that
+animates) until the design settles.
 
 The loading screens animate with CSS inside a `<style>` in `defs`. The base
 attributes of every animated element are its finished state, so Inkscape and

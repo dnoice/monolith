@@ -48,12 +48,12 @@
 
 ✒ Description:
     Emits the MONOLITH screen mock-ups into assets/mockups from the official
-    marks and Dennis's hand-drawn sources: four loading screens (each an
+    marks and the hand-drawn sources: four loading screens (each an
     SVG that animates in a browser and shows its finished state in
     Inkscape), a hero image and a splash on the emblem, the graphics-quality
     meter drawn up as the settings widget, and palette studies that paint
     the logo, the emblem, the splash and the meter in five palettes. Every
-    tile is the system's geometry and every piece is Dennis's path data
+    tile is the system's geometry and every piece is the drawn path data
     stamped with a composed matrix; nothing is redrawn here.
 
 ✒ Key Features:
@@ -69,7 +69,7 @@
     - hero-01: the emblem on a mirror floor beside the wordmark and two
       calls to action, 1920 x 1080
     - splash-01: the emblem centred over the wordmark, bar and version
-    - meter-01: Dennis's gauge with filled sectors, HIGH in the accent
+    - meter-01: the graphics gauge with filled sectors, HIGH in the accent
     - palette-study-01/02/03: logo and emblem, splash, meter in all five
       palettes; --palette paints the single screens in one of them
 
@@ -122,9 +122,9 @@ HERO_W, HERO_H = 1920, 1080
 EASE_OUT = "cubic-bezier(0.2, 0.8, 0.2, 1)"
 EASE_OVER = "cubic-bezier(0.34, 1.46, 0.64, 1)"
 
-# loading-01's file: loading-01-rising-columns.svg is Dennis's own design file since 10/26/2026 (he
-# saved his ideas over the generated screen and works in it), so the build writes its screen beside it
-# under this name and never touches his.
+# loading-01's file: loading-01-rising-columns.svg has been a hand-made design file since 10/26/2026
+# (design ideas were saved over the generated screen and work continues in it), so the build writes
+# its screen beside it under this name and never touches that file.
 LOADING_01 = "loading-01-rising-columns-generated"
 
 SET_CHANGELOG = ["2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rebuilt on the "
@@ -582,14 +582,14 @@ def build_splash_01(pal, suffix=""):
 
 LEVELS = ["MINIMAL", "LOW", "MEDIUM", "HIGH", "ULTRA"]
 METER_ANGLES = [-72, -36, 0, 36, 72]      # sector centres, degrees from straight up
-METER_R = 153.31977                       # Dennis's outer arc radius
-METER_C = (153.0, 153.31977)              # its centre in his 306 x 170 space
+METER_R = 153.31977                       # the drawing's outer arc radius
+METER_C = (153.0, 153.31977)              # its centre in the drawing's 306 x 170 space
 METER_HUB = (153.0, 135.4)                # the pawn's centre, the needle's pivot
 
 
 def meter_widget(parent, base: str, pal: dict, x: float, y: float, w: float, active: int = 3, sfx: str = ""):
-    """Dennis's gauge drawn up as the settings widget: sectors filled, the active one in
-    the accent, his five pieces on their sectors, the pawn on the needle hub, the needle
+    """The graphics gauge drawn up as the settings widget: sectors filled, the active one in
+    the accent, its five pieces on their sectors, the pawn on the needle hub, the needle
     turned to the active sector."""
     mt = A.load_meter()
     s = w / mt.width
@@ -660,11 +660,12 @@ def build_meter_01(pal, suffix=""):
     version_chip(svg, "version", pal, W - 40, H - 40)
     emit(svg, f"meter-01-graphics-gauge{suffix}.svg", **SET_HEADER,
          title=f"MONOLITH Meter 01 Graphics Gauge ({pal['label']})",
-         description=("Dennis's graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as the Settings "
-                      "widget it is for. His five sectors and five inner sectors are filled, the active sector in "
-                      "the accent with its piece inverted on it; his five pieces lean along the arc as he placed "
-                      "them, rook to queen, with the pawn as the needle hub. Labels MINIMAL to ULTRA follow the "
-                      "arc. The panel copy mirrors the app's."),
+         description=("The graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as the "
+                      "Settings widget it is for. Its five sectors and five inner sectors are "
+                      "filled, the active sector in the accent with its piece inverted on it; its "
+                      "five pieces lean along the arc as drawn, rook to queen, with the pawn as "
+                      "the needle hub. Labels MINIMAL to ULTRA follow the arc. The panel copy "
+                      "mirrors the app's."),
          key_features=["Gauge geometry: every path from graphics-meter-design-v1.2.svg, stamped verbatim",
                        "Sectors: passed levels at 12 % ink, the active level in the accent, unreached at 7 %; the "
                        "needle turns to the active sector",

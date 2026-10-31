@@ -47,8 +47,8 @@
 ✒ Description:
     The MONOLITH brand mark as a system rather than a pile of files: one
     letter (the MONOLITH M), defined by a dozen numbers; one tiling rule
-    that lays any grid over it; a few skins; the piece layouts Dennis
-    composed; and the two official marks cut from it. Everything in
+    that lays any grid over it; a few skins; the piece layouts of the
+    hand-built kit; and the two official marks cut from it. Everything in
     assets/brand/variants, the generated kit, assets/monolith-logo.svg and
     assets/monolith-emblem.svg comes out of assets/generator/monolith_m.py
     from what is written here.
@@ -58,7 +58,7 @@
       in order around the outline
     - The equations: fillets, the cubic flanks, the tiling, parity,
       plinths, piece placement
-    - The three layouts as tables of his placements, in cells
+    - The three layouts as tables of placements, in cells
     - The official logo and emblem, and what reads them
     - How to make a new variant, a new skin, a new layout or a new letter
     - How the system was verified against the hand-built kit
@@ -67,7 +67,7 @@
     - Dependencies: Python 3.10+, shapely, numpy, lxml, svgpathtools; the
       code is assets/generator/monolith_m.py with mono_svg.py and
       mono_assets.py beside it
-    - Reference: brand/monolith-brand-kit.svg is Dennis's hand-built kit;
+    - Reference: brand/monolith-brand-kit.svg is the hand-built kit;
       brand/monolith-brand-kit-generated.svg reproduces it panel for panel
 ---------
 -->
@@ -181,10 +181,10 @@ whose control points sit on the horizontals through **A** and **B**:
 
 Horizontal tangents at both ends are what make the dip smooth: it leaves
 the top edge flat, steepens, and lands on the floor flat. A least-squares
-fit of this form to Dennis's drawn flank (which he built from three cubic
-segments) gives *h_t* = 59.35 and *h_f* = 72.39 with a maximum error of 1.66
-units; a fit with free control points converges to the same horizontal
-handles, so the form is his, not an approximation of it.
+fit of this form to the drawn flank (built from three cubic segments)
+gives *h_t* = 59.35 and *h_f* = 72.39 with a maximum error of 1.66 units;
+a fit with free control points converges to the same horizontal handles,
+so the form is the drawn one, not an approximation of it.
 
 ### 2.3 The notch
 
@@ -242,16 +242,16 @@ intersected with *M* like a cell and claims its cells. Plinth ids are
 **Mortar.** Tiles carry a stroke of width *S*/1200 (1 px at the kit's size)
 in the skin's mortar colour, with `paint-order: markers fill stroke`, so the
 mortar sits on top of the fills and reads as the grout between tiles, as
-Dennis drew it.
+drawn in the kit.
 
 **Construction.** The `grid` layout draws no tiles: the outline filled with
 the dark tile colour, and over it the full grid as guide lines, `n + 1` each
 way with the frame's own edges included. Each is an open path from edge to
 edge of the square (`M x,0 V S`, `M 0,y H S`) with no fill, no stroke and no
-width, in the style of Dennis's own template,
+width, in the style of the house template,
 `grid-template-invisible-line-elements.svg` (`GUIDE_STYLE` in the
-generator). A construction grid is a template, not drawing (Dennis,
-10/26/2026): its lines paint no pixels, still select and snap in Inkscape
+generator). A construction grid is a template, not drawing (10/26/2026):
+its lines paint no pixels, still select and snap in Inkscape
 and show in its outline view, and add nothing to the grid's bounding box
 beyond the square itself, where lines of any thickness would add half their
 width on every side. Visible rules on a plate are still drawn as filled
@@ -290,8 +290,8 @@ plinth `(col, row, span)`. A piece is stamped from its 153.79-unit square in
 
 read right to left: move the centre **b** of the piece's own bounding box to
 the origin, scale it (negative *x* mirrors it), rotate it, place it. The
-three layouts are Dennis's placements, measured from his kit; the tables in
-`monolith_m.py` carry them to four decimals, which reproduces his panels to
+three layouts are placements measured from the hand-built kit; the tables in
+`monolith_m.py` carry them to four decimals, which reproduces its panels to
 0.02 units.
 
 **Quartet** (n = 4, the emblem): twelve pieces upright, one of each kind per
@@ -313,7 +313,7 @@ The three White pieces marked † are mirrored.
 down column 1; Black's pawns run down column 6 and its back rank down column
 7. Each piece sits on its own square's centre, so a piece's bounding-box
 centre moves off the cell centre by its own height (0.5616 c for a rook,
-0.5 c for a king); the tables keep his small nudges to the pawns' column.
+0.5 c for a king); the tables keep the kit's small nudges to the pawns' column.
 The valley and the crossbar stay bare.
 
 **Scatter** (n = 16): sixteen pieces on 2 × 2 plinths in a zigzag two cells
@@ -335,7 +335,7 @@ Kings: White K on (5, 3) span 3, Black K on (8, 3) span 3.
 
 ## 6. The official marks
 
-The 4 × 4 MONOLITH M is the MONOLITH mark, chosen by Dennis on 10/26/2026.
+The 4 × 4 MONOLITH M is the MONOLITH mark, chosen on 10/26/2026.
 
 | File | What it is | Built as |
 |---|---|---|
@@ -397,19 +397,19 @@ kit wraps each mark in `panel-<n>-<layout>`.
 
 ## 8. Verification
 
-- **The letter.** The parametric outline against Dennis's drawn
+- **The letter.** The parametric outline against the kit's drawn
   `outline-8-grid`: symmetric difference 0.12 % of the area, Hausdorff
   distance 5.3 units on 1200.
 - **The tiling.** Every variant: whole tiles sit on exact multiples of *c*,
   and the union of its tiles equals the outline polygon (symmetric
   difference 0.000 units² at every density).
-- **The emblem against his 4 × 4 panel.** The twelve pieces' bounding boxes
-  match his to 0.017 units; the twelve tiles match his one for one, each
-  within 5.3 units (the valley-flank asymmetry above), the six on the legs
-  below the top row within 0.01.
+- **The emblem against the kit's 4 × 4 panel.** The twelve pieces'
+  bounding boxes match the kit's to 0.017 units; the twelve tiles match the
+  kit's one for one, each within 5.3 units (the valley-flank asymmetry
+  above), the six on the legs below the top row within 0.01.
 - **The kit.** The generated kit beside the hand-built one: the same seven
   panels in the same places; every piece's bounding box within 0.02 units
-  of his (quartet 0.017, ranks 0.009, scatter 0.005).
+  of the hand-built one's (quartet 0.017, ranks 0.009, scatter 0.005).
 - **The files.** `assets/generator/audit_assets.py` passes every SVG under
   assets: header, titles, an id on every element, no generator defaults,
   every internal reference live, stock namedview; and every `assets/...`

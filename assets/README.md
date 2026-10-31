@@ -36,8 +36,8 @@
 
 ✒ Key Features:
     - The layout of the folder, one row per file or folder
-    - Sources and outputs kept apart: Dennis draws the sources in Inkscape,
-      the generators write everything else
+    - Sources and outputs kept apart: the sources are drawn by hand in
+      Inkscape, the generators write everything else
     - The paths the app reads, which stay where they are
     - The build, relabel, render and audit commands
 
@@ -51,8 +51,8 @@
 
 # MONOLITH assets
 
-Everything the project draws, models and renders lives here. Dennis draws the
-sources by hand; the generators in `generator/` write everything else from
+Everything the project draws, models and renders lives here. The sources are
+drawn by hand; the generators in `generator/` write everything else from
 them, and nothing they write is edited by hand.
 
 ## Layout
@@ -61,15 +61,15 @@ them, and nothing they write is edited by hand.
 |---|---|---|
 | `monolith-logo.svg` | generated | **The official logo**: the MONOLITH M tiled 4 × 4, slate tiles, black mortar, no pieces. The page does not read it: since 2.18.0 the app bar draws the emblem, below, as the M of its wordmark, and `tools/build-emblem.mjs` ignores a logo path given to it. |
 | `monolith-emblem.svg` | generated | **The official emblem**: the same mark with the quartet of twelve pieces. The page's loading screen and the M of the app bar's wordmark are drawn from this file (`tools/build-emblem.mjs` writes it into `index.html` once, as a hidden drawing both use), so its path and id scheme stay put. |
-| `chess-pieces.svg` | source | Dennis's house piece set on a full board. Every piece in every mark and mock-up is stamped from it verbatim; `tools/build-piece-set.mjs` builds the board diagrams' pieces from it. Shared with ChessWorkstation, whose copy differs only in its header's Relative Path. |
-| `graphics-meter-design-v1.2.svg` | source | Dennis's graphics-quality gauge for the Settings panel. |
+| `chess-pieces.svg` | source | The house piece set on a full board. Every piece in every mark and mock-up is stamped from it verbatim; `tools/build-piece-set.mjs` builds the board diagrams' pieces from it. Shared with ChessWorkstation, whose copy holds the same drawing. |
+| `graphics-meter-design-v1.2.svg` | source | The graphics-quality gauge for the Settings panel. |
 | `brand/` | | The brand system. |
 | `brand/MONOLITH_M_SYSTEM.md` | doc | The system: the letter's parameters and equations, the tiling, the skins, the layouts, the official marks. |
-| `brand/monolith-brand-kit.svg` | source | Dennis's hand-built kit, the reference the system was measured from. |
+| `brand/monolith-brand-kit.svg` | source | The hand-built kit, the reference the system was measured from. |
 | `brand/monolith-brand-kit-generated.svg` | generated | The kit rebuilt by the system, panel for panel. |
 | `brand/variants/` | generated | The MONOLITH M at other densities and layouts, as `monolith-m-<n>-<layout>-<skin>.svg`: construction grids at 4, 8 and 16; bare at 8, 16 and 24; the ranks at 8; the scatter at 16. |
 | `brand/review/` | rendered | PNGs of the marks, the variants and both kits. |
-| `mockups/` | generated | Loading screens, hero, splash, the gauge widget and palette studies, all on the official marks; see `mockups/README.md`. One file there is Dennis's own: `loading-01-rising-columns.svg`, his design work, which the build never writes; its generated screen is `loading-01-rising-columns-generated.svg`. |
+| `mockups/` | generated | Loading screens, hero, splash, the gauge widget and palette studies, all on the official marks; see `mockups/README.md`. One file there is a hand-made design file: `loading-01-rising-columns.svg`, which the build never writes; its generated screen is `loading-01-rising-columns-generated.svg`. |
 | `mockups/review/` | rendered | PNGs of every mock-up and GIFs of the four loading screens. |
 | `generator/` | code | Every generator, in one place (below). |
 | `models/` | models | The pillar, monolith and piece models as .blend with their .glb exports; the page fetches the .glb files from here. See `models/MANIFEST.md`. |

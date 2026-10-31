@@ -37,9 +37,9 @@
 
 ✒ Description:
     The one place the MONOLITH generators get their drawings from. The
-    piece set and the graphics meter are Dennis's hand-drawn sources, read
-    as literal path data with every group transform composed into one
-    matrix, so a stamped piece is his nodes and never a re-derivation. The
+    piece set and the graphics meter are the hand-drawn sources, read as
+    literal path data with every group transform composed into one matrix,
+    so a stamped piece is the drawn nodes and never a re-derivation. The
     tiled M comes from the system in monolith_m.py:
     load_monolith_m(n, layout) returns its tiles and placed pieces as the
     same Elem and Piece objects, so a mock-up stamps the official emblem
@@ -236,7 +236,7 @@ class Elem:
 class Piece:
     side: str            # white | black, by faces (White is the boxwood face)
     kind: str            # king | queen | rook | bishop | knight | pawn
-    parts: list[Elem]    # in Dennis's paint order; each part named contour or face
+    parts: list[Elem]    # in the drawn paint order; each part named contour or face
 
     @property
     def contour(self) -> Elem:
@@ -382,7 +382,7 @@ def load_pieces() -> PieceSet:
 # ---------------------------------------------------------------------------
 
 def load_monolith_m(n: int, layout: str = "bare", S: float = 1200.0) -> Drawing:
-    """The MONOLITH M tiled on an n x n grid with one of Dennis's layouts, as a
+    """The MONOLITH M tiled on an n x n grid with one of the kit's layouts, as a
     Drawing in a canvas of side S: tiles carry row, col, span and whole in
     their meta and tile-light / tile-dark as their role (row + column even
     is light); pieces are placed and named by faces."""
@@ -407,7 +407,7 @@ def load_logo(S: float = 1200.0) -> Drawing:
 
 
 def load_emblem(S: float = 1200.0) -> Drawing:
-    """The official emblem: the MONOLITH M on a 4 x 4 grid with Dennis's quartet."""
+    """The official emblem: the MONOLITH M on a 4 x 4 grid with the quartet."""
     return load_monolith_m(4, "quartet", S)
 
 
@@ -433,7 +433,7 @@ def fit(dr: Drawing, x: float, y: float, w: float, h: float) -> np.ndarray:
 
 def tile_style(fill: str, mortar: str, width: float) -> str:
     """A tile's style: its fill, and the mortar as a stroke painted over the fill,
-    as Dennis draws the grout."""
+    as the brand kit draws the grout."""
     return (f"fill:{fill};stroke:{mortar};stroke-width:{width:.4g};stroke-linejoin:round;"
             "paint-order:markers fill stroke")
 
@@ -455,7 +455,7 @@ def stamp_tiles(group, tiles: list[Elem], pal: dict, m: np.ndarray, idfn, mortar
 
 def stamp_piece(group, base: str, piece: Piece, pal: dict, m: np.ndarray, suffix: str = "", **kw):
     """One piece as one group: base{suffix} holding base-contour{suffix} and
-    base-face{suffix}, in Dennis's paint order, coloured by role."""
+    base-face{suffix}, in the drawn paint order, coloured by role."""
     g = group.g(f"{base}{suffix}", **kw)
     for part in piece.parts:
         g.path(f"{base}-{part.name}{suffix}", part.attrs["d"], fill=pal[part.role],

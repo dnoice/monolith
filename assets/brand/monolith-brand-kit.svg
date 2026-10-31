@@ -40,11 +40,11 @@
       this file (it carried variant 4's); ids and geometry as drawn.
 
 ✒ Description:
-    Dennis's hand-built brand kit for the MONOLITH mark: the MONOLITH M, a
+    The hand-built brand kit for the MONOLITH mark: the MONOLITH M, a
     square-cornered M with a smooth, flat-floored valley and a notch under
     its crossbar, on seven 1200-unit panels. Top row: the letter with a 4, 8 and
     16 grid drawn over it. Middle and bottom rows: the letter tiled at 4, 8
-    and 16 cells with his piece layouts (the quartet, the ranks, the scatter)
+    and 16 cells with the piece layouts (the quartet, the ranks, the scatter)
     and a bare 16-grid tiling. Slate tiles with black mortar; pieces from
     chess-pieces.svg. The reference the system in
     assets/brand/MONOLITH_M_SYSTEM.md was measured from.
@@ -58,7 +58,7 @@
       panel-16-grid (construction), panel-4-quartet (the official emblem),
       panel-8-ranks, panel-16-bare, panel-16-scatter
     - Pieces: chess-pieces.svg 1.3.0 as placed by hand;
-      assets/generator/monolith_m.py carries his placements as tables and
+      assets/generator/monolith_m.py carries the placements as tables and
       reproduces every panel in
       assets/brand/monolith-brand-kit-generated.svg
     - stray-line-01 is a zero-area line at the foot of panel-16-grid, kept as
@@ -113,7 +113,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>Dennis's hand-built brand kit for the MONOLITH mark: the MONOLITH M on seven 1200-unit panels, bare and tiled at 4, 8 and 16 cells with his piece layouts.</dc:description>
+        <dc:description>The hand-built brand kit for the MONOLITH mark: the MONOLITH M on seven 1200-unit panels, bare and tiled at 4, 8 and 16 cells with the piece layouts.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

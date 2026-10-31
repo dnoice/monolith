@@ -20,12 +20,12 @@
       version, on the logo concepts that the Conical M replaced.
 
 ✒ Description:
-    Dennis's graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up
-    as the Settings widget it is for. His five sectors and five inner sectors
-    are filled, the active sector in the accent with its piece inverted on it;
-    his five pieces lean along the arc as he placed them, rook to queen, with
-    the pawn as the needle hub. Labels MINIMAL to ULTRA follow the arc. The
-    panel copy mirrors the app's.
+    The graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as
+    the Settings widget it is for. Its five sectors and five inner sectors are
+    filled, the active sector in the accent with its piece inverted on it; its
+    five pieces lean along the arc as drawn, rook to queen, with the pawn as
+    the needle hub. Labels MINIMAL to ULTRA follow the arc. The panel copy
+    mirrors the app's.
 
 ✒ Key Features:
     - Gauge geometry: every path from graphics-meter-design-v1.2.svg,
@@ -210,7 +210,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>Dennis's graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as the Settings widget it is for. His five sectors and five inner sectors are filled, the active sector in the accent with its piece inverted on it; his five pieces lean along the arc as he placed them, rook to queen, with the pawn as the needle hub. Labels MINIMAL to ULTRA follow the arc. The panel copy mirrors the app's.</dc:description>
+        <dc:description>The graphics-quality meter (graphics-meter-design-v1.2.svg) drawn up as the Settings widget it is for. Its five sectors and five inner sectors are filled, the active sector in the accent with its piece inverted on it; its five pieces lean along the arc as drawn, rook to queen, with the pawn as the needle hub. Labels MINIMAL to ULTRA follow the arc. The panel copy mirrors the app's.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

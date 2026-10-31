@@ -43,14 +43,14 @@
       applied; white queen moved from e1 to d1.
 
 ✒ Description:
-    Dennis's complete house chess piece set, laid out on a full board in the
+    The complete house chess piece set, laid out on a full board in the
     starting position so every piece is seen on both square colours. All six pieces follow the
     grammar the rook set: one contour of constant width forms the silhouette
     and the seams between flat faces, seams live in the wider segment, and
     marks inside a face (the knight's eye, nostril and mane line; the
     bishop's cross) are painted in the contour colour. The knight stands on
     its own foot and the bishop on a flared base rather than the plinth,
-    keeping the silhouettes players already read. Drawn by Dennis in
+    keeping the silhouettes players already read. Drawn by hand in
     Inkscape; ids, nesting and metadata applied with the path geometry,
     styles and group transforms left exactly as drawn.
 
@@ -66,7 +66,7 @@
       7 and 8 carries the black ids. Which wood is White is an open decision
     - The bishop alone stands on a curved foot; the king, like the queen,
       stands on stacked bands
-    - Paint order inside every piece is Dennis's, unchanged
+    - Paint order inside every piece is as drawn, unchanged
 
 ✒ Id Convention:
     component-subcomponent-square: square-e4; piece-white-rook-a1 with
@@ -81,7 +81,7 @@
 ✒ Other Important Information:
     - Dependencies: none; opens in Inkscape 1.4 and renders in any browser
     - Compatible platforms: any
-    - Source of truth: this file is Dennis's hand-drawn source. The plate
+    - Source of truth: this file is the hand-drawn source. The plate
       generators under tools/design port it as literal path data via
       tools/design/extract_house_set.py, and MONOLITH's
       tools/build-piece-set.mjs builds its diagram pieces from it; nothing
@@ -89,8 +89,8 @@
     - Copies: this drawing lives in two repositories. ChessWorkstation keeps
       it at docs/design/concept/chess-pieces.svg; MONOLITH keeps it at
       assets/chess-pieces.svg, as the source of its board diagrams' pieces
-      and its emblem's. The two copies differ only in this header's
-      Relative Path
+      and its emblem's. The two copies hold the same drawing; only
+      their headers differ
     - XML note: an SVG header cannot carry the standard's closing dash rule,
       because a double hyphen is illegal inside an XML comment
 -->
@@ -134,7 +134,7 @@
      showgrid="false" /><defs
      id="defs-chess-pieces" /><metadata
      id="metadata-chess-pieces"><rdf:RDF><cc:Work
-         rdf:about=""><dc:title>ChessWorkstation — House Piece Set</dc:title><dc:date>2026-10-24</dc:date><dc:creator><cc:Agent><dc:title>Dennis 'dendogg' Smaltz</dc:title></cc:Agent></dc:creator><dc:contributor><cc:Agent><dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title></cc:Agent></dc:contributor><dc:rights><cc:Agent><dc:title>Dennis 'dendogg' Smaltz</dc:title></cc:Agent></dc:rights><dc:language>en</dc:language><dc:description>Dennis's complete house chess piece set on a full board in the starting position: king, queen, rook, bishop, knight and pawn in the one-contour segment grammar, each piece one contour and one face, boxwood #decd87 and ebony #1a1a1a on #e6e6e6 / #6f8a91 squares. This file is the hand-drawn source; the plate generators port it as literal path data.</dc:description><dc:subject><rdf:Bag><rdf:li>chess</rdf:li><rdf:li>piece set</rdf:li><rdf:li>Staunton</rdf:li><rdf:li>house set</rdf:li><rdf:li>Inkscape</rdf:li><rdf:li>source</rdf:li><rdf:li>design plate</rdf:li></rdf:Bag></dc:subject></cc:Work></rdf:RDF></metadata><g
+         rdf:about=""><dc:title>ChessWorkstation — House Piece Set</dc:title><dc:date>2026-10-24</dc:date><dc:creator><cc:Agent><dc:title>Dennis 'dendogg' Smaltz</dc:title></cc:Agent></dc:creator><dc:contributor><cc:Agent><dc:title>Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5</dc:title></cc:Agent></dc:contributor><dc:rights><cc:Agent><dc:title>Dennis 'dendogg' Smaltz</dc:title></cc:Agent></dc:rights><dc:language>en</dc:language><dc:description>The complete house chess piece set on a full board in the starting position: king, queen, rook, bishop, knight and pawn in the one-contour segment grammar, each piece one contour and one face, boxwood #decd87 and ebony #1a1a1a on #e6e6e6 / #6f8a91 squares. This file is the hand-drawn source; the plate generators port it as literal path data.</dc:description><dc:subject><rdf:Bag><rdf:li>chess</rdf:li><rdf:li>piece set</rdf:li><rdf:li>Staunton</rdf:li><rdf:li>house set</rdf:li><rdf:li>Inkscape</rdf:li><rdf:li>source</rdf:li><rdf:li>design plate</rdf:li></rdf:Bag></dc:subject></cc:Work></rdf:RDF></metadata><g
      id="chess-set"
      transform="translate(0,-1.8310547e-4)"><g
        id="board-ranks-3-6"><rect

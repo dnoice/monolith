@@ -304,7 +304,7 @@ after its bevel, and its build stops if either check fails.
 
 ## The pieces
 
-Dennis asked for the game's 3D chess pieces as .blend files (10/24/2026). The page still builds its
+The game's 3D chess pieces are kept here as .blend files (10/24/2026). The page still builds its
 pieces in code (`js/scene/board.js`) and loads none of these; they are for work in Blender, and for
 a page that one day loads its pieces as models. `tools/build-piece-models.py` builds them from that
 file's own numbers, read from it each time it runs, so they match the game: checked against

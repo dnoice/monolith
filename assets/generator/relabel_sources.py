@@ -34,7 +34,7 @@
       version, for the four logo concepts and the meter.
 
 ✒ Description:
-    Brings Dennis's hand-drawn SVG sources up to the house standard without
+    Brings the hand-drawn SVG sources up to the house standard without
     touching a node: every element gets a descriptive id, and every panel
     of a sheet becomes one selectable group. Geometry, styles, paint order
     and transforms are left exactly as drawn; the only structural change
