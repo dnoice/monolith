@@ -205,8 +205,10 @@
 .field-legend p{margin:0}
 /* a previewed line, in the chips' slot at the top band's left, on one row */
 .phantom-chip{position:absolute;left:var(--gutter-l);top:8px;z-index:2;display:flex;align-items:baseline;gap:10px;max-width:calc(100% - 380px);padding:7px 14px;background:var(--mo-panel);border:1px solid var(--mo-steel);border-radius:3px;font-size:12.5px;color:var(--mo-ink);text-align:center;pointer-events:none}
-.phantom-chip b{flex:none;font-weight:500}
-.phantom-chip span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--mo-ink2)}
+/* the legend takes only the room left over, and the line gives way only once the legend has gone,
+   so a pinned line's Play to here stays on screen */
+.phantom-chip b{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:500}
+.phantom-chip span{flex:1 1 0;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--mo-ink2)}
 /* a pinned line's Play to here: the one part of the chip that takes the pointer */
 .phantom-chip button{flex:none;pointer-events:auto}
 

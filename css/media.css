@@ -109,6 +109,7 @@
   .stage-chip.castle{bottom:8px}
   #stage:has(> .stage-chip:not(.castle):not([hidden])) .player.top,#stage:has(#castle-chip:not([hidden])) .player.bottom{visibility:hidden}
   :root[data-tab="analyze"] #stage > :is(#review-chip,#explore-chip),.phantom-chip{top:46px;left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto}
+  .phantom-chip{max-width:calc(100% - 32px)}   /* one row: its text would otherwise set its width */
   .wdl{top:96px;bottom:54px}
   .stage-reset{bottom:12px}
 }
