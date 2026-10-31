@@ -91,7 +91,7 @@ export function init() {
   $('#about-version').textContent = `MONOLITH ${APP_VERSION}, released ${APP_DATE}.`;
   reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   app.SPEED = reduceMotion ? 0.3 : 1;
-  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, autoFlip: true, coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
+  const DEFAULTS = { sound: true, speed: 'normal', legal: true, explore: true, autoFlip: true, badges: 'full', edVs: 'cpu', coords: true, lines: 3, evalOn: false, tab: 'play', opponent: 'cpu', choice: 'w', level: 4, tips: 'once', learned: {}, world: 'auto', quality: 'auto', gfx: null, pillars: 'monoliths' };
   prefs = Object.assign({}, DEFAULTS, (() => { try { const v = JSON.parse(localStorage.getItem(PREF_KEY) ?? localStorage.getItem(OLD_PREF_KEY)); return isObj(v) ? v : {}; } catch (e) { return {}; } })());
   /* Saved values are repaired, not trusted: storage can hold a value from an older release, or one
      edited by hand, and one bad value must never stop the page from starting (a level of 0 or a
@@ -101,6 +101,7 @@ export function init() {
   oneOf(prefs, 'speed', ['normal', 'fast', 'minimal']); oneOf(prefs, 'tips', ['once', 'always', 'off']);
   oneOf(prefs, 'opponent', ['cpu', 'human']); oneOf(prefs, 'choice', ['w', 'b', 'r']);
   oneOf(prefs, 'world', ['auto', 'cathedral', 'monolith']); oneOf(prefs, 'pillars', ['monoliths', 'classic', 'modern']);
+  oneOf(prefs, 'badges', ['full', 'short']); oneOf(prefs, 'edVs', ['cpu', 'human']);
   inRange(prefs, 'level', 1, typeof LEVELS !== 'undefined' && LEVELS.length || 8, DEFAULTS.level); inRange(prefs, 'lines', 1, 5, DEFAULTS.lines);
   for (const k of ['coach', 'engineOpen']) if (k in prefs && typeof prefs[k] !== 'boolean') delete prefs[k];
   prefs.mo = Object.assign({}, MO_DEFAULTS, isObj(prefs.mo) ? prefs.mo : {});
