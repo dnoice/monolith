@@ -131,12 +131,23 @@
    Analyze and Crucible put their own title first instead of the players. Before a game it shows
    the game Start game will begin, as the Play tab's choices change, and that it has not started
    (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
-   Only a number takes the larger size. It narrows as the bar does: the levels and the last move
-   go first, then the players; phones leave it to the panel. */
-.matchbar{min-width:0;display:flex;justify-content:center}
+   Only a number takes the larger size. It stands at the bar's end, where the actions were before
+   they moved to the rail (Dennis, 10/30/2026), and has their room: it narrows as the bar does, the
+   levels going under 1100 px and the last move under 1000, while the players or the title stay
+   at every desktop width (its widest, the Crucible's board with both engines named, is 700 px;
+   the room beside the brand is the width less about 345, so from 1000 to 1045 px and at 900 the
+   Crucible's title is shortened to fit); phones leave it to the panel.
+   Every segment sets its words on one baseline (Dennis, 10/30/2026: the labels, the values and
+   the larger numbers sat at their own heights, up to 2 px apart, each centred by its box): a
+   segment is a row of baseline-aligned cells whose row is centred in the pill, with a strut the
+   size of the strip's numbers (::after), so a segment with a number and one without put their
+   baselines at the same height; a player's dot is centred on the line it sits in. */
+.matchbar{min-width:0;display:flex;justify-content:flex-end}
 .mb-pill{display:inline-flex;align-items:stretch;min-width:0;max-width:100%;height:38px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:var(--md-surface-2);overflow:hidden}
 .matchbar[data-empty] .mb-pill{display:none}
-.mb-seg{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:0 14px;white-space:nowrap;font-size:13px}
+.mb-seg{display:grid;grid-auto-flow:column;align-items:baseline;align-content:center;min-width:0;padding:0 14px;white-space:nowrap;font-size:13px}
+.mb-seg > * + *{margin-left:8px}
+.mb-seg::after{content:"\200b";width:0;font-size:15px;font-weight:500}
 .mb-seg + .mb-seg{border-left:1px solid var(--md-outline-var)}
 .mb-k{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
 .mb-seg b{font-weight:500;color:var(--md-on-surface);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
@@ -144,10 +155,11 @@
 .mb-s.check{color:var(--md-error)}
 .mb-s.think{color:var(--md-secondary)}
 .mb-s.done{color:var(--md-primary)}
-.mb-p{display:inline-flex;align-items:center;gap:7px;min-width:0}
+.mb-p{display:inline-flex;align-items:baseline;gap:7px;min-width:0}
 .mb-p small{font-size:11.5px;color:var(--md-on-surface-var);overflow:hidden;text-overflow:ellipsis}
+.mb-p small:empty{display:none}   /* a side with no note leaves no gap before "vs" */
 .mb-vs{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--md-on-surface-var)}
-.mb-dot{width:11px;height:11px;flex:none;border-radius:50%;border:1px solid var(--md-outline);transition:box-shadow .2s var(--ease-std)}
+.mb-dot{align-self:center;width:11px;height:11px;flex:none;border-radius:50%;border:1px solid var(--md-outline);transition:box-shadow .2s var(--ease-std)}
 .mb-dot.w{background:var(--md-marble)}
 .mb-dot.b{background:var(--md-obsidian)}
 .mb-p.on .mb-dot{box-shadow:0 0 0 2px var(--md-surface-2),0 0 0 3.5px var(--md-primary)}
@@ -163,15 +175,14 @@
 :root[data-skin="monolith"] .mb-pill{background:var(--mo-well);border-color:var(--mo-rule)}
 :root[data-skin="monolith"] .mb-seg + .mb-seg{border-left-color:var(--mo-rule)}
 :root[data-skin="monolith"] .mb-k,:root[data-skin="monolith"] .mb-vs{font:400 10px/1 var(--font-tele);letter-spacing:.12em;color:var(--mo-ink3)}
-:root[data-skin="monolith"] .mb-seg{font-family:var(--font-ui-mo)}
+:root[data-skin="monolith"] .mb-seg{font-family:var(--font-ui-mo);padding-bottom:1px}   /* Geist sits its baseline lower in the line: half a pixel up, to the centre */
 :root[data-skin="monolith"] .mb-dot.b{border-color:var(--mo-steel)}
 :root[data-skin="monolith"] .mb-p.on .mb-dot{box-shadow:0 0 0 2px var(--mo-well),0 0 0 3.5px var(--mo-ink)}
 :root[data-skin="monolith"] .mb-p.on b{color:var(--mo-ink)}
 :root[data-skin="monolith"] .mb-s.think{color:var(--mo-cyan)}
 :root[data-skin="monolith"] .mb-s.done{color:var(--mo-ink)}
-@media (max-width:1380px){.mb-p small{display:none}}
-@media (max-width:1240px){.mb-last{display:none}}
-@media (max-width:1080px){.mb-players,.mb-title{display:none}}
+@media (max-width:1099px){.mb-p small{display:none}}
+@media (max-width:999px){.mb-last{display:none}}
 
 /* ---------- the board turning for each player (2.18.0) ----------
    The players' cards follow the side at the bottom, so they swap the moment a flip starts; while

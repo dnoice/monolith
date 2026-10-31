@@ -66,16 +66,17 @@
    Structure headers in Michroma, interface in Geist with tabular figures, telemetry in Geist
    Mono. Docked surfaces are opaque; glass is kept for the X-Ray chip and the Command Palette. */
 :root[data-skin="monolith"] body{font-variant-numeric:tabular-nums}
-:root[data-skin="monolith"] .brand h1{font-family:var(--font-struct);font-weight:400;font-size:14px;letter-spacing:.3em;text-transform:uppercase}
+/* the wordmark in Michroma, more widely tracked than the cathedral's Roboto, and the emblem a
+   letter's tracking before its O */
+:root[data-skin="monolith"] .brand-word{font-family:var(--font-struct);font-weight:400;font-size:30px;letter-spacing:.1em;gap:.12em;text-transform:uppercase}
 :root[data-skin="monolith"] .brand small{font-family:var(--font-tele);letter-spacing:.08em;margin-top:3px}
-/* the logo's squares in MONOLITH's light slate: its dark slate square sinks into the bar at 32 px */
-:root[data-skin="monolith"] .brand .logo{--logo-d:var(--dg-l)}
+/* the emblem's squares in MONOLITH's light slate in the wordmark: its dark slate sinks into the bar */
+:root[data-skin="monolith"] .brand .logo{--emb-d:var(--dg-l)}
 :root[data-skin="monolith"] .app-ver{border-color:var(--mo-rule);background:var(--mo-well);font:400 10.5px/1 var(--font-tele);letter-spacing:.05em;color:var(--mo-ink2)}
 :root[data-skin="monolith"] .pane-head h2{font-family:var(--font-struct);font-size:14px;letter-spacing:.24em;text-transform:uppercase;line-height:1.5}
 :root[data-skin="monolith"] :is(.group > legend,.group-title,.moves-head h2){font-family:var(--font-struct);font-weight:400;font-size:10px;letter-spacing:.2em}
 :root[data-skin="monolith"] .nav-item{font-family:var(--font-ui-mo);font-weight:500;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
 :root[data-skin="monolith"][data-tab="analyze"] .moves-card{max-height:30%;min-height:150px}
-:root[data-skin="monolith"] .nav-item[aria-selected="true"] .nav-pill{background:var(--mo-raised);box-shadow:inset 0 -2px 0 var(--mo-ink)}
 :root[data-skin="monolith"] .player{background:var(--mo-panel);backdrop-filter:none;-webkit-backdrop-filter:none}
 :root[data-skin="monolith"] .player.active{border-color:var(--mo-steel);box-shadow:none}
 :root[data-skin="monolith"] .avatar.b{border-color:var(--mo-steel);color:var(--mo-steel)}

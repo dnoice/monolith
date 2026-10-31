@@ -190,7 +190,7 @@ export const desiredWorld = () => prefs.world !== 'auto' ? prefs.world : ['analy
 export function setWorld(name, animate = true) {
   if (name === app.worldName && Math.abs(worldK - (name === 'monolith' ? 1 : 0)) < 1e-3) return;
   app.worldName = name; document.documentElement.dataset.skin = name;
-  $('#brand-sub').textContent = name === 'monolith' ? `MONOLITH instrument · ${engineFamily().family}` : 'Marble vs. obsidian · Cathedral';
+  $('#brand-sub').textContent = name === 'monolith' ? `MONOLITH world · ${engineFamily().family} instrument` : 'Cathedral world · marble vs. obsidian';
   canvas.setAttribute('aria-label', name === 'monolith' ? '3D chess board in the MONOLITH instrument' : '3D chess board inside a cathedral');
   const to = name === 'monolith' ? 1 : 0, from = worldK, gen = ++worldGen, fade = $('#stage-fade');
   /* The camera eases to the world's pose at the distance fitted for it, and to its pan: both read
