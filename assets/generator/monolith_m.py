@@ -6,15 +6,24 @@
     - File Name: monolith_m.py
     - Relative Path: assets/generator/monolith_m.py
     - Artifact Type: python
-    - Version: 1.2.1
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.2
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Writes
+      the headers the files now carry, so a rerun no longer rolls them back.
+      The bare, ranks and scatter variants take 1.1.2 (10/31/2026), the
+      content-credentials entry their headers gained when the C2PA manifests
+      were stripped (CREDENTIALS); the grid variants and the generated kit
+      keep 1.2.1. The emblem takes 2.0.2: its description names both places
+      the page draws it, the loading screen and, since 2.18.0, the M of the
+      app bar's wordmark. The logo's 1.0.3 of the same day, its description as a
+      brand file the page does not read, was already written here.
     - 1.2.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       from conical_m.py: at Dennis's request the brand files dropped
       "conical" from their names while the logo is still being decided.
@@ -132,6 +141,11 @@ OFFICIAL_RENAMED = ("{version} (10/30/2026) [dendogg + Anthropic - Claude Opus 5
                     + RENAMED[0].upper() + RENAMED[1:]
                     + ", and the kit it was measured from is monolith-brand-kit.svg. The path and "
                     "the {group} group stay put.")
+# The bare, ranks and scatter variants lost their stale C2PA manifests on 10/31/2026 and carry this entry.
+CREDENTIALS_DAY = date(2026, 10, 31)
+CREDENTIALS = ("{version} (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Content credentials "
+               "removed: the C2PA manifest in the metadata, and its namespace, described the file as it "
+               "was before the 2.18.0 edits and no longer matched it. The drawing is unchanged.")
 
 
 # ---------------------------------------------------------------------------
@@ -591,7 +605,8 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
     draw_mark(svg, mark, skin, panel)
     fname = f"monolith-m-{n}-{layout}-{skin}.svg"
     grid = layout == "grid"
-    version = "1.2.1" if grid else "1.1.1"
+    renamed = "1.2.1" if grid else "1.1.1"                # the rename's patch, 10/30/2026
+    version = renamed if grid else "1.1.2"                # the others have the credentials entry over it
     what = {"grid": "the construction template: the outline with the full grid over it as invisible guide lines",
             "bare": "the tiled M without pieces"}.get(layout, f"the {layout} layout")
     doc = _doc(
@@ -611,8 +626,9 @@ def render_variant(n: int, layout: str = "bare", skin: str = "slate", size: floa
                    "Pieces: chess-pieces.svg stamped verbatim at the brand kit's placements; "
                    "White is boxwood-faced")],
         keywords=["MONOLITH", "brand", "logo", "tiled M", "chess"], width=size, height=size,
-        id_convention=ID_CONVENTION + (" " + GUIDE_NOTE if grid else ""),
-        changelog=[f"{version} ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Renamed "
+        id_convention=ID_CONVENTION + (" " + GUIDE_NOTE if grid else ""), day=None if grid else CREDENTIALS_DAY,
+        changelog=([] if grid else [CREDENTIALS.format(version=version)]) + [
+                   f"{renamed} ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Renamed "
                    f"from conical-m-{n}-{layout}-{skin}.svg: {RENAMED}."] + (
                   ["1.2.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The grid's lines "
                    "are invisible guide paths over the outline, as Dennis ruled for a construction "
@@ -653,7 +669,7 @@ OFFICIAL = {
     ),
     "emblem": dict(
         n=4, layout="quartet", file="monolith-emblem.svg", root="emblem-monolith", panel="emblem",
-        version="2.0.1", title="MONOLITH Emblem (MONOLITH Edition - v2.0)",
+        version="2.0.2", day=date(2026, 10, 31), title="MONOLITH Emblem (MONOLITH Edition - v2.0)",
         description=("MONOLITH's official emblem, chosen on 10/26/2026: the MONOLITH M "
                      "cut into a four by four grid of slate tiles with black mortar, with the "
                      "quartet of twelve pieces standing on it, one of each kind per side. The "
@@ -661,8 +677,13 @@ OFFICIAL = {
                      "written down in "
                      "assets/brand/MONOLITH_M_SYSTEM.md; "
                      "this file is the system's rendering of them at 1200 px. It is the source of the page's "
-                     "loading screen: tools/build-emblem.mjs copies it into index.html."),
+                     "loading screen and, since 2.18.0, of the M in the app bar's wordmark: "
+                     "tools/build-emblem.mjs writes it into index.html once, and both draw it from there."),
         changelog=[
+            "2.0.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The description names "
+            "both places the page draws the emblem: the loading screen and, since 2.18.0, the M "
+            "of the app bar's wordmark, both from the one copy tools/build-emblem.mjs writes into "
+            "index.html. The drawing is unchanged.",
             OFFICIAL_RENAMED.format(version="2.0.1", group="board-emblem"),
             "2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis landed on the Conical M and made "
             "its 4 x 4 panel with pieces the official emblem; the 23 x 24 board M of 1.x is retired. Same path "
