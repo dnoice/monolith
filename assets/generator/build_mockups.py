@@ -6,15 +6,25 @@
     - File Name: build_mockups.py
     - Relative Path: assets/generator/build_mockups.py
     - Artifact Type: python
-    - Version: 2.0.2
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 2.0.3
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.0.3 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Writes
+      the headers the screens now carry, so a rebuild no longer rolls them
+      back. hero-01, loading-02, loading-03, loading-04, splash-01 and
+      palette studies 01 and 02 take 2.0.2 (10/31/2026), the
+      content-credentials entry their headers gained when the C2PA
+      manifests were stripped (CREDENTIALS, over CHANGELOG and
+      TAGLINE_CHANGELOG); loading-01 keeps its 2.0.2 of 10/30/2026
+      (RENAME_DAY) and meter-01 its 2.0.0. The version also takes in the
+      day's earlier change, unlogged until now: palette study 03's subtitle
+      names the graphics gauge, and the sheet has a 2.0.1 of its own.
     - 2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       loading-02 and hero-01 taglines read MARBLE VS. OBSIDIAN · CATHEDRAL,
       as the cathedral is no longer called Gothic. Those two screens carry
@@ -112,8 +122,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(A.ASSETS, "mockups")
 
 SET_DAY = date(2026, 10, 26)        # 2.0.0: the set rebuilt on the official marks
-TODAY = date(2026, 10, 30)          # 2.0.1: the mark called the MONOLITH M
-VERSION = "2.0.1"
+RENAME_DAY = date(2026, 10, 30)     # 2.0.1 (loading-01 2.0.2): the mark called the MONOLITH M
+TODAY = date(2026, 10, 31)          # 2.0.2: the content credentials removed
+VERSION = "2.0.2"
 APP_VERSION = "v2.12.0"
 
 W, H = 1600, 1000           # screens
@@ -135,11 +146,17 @@ SET_CHANGELOG = ["2.0.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] —
 RENAMED = ("the mark is called the MONOLITH M and is built by monolith_m.py: at Dennis's request "
            "the brand files dropped \"conical\" from their names while the logo is still being "
            "decided")
-CHANGELOG = [f"2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
+# The screens on the set's version lost their stale C2PA manifests on 10/31/2026 and carry this entry.
+CREDENTIALS = ("2.0.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Content credentials "
+               "removed: the C2PA manifest in the metadata, and its namespace, described the file as it "
+               "was before the 2.18.0 edits and no longer matched it. The drawing is unchanged.")
+CHANGELOG = [CREDENTIALS,
+             f"2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
              f"{RENAMED[0].upper()}{RENAMED[1:]}.", *SET_CHANGELOG]
 
 # hero-01 and loading-02: their tagline changed the same day, so their 2.0.1 says both.
 TAGLINE_CHANGELOG = [
+    CREDENTIALS,
     "2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The tagline reads MARBLE VS. "
     f"OBSIDIAN · CATHEDRAL, as the cathedral is no longer called Gothic, and {RENAMED}.",
     *SET_CHANGELOG]
@@ -334,7 +351,7 @@ def build_loading_01(pal, suffix=""):
       @keyframes appear {{ from {{ opacity: 0; transform: translateY({14 / s:.0f}px) scale(0.92); }} to {{ opacity: 1; transform: none; }} }}
       @keyframes fill-in {{ from {{ opacity: 0.18; }} to {{ opacity: 1; }} }}
     """)
-    emit(svg, f"{LOADING_01}{suffix}.svg", version="2.0.2",
+    emit(svg, f"{LOADING_01}{suffix}.svg", version="2.0.2", day=RENAME_DAY,
          changelog=[f"2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — "
                     f"{RENAMED[0].upper()}{RENAMED[1:]}.",
                     "2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Written under "
