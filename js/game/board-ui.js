@@ -239,10 +239,10 @@ export let hintMarkMat; // set in init()
 let hintMark; // set in init()
 
 /* Hover (mouse only): click-through draws nothing on the board. The cursor turns into a pointer
-   only where a click does something. */
+   only where a click does something, and an open hand over a piece that can be dragged. */
 let hoverQueued = null;
 function setHover(sq, clickable = false) {
-  if (!stage.classList.contains('dragging')) stage.style.cursor = sq >= 0 && clickable ? 'pointer' : '';
+  if (!stage.classList.contains('dragging')) stage.style.cursor = sq >= 0 && clickable ? (grabbable(sq) ? 'grab' : 'pointer') : '';
 }
 function clickableAt(sq) {
   if (sq < 0) return false;
@@ -255,6 +255,14 @@ function clickableAt(sq) {
   if (!canMoveNow()) return false;
   const p = cur().board[sq];
   return isTarget(sq) || !!(p && p.c === cur().turn);
+}
+/* A piece a press can pick up and drag (scene/camera.js): one of the side to move, wherever a click
+   on it would select it, in the game, an explored line or a study. Before a game a click only
+   explains how to start, so nothing is picked up then. */
+export function grabbable(sq) {
+  if (!clickableAt(sq) || (!app.started && !explore.on && !(prefs.explore && exploreAvailable()))) return false;
+  const st = boardState(), p = st.board[sq];
+  return !!(p && p.c === st.turn);
 }
 export function onSquare(sq) {
   if (explore.on || (prefs.explore && exploreAvailable())) return exploreSquare(sq);

@@ -59,7 +59,7 @@ const BOOT_TIPS = [
   { kind: 'tip', text: 'Eight levels, from Novice to Maximum, and you can change the level in the middle of a game.' },
   { kind: 'tip', text: 'Hold `Space` in Analyze for the Tactical X-Ray: attackers, defenders and what a move there costs.' },
   { kind: 'tip', text: 'In Analyze, `F`, `V` and `X` turn the move-value field, the vectors and the X-Ray on and off.' },
-  { kind: 'tip', text: 'Middle-drag to orbit the board and scroll to zoom. On touch, one finger orbits and a pinch zooms.' },
+  { kind: 'tip', text: 'Drag a piece onto a square to move it, and drag the board itself to orbit; scroll or pinch to zoom.' },
   { kind: 'tip', text: 'Step through the moves with `←` and `→`; `Home` and `End` jump to the start and back to the live position.' },
   { kind: 'tip', text: 'Type a move straight into the move field: `e2e4`, or `e7e8q` to promote.' },
   { kind: 'tip', text: 'The world follows where you are: the cathedral for Play, MONOLITH for Analyze and the Crucible. Settings can pin either.' },

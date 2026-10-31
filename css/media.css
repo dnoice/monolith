@@ -71,7 +71,7 @@
   .wdl{top:52px;bottom:70px}
   .wdl-sharp{display:none}
   .layer-toggles{top:10px;left:var(--gutter-l);right:auto}
-  :root[data-tab="analyze"][data-skin="monolith"] .player,:root[data-tab="crucible"] .player{display:none}
+  :root[data-tab="crucible"] .player{display:none}
   .layer-btn small{display:none}
   .field-legend{display:none}
   .deck{grid-template-rows:200px minmax(0,1fr)}
@@ -90,6 +90,28 @@
   .stage-chip{max-width:calc(100% - 32px);white-space:normal;text-align:center}
   .stage-chip.castle{bottom:60px}
   #snackbar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  /* The stage's bands on a phone (css/layout.css): the player cards on one compact row each, at the
+     top and the foot. A chip takes the top card's place while it shows, the castling chip the foot
+     card's, and Reset view sits at the foot's right. In Analyze the layer toggles hold the top row,
+     the chips a second one and the WDL column a narrow right band. */
+  #scene{--safe-t:64px;--safe-r:10px;--safe-b:56px;--safe-l:10px}
+  #stage:has(#evalbar:not([hidden])) #scene{--safe-l:28px}
+  :root[data-tab="analyze"] #scene{--safe-t:92px;--safe-r:92px;--safe-b:12px}
+  :root[data-tab="crucible"] #scene{--safe-t:86px;--safe-b:12px}
+  .player{padding:4px 10px 4px 4px;gap:8px}
+  .player .avatar{width:28px;height:28px}
+  .player .pinfo{flex-direction:row;align-items:center;gap:8px}
+  .player .pcap{min-height:0;font-size:13px}
+  .player .pcap:empty{display:none}
+  .player .pstate{padding:2px 8px;font-size:10px}
+  .player.top{top:8px}.player.bottom{bottom:8px}
+  #stage > .stage-chip{left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto;transform:none;padding-block:5px}
+  #stage > .stage-chip:not(.castle){top:8px}
+  .stage-chip.castle{bottom:8px}
+  #stage:has(> .stage-chip:not(.castle):not([hidden])) .player.top,#stage:has(#castle-chip:not([hidden])) .player.bottom{visibility:hidden}
+  :root[data-tab="analyze"] #stage > :is(#review-chip,#explore-chip),.phantom-chip{top:46px;left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto}
+  .wdl{top:96px;bottom:54px}
+  .stage-reset{bottom:12px}
 }
 @media (max-width:420px){
   .pname .psub{display:none}

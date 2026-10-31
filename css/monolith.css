@@ -73,6 +73,9 @@
 :root[data-skin="monolith"] .stage-chip{background:var(--mo-panel);color:var(--mo-ink);border:1px solid var(--mo-rule);box-shadow:none}
 :root[data-skin="monolith"] .stage-chip.castle{background:var(--mo-panel);color:var(--mo-ink);border-color:var(--mo-steel)}
 :root[data-skin="monolith"] .stage-hint{background:var(--mo-panel);font-family:var(--font-tele);font-size:11px}
+:root[data-skin="monolith"] .stage-reset{height:28px;border-radius:3px;border-color:var(--mo-rule);background:var(--mo-panel);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.1em;text-transform:uppercase;backdrop-filter:none;-webkit-backdrop-filter:none}
+:root[data-skin="monolith"] .stage-reset:hover{border-color:#3A4352;color:var(--mo-ink)}
+:root[data-skin="monolith"] .stage-reset:focus-visible{outline-color:var(--mo-ink)}
 :root[data-skin="monolith"] .switch:checked{background:var(--mo-steel);border-color:var(--mo-steel)}
 :root[data-skin="monolith"] .switch:checked::before{background:var(--mo-canvas)}
 :root[data-skin="monolith"] .result.win::after{display:none}
@@ -141,7 +144,11 @@
 .opt .select{height:32px;min-width:96px}
 .opt .val{font-family:var(--font-tele);font-size:12px;color:var(--mo-ink2)}
 
-/* stage instruments */
+/* stage instruments. Analyze's bands: the top one holds the chips at its left and the layer
+   toggles at its right; the right one holds the field's key under the toggles, the WDL column and,
+   at its foot, Reset view. On a narrow stage the column drops Sharpness and the key, and the band
+   narrows with it. */
+:root[data-tab="analyze"] #scene{--safe-t:56px;--safe-r:186px;--safe-b:12px}
 .layer-toggles{position:absolute;top:14px;right:var(--gutter-r);display:flex;gap:6px;z-index:2}
 .layer-btn{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border:1px solid var(--mo-rule);border-radius:3px;background:var(--mo-panel);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .layer-btn::before{content:'';flex:none;width:8px;height:8px;border:1px solid var(--mo-ink3);border-radius:1px}
@@ -150,7 +157,7 @@
 .layer-btn[aria-pressed="true"]::before{background:var(--mo-ink);border-color:var(--mo-ink)}
 .layer-btn small{font:inherit;letter-spacing:.02em;text-transform:none;color:var(--mo-ink3)}
 .layer-btn:focus-visible{outline:2px solid var(--mo-ink);outline-offset:2px}
-.wdl{position:absolute;right:var(--gutter-r);top:58px;bottom:120px;display:flex;align-items:stretch;gap:6px;pointer-events:none;z-index:1}
+.wdl{position:absolute;right:var(--gutter-r);top:122px;bottom:54px;display:flex;align-items:stretch;gap:6px;pointer-events:none;z-index:1}
 .wdl-text{position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-end;min-width:0;font:400 11px/1.2 var(--font-tele);color:var(--mo-ink2);text-align:right}
 .wdl-text #wdl-bottom{margin-top:auto}
 .wdl-lab{white-space:nowrap}
@@ -169,13 +176,25 @@
 .wdl-v{position:relative;width:12px;display:flex;flex-direction:column;border-radius:1px;overflow:hidden;background:var(--mo-well);box-shadow:0 0 0 1px var(--mo-rule)}
 .wdl-v i{display:block;transition:height .5s var(--ease-std)}
 .wdl-v.flipped{flex-direction:column-reverse}
-.wdl-none{position:absolute;right:var(--gutter-r);top:58px;font:400 11px var(--font-tele);color:var(--mo-ink3)}
-.field-legend{position:absolute;right:var(--gutter-r);bottom:14px;z-index:1;display:flex;flex-direction:column;gap:5px;max-width:min(330px,calc(100% - 32px));padding:9px 11px;background:var(--mo-panel);border:1px solid var(--mo-rule);border-radius:3px;font-size:11.5px;color:var(--mo-ink2)}
+.wdl-none{position:absolute;right:var(--gutter-r);top:122px;font:400 11px var(--font-tele);color:var(--mo-ink3)}
+/* the field's key: its source and its scale, under the Field toggle; the counts it once carried are
+   the Sharpness note's in the pane */
+.field-legend{position:absolute;right:var(--gutter-r);top:50px;z-index:1;display:flex;flex-direction:column;gap:5px;width:156px;padding:7px 9px;background:var(--mo-panel);border:1px solid var(--mo-rule);border-radius:3px;font-size:11.5px;color:var(--mo-ink2)}
+.field-legend .mo-head{min-width:0}
+.field-legend .badge{white-space:normal;overflow-wrap:anywhere}
+.field-legend p{display:none}
+@container stage (max-width:759px){
+  :root[data-tab="analyze"] #scene{--safe-r:92px}
+  .wdl-sharp,.layer-btn small,.field-legend{display:none}
+  .wdl,.wdl-none{top:58px}
+}
 .fl-scale{display:flex;align-items:center;gap:8px;font:400 10px var(--font-tele);color:var(--mo-ink3)}
 .fl-scale i{flex:1;height:6px;border-radius:1px;background:linear-gradient(90deg,var(--mo-sq-dark),#1C434C)}
 .field-legend p{margin:0}
-.phantom-chip{position:absolute;left:50%;top:56px;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:2px;max-width:min(460px,calc(100% - 32px));padding:7px 14px;background:var(--mo-panel);border:1px solid var(--mo-steel);border-radius:3px;font-size:12.5px;color:var(--mo-ink);text-align:center;pointer-events:none}
-.phantom-chip span{font-size:11px;color:var(--mo-ink2)}
+/* a previewed line, in the chips' slot at the top band's left, on one row */
+.phantom-chip{position:absolute;left:var(--gutter-l);top:8px;z-index:2;display:flex;align-items:baseline;gap:10px;max-width:calc(100% - 380px);padding:7px 14px;background:var(--mo-panel);border:1px solid var(--mo-steel);border-radius:3px;font-size:12.5px;color:var(--mo-ink);text-align:center;pointer-events:none}
+.phantom-chip b{flex:none;font-weight:500}
+.phantom-chip span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--mo-ink2)}
 
 /* dock: Synaptic PV scrubber (Analyze) and heartbeat (Crucible) */
 #dock{grid-area:dock;min-width:0;background:var(--mo-panel);border-top:1px solid var(--mo-rule);color:var(--mo-ink)}

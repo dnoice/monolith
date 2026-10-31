@@ -60,8 +60,7 @@
 */
 import { app } from '../app/store.js';
 import { $, PI, prefs, savePrefs } from '../app/base.js';
-import { cam } from '../scene/camera.js';
-import { tween } from '../scene/motion.js';
+import { resetView } from '../scene/camera.js';
 import { ensureAudio } from '../app/sound.js';
 import { applyPrefs, canMoveNow, cur, draft, match, render } from '../app/state.js';
 import { snack } from './snackbar.js';
@@ -120,10 +119,9 @@ export function init() {
   $('#btn-live').addEventListener('click', goLive);
   $('#btn-flip').addEventListener('click', () => setOrientation(Chess.other(app.orient)));
   $('#btn-flip-2').addEventListener('click', () => setOrientation(Chess.other(app.orient)));
-  $('#btn-reset-view').addEventListener('click', () => {
-    const p0 = cam.phi, d0 = cam.dist, t0 = cam.theta, target = app.orient === 'w' ? 0 : PI; let dt = Math.atan2(Math.sin(target - t0), Math.cos(target - t0));
-    tween(0.6, e => { cam.phi = p0 + (0.98 - p0) * e; cam.dist = d0 + (11.5 - d0) * e; cam.theta = t0 + dt * e; });
-  });
+  // Reset view, in Settings and on the stage once the view has been turned by hand: the world's own pose
+  $('#btn-reset-view').addEventListener('click', () => resetView());
+  $('#stage-reset').addEventListener('click', () => resetView());
   $('#btn-sound').addEventListener('click', () => { ensureAudio(); prefs.sound = !prefs.sound; savePrefs(); applyPrefs(); render(); });
   $('#set-sound').addEventListener('change', e => { ensureAudio(); prefs.sound = e.target.checked; savePrefs(); applyPrefs(); render(); });
   $('#set-legal').addEventListener('change', e => { prefs.legal = e.target.checked; savePrefs(); render(); });

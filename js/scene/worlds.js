@@ -73,7 +73,7 @@ import {
 import { fragMats, HL, relabel } from './board.js';
 import { INK } from './instruments.js';
 import { hazeMix, planarShafts, post } from './post.js';
-import { cam } from './camera.js';
+import { cam, fitCamera, fitDist } from './camera.js';
 import { easeInOut, tween } from './motion.js';
 import { renderers } from '../app/state.js';
 import { engineFamily } from '../game/engine.js';
@@ -117,13 +117,15 @@ export let worldK = 0, worldGen = 0, cathedralWeight = 1;
 const _ca = new THREE.Color(), _cb = new THREE.Color(), bgSrgb = new THREE.Color();
 const mixColor = (target, a, b, k) => target.copy(_ca.set(a)).lerp(_cb.set(b), k);
 /* With post-processing, fog blends in linear light, which reads lighter than the direct path's
-   sRGB-space blend; a slightly denser fog keeps the two tiers looking alike. */
+   sRGB-space blend; a slightly denser fog keeps the two tiers looking alike. The camera's distance
+   is fitted to the stage (scene/camera.js), and the fog thins by as much as the fit draws it back
+   from the world's own distance, so the board is as clear at any size as at that one. */
 const FOG_POST = 1.18;
-function applyBackdrop() {
+export function applyBackdrop() {
   const post_ = !!post.composer;
   scene.background.copy(bgSrgb); if (post_) scene.background.convertSRGBToLinear();
   scene.fog.color.copy(bgSrgb); if (post_) scene.fog.color.convertSRGBToLinear();
-  scene.fog.density = baseFog * (post_ ? FOG_POST : 1);
+  scene.fog.density = baseFog * (post_ ? FOG_POST : 1) * (cam.fit ? WORLD[app.worldName].pose.dist / cam.fit : 1);
 }
 let baseFog = 0.04;
 export function applyWorldMix(k) {
@@ -187,10 +189,13 @@ export function setWorld(name, animate = true) {
   $('#brand-sub').textContent = name === 'monolith' ? `MONOLITH instrument · ${engineFamily().family}` : 'Marble vs. obsidian · Cathedral';
   canvas.setAttribute('aria-label', name === 'monolith' ? '3D chess board in the MONOLITH instrument' : '3D chess board inside a cathedral');
   const to = name === 'monolith' ? 1 : 0, from = worldK, gen = ++worldGen, fade = $('#stage-fade');
-  const pose = WORLD[name].pose, p0 = cam.phi, d0 = cam.dist;
+  /* The camera eases to the world's pose at the distance fitted for it, and to its pan: both read
+     live, so a stage that changes size on the way (the dock coming up) is still fitted at the end. */
+  const pose = WORLD[name].pose, p0 = cam.phi, d0 = cam.dist, pan0 = { x: cam.pan.x, y: cam.pan.y };
+  fitCamera();
   if (!animate || reduceMotion || prefs.speed === 'minimal') {
     applyWorldMix(to); swapWorld(to >= 0.5); fade.style.opacity = '0';
-    if (animate) { cam.phi = pose.phi; cam.dist = pose.dist; }
+    if (animate) { cam.phi = pose.phi; cam.dist = fitDist(); }
     return;
   }
   /* The veil dips to 0.92 at the swap, halfway, and clears again over the second half. It starts
@@ -204,7 +209,8 @@ export function setWorld(name, animate = true) {
     applyWorldMix(from + (to - from) * k);
     fade.style.opacity = String(dip ? Math.max(fade0 * (1 - p), 0.92 * Math.sin(PI * p)) : fade0 * (1 - p));
     if (!swapped && p >= 0.5) { swapped = true; swapWorld(to >= 0.5); }
-    cam.phi = p0 + (pose.phi - p0) * k; cam.dist = d0 + (pose.dist - d0) * k;
+    cam.phi = p0 + (pose.phi - p0) * k; cam.dist = d0 + (fitDist() - d0) * k;
+    cam.pan.x = pan0.x + (cam.fitPan.x - pan0.x) * k; cam.pan.y = pan0.y + (cam.fitPan.y - pan0.y) * k;
   }, p => p).then(() => { if (gen === worldGen) { fade.style.opacity = '0'; if (!swapped) swapWorld(to >= 0.5); } });
 }
 
