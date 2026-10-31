@@ -87,6 +87,20 @@ export function buildNav() {
     const i = NAV.findIndex(n => n.id === prefs.tab), d = (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 1;
     const n = NAV[(i + d + NAV.length) % NAV.length]; setTab(n.id); $(`#nav-${n.id}`).focus();
   });
+  placeActions(); NARROW.addEventListener('change', placeActions);
+}
+/* The app's actions (the command palette, Flip board, Sound and the release chip, #app-actions)
+   stand at the foot of the rail, after its tabs (Dennis, 10/30/2026). Under 900 px the rail is
+   the bottom bar, its six tabs its whole width, or on a phone held sideways a column with no
+   height to spare, so there they go back to the app bar's end (css/media.css). One set of
+   elements, moved, so their ids, handlers and titles stay as they are; a control that had the
+   focus keeps it. */
+const NARROW = matchMedia('(max-width: 899px)');
+function placeActions() {
+  const a = $('#app-actions'), home = NARROW.matches ? $('.appbar') : $('.rail');
+  if (!a || !home || a.parentElement === home) return;
+  const f = a.contains(document.activeElement) ? document.activeElement : null;
+  home.appendChild(a); if (f) f.focus();
 }
 /* Every pane scrolls in the same element (panelScroller()), so each one's place is kept here when
    it is left and given back when it opens again: a pane opens at its own top, or where it was

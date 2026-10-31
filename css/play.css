@@ -118,8 +118,14 @@
    the game Start game will begin, as the Play tab's choices change, and that it has not started
    (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
    Only a number takes the larger size. It narrows as the bar does: the levels and the last move
-   go first, then the players; phones leave it to the panel. */
-.matchbar{min-width:0;display:flex;justify-content:center}
+   go first, then the players; phones leave it to the panel. It stands at the bar's end, where
+   the actions were before they moved to the rail (Dennis, 10/30/2026).
+   Every segment sets its words on one baseline (Dennis, 10/30/2026: the labels, the values and
+   the larger numbers sat at their own heights, up to 2 px apart, each centred by its box): a
+   segment is a row of baseline-aligned cells whose row is centred in the pill, with a strut the
+   size of the strip's numbers (::after), so a segment with a number and one without put their
+   baselines at the same height; a player's dot is centred on the line it sits in. */
+.matchbar{min-width:0;display:flex;justify-content:flex-end}
 .mb-pill{display:inline-flex;align-items:stretch;min-width:0;max-width:100%;height:38px;border:1px solid var(--md-outline-var);border-radius:var(--r-pill);background:var(--md-surface-2);overflow:hidden}
 .matchbar[data-empty] .mb-pill{display:none}
 .mb-seg{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:0 14px;white-space:nowrap;font-size:13px}
