@@ -52,8 +52,8 @@
 ---------
 */
 /* ---------- BOOT_TIPS: the loading screen's tips and facts ----------
-   Dennis's request (10/24/2026): rotating, randomized tips and facts on the loading screen. The
-   tips teach the page; the facts are chess. */
+   Rotating, randomized tips and facts on the loading screen. The tips teach the page; the facts
+   are chess. */
 const BOOT_TIPS = [
   // the page
   { kind: 'tip', text: 'Press `{palette}` anywhere for the command palette: most settings and actions are a few letters away.' },

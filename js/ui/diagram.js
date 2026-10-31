@@ -27,7 +27,7 @@
 ✒ Description:
     Flat SVG chess diagrams for the panels: a study's thumbnail, the
     position a FEN describes, the structure map that shows passed and
-    weak pawns, the board editor. The pieces are Dennis's hand-drawn house
+    weak pawns, the board editor. The pieces are the hand-drawn house
     set (js/data/piece-set.js), drawn once as SVG symbols, so every diagram
     renders the same in every browser, whatever chess glyphs its fonts
     carry.
@@ -73,7 +73,7 @@ function ensureSprite() {
   sprite = document.createElementNS(NS, 'svg');
   sprite.setAttribute('aria-hidden', 'true'); sprite.setAttribute('width', '0'); sprite.setAttribute('height', '0');
   sprite.style.position = 'absolute'; sprite.id = 'dg-sprite';
-  // Dennis's house piece set (js/data/piece-set.js), one symbol per piece, each a square. Its two
+  // the house piece set (js/data/piece-set.js), one symbol per piece, each a square. Its two
   // colours are custom properties (--pc-face, --pc-line), which a <use> passes into its copy of
   // the symbol, so the stylesheet colours each side
   const n = PIECE_SET.size;

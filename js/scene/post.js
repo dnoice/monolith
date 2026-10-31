@@ -165,7 +165,7 @@ const HazeShader = {
 };
 /* The haze is marched at a fraction of the view's resolution, so a texel can straddle a column's
    silhouette and take either the column's short ray or the long ray to the wall behind it. Spread
-   over the pixels as it was (Dennis, 10/30/2026: jagged, pixelated pillars), the wrong one drew
+   over the pixels as it was (10/30/2026: jagged, pixelated pillars), the wrong one drew
    stair-steps two or four pixels deep along every column standing in front of the lit haze. Each
    pixel now takes only the texels whose rays ended where its own does (the full-resolution depth
    against the distance each texel stored), blended as before, and the nearest of the four where

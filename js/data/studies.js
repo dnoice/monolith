@@ -54,7 +54,7 @@
 ---------
 */
 /* ---------- STUDIES: the Position tab's lessons ----------
-   Dennis's request (10/22/2026): a Position sidebar with insightful learning components. Each
+   A Position sidebar with insightful learning components. Each
    study is a position with a goal; every one was checked with Stockfish 19 (the vendored build,
    run under Node) before it went in: in a puzzle each of your moves is the engine's unique best
    and each reply its best defence; in a practice game the evaluation matches the goal (a win to

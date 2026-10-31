@@ -199,7 +199,7 @@ export function renderCrucible() {
   if (cr.view === 'board') { if (boardOverride) { renderBoardCard(); drawBeat(); } else if (m && m.games[cr.expanded]) crShowBoard(); }
   else $('#board-card').hidden = true;
 }
-/* LLR oscilloscope, refined after Dennis's note (10/15/2026) that it read jagged and stuttered.
+/* LLR oscilloscope, refined (10/15/2026) because it read jagged and stuttered.
    The trace is a monotone cubic through the per-pair LLR values (Fritsch–Carlson tangents, so
    it never overshoots a recorded point) over a soft fill toward zero, cyan above and crimson
    below; the GSPRT bounds are dashed rules with the regions past them faintly tinted. The view
@@ -369,8 +369,8 @@ export function hiveIndexAt(x, y) {
   if (x - c * (tile + gap) > tile || y - r * cellH > tile + 24) return -1;
   const i = r * cols + c; return i < n ? i : -1;
 }
-/* Heartbeat: the game's evaluation trace over a move rail, after Dennis's note (10/15/2026) that
-   it should be more granular, with a slot for every move. Every ply owns one slot in the rail:
+/* Heartbeat: the game's evaluation trace over a move rail, made more granular (10/15/2026) with
+   a slot for every move. Every ply owns one slot in the rail:
    White's moves in the upper lane, Black's in the lower, so the two sides interleave like
    brickwork. Book moves sit in plain raised slots; engine moves are shaded by how far the
    evaluation moved at that ply (|Δ| against the previous search, either engine): quiet under

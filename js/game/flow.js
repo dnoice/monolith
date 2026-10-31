@@ -347,7 +347,7 @@ export function goLive() {
 export const viewedPly = () => app.view === null ? game.states.length - 1 : app.view;
 
 /* ---------- explore: try moves on a board the game does not own ----------
-   Dennis's ruling (10/15/2026): every board in every mode can be played on, behind a toggle
+   Every board in every mode can be played on, behind a toggle
    (Settings → Move pieces on any board, on by default). A board the game rules leave read-only
    (a Crucible game, an earlier move under review, a finished game) takes moves into a scratch
    line instead. The line never touches the game or the recorded run: Undo steps it back, Back

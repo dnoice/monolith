@@ -63,7 +63,7 @@ import { app } from './store.js';
 export class BootHalt extends Error {}
 
 export const $ = s => document.querySelector(s);
-/* The release on screen (Dennis, 10/22/2026: "so I can always know if I am behind"). These repeat
+/* The release on screen (10/22/2026), so it is always clear whether a copy is behind. These repeat
    the Version and Date in index.html's ✒ header; a release bumps all of them together. */
 export const APP_VERSION = '2.18.0', APP_DATE = '10/30/2026';
 export let reduceMotion; // set in init()
@@ -115,13 +115,13 @@ export function init() {
   // splitter sizes: { key: { tab: px } }, numbers only
   if (!isObj(prefs.ui)) delete prefs.ui;
   else for (const [k, m] of Object.entries(prefs.ui)) { if (!isObj(m)) delete prefs.ui[k]; else for (const [t, v] of Object.entries(m)) if (typeof v !== 'number' || !isFinite(v)) delete m[t]; }
-  /* 2.10.0 cut the graphics into five levels (Dennis, 10/23/2026). The old Balanced is Medium and
+  /* 2.10.0 cut the graphics into five levels (10/23/2026). The old Balanced is Medium and
      the old Low (no post-processing) is Minimal, setting for setting, so a saved choice keeps
      drawing as it did. The scheme mark is not among the defaults, so a choice saved before it
      existed is moved once. js/scene/quality.js checks prefs.gfx, the Custom settings. */
   if (prefs.qualityScheme !== 2) { prefs.quality = { balanced: 'medium', low: 'minimal' }[prefs.quality] || prefs.quality; prefs.qualityScheme = 2; }
   if (!['auto', 'ultra', 'high', 'medium', 'low', 'minimal', 'custom'].includes(prefs.quality)) prefs.quality = 'auto';
-  /* 2.13.0: the app is MONOLITH (Dennis, 10/24/2026) and its preferences key with it. Settings saved
+  /* 2.13.0: the app is MONOLITH (10/24/2026) and its preferences key with it. Settings saved
      under the old key are written under the new one, then the old copy goes; if the write fails
      (storage full or blocked), the old copy stays and is read again next time. */
   try { if (localStorage.getItem(OLD_PREF_KEY) !== null) { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); localStorage.removeItem(OLD_PREF_KEY); } } catch (e) {}

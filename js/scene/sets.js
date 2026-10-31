@@ -38,7 +38,7 @@
       rose window and candle lights.
     - MONOLITH: its materials, steel edges that hold at any distance, the
       mirror floor (or a plain one) and three pillar places, each with a
-      built pillar (base, body, raised face panel, cap) that Dennis's
+      built pillar (base, body, raised face panel, cap) that the Blender
       models replace once they load (monoSlots, js/scene/pillars.js).
     - Walls one-sided, everything mounted on them too, so a camera out
       past a wall sees through it cleanly.
@@ -69,7 +69,7 @@ import { startPillars } from './pillars.js';
 
 /* ---------- world rig ----------
    Both worlds' scenery and their lights hang from one rig that turns with the board's
-   orientation (Dennis, 10/22/2026: on a flip the pillars swept through the frame and popped in
+   orientation (10/22/2026: on a flip the pillars swept through the frame and popped in
    and out of view). A flip turns the rig with the camera, so the backdrop holds still on screen
    while the board turns beneath it, and Black sits before the same view White does. The board,
    the plinths (counter-turned) and the mirror floor's rule grid (drawn in world space) never
@@ -141,7 +141,7 @@ export let roseLight; // set in init()
    shader. */
 export let monoSet; // set in init()
 let MO_MAT; // set in init()
-/* Steel edges, drawn by the surfaces themselves (Dennis, 10/22/2026: the edges were paper thin and
+/* Steel edges, drawn by the surfaces themselves (10/22/2026: the edges were paper thin and
    read as broken, jagged lines). They were boxes 18 mm across, under a pixel wide at the
    monoliths' distance, so the rasteriser kept and dropped them pixel by pixel. The plinth and the
    monoliths are now unit boxes scaled to size, and their shader measures each fragment's distance
@@ -203,7 +203,7 @@ export function mirrorFloor() {
 let geoUnitBox; // set in init()
 let monoPlinth; // set in init()
 /* The three pillar places: { n, g (the place's group), w, h, parts (the built pillar), model }.
-   js/scene/pillars.js puts Dennis's models on them and keeps the built parts as the fallback. */
+   js/scene/pillars.js puts the Blender models on them and keeps the built parts as the fallback. */
 export const monoSlots = [];
 export let rimLights; // set in init()
 export let monoWash; // set in init()
@@ -222,7 +222,7 @@ export function init() {
   floor = mesh('floor-nave', new THREE.PlaneGeometry(60, 80), MAT.floor, set, false, true);
   floor.rotation.x = -PI / 2; floor.position.set(0, -0.45, -8);
   cathPlinth = mesh('plinth-board', new THREE.BoxGeometry(9.4, 0.36, 9.4), MAT.plinth, set, true, true); cathPlinth.position.y = -0.28;
-  /* 64 sides, not 20 (Dennis, 10/30/2026: the pillars did not hold their shape as the camera
+  /* 64 sides, not 20 (10/30/2026: the pillars did not hold their shape as the camera
      turned): a 20-sided shaft's outline sits up to 5 mm inside the round one and jumps from edge to
      edge as the view turns, two to three pixels at a nearby column; at 64 it stays within a third of
      a pixel. One geometry serves all fourteen shafts, so the cost is a few thousand triangles. */
@@ -247,8 +247,8 @@ export function init() {
   geoWall = new THREE.PlaneGeometry(50, 16);
   /* The aisle walls are one-sided, so a camera orbiting out past them (at the sides, from about
      distance 11) looks through them, as a cutaway. The mullions were boxes, seen from both sides,
-     so out there they stayed behind as thin bars floating between the columns (Dennis,
-     10/23/2026). Each is now a strip on the wall's face, facing the nave like the wall itself:
+     so out there they stayed behind as thin bars floating between the columns (10/23/2026).
+     Each is now a strip on the wall's face, facing the nave like the wall itself:
      from inside the same divider, from outside gone with its wall. */
   geoLancet = new THREE.ShapeGeometry(lancetShape(0.55, 3.6)); geoMullion = new THREE.PlaneGeometry(0.08, 4.5);
   [['left', -10.5, PI / 2], ['right', 10.5, -PI / 2]].forEach(([side, x, ry]) => {
@@ -320,7 +320,7 @@ export function init() {
   monoFloorPlain.rotation.x = -PI / 2; monoFloorPlain.position.y = floorY;
   geoUnitBox = new THREE.BoxGeometry(1, 1, 1);
   monoPlinth = mesh('plinth-monolith', geoUnitBox, MO_MAT.slab, monoSet, true, true); monoPlinth.position.y = -0.28; monoPlinth.scale.set(9.4, 0.36, 9.4);
-  /* Each monolith is built rather than one slab (Dennis, 10/23/2026: the pillars were awkward,
+  /* Each monolith is built rather than one slab (10/23/2026: the pillars were awkward,
      flat panes that showed only their steel outline). A base block and a cap bracket a body about
      a third as deep as it is wide, and a face panel steps 12 cm out of the front. Every view now
      meets real faces: the sides take the room's strip lights, the panel's step draws a second
@@ -339,7 +339,7 @@ export function init() {
     ];
     monoSlots.push({ n, g, w, h, parts, model: null });
   });
-  /* The rim lights outline the pieces from behind (Dennis, 10/23/2026: from low angles the board
+  /* The rim lights outline the pieces from behind (10/23/2026: from low angles the board
      blazed white). They stood low and wide (4.5 up, a 0.5 rad cone), raking the squares, and
      their glint crossed the bloom threshold. High (8 up) and narrow (0.34 rad), aimed at the
      pieces' middle, they still wrap the pieces while their glint on the squares stays soft. */
@@ -351,6 +351,6 @@ export function init() {
      faces read lighter at the top and solid against the haze. The board lies outside its cone. */
   monoWash = new THREE.SpotLight(0xc8d3e6, 0, 70, 0.5, 0.8, 1); monoWash.name = 'light-monolith-wash';
   monoWash.position.set(0, 20, -2); monoWash.target.position.set(0, 3, -14); rig.add(monoWash, monoWash.target);
-  // Dennis's Blender pillars replace the built ones once their files arrive (js/scene/pillars.js)
+  // the Blender pillars replace the built ones once their files arrive (js/scene/pillars.js)
   startPillars();
 }

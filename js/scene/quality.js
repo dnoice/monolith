@@ -94,7 +94,7 @@ import { post } from './post.js';
 import { render, renderers } from '../app/state.js';
 
 /* ---------- the levels ----------
-   Dennis's request (10/23/2026): a more realistic, logical, tiered graphics system. The ladder is
+   A more realistic, logical, tiered graphics system. The ladder is
    cut by what each step buys, cheapest first. HDR rendering (a half-float target, multisampled,
    with bloom) is the first thing worth paying for: gradients stop banding and the markers glow.
    Ray-marched light and the mirror floor come next: each draws the scene a second time. Then

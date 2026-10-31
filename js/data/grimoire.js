@@ -50,7 +50,7 @@
 ---------
 */
 /* ---------- GRIMOIRE: the reference entries ----------
-   Dennis's request (10/22/2026): every term in and around the interface, with what it means and how
+   Every term in and around the interface, with what it means and how
    it reads in a game, in analysis and inside the engine. One entry per term: id (kebab case, used
    by data-term attributes and "see" links), term (as the interface shows it), aka (other names and
    spellings, for search), cat (rules, notation, tactics, eval, engine, analysis, testing,

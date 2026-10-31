@@ -24,7 +24,7 @@
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    Puts Dennis's glTF models (assets/models/, documented in
+    Puts the glTF models (assets/models/, documented in
     assets/models/MANIFEST.md) on MONOLITH's three pillar places. A style
     names a model per place: Monoliths (stele, rift, spire, each made for
     its place), Classic (a Solomonic column between a Doric and a Tuscan) or
@@ -74,8 +74,8 @@ import { render } from '../app/state.js';
 import { monoSlots } from './sets.js';
 import { bootStep } from '../ui/boot-screen.js';
 
-/* ---------- MONOLITH's pillars: Dennis's models ----------
-   Dennis's request (10/23/2026): swap the built pillars for the ones he made in Blender. He made
+/* ---------- MONOLITH's pillars: the Blender models ----------
+   Models made in Blender replace the built pillars once they load. There are
    nine (assets/models/MANIFEST.md): three monoliths, one for each place at its exact size, and six
    columns built for the centre place, three classic and three modern, which scale evenly into
    the side places. A style names a model for each place and, as the monoliths do, puts three
@@ -91,7 +91,7 @@ const SINK = 0.15;            // and stands this far into the floor, as the buil
 export const pillars = { style: 'monoliths', status: 'idle', failed: [] };
 const files = new Map();      // model name → Promise of its prepared scene
 let loader = null, gen = 0, started = false;
-/* The same model, two ways to fetch it: the .glb itself (Dennis's folder, any static server), or
+/* The same model, two ways to fetch it: the .glb itself (a local checkout, any static server), or
    .glb.json, the same bytes as base64 in JSON, for a host that serves no .glb (the published page;
    tools/pack-models.mjs writes them). Whichever answers first is tried first after that, so each
    host asks for what it has. */

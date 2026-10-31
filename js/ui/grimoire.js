@@ -64,7 +64,7 @@ import { NAV, setTab } from './nav.js';
 import { setPosView } from './position.js';
 
 /* ---------- Grimoire: the reference tab, and term cards anywhere ----------
-   Dennis's request (10/22/2026): a tab that explains every term on these screens, not only what it
+   A tab that explains every term on these screens, not only what it
    means but how it reads in a game, in analysis and inside the engine. Entries live in GRIMOIRE
    (js/data/grimoire.js); this is the reader. The index searches terms, other names and the text,
    filtered by category; an article shows the three viewpoints, where the thing is in MONOLITH (with

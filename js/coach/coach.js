@@ -47,7 +47,7 @@
 ---------
 */
 /* ---------- the Coach ----------
-   Dennis's note (10/22/2026): the Coach should be true to its title, not an engine line readout.
+   The Coach should be true to its title, not an engine line readout.
    It now reads the game the way a coach at the board would, in the voice of COACH_VOICE:
      - your move gets a verdict against the engine's best, with what each move does and, after a
        slip, the better move and what it changes (the material along the engine's line);

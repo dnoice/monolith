@@ -56,11 +56,11 @@ import { lin } from './renderer.js';
 
 /* ---------- materials ---------- */
 export let MAT; // set in init()
-/* Obsidian carries a steel rim in MONOLITH (ruling: black is one material everywhere, obsidian
+/* Obsidian carries a steel rim in MONOLITH (black is one material everywhere, obsidian
    edged in steel). A view-dependent edge term joins the emissive light; uRim is 0 in the
    cathedral and 1 in MONOLITH, and the world transition blends it. */
 export const rimUniforms = { uRim: { value: 0 }, uRimColor: { value: lin(0xabb5c3) } };
-/* Marble keeps its form from any angle (Dennis, 10/15/2026: the white pieces read flat). Two
+/* Marble keeps its form from any angle (10/15/2026: the white pieces read flat). Two
    terms join the physical shading: the diffuse falls off toward the silhouette, the way matte
    stone darkens where it turns away from the eye, and a contact shade gathers near the board
    (by world height, so a lifted piece leaves it behind). The world transition sets both;

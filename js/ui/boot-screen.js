@@ -31,7 +31,7 @@
 
 ✒ Description:
     The loading screen's lifetime, its order and what it reports. The screen
-    itself (#boot: Dennis's MONOLITH emblem, the name, the meter and the tip
+    itself (#boot: the MONOLITH emblem, the name, the meter and the tip
     card) is markup in the page, so it shows, and its first stage plays,
     from the first paint, in the colours of the world the page will open
     in. This module lets the page's boot run once the M is written, keeps

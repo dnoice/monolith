@@ -239,13 +239,13 @@ let xrayGlass; // set in init()
 /* The ring lies on the board around the base of the piece, inside its square (radius 0.43 of a
    square's 0.5). It used to float at mid-piece height and 0.66 wide: under perspective a ring
    that high drifts off its square the farther the square is from the view's centre, and that
-   wide it covered the neighbours (Dennis, 10/15/2026). */
+   wide it covered the neighbours (10/15/2026). */
 const XR_R = 0.43;
 let xrRing; // set in init()
 // the state rim, just outside the gauge: steel and faint when calm, amber when pressed, crimson
 // and breathing when a piece on the square hangs (see stepXray)
 let xrRim; // set in init()
-/* The ring is a gauge (Dennis, 10/22/2026: the red arc should be more prominent and say more).
+/* The ring is a gauge (10/22/2026: the red arc should be more prominent and say more).
    Read it like a dial seen from your side of the board, starting at the top and running
    clockwise:
      - the arc is the expected score the best move onto this square gives up against the best

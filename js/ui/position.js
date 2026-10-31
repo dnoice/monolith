@@ -106,7 +106,7 @@ import {
 } from './studies.js';
 
 /* ---------- Position: three views behind one switch ----------
-   Dennis's request (10/23/2026): the tab felt awkward, a stack of text blocks; make the workflow
+   The tab had been a stack of text blocks that felt awkward; the workflow is meant to be
    intuitive and smart, with stronger visuals. So the tab has three views, one at a time:
    - Studies: the study you are playing, what to play next, and the library, as pictures.
    - Read: the board you see, drawn as bars, pieces and a map; anything with squares lights them

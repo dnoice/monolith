@@ -28,9 +28,9 @@
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    The graphics level chooser in Settings, after Dennis's drawing (version
+    The graphics level chooser in Settings, after the meter drawing (version
     1.2): a dial a little more than a half circle with five cells, one per
-    level from Minimal (left) to Ultra (right), each carrying a piece of his
+    level from Minimal (left) to Ultra (right), each carrying a piece of the
     house set in back-rank order (the rook, knight, bishop, queen and king
     of the a- to e-files), turned to face out, with the level's name along
     the rim. The needle, drawn as one shape with the hub ring and holding
@@ -44,15 +44,15 @@
       and drawing it; only the cell's own shape takes the pointer, so
       neighbouring cells never steal a click, and the focus ring follows
       the shape.
-    - The geometry is his drawing's, scaled into a 320-wide box with room
+    - The geometry is the drawing's, scaled into a 320-wide box with room
       for the names: concentric arcs; five cells meeting edge to edge, three
       of 38.9° across the top and the two ends cut flat by the base line
       below the centre; a panel inset evenly in each.
     - The needle turns about the hub's centre, which sits above the dial's,
       so each level's angle is worked out from the hub to the middle of its
       cell.
-    - The chosen cell shows its piece in his woods (boxwood face, ebony
-      line); the rest show it in the panel's own tones.
+    - The chosen cell shows its piece in the set's woods (boxwood face,
+      ebony line); the rest show it in the panel's own tones.
     - The needle eases to its level with a small overshoot, or jumps when
       motion is reduced or animation is set to Minimal.
     - Automatic is marked on the hub's face and in the line under the dial.
@@ -79,14 +79,14 @@ import { GFX_LEVELS, meterPosition, needs, quality } from '../scene/quality.js';
 import { pieceUse } from './diagram.js';
 
 /* ---------- geometry ----------
-   Dennis's meter, version 1.2 of his drawing (10/24/2026): a dial a little more than a half circle,
+   The meter, version 1.2 of its drawing (10/24/2026): a dial a little more than a half circle,
    its two end cells cut flat by the base line below the centre; five cells meeting edge to edge
    (three of 38.9° across the top, the ends to the base), each a frame with a panel inset evenly
-   and a piece of his set turned to face out; and a needle that is one shape with the hub, a ring
-   drawn to a point, raised off the base, with the pawn in its eye. His proportions, scaled into a
+   and a piece of the set turned to face out; and a needle that is one shape with the hub, a ring
+   drawn to a point, raised off the base, with the pawn in its eye. Its proportions, scaled into a
    320-wide box that keeps room for the level names on an arc just outside the band. */
 const NS = 'http://www.w3.org/2000/svg';
-const K = 141 / 153.32;                  // his drawing's outer radius to this box's
+const K = 141 / 153.32;                  // the drawing's outer radius to this box's
 const G = {
   w: 320, h: 180, cx: 160, cy: 158, R: 141, r: 85.94 * K, inset: 3.8 * K, drop: 10.9 * K, label: 149, piece: 40.8,
   hub: { dy: -16.65 * K, ro: 32.05 * K, ri: 23.4 * K, len: 66.6 * K, half: 20.3 * Math.PI / 180, pawn: 40.8 }
@@ -100,7 +100,7 @@ const f = n => +n.toFixed(2);
 const pt = (a, rho) => [G.cx + rho * Math.cos(a), G.cy - rho * Math.sin(a)];
 const H = [G.cx, G.cy + G.hub.dy];        // the hub's centre, raised off the dial's
 /* The angle where a circle of radius rho meets the base line, lifted by pad (the left end's, or the
-   right's), so the end cells stop at the base as Dennis drew them. */
+   right's), so the end cells stop at the base as drawn. */
 const baseAngle = (rho, pad, left) => { const a = Math.asin((G.drop - pad) / rho); return left ? Math.PI + a : -a; };
 /* Cell i's outline between radii ri and ro, inset by pad: edges facing a neighbour are pulled in by
    pad, the ends stop pad above the base line. */
@@ -134,7 +134,7 @@ function piece(t, x, y, s, deg, cls) {
   return g;
 }
 /* The needle and its hub as one shape, pointing straight up: a ring around the hub's centre drawn
-   out to a point, with the eye cut out (even-odd), as in Dennis's drawing. */
+   out to a point, with the eye cut out (even-odd), as in the drawing. */
 function needlePath() {
   const { ro, ri, len, half } = G.hub, [hx, hy] = H;
   const P1 = [hx - ro * Math.sin(half), hy - ro * Math.cos(half)], P2 = [hx + ro * Math.sin(half), hy - ro * Math.cos(half)];

@@ -474,7 +474,7 @@ export function placeXrayChip(sq) {
 }
 /* Synaptic PV. While the pointer or keyboard focus is in the grid the chips are held: a search
    refreshes the lines several times a second, and rebuilding the grid under the cursor moved the
-   chip being read, re-fired its hover and swapped the phantoms (the glitching Dennis saw). Updates
+   chip being read, re-fired its hover and swapped the phantoms (a visible glitch). Updates
    wait until the pointer or focus leaves, the header says so, and previews read the same snapshot
    the chips show. A new position is never held. */
 export function renderSyn() {

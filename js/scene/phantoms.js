@@ -61,13 +61,13 @@ import { geoOriginRing, INK, vectorsGroup } from './instruments.js';
 import { post } from './post.js';
 
 /* ---------- phantoms: a scrubbed line shown as a difference from the board ----------
-   Revised after Dennis's note (10/22/2026) that a whole second set at 90 % over the real set at
+   Revised (10/22/2026) because a whole second set at 90 % over the real set at
    30 % made it hard to tell what the board was saying. Now:
      - a piece that ends where it stands stays as it is, solid, with no phantom;
      - a piece that leaves its square fades to a faint ghost there (18 %);
      - a piece that is captured fades to a crimson-lit ghost (55 %) over a crimson ring;
      - only the pieces that land somewhere new appear, as holograms rimmed in cyan.
-   It moves fluidly (his other note): a hologram glides out from the square its piece leaves, and
+   It moves fluidly: a hologram glides out from the square its piece leaves, and
    between chips the holograms slide to their new squares (matched by colour and type, nearest
    first) while the ghosts cross-fade, all on one exponential ease, so sweeping along a line
    reads as the line being played. The ghosts are per-piece transparent copies of the piece

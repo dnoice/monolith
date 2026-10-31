@@ -87,7 +87,7 @@ import { desiredWorld } from '../scene/worlds.js';
 import { requestResize } from '../app/loop.js';
 
 /* ---------- splitters: drag handles on the dock, the side panel and the move list ----------
-   Dennis's request (10/22/2026): the containers get drag handles. Each splitter sets one size,
+   The containers get drag handles. Each splitter sets one size,
    saved per destination in prefs.ui: in Analyze the dock's height; in Crucible the heartbeat's
    height (a taller dock is a more granular heartbeat); the side panel's width (per world, not per
    destination); the move list's height. Arrow keys step 16 px (48 with Shift); Home or a

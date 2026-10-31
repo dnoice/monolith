@@ -105,7 +105,7 @@ export let pal; // set in init()
    the solved token exactly. */
 export const markerMono = () => pal === PAL.monolith;
 export const markerColor = hex => markerMono() ? lin(hex) : new THREE.Color(hex);
-/* MONOLITH's light (Dennis, 10/23/2026: from some angles the board glared white). Three things
+/* MONOLITH's light (10/23/2026: from some angles the board glared white). Three things
    made the glare. The key's cone was narrow (0.42 rad) with a long penumbra, so its full-strength
    core was a pool about four squares wide; the squares were glossy (0.42 and 0.46); and bloom
    started at 0.8, below the brightest a tone-mapped surface can reach, so every strong glint

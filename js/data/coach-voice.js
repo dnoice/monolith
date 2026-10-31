@@ -51,7 +51,7 @@
 ---------
 */
 /* ---------- the Coach's voice: every sentence the Coach can say ----------
-   Dennis's request (10/22/2026): the Coach should coach, in our own style, from a dataset of its
+   The Coach should coach, in our own style, from a dataset of its
    own. This is that dataset. The page never invents a sentence: it picks a line from here and
    fills its slots with facts it has checked (the rules, the engine's lines, the material along
    them). COACH_VOICE.md is the style guide and explains how to add lines.
