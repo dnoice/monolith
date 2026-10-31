@@ -73,9 +73,16 @@ export function matCopy(m) {
 
 /* ---------- setup: run once, in order, by js/main.js ---------- */
 export function init() {
+  /* Obsidian's clearcoat is 0.22 rough, not a mirror's 0.08 (Dennis, 10/30/2026: hard white lines
+     ran down the middle of the dark pieces in MONOLITH). MONOLITH's room is lit by two strip lights
+     0.8 wide standing at the sides (scene/renderer.js); a turned body is curved across and straight
+     along its length, so a mirror-like coat drew each strip as a line a few pixels wide down the
+     whole body, wherever the view put it in line with one. At 0.22, as rough as the slate's own
+     surface beneath it, the same light spreads into a broad, soft sheen and the set stays glossy.
+     One value serves both worlds: the cathedral's broad window and candle panels barely change. */
   MAT = {
     marble: new THREE.MeshPhysicalMaterial({ color: 0xe9e4da, roughness: 0.36, metalness: 0, clearcoat: 0.45, clearcoatRoughness: 0.3, envMapIntensity: 0.9 }),
-    obsidian: new THREE.MeshPhysicalMaterial({ color: 0x15121a, roughness: 0.14, metalness: 0.08, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.3 }),
+    obsidian: new THREE.MeshPhysicalMaterial({ color: 0x15121a, roughness: 0.14, metalness: 0.08, clearcoat: 1, clearcoatRoughness: 0.22, envMapIntensity: 1.3 }),
     sqLight: new THREE.MeshStandardMaterial({ color: 0xe4dccd, roughness: 0.5, metalness: 0 }),
     sqDark: new THREE.MeshStandardMaterial({ color: 0x38333f, roughness: 0.6, metalness: 0 }),
     frame: new THREE.MeshStandardMaterial({ color: 0x2a262e, roughness: 0.7 }),
