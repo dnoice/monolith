@@ -210,6 +210,16 @@ and tablets after them; the cathedral's columns and the loading screen had passe
   palette's `:world cathedral`, the World setting's note, the Grimoire's Worlds entry, the
   documents and the mockups' taglines now call it the cathedral. The notes on earlier releases
   keep the name they were written with.
+- **The brand files, renamed.** At Dennis's request, while the logo is still being decided, the
+  brand files no longer carry "conical" in their names: `assets/brand/CONICAL_MONOLITH_SYSTEM.md`
+  is `MONOLITH_M_SYSTEM.md`, `conical-monolith-brand-kit.svg` and its generated twin are
+  `monolith-brand-kit.svg` and `monolith-brand-kit-generated.svg`, the variants and their review
+  PNGs go from `conical-m-<n>-<layout>-<skin>` to `monolith-m-<n>-<layout>-<skin>`, and the brand
+  generator `assets/generator/conical_m.py` is `monolith_m.py`, its `CONICAL` parameters
+  `MONOLITH_M` and `mono_assets.py`'s `load_conical()` `load_monolith_m()`. The documents, the
+  generators and the files they write call the letter the MONOLITH M; the rebuilt files differ
+  from the old only in their names, paths and headers, the official marks' geometry is untouched,
+  and the notes on earlier releases keep the names they were written with.
 - **Left for a later call.** A draw against Stockfish is not offered, since it needs a rule for
   when the engine accepts; during a game a click on Analyze still plays a real move on your turn;
   and from 600 to 899 px wide the telemetry footer still sits under the bottom bar. Each is left
