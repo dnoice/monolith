@@ -298,6 +298,9 @@ brand files.
   "Gothic", and the Grimoire has its new entry. `tools/build-piece-models.py` 1.0.1 records in its
   header that it is out of step with the knight and the clearcoat. Shipped headers keep three
   entries; the 37 that rolled out are below, under Entries moved from file headers.
+  Outside the changelogs, comments, header prose and documents no longer say who asked for,
+  ruled on or made something, and the generators that write headers say the same; the
+  changelogs keep that record.
 
 **Checked.**
 
