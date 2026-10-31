@@ -104,13 +104,14 @@
   .moves-card:not([data-idle]) .moves .num{padding:3px 0 3px 6px}
   .moves-card:not([data-idle]) .move-entry{grid-column:1/-1}
   .moves-card:not(.typing):not([data-idle]) .move-entry{display:none}
+  #app:has(.moves-card:not([data-idle])) #snackbar{bottom:calc(140px + env(safe-area-inset-bottom,0px))}   /* over the strip, not on its steps */
   .player{left:calc(var(--gutter-l) + 18px);padding:6px 10px 6px 6px;gap:10px}
   .player .avatar{width:30px;height:30px}
   .player.top{top:10px}.player.bottom{bottom:10px}
   .stage-hint{display:none}
   .stage-chip{max-width:calc(100% - 32px);white-space:normal;text-align:center}
   .stage-chip.castle{bottom:60px}
-  #snackbar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  #snackbar{bottom:calc(84px + env(safe-area-inset-bottom,0px));width:max-content}   /* from left:50% it shrank to half the screen */
   /* The stage's bands on a phone (css/layout.css): the player cards on one compact row each, at the
      top and the foot. A chip takes the top card's place while it shows, the castling chip the foot
      card's, and Reset view sits at the foot's right. In Analyze the layer toggles hold the top row,
@@ -147,6 +148,7 @@
   #dock{border-top:0;border-left:1px solid var(--mo-rule);border-bottom:1px solid var(--mo-rule)}
   #telemetry{display:none}
   #snackbar{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  #app:has(.moves-card:not([data-idle])) #snackbar{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 }
 /* ---------- a tablet held upright (an iPad at 820x1180) ----------
    The phone's column, stretched: a 472 px stage whose height held the board in, and cards 788 px
