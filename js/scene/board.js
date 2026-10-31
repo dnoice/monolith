@@ -109,14 +109,17 @@ function lathe(points, segs = 40) {
   const g = new THREE.LatheGeometry(pts, segs); g.computeVertexNormals(); return g;
 }
 /* The knight's neck, head, muzzle, ears and mane (the knight read flat and
-   matte beside the rest of the set). They were plain boxes: a flat face mirrors one direction of
-   the room, so each face showed one even tone, while every lathe-turned piece curves and carries
-   its highlights across itself. Each part is now a block whose faces bow out: a box w × h × d
-   drawn on the superellipsoid |x/a|^n + |y/b|^n + |z/c|^n = 1 (a, b, c its half sizes), with the
-   surface's own normals, so the shading runs smoothly over faces and edges alike. Its bounding
-   box is the box's, so the knight stands as tall and wide as before (the camera's fit and
-   PIECE_TOP measure the same); n = 4 keeps the blocky silhouette while no face stays flat. */
-function block(w, h, d, n = 4, step = 0.03) {
+   matte beside the rest of the set), and the rook's merlons. They were plain boxes: a flat face
+   mirrors one direction of the room, so each face showed one even tone, while every lathe-turned
+   piece curves and carries its highlights across itself. Each part is now a block whose faces
+   bow out: a box w × h × d drawn on the superellipsoid |x/a|^n + |y/b|^n + |z/c|^n = 1 (a, b, c
+   its half sizes), with the surface's own normals, so the shading runs smoothly over faces and
+   edges alike. Its bounding box is the box's, so the pieces stand as tall and wide as before (the
+   camera's fit and PIECE_TOP measure the same). The exponent sets how square a block is: the
+   knight's 4.5 keeps the blocky silhouette while no face stays flat; the merlons' 7 keeps their
+   faces nearly flat and rounds only the edges and corners, a tighter curve that a finer step
+   (0.02) follows without facets. */
+function block(w, h, d, n, step = 0.03) {
   // an even count across each side puts a vertex on every face's centre, where the block reaches
   // the box's own extent
   const a = [w / 2, h / 2, d / 2], seg = a.map(v => 2 * Math.max(2, Math.round(v / step)));
@@ -259,12 +262,12 @@ export function init() {
   lblE = mesh('label-ranks-east', geoLabel, labelMat(labelTexture(ranks, true)), board); lblE.rotation.set(-PI / 2, 0, -PI / 2); lblE.position.set(4.175, 0.002, 0);
   // ---------- pieces
   for (const k in PROFILES) GEO[k] = lathe(PROFILES[k]);
-  GEO.merlon = new THREE.BoxGeometry(0.11, 0.14, 0.11);
+  GEO.merlon = block(0.11, 0.14, 0.11, 7, 0.02);
   GEO.pearl = new THREE.SphereGeometry(0.05, 10, 10);
   GEO.finial = new THREE.SphereGeometry(0.07, 12, 12);
   GEO.crossV = new THREE.BoxGeometry(0.06, 0.3, 0.06); GEO.crossH = new THREE.BoxGeometry(0.2, 0.06, 0.06);
-  GEO.neck = block(0.26, 0.52, 0.22); GEO.head = block(0.24, 0.24, 0.46);
-  GEO.muzzle = block(0.18, 0.14, 0.16); GEO.ear = block(0.06, 0.14, 0.07); GEO.mane = block(0.08, 0.5, 0.14);
+  GEO.neck = block(0.26, 0.52, 0.22, 4.5); GEO.head = block(0.24, 0.24, 0.46, 4.5);
+  GEO.muzzle = block(0.18, 0.14, 0.16, 4.5); GEO.ear = block(0.06, 0.14, 0.07, 4.5); GEO.mane = block(0.08, 0.5, 0.14, 4.5);
   piecesGroup = new THREE.Group(); piecesGroup.name = 'pieces'; scene.add(piecesGroup);
   // ---------- fragments (shatter)
   fragGeos = [new THREE.TetrahedronGeometry(0.09), new THREE.TetrahedronGeometry(0.06), new THREE.BoxGeometry(0.1, 0.07, 0.08), new THREE.DodecahedronGeometry(0.07)];
