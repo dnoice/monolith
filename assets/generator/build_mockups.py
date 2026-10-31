@@ -17,7 +17,9 @@
 ✒ Changelog:
     - 2.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       loading-02 and hero-01 taglines read MARBLE VS. OBSIDIAN · CATHEDRAL,
-      as the cathedral is no longer called Gothic.
+      as the cathedral is no longer called Gothic. Those two screens carry
+      their own 2.0.1 header (version, date and entry, emit() taking the
+      day), so a rebuild writes the headers they were given by hand.
     - 2.0.1 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       kept working in it, so that name is his now: loading-01 is written
@@ -123,6 +125,13 @@ CHANGELOG = [f"2.0.0 ({DATE_MDY}) [dendogg + Anthropic - Claude Opus 5.5] — Re
              "Conical M Dennis chose (monolith-logo.svg and monolith-emblem.svg).",
              "1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Fable 5.1] — First version, on the logo "
              "concepts that the Conical M replaced."]
+
+# hero-01 and loading-02: their tagline changed on 10/30/2026, so they carry 2.0.1 of that day.
+TAGLINE_DAY = date(2026, 10, 30)
+TAGLINE_CHANGELOG = [
+    "2.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The tagline reads MARBLE VS. "
+    "OBSIDIAN · CATHEDRAL, as the cathedral is no longer called Gothic.",
+    *CHANGELOG]
 
 ID_CONVENTION = (
     "Every element and group carries a descriptive id, component-subcomponent-panel: mark holds "
@@ -251,12 +260,16 @@ def draw_mark(parent, dr: A.Drawing, pal: dict, m: np.ndarray, *, prefix: str = 
 
 
 def emit(svg: Svg, file_name: str, *, title: str, description: str, key_features, other_info, keywords,
-         width, height, artifact_type="mockup", id_convention=None, version=None, changelog=None):
-    """Write one mock-up. version and changelog default to the set's; a screen with its own history
-    (loading-01, renamed) passes its own."""
+         width, height, artifact_type="mockup", id_convention=None, version=None, changelog=None,
+         day=None):
+    """Write one mock-up. version, changelog and day (the header's date) default to the set's;
+    a screen with its own history (loading-01, renamed; hero-01 and loading-02, retagged)
+    passes its own."""
+    day = day or TODAY
     doc = wrap_document(svg, title=title, file_name=file_name, rel_path=f"assets/mockups/{file_name}",
-                        artifact_type=artifact_type, version=version or VERSION, date_mdy=DATE_MDY,
-                        date_iso=DATE_ISO, update_long=UPDATE_LONG, description=description,
+                        artifact_type=artifact_type, version=version or VERSION,
+                        date_mdy=day.strftime("%m/%d/%Y"), date_iso=day.isoformat(),
+                        update_long=day.strftime("%A, %B %d, %Y"), description=description,
                         key_features=key_features, other_info=other_info, keywords=keywords, width=width,
                         height=height, changelog=changelog or CHANGELOG,
                         id_convention=id_convention or ID_CONVENTION,
@@ -349,7 +362,8 @@ def build_loading_02(pal, suffix=""):
       @keyframes tile-in {{ from {{ opacity: 0; transform: scale(0.35); }} to {{ opacity: 1; transform: none; }} }}
       @keyframes grow {{ from {{ transform: scaleX(0); }} to {{ transform: none; }} }}
     """)
-    emit(svg, f"loading-02-tile-wave{suffix}.svg",
+    emit(svg, f"loading-02-tile-wave{suffix}.svg", version="2.0.1", changelog=TAGLINE_CHANGELOG,
+         day=TAGLINE_DAY,
          title=f"MONOLITH Loading Screen 02 Tile Wave ({pal['label']})",
          description=("Loading screen built on the official logo, the 4 x 4 Conical M without pieces. Its twelve "
                       "tiles arrive in a diagonal wave from the top-left corner, each scaling up from its centre "
@@ -495,7 +509,8 @@ def build_hero_01(pal, suffix=""):
     ana.text("cta-analyze-label", x + 296, 728, "Analyze", 20, pal["ink"], weight=500, anchor="middle")
     tagline(copy, "copy", pal, x, 836, "MARBLE VS. OBSIDIAN  ·  CATHEDRAL", anchor="start")
     version_chip(svg, "version", pal, HERO_W - 60, HERO_H - 56, f"{APP_VERSION} · MIT")
-    emit(svg, f"hero-01-mirror-floor{suffix}.svg",
+    emit(svg, f"hero-01-mirror-floor{suffix}.svg", version="2.0.1", changelog=TAGLINE_CHANGELOG,
+         day=TAGLINE_DAY,
          title=f"MONOLITH Hero 01 Mirror Floor ({pal['label']})",
          description=("Hero image, 1920 x 1080. The official emblem stands on the left on a mirror floor, its "
                       "reflection fading into the ground over the lower part of its height, the way the in-game "
