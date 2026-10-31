@@ -70,18 +70,28 @@ import { gr, grBack } from './grimoire.js';
 import { setWorldPref } from './nav.js';
 import { setPillarsPref } from '../scene/pillars.js';
 import { gfxRow, quality, setGfxOption, setQualityPref } from '../scene/quality.js';
+import { desiredWorld } from '../scene/worlds.js';
 import { requestResize } from '../app/loop.js';
 
 /* ---------- splitters: drag handles on the dock, the side panel and the move list ----------
    Dennis's request (10/22/2026): the containers get drag handles. Each splitter sets one size,
    saved per destination in prefs.ui: in Analyze the dock's height; in Crucible the heartbeat's
-   height (a taller dock is a more granular heartbeat); the side panel's width; the move list's
-   height. Arrow keys step 16 px (48 with Shift); Home or a double-click returns to the default. */
+   height (a taller dock is a more granular heartbeat); the side panel's width (per world, not per
+   destination); the move list's height. Arrow keys step 16 px (48 with Shift); Home or a
+   double-click returns to the default. */
 export let splitDrag = null;
 const SPLIT_VAR = { dock: '--dock-h', beat: '--beat-h', panel: '--panel-w', moves: '--moves-h' };
 const rectOf = sel => $(sel).getBoundingClientRect();
 let SPLITS; // set in init()
-function layoutPref(key) { const u = prefs.ui && prefs.ui[key], v = u && u[prefs.tab]; return typeof v === 'number' && isFinite(v) ? v : null; }
+/* The side panel's width is kept per world, as its default is (css/tokens.css), so a tab switch
+   inside a world never moves the stage's edge; the other sizes are kept per destination. The
+   world is the one the tab opens in, already known before setTab() turns the world. */
+const scopeOf = key => key === 'panel' ? desiredWorld() : prefs.tab;
+function layoutPref(key) { const u = prefs.ui && prefs.ui[key], v = u && u[scopeOf(key)]; return typeof v === 'number' && isFinite(v) ? v : null; }
+/* as css/tokens.css sizes them below 1200 px: the stage takes up to 60% of the width (--stage-min)
+   and the panel keeps 344 px (--panel-min) */
+const narrow = () => innerWidth < 1200;
+const stageMin = () => Math.max(480, narrow() ? innerWidth * 0.6 : 0);
 function syncSplitAria(S) {
   if (S.el.hidden || !S.el.offsetParent) return;
   S.el.setAttribute('aria-valuenow', String(Math.round(S.get()))); S.el.setAttribute('aria-valuemin', String(Math.round(S.min()))); S.el.setAttribute('aria-valuemax', String(Math.round(S.max())));
@@ -94,11 +104,11 @@ export function applyLayoutSizes() {
 }
 function splitSet(S, px, save) {
   const key = S.key(), v = Math.round(Math.max(S.min(), Math.min(S.max(), px)));
-  prefs.ui = prefs.ui || {}; (prefs.ui[key] = prefs.ui[key] || {})[prefs.tab] = v;
+  prefs.ui = prefs.ui || {}; (prefs.ui[key] = prefs.ui[key] || {})[scopeOf(key)] = v;
   applyLayoutSizes(); if (save) savePrefs();
 }
 function splitReset(S) {
-  const key = S.key(); if (prefs.ui && prefs.ui[key]) delete prefs.ui[key][prefs.tab];
+  const key = S.key(); if (prefs.ui && prefs.ui[key]) delete prefs.ui[key][scopeOf(key)];
   applyLayoutSizes(); savePrefs(); requestResize(true);
 }
 // Synaptic PV hold: pointer (a mouse) or keyboard focus in the grid (see renderSyn)
@@ -111,6 +121,14 @@ const beatAt = e => { const p = beatPlyAt(e.clientX); if (p < 0) return; cr.ply 
 
 /* ---------- setup: run once, in order, by js/main.js ---------- */
 export function init() {
+  /* Before 2.18.0 the panel's width was saved per tab. A width dragged then carries over to its
+     world, Play's to the cathedral and Analyze's to MONOLITH (or the first other tab of the world
+     that has one), and the per-tab entries go. */
+  const pw = prefs.ui && prefs.ui.panel;
+  if (pw) for (const [w, tabs] of [['cathedral', ['play', 'position', 'settings', 'grimoire']], ['monolith', ['analyze', 'crucible']]]) {
+    const t = tabs.find(t => t in pw); if (t && !(w in pw)) pw[w] = pw[t];
+    for (const t of tabs) delete pw[t];
+  }
   SPLITS = {
     dock: {
       el: $('#split-dock'), axis: 'y', key: () => prefs.tab === 'crucible' ? 'beat' : 'dock',
@@ -119,7 +137,7 @@ export function init() {
       // the board keeps 240 px; in Crucible the dock's own chrome (header, padding) rides along
       max: () => { const chrome = prefs.tab === 'crucible' ? rectOf('#dock').height - rectOf('#beat-canvas').height : 0; return Math.max(SPLITS.dock.min(), rectOf('.body').height - 240 - chrome); }
     },
-    panel: { el: $('#split-panel'), axis: 'x', key: () => 'panel', get: () => rectOf('.panel').width, min: () => 300, max: () => Math.max(300, Math.min(760, innerWidth - rectOf('#nav').width - 480)) },
+    panel: { el: $('#split-panel'), axis: 'x', key: () => 'panel', get: () => rectOf('.panel').width, min: () => narrow() ? 344 : 300, max: () => Math.max(narrow() ? 344 : 300, Math.min(760, innerWidth - rectOf('#nav').width - stageMin())) },
     moves: { el: $('#split-moves'), axis: 'y', key: () => 'moves', get: () => rectOf('.moves-card').height, min: () => 110, max: () => Math.max(110, rectOf('.panel').height - 160) }
   };
   for (const S of Object.values(SPLITS)) {

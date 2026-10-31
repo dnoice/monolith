@@ -473,5 +473,9 @@ export function init() {
     $('#nav-next').disabled = at >= last || app.busy; $('#nav-last').disabled = at >= last || app.busy;
     $('#move-input').disabled = !canMoveNow();
     $('#move-input').placeholder = canMoveNow() ? 'e2e4, Nf3 or O-O' : !app.started ? 'Start a game first' : app.view !== null ? 'Back to live to move' : game.result ? 'The game is over' : 'Waiting for the reply';
+    // the box's Play button goes with its input; with nothing to list (no game, no line tried, no
+    // Crucible game on the board) the card folds to its head (css/workspace.css)
+    $('#move-form button').disabled = $('#move-input').disabled;
+    $('.moves-card').toggleAttribute('data-idle', !app.started && !explore.on && !boardOverride);
   });
 }
