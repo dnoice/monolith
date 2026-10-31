@@ -132,9 +132,20 @@
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:72px;border:0;background:transparent;color:var(--md-on-surface-var);padding:0;font-size:12px;font-weight:500;letter-spacing:.4px;border-radius:12px}
 .nav-pill{display:grid;place-items:center;width:56px;height:32px;border-radius:var(--r-pill);transition:background .2s var(--ease-std)}
 .nav-pill svg{width:24px;height:24px;fill:currentColor}
-.nav-item:hover .nav-pill{background:rgba(235,230,240,.08)}
-.nav-item[aria-selected="true"]{color:var(--md-on-surface)}
-.nav-item[aria-selected="true"] .nav-pill{background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+/* The selected destination in the rail's own colour, --md-nav-active (css/tokens.css): its pill
+   filled with it and its label written in it (Dennis, 10/30/2026). A pointer over another item
+   lays the same colour faintly on its pill and lights its label; the keyboard's focus shows the
+   same, inside the focus ring. Hover only where there is a pointer that hovers, so a tap on the
+   phone's bottom bar leaves no tint behind that reads as a second selection. */
+@media (hover:hover){
+  .nav-item:hover{color:var(--md-on-surface)}
+  .nav-item:hover .nav-pill{background:color-mix(in srgb,var(--md-nav-active) 20%,transparent)}
+}
+.nav-item:focus-visible{color:var(--md-on-surface)}
+.nav-item:focus-visible .nav-pill{background:color-mix(in srgb,var(--md-nav-active) 20%,transparent)}
+.nav-item[aria-selected="true"] .nav-label{color:var(--md-nav-active)}
+.nav-item[aria-selected="true"] .nav-pill{background:var(--md-nav-active);color:var(--md-on-nav-active)}
+@media (hover:hover){.nav-item[aria-selected="true"]:hover .nav-pill{background:color-mix(in srgb,var(--md-nav-active) 86%,#fff)}}
 
 /* stage */
 #stage{grid-area:stage;position:relative;min-width:0;min-height:0;background:var(--stage-bg);overflow:hidden}

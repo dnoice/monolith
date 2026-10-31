@@ -76,6 +76,10 @@
   --md-secondary:#a3bde3;
   --md-secondary-container:#2c3a52;
   --md-on-secondary-container:#d6e3fa;
+  /* the rail's selected destination (its pill, its label; faint on a hovered pill): the house gold,
+     apart from the cool secondary the panels' choices take */
+  --md-nav-active:#e8c377;
+  --md-on-nav-active:#2b1e00;
   --md-error:#ffa59c;
   --md-error-container:#5c1d18;
   --md-success:#9fd8b0;
@@ -143,6 +147,9 @@
   --md-secondary:var(--mo-steel);
   --md-secondary-container:#26303C;
   --md-on-secondary-container:var(--mo-ink);
+  /* MONOLITH's: ink, as its filled buttons are; colour there is semantic, so no hue */
+  --md-nav-active:var(--mo-ink);
+  --md-on-nav-active:var(--mo-canvas);
   --md-error:var(--mo-crimson);
   --md-error-container:var(--mo-crimson-tint);
   --md-success:var(--mo-ivory);
