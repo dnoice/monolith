@@ -373,29 +373,42 @@
    there by tools/build-emblem.mjs, which gives every square and piece its moment as a class:
    a0..a20 (when a square lights), g0..g12 (when the glint reaches it), i0..i11 (a piece's turn).
    At Dennis's request (10/24/2026) it takes its time, with a loading meter and rotating tips:
-     1. From the first paint, 2.65 s: the M is written square by square, stroke by stroke, each
-        square lit in the world's primary colour and cooling to its own; the name gathers in,
-        then the meter and the tip card rise beneath it.
+     1. From the first paint, 2.65 s: White's back rank flies in and settles in an arc over the
+        emblem as the M is written square by square, stroke by stroke, each square lit in the
+        world's primary colour and cooling to its own; the name gathers in, then the meter and
+        the tip card rise beneath it.
      2. The board is built behind it (the page's boot, which holds the main thread); the meter's
-        working segment keeps its sheen moving on the compositor meanwhile.
+        working segment keeps its sheen moving, and the arc breathing, on the compositor.
      3. Once the board has drawn, 3.6 s: the pieces are set down in turn, the sides alternating,
-        a glint crosses the emblem corner to corner, and it holds a breath. Then the screen lifts
-        (0.95 s).
+        a glint crosses the emblem corner to corner as the arc bows to it, and it holds a breath.
+        Then the screen lifts (0.95 s), the arc opening out as it goes.
    The meter has one segment for each real step (scripts, board, first frame, pillar models,
    Stockfish), filled only when that step reports in; the screen never waits for the last two.
    --bt scales every length to the saved Animation speed: Cinematic 1, Brisk 0.55. Minimal, and
    reduced motion, draw it still and lift it at once. The markers boot-written and boot-set time
    stages 1 and 3 for the script; a key or a click jumps to the end of the stage under way. */
-.boot{--bt:1;--boot-halo:color-mix(in srgb,var(--md-primary) 11%,transparent);--boot-fill:linear-gradient(180deg,color-mix(in srgb,var(--md-primary) 45%,#fff),var(--md-primary) 50%,color-mix(in srgb,var(--md-primary) 72%,#000));--boot-glow:color-mix(in srgb,var(--md-primary) 50%,transparent);--boot-sheen:color-mix(in srgb,var(--md-primary) 42%,transparent);--boot-edge:color-mix(in srgb,var(--md-primary) 20%,transparent);--boot-warm:color-mix(in srgb,var(--md-primary) 12%,transparent);position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:24px var(--gutter-r) calc(18px + env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--stage-bg) radial-gradient(ellipse 75% 62% at 50% 38%,color-mix(in srgb,var(--stage-bg) 93%,#fff),var(--stage-bg) 72%)}
+.boot{--bt:1;--arc-ink:var(--md-primary);--boot-halo:color-mix(in srgb,var(--md-primary) 11%,transparent);--boot-fill:linear-gradient(180deg,color-mix(in srgb,var(--md-primary) 45%,#fff),var(--md-primary) 50%,color-mix(in srgb,var(--md-primary) 72%,#000));--boot-glow:color-mix(in srgb,var(--md-primary) 50%,transparent);--boot-sheen:color-mix(in srgb,var(--md-primary) 42%,transparent);--boot-edge:color-mix(in srgb,var(--md-primary) 20%,transparent);--boot-warm:color-mix(in srgb,var(--md-primary) 12%,transparent);position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;overflow:hidden;padding:24px var(--gutter-r) calc(18px + env(safe-area-inset-bottom,0px)) var(--gutter-l);background:var(--stage-bg) radial-gradient(ellipse 75% 62% at 50% 38%,color-mix(in srgb,var(--stage-bg) 93%,#fff),var(--stage-bg) 72%)}
 /* MONOLITH: ink and steel, never cyan (colour is semantic there) */
-:root[data-skin="monolith"] .boot{--boot-halo:rgba(171,181,195,.07);--boot-fill:linear-gradient(180deg,#fff,var(--mo-ink) 45%,var(--mo-steel));--boot-glow:rgba(227,231,238,.26);--boot-sheen:rgba(227,231,238,.32);--boot-edge:var(--mo-rule);--boot-warm:rgba(171,181,195,.06)}
+:root[data-skin="monolith"] .boot{--arc-ink:var(--mo-ink);--boot-halo:rgba(171,181,195,.07);--boot-fill:linear-gradient(180deg,#fff,var(--mo-ink) 45%,var(--mo-steel));--boot-glow:rgba(227,231,238,.26);--boot-sheen:rgba(227,231,238,.32);--boot-edge:var(--mo-rule);--boot-warm:rgba(171,181,195,.06)}
 :root[data-boot-pace="fast"] .boot{--bt:.55}
 .boot-core{flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vmin,26px)}
-.boot-mark{position:relative;display:grid;place-items:center}
+/* The emblem (--em wide) as wide as the window allows with the arc over it, short of the name, the
+   meter and the tip card below: the arc is 1.72 emblems wide, and it and the emblem 1.4 tall. The
+   mark's top padding is the arc's headroom, so the core centres the whole of it. */
+.boot-mark{--em:min(calc((100vw - 32px) / 1.72),340px,calc((100vh - 320px) / 1.4));--arc-r:calc(var(--em) * .78);--arc-pc:calc(var(--em) * .155);position:relative;display:grid;place-items:center;padding-top:calc(var(--arc-r) * .975 - var(--em) / 2 + var(--arc-pc) / 2 + 4px)}
 /* a slow breath of light behind the emblem, on the compositor */
 .boot-mark::before{content:"";position:absolute;inset:-24% -30%;border-radius:50%;background:radial-gradient(closest-side,var(--boot-halo),transparent);opacity:.8;pointer-events:none;animation:boot-breathe 6.5s ease-in-out infinite alternate}
-/* as wide as a phone allows, short of the name, the meter and the tip card below it */
-.boot-emblem{position:relative;display:block;flex:none;width:min(68vw,340px,calc((100vh - 320px) / 1.05));height:auto}
+.boot-emblem{position:relative;display:block;flex:none;width:var(--em);height:auto}
+/* The arc: White's back rank, a to h, over the emblem from one side of it to the other, drawn in
+   the world's accent with the faces only tinted by it, each piece upright. Its centre is the
+   emblem's; each piece is placed by --x and --y (the sine and the cosine of its angle, rook to
+   rook across the top), comes in by --k (rooks first, the royal pair last) and bows by --g. */
+.boot-arc{position:absolute;left:50%;top:calc(100% - var(--em) / 2);width:0;height:0;pointer-events:none}
+.boot-arc-set{position:absolute;width:0;height:0;overflow:hidden}
+.boot-arc-pc{--pc-face:color-mix(in srgb,currentColor 16%,transparent);--pc-line:currentColor;position:absolute;left:calc(var(--arc-pc) / -2);top:calc(var(--arc-pc) / -2);width:var(--arc-pc);height:var(--arc-pc);color:var(--arc-ink);translate:calc(var(--x) * var(--arc-r)) calc(var(--y) * var(--arc-r));filter:drop-shadow(0 0 6px var(--boot-glow))}
+.boot-arc-pc svg{display:block;width:100%;height:100%;overflow:visible}
+.boot-arc-pc:nth-child(2){--x:-1;--y:0;--k:0;--g:0}.boot-arc-pc:nth-child(3){--x:-.901;--y:-.434;--k:1;--g:1}.boot-arc-pc:nth-child(4){--x:-.623;--y:-.782;--k:2;--g:2}.boot-arc-pc:nth-child(5){--x:-.223;--y:-.975;--k:3;--g:3}
+.boot-arc-pc:nth-child(6){--x:.223;--y:-.975;--k:3;--g:4}.boot-arc-pc:nth-child(7){--x:.623;--y:-.782;--k:2;--g:5}.boot-arc-pc:nth-child(8){--x:.901;--y:-.434;--k:1;--g:6}.boot-arc-pc:nth-child(9){--x:1;--y:0;--k:0;--g:7}
 .boot-emblem .bd{stroke:var(--stage-bg);stroke-linejoin:round;stroke-linecap:round}
 .boot-emblem .l{fill:var(--dg-l)}.boot-emblem .d{fill:var(--dg-d)}
 .boot-emblem .pw{--pc-face:var(--pc-wf);--pc-line:var(--pc-wl)}.boot-emblem .pb{--pc-face:var(--pc-bf);--pc-line:var(--pc-bl)}
@@ -453,7 +466,7 @@
 @media (hover:none) and (pointer:coarse){.boot-skip .k{display:none}.boot-skip .t{display:inline}}
 @media (max-width:520px){.boot-tip p{min-height:4.5em;font-size:13.5px}}
 /* a short window (a phone held sideways): the emblem, the name and the meter only */
-@media (max-height:560px){.boot-foot{display:none}.boot-emblem{width:min(68vw,340px,calc((100vh - 170px) / 1.05))}}
+@media (max-height:560px){.boot-foot{display:none}.boot-mark{--em:min(calc((100vw - 32px) / 1.72),340px,calc((100vh - 170px) / 1.4))}}
 /* the moments, by class */
 .boot-emblem .a1{--a:1}.boot-emblem .a2{--a:2}.boot-emblem .a3{--a:3}.boot-emblem .a4{--a:4}.boot-emblem .a5{--a:5}.boot-emblem .a6{--a:6}.boot-emblem .a7{--a:7}.boot-emblem .a8{--a:8}.boot-emblem .a9{--a:9}.boot-emblem .a10{--a:10}.boot-emblem .a11{--a:11}.boot-emblem .a12{--a:12}.boot-emblem .a13{--a:13}.boot-emblem .a14{--a:14}.boot-emblem .a15{--a:15}.boot-emblem .a16{--a:16}.boot-emblem .a17{--a:17}.boot-emblem .a18{--a:18}.boot-emblem .a19{--a:19}.boot-emblem .a20{--a:20}
 .boot-emblem .g1{--g:1}.boot-emblem .g2{--g:2}.boot-emblem .g3{--g:3}.boot-emblem .g4{--g:4}.boot-emblem .g5{--g:5}.boot-emblem .g6{--g:6}.boot-emblem .g7{--g:7}.boot-emblem .g8{--g:8}.boot-emblem .g9{--g:9}.boot-emblem .g10{--g:10}.boot-emblem .g11{--g:11}.boot-emblem .g12{--g:12}
@@ -467,6 +480,10 @@
 .boot-name span{animation:boot-letter calc(750ms * var(--bt)) cubic-bezier(.2,0,0,1) calc((950ms + var(--n,0) * 85ms) * var(--bt)) backwards}
 .boot-meter{animation:boot-rise calc(800ms * var(--bt)) cubic-bezier(.2,.8,.2,1) calc(1300ms * var(--bt)) backwards}
 .boot-skip{animation:boot-fade calc(900ms * var(--bt)) ease calc(3200ms * var(--bt)) backwards}
+/* the arc gathers as the M is written: each piece flies in along its own radius from beyond the
+   ring, overshoots and settles, the rooks first and the king and queen last at the crown; then the
+   row breathes, a piece at a time, in scale alone so it keeps moving while the board is built */
+.boot-arc-pc{animation:boot-arc-in calc(1500ms * var(--bt)) cubic-bezier(.34,1.56,.64,1) calc((250ms + var(--k) * 170ms) * var(--bt)) backwards,boot-arc-breathe 2.2s ease-in-out calc((2700ms + var(--g) * 150ms) * var(--bt)) infinite alternate}
 /* stage 3, once the board has drawn: the pieces, then the glint, then a breath */
 .boot-emblem .pc{opacity:0;transform-box:fill-box;transform-origin:50% 100%}
 .boot.go .boot-emblem .bd{animation:boot-set calc(3600ms * var(--bt)) linear}
@@ -474,10 +491,16 @@
 .boot.go .boot-emblem .l{animation:boot-lay-l calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-l calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
 .boot.go .boot-emblem .d{animation:boot-lay-d calc(850ms * var(--bt)) cubic-bezier(.25,.1,.25,1) calc((160ms + var(--a,0) * 80ms) * var(--bt)) backwards,boot-glint-d calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
 .boot.go .boot-emblem .pc .f{animation:boot-glint-f calc(700ms * var(--bt)) ease-in-out calc((2100ms + var(--g,0) * 50ms) * var(--bt))}
-/* lifting: the emblem comes forward as it fades, the rest settles away, then the screen */
+/* and the arc bows to it, a to h, each piece lifting off the ring and catching the light as the
+   glint crosses beneath */
+.boot.go .boot-arc-pc{animation:boot-arc-in calc(1500ms * var(--bt)) cubic-bezier(.34,1.56,.64,1) calc((250ms + var(--k) * 170ms) * var(--bt)) backwards,boot-arc-breathe 2.2s ease-in-out calc((2700ms + var(--g) * 150ms) * var(--bt)) infinite alternate,boot-arc-bow calc(800ms * var(--bt)) cubic-bezier(.3,0,.2,1) calc((1900ms + var(--g) * 90ms) * var(--bt))}
+/* lifting: the emblem comes forward as it fades, the arc opens out, the rest settles away, then
+   the screen */
 .boot-emblem,.boot-name,.boot-meter,.boot-foot{transition:transform calc(900ms * var(--bt)) cubic-bezier(.3,0,.2,1),opacity calc(550ms * var(--bt)) ease}
+.boot-arc{transition:scale calc(900ms * var(--bt)) cubic-bezier(.3,0,.2,1),opacity calc(550ms * var(--bt)) ease}
 .boot.done{opacity:0;pointer-events:none;transition:opacity calc(800ms * var(--bt)) var(--ease-std) calc(150ms * var(--bt))}
 .boot.done .boot-emblem{transform:scale(1.06);opacity:0}
+.boot.done .boot-arc{scale:1.12;opacity:0}
 .boot.done .boot-name,.boot.done .boot-meter{transform:translateY(8px);opacity:0}
 .boot.done .boot-foot{transform:translateY(18px);opacity:0}
 @keyframes boot-written{to{--boot-phase:1}}
@@ -489,6 +512,9 @@
 @keyframes boot-glint-d{from,to{fill:var(--dg-d)}50%{fill:color-mix(in srgb,var(--dg-d) 62%,#fff)}}
 @keyframes boot-glint-f{from,to{fill:var(--pc-face)}50%{fill:color-mix(in srgb,var(--pc-face) 68%,#fff)}}
 @keyframes boot-place{from{opacity:0;transform:translateY(-40px) scale(1.06)}60%{opacity:1}to{transform:none}}
+@keyframes boot-arc-in{from{opacity:0;scale:.4;translate:calc(var(--x) * var(--arc-r) * 1.3) calc(var(--y) * var(--arc-r) * 1.3)}40%{opacity:1;scale:.85;translate:calc(var(--x) * var(--arc-r) * 1.11) calc(var(--y) * var(--arc-r) * 1.11)}72%{scale:1.15;translate:calc(var(--x) * var(--arc-r) * 1.03) calc(var(--y) * var(--arc-r) * 1.03)}}
+@keyframes boot-arc-breathe{to{scale:1.06}}
+@keyframes boot-arc-bow{from,to{color:var(--arc-ink)}40%{scale:1.16;color:color-mix(in srgb,var(--arc-ink) 45%,#fff);translate:calc(var(--x) * (var(--arc-r) + 7px)) calc(var(--y) * (var(--arc-r) + 7px))}}
 @keyframes boot-track{from{letter-spacing:.9em;text-indent:.9em}}
 @keyframes boot-letter{from{opacity:0;transform:translateY(.45em);filter:blur(5px)}}
 @keyframes boot-rise{from{opacity:0;transform:translateY(10px)}}
