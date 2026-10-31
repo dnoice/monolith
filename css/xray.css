@@ -53,6 +53,9 @@
    numbers. Glass, as before, so the board edge under it stays readable. */
 .xray-chip{position:absolute;z-index:3;left:var(--gutter-l);top:50%;transform:translateY(-50%);width:224px;display:flex;flex-direction:column;gap:8px;padding:11px 12px 10px;border-radius:4px;background:rgba(14,17,22,.66);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(171,181,195,.24);border-left:2px solid var(--xs,var(--mo-steel));box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:12.5px;color:var(--mo-ink);font-variant-numeric:tabular-nums;transition:border-color .25s}
 .xray-chip.right{left:auto;right:calc(var(--gutter-r) + 178px)}
+/* Analyze's right band is 92 px on a stage under 760 px (css/monolith.css): 8 px short of the WDL
+   column there, as on a wide stage, instead of 104 */
+@container stage (max-width:759px){.xray-chip.right{right:calc(var(--gutter-r) + 82px)}}
 .xr-head{display:flex;align-items:baseline;gap:8px}
 .xr-title{font:500 10px/1 var(--font-tele);letter-spacing:.14em;text-transform:uppercase;color:var(--mo-ink3)}
 .xr-sq{font:500 22px/1 var(--font-ui-mo);letter-spacing:.02em;color:var(--mo-ink);text-transform:lowercase}

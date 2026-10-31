@@ -211,6 +211,9 @@
 .phantom-chip span{flex:1 1 0;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--mo-ink2)}
 /* a pinned line's Play to here: the one part of the chip that takes the pointer */
 .phantom-chip button{flex:none;pointer-events:auto}
+/* on a stage under 760 px the toggles drop their subtitles (248 px, not 380), so the chips' slot
+   at their left widens with them: a pinned line had 12 px of text at 960x700 */
+@container stage (max-width:759px){.phantom-chip,:root[data-tab="analyze"] #stage > :is(#review-chip,#explore-chip){max-width:calc(100% - 288px)}}
 
 /* dock: Synaptic PV scrubber (Analyze) and heartbeat (Crucible) */
 #dock{grid-area:dock;min-width:0;background:var(--mo-panel);border-top:1px solid var(--mo-rule);color:var(--mo-ink)}
