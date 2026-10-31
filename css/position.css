@@ -326,12 +326,15 @@ button.pr-rule{cursor:pointer}
 .pr-rule.alert .pr-rl{color:var(--md-error)}
 .pr-castle{display:flex;flex-direction:column;gap:5px;min-width:0}
 .pr-cg{display:flex;align-items:center;gap:5px}
-.pr-badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid var(--md-outline-var);border-radius:6px;font:500 11.5px/1 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var)}
+/* the castling rights and the en passant square are readings: a dot and the text, no pill (the Set
+   up view's castling toggles, .ed-cs, keep theirs); a right usable now in the accent */
+.pr-badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 2px;border:1px solid transparent;border-radius:6px;font:500 11.5px/1 var(--font-body);letter-spacing:.02em;color:var(--md-on-surface-var)}
+.pr-badge::before{content:'';flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85}
 .pr-ep .pr-badge{font-family:var(--font-mono)}
-.pr-badge.none{border-style:dashed}
-.pr-badge.on{border-color:color-mix(in srgb,var(--md-secondary) 70%,transparent);color:var(--md-on-surface)}
+.pr-badge.none::before{background:none;box-shadow:inset 0 0 0 1px currentColor}
+.pr-badge.on{color:var(--md-on-surface)}
 .pr-badge.off{text-decoration:line-through;opacity:.55}
-.pr-badge.now{border-color:transparent;background:var(--md-secondary-container);color:var(--md-on-secondary-container)}
+.pr-badge.now{color:var(--pnl-accent);font-weight:600}
 .pr-castle small,.pr-ep small,.pr-fifty small,.pr-rep small{font-size:11.5px;color:var(--md-on-surface-var)}
 .pr-ep{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
 .pr-fifty{display:flex;flex-direction:column;gap:5px}

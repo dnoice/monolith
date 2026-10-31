@@ -90,7 +90,8 @@
   /* the heartbeat's head keeps to one row (its sentence wrapped to three and the dock showed 40 px
      of the strip); the badge goes, as the Synaptic PV's do */
   .beat{gap:4px;padding-block:8px}
-  .beat .mo-sub{flex:1 1 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #dock .beat > .mo-head{display:flex}
+  #dock .beat > .mo-head > .mo-sub{flex:1 1 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .beat .badge{display:none}
   .split{display:none}
   .moves-card,:root[data-moves-sized] .moves-card{height:auto}
