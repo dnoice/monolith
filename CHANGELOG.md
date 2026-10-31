@@ -199,7 +199,11 @@ up to date and put the asset generators in step with the headers they write.
   `tools/build-emblem.mjs` reports the page already current and `tools/verify-studies.mjs` that
   every study passed. The six-tab sweep in headless Chromium, in both worlds at 1600 × 1000 and
   390 × 844 (DPR 2): no console or page errors, no duplicate ids, no sideways overflow, and the
-  palette at 65 of 65 commands.
+  palette at 65 of 65 commands. After the headers and documents were brought up to date, the same
+  checks and the same sweep ran again on the final code with the same results, the rail's release
+  chip reading v2.19.0. A script found a new header version in every file the release changed,
+  every changelog in a shipped file's header within three entries and 40 lines, and no name
+  outside the changelogs, the Author fields and the README's credits.
 - The panel's first seven steps, on their branch against the 2.18.0 baseline in both worlds: the
   engine lines' top and right borders 0 px; Load and UCI options rows 43 px (they were 20 to
   35 px); the off switch's thumb against its track 7.98:1 in the cathedral and 8.27:1 in MONOLITH
