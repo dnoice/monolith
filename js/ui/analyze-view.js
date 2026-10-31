@@ -302,7 +302,10 @@ function renderStageInstruments(st, sharp, rec) {
     $('#wdl-bottom').textContent = flip ? `L ${Lp.toFixed(1)}` : `W ${W.toFixed(1)}`;
     const dEl = $('#wdl-d'), dTop = (flip ? W : Lp) + D / 2, sb0 = $('#wdl-sharp'), hTot = ribbon.clientHeight || 1;
     const sharpEnd = (sb0.offsetTop + sb0.offsetHeight) / hTot * 100;
-    dEl.textContent = `D ${D.toFixed(1)}`; dEl.style.top = `${Math.max(dTop, sharpEnd + 4)}%`; dEl.hidden = D < 4 || Math.max(dTop, sharpEnd + 4) > 90;
+    // and clear of the labels at either end (half its own line and 3 px), all it has to keep off
+    // where a narrow stage hides Sharpness: it sat on the top one when the split was lopsided
+    const tl = $('#wdl-top'), lh = 10, lo = Math.max(sharpEnd + 4, (tl.offsetTop + tl.offsetHeight + lh) / hTot * 100), hi = ($('#wdl-bottom').offsetTop - lh) / hTot * 100;
+    dEl.textContent = `D ${D.toFixed(1)}`; dEl.style.top = `${Math.max(dTop, lo)}%`; dEl.hidden = D < 4 || Math.max(dTop, lo) > Math.min(90, hi);
     const sb = $('#wdl-sharp'); sb.classList.toggle('calm', !(sharp && sharp.halo));
     $('#wdl-sharp-val').textContent = sharp ? Monolith.fmtPct(sharp.d12) : '—';
     $('#wdl-sharp-sub').textContent = sharp ? (sharp.halo ? `line 1 · d${l1.depth}` : 'halo off') : 'one line';
