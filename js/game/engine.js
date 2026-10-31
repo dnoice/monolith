@@ -87,7 +87,7 @@ export const engineFamily = () => (engine && engine.ready && engine.choice) || E
    the reason rather than accepted and ignored. */
 function engineLabels() {
   const f = engineFamily(), elo = !engine.ready || engine.has('UCI_Elo');
-  if (app.worldName === 'monolith') $('#brand-sub').textContent = `MONOLITH instrument · ${f.family}`;
+  if (app.worldName === 'monolith') $('#brand-sub').textContent = `MONOLITH world · ${f.family} instrument`;
   for (const id of ['#cfg-a-kind', '#cfg-b-kind']) {
     const sel = $(id); if (!sel) continue;
     for (const o of sel.options) {
