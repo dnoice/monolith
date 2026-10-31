@@ -163,6 +163,20 @@
   .side-card{padding:12px 4px 10px}
   .side-card small{font-size:11px}
 }
+/* ---------- touch screens: a finger's targets ----------
+   Phones and tablets, an iPad in the desktop layout too. The small controls come up to the 40 px
+   the icon buttons already are, and the small switch to the full one. Every field reads at 16 px,
+   under which iOS Safari zooms the whole page when one takes the focus and stays zoomed. */
+@media (pointer:coarse){
+  .moves-head .icon-btn{width:40px;height:40px}
+  .btn.small,.game-actions .btn,.btn-pal,.app-ver{height:40px}
+  .switch.small{width:52px;height:32px}
+  .switch.small::before{left:6px;width:16px;height:16px}
+  .switch.small:checked::before{left:24px;width:22px;height:22px}
+  .pos-switch [role="tab"]{height:40px}
+  .opt .select,.gfx-grid .select,.ed-ep select{height:40px}
+  :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea){font-size:16px}
+}
 @media (prefers-reduced-motion:reduce){
   .result,.result.win::after,.pstate.won{animation:none}
   .ripple,.die.landed,.pstate.think::after{animation:none}
