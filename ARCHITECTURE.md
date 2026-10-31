@@ -1,17 +1,20 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Architecture (digiSpace Edition - v1.10)
+    - Title: MONOLITH Architecture (digiSpace Edition - v1.11)
     - File Name: ARCHITECTURE.md
     - Relative Path: ARCHITECTURE.md
     - Artifact Type: docs
-    - Version: 1.10.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.11.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.11.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.18.0: js/game/pgn.js, the kept game, the stage's safe bands, the
+      new exports and imports; the cathedral is no longer called Gothic.
     - 1.10.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.17.0: the Conical M Dennis made MONOLITH's official mark, its logo
       in the app bar and its emblem on the loading screen, both written in
@@ -82,7 +85,10 @@
     - The load order: markup, stylesheets, plain scripts, then the modules.
     - The module rules: definitions at the top level, setup in init(), one
       boot order in js/main.js.
-    - The shared store, value by value.
+    - The shared store, value by value, and what the page keeps in
+      localStorage.
+    - The stage's safe bands: where its overlays sit, and what the camera
+      fits the board inside.
     - Every stylesheet, plain script and module, with its boot step.
     - The loading screen: its stages, when the boot runs among them, and
       every route that takes it away.
@@ -152,8 +158,8 @@ in `assets/README.md`.
 
 | Order | File | What it holds |
 | --- | --- | --- |
-| 1 | `css/tokens.css` | The custom properties every other sheet reads: colour, type, shape and motion tokens for the cathedral world, and the MONOLITH solved stops that replace them in the instrument world. |
-| 2 | `css/layout.css` | The frame of the page and its shared controls: the app bar, the navigation rail, the stage, the side panel and the move list, with the buttons, segmented choices, switches and cards the panels are built from; and the loading screen. |
+| 1 | `css/tokens.css` | The custom properties every other sheet reads: colour, type, shape and motion tokens for the cathedral world, and the MONOLITH solved stops that replace them in the instrument world; also the frame's widths, among them the side panel's, one per world. |
+| 2 | `css/layout.css` | The frame of the page and its shared controls: the app bar, the navigation rail, the stage with its safe bands, the side panel and the move list, with the buttons, segmented choices, switches and cards the panels are built from; and the loading screen. |
 | 3 | `css/monolith.css` | How the shared components look in the MONOLITH world, and the components only the instrument has. |
 | 4 | `css/crucible.css` | The Crucible tab: the deck that covers the stage, the game board card and the pane beside it. |
 | 5 | `css/workspace.css` | The parts of the workspace around the board that are not a tab: the telemetry footer, the Command Palette, the System sheet, the dock, the move sheet and the splitters. |
@@ -163,7 +169,7 @@ in `assets/README.md`.
 | 9 | `css/terms.css` | A Grimoire term wherever it appears on screen: a quiet dotted underline, and the card a click or Enter opens. |
 | 10 | `css/coach.css` | The Coach's feed in the Play pane: one note per moment of the game, each with its badge, the move, the score and the text in the Coach's voice. |
 | 11 | `css/xray.css` | The Tactical X-Ray readout docked beside the board (Dennis, 10/22/2026): the square, its state, the gauge and the move, with a two-line strip on phones. |
-| 12 | `css/media.css` | The overrides for small screens and reduced motion, kept last so they win: on phones and narrow tablets the rail becomes a bottom bar, very narrow screens tighten further, and reduced motion turns transitions off. |
+| 12 | `css/media.css` | The overrides for small screens, touch screens and reduced motion, kept last so they win: on phones and narrow tablets the rail becomes a bottom bar and the move list a strip at the panel's foot; a phone held sideways (landscape, under 500 px tall) and a tablet held upright each have a layout of their own; under 600 px the telemetry footer is set aside; a coarse pointer gets 40 px targets and 16 px fields; and reduced motion turns transitions off. |
 
 ### Plain scripts
 
@@ -192,13 +198,18 @@ file:
    meshes, wiring listeners, registering a renderer) is in its exported `init()`, in the same order.
 3. **`js/main.js` owns the order.** It calls each `init()` once, in the order the single file ran that
    code. ES modules evaluate their imports first, and these modules import each other in cycles, so
-   import order is not a boot order; with rule 1 it does not need to be.
+   import order is not a boot order; with rule 1 it does not need to be. The bindings 2.18.0
+   added across the folders are read only when a function runs: `scene/camera.js` reads
+   `turning` from `game/flow.js`, `app/state.js` and `game/play.js` read `boardOverride` from
+   `ui/crucible-board.js`, and `app/snapshot.js` reads `resultFor` (`game/play.js`) and
+   `autoFlipOn` (`game/flow.js`).
 
 A module without setup has no `init()` and is not in the boot; it loads through the modules that
-import it. When WebGL is missing, the renderer throws `BootHalt` (from `js/app/base.js`); `main.js`
-catches it and runs no further step, as the single file's early `return` did. Since 2.15.0 the boot
-runs a little after the module loads: `main.js` hands it to the loading screen, which starts it
-once the screen has written its M (see [The loading screen](#the-loading-screen)).
+import it (`js/game/pgn.js`, new in 2.18.0, is one: nothing in it runs on import). When WebGL is
+missing, the renderer throws `BootHalt` (from `js/app/base.js`); `main.js` catches it and runs no
+further step, as the single file's early `return` did. Since 2.15.0 the boot runs a little after
+the module loads: `main.js` hands it to the loading screen, which starts it once the screen has
+written its M (see [The loading screen](#the-loading-screen)).
 
 ### The boot
 
@@ -346,6 +357,34 @@ exported for reading. Objects that other modules change only by their properties
 `store.js` says what each value means. A new variable that a second module needs to assign belongs
 there, under its owner.
 
+### Kept in this browser
+
+Two localStorage keys outlive the page. `monolith-prefs-v2` (`js/app/base.js`) holds the
+preferences, repaired against `DEFAULTS` when they are read; the side panel's width in it
+(`prefs.ui.panel`) is kept per world since 2.18.0, the dock, heartbeat and move list per
+destination. `monolith-game-v1` (`js/app/snapshot.js`, since 2.18.0) holds the game on the board
+as its start position and its moves (a FEN and UCI), written when the game changes and removed
+when there is none. `start()` replays it when there is no hot snapshot, stopping at the first move
+that is not legal there. A study, an explored line and the free board are not kept.
+
+## The stage's bands
+
+Since 2.18.0 the camera fits the board to the stage. Each overlay on the stage (the player cards,
+the chips, the orbit hint, Analyze's instruments, the Crucible's board card) sits in a band along
+one of its edges, and each band's depth is a custom property on the canvas, `#scene`: `--safe-t`,
+`--safe-r`, `--safe-b` and `--safe-l`. The defaults are in `css/layout.css`; a destination whose
+overlays need other bands sets its own on `#scene`, never on `#stage`, as Analyze does in
+`css/monolith.css` and the Crucible in `css/crucible.css`, and phones set theirs in
+`css/media.css`.
+
+`js/scene/camera.js` reads them from the canvas (`safeBands()`). `fitFor(phi)` finds the distance
+at which the frame, every coordinate and both back ranks fit inside the bands at a pose's angle,
+and the pan that centres the board there; `fitCamera()` applies it, keeping a zoom by hand as a
+share of the fit; `fitDist()` is the fitted distance (the world's own until the stage is
+measured). The camera refits when the stage is resized (`app/loop.js`) and when the destination,
+the world or the evaluation bar changes; `resetView()` returns to the world's pose at the fitted
+distance. A new overlay goes inside a band, or its destination's band grows to hold it.
+
 ## The render registry
 
 Panels never call each other. Each registers a renderer with `onRender(fn)` (from `js/app/state.js`)
@@ -361,10 +400,10 @@ The page as an app: its basics, state, sound, the frame loop and the hot snapsho
 
 | File | What it holds | Boot step |
 | --- | --- | --- |
-| `base.js` | The basics every module leans on: the $ query helper, the release number shown on screen, the reduced-motion preference and the saved preferences. | 1 |
+| `base.js` | The basics every module leans on: the $ query helper, the release number shown on screen, the reduced-motion preference, the saved preferences and `panelScroller()`, the element the side panel scrolls in (the panes on a wide screen, the whole panel on a phone). | 1 |
 | `sound.js` | The page's sounds, synthesized with Web Audio rather than loaded from files. | — |
 | `state.js` | The app layer's core: the game record, the match being played, the words for sides and pieces, the tips system and the render registry. | 10 |
-| `snapshot.js` | Keeps the game through a hot update of the artifact: snapshot() hands the viewer the game and match on every render, and start() restores them and brings the page up. | — |
+| `snapshot.js` | Keeps the game through a hot update of the artifact and, since 2.18.0, through a reload: snapshot() hands the viewer the game and match on every render and writes the game to localStorage (`monolith-game-v1`) when it changes, and start() restores the hot snapshot, or else the kept game, and brings the page up. | — |
 | `loop.js` | The frame loop and resizing; the first frame after `start()` tells the loading screen the board has drawn, and the loop draws nothing while the screen then covers it. | 26 |
 | `store.js` | The one object for state that several modules change: whether a game has started, the selected square, whose move is being viewed, the hint, the render tier and the rest. | — |
 
@@ -383,23 +422,24 @@ post-processing, camera, motion and the world transition.
 | `board.js` | The board and everything on it: squares, highlight markers, coordinate labels, the lathe-turned pieces and the fragments a captured piece shatters into (`clearFragments()`), and `boardGen`, which counts each rebuild of the pieces so a move still animating leaves a new board alone. | 5 |
 | `instruments.js` | The instrument's 3D layers on the board: the sub-surface move-value field, the ballistic vectors of the candidate moves, and the Tactical X-Ray ring over a square. | 6 |
 | `phantoms.js` | A line scrubbed in the Synaptic PV is shown as a difference from the board: phantom pieces where the line puts them, ghosts where it takes them away, capture rings where it takes. A warm-up frame compiles their shaders once the world has settled, and its materials are kept so the programs stay. | 7 |
-| `post.js` | Post-processing for every level with HDR (Low and up): a ray-marched volumetric light pass, Unreal bloom, and an output pass (sRGB, vignette, dither), built from the level's settings. | 8 |
-| `camera.js` | The camera's orbit around the board and the pointer: middle-drag to orbit, scroll to zoom, and picking a square or piece under the pointer. | 9 |
-| `motion.js` | Tweens and the pieces' movement: glides, hops and lunges, facing the target and back, and the idle breathing of the pieces between moves. | — |
-| `worlds.js` | Cathedral and MONOLITH on one board: the transition, its veil, and `worldSettled()`. | 16 |
+| `post.js` | Post-processing for every level with HDR (Low and up): a ray-marched volumetric light pass (its depth drawn at full resolution, the march at the level's fraction, and the composite matched to each pixel's depth), Unreal bloom, and an output pass (sRGB, vignette, dither), built from the level's settings. | 8 |
+| `camera.js` | The camera's orbit around the board and the pointer: a left drag off a piece orbits (the middle button too), dragging a piece moves it, the wheel or a pinch zooms, and a square or piece under the pointer is picked. The fit to the stage inside its safe bands (`safeBands()`, `fitFor()`, `fitCamera()`, `fitDist()`, see [The stage's bands](#the-stages-bands)) and Reset view (`resetView()`). Reads `turning` from `game/flow.js`. | 9 |
+| `motion.js` | Tweens and the pieces' movement: glides, hops and lunges, facing the target and back, the idle breathing of the pieces between moves, and `dropAt()`, which lets a piece dragged to its square settle from where it was let go. | — |
+| `worlds.js` | Cathedral and MONOLITH on one board: the transition, its veil, `worldSettled()`, `desiredWorld()` and `applyBackdrop()`, which sets the background and the fog, the fog thinning as the fit draws the camera back. | 16 |
 
 ### `js/game/`
 
 Playing chess: the Stockfish client, board interaction, moves, ceremony, game flow, the evaluation
-lines and typed moves.
+lines, typed moves and the game as PGN.
 
 | File | What it holds | Boot step |
 | --- | --- | --- |
 | `engine.js` | The UCI client for Stockfish: it starts the best engine it can (Stockfish 19 lite from engine/, the same build from unpkg, or Stockfish 10 as a last resort) and speaks UCI to it over postMessage. An engine that stops after it has started is restarted once, then reported. | 11 |
-| `board-ui.js` | What the player sees and does on the board: highlights, castling lanes, hint and candidate arrows, selection, hover and the square a click means. | 12 |
+| `board-ui.js` | What the player sees and does on the board: highlights, castling lanes, hint and candidate arrows, selection, hover, the square a click means, and `grabbable()`, whether a press on a square picks a piece up to drag. | 12 |
 | `play.js` | Making a move happen: playMove() runs a move through the animations, the record and the results, then asks the computer for its reply at the level being played. | — |
-| `ceremony.js` | The game's ceremonies: pieces dealt in at the start, the shudder of a king in check, the flash of a promotion, and the end: the loser's king topples, the winner's army waves and bows, the camera swings. | 13 |
-| `flow.js` | Starting, ending and rewinding games, reviewing earlier moves, and exploring: moves tried on a board the game does not own, from any position on screen. | — |
+| `ceremony.js` | The game's ceremonies: pieces dealt in at the start, the shudder of a king in check, the flash of a promotion, and the end: the loser's king topples, the winner's army waves and bows, the camera swings (`endSwing()` stops the swing, for Reset view). | 13 |
+| `flow.js` | Starting, ending and rewinding games, reviewing earlier moves, and exploring: moves tried on a board the game does not own, from any position on screen. Since 2.18.0 also the free board before a game (`sandbox()`, its line for Play from here in `draftLine()`, and `startGame()`'s third parameter, a line the game begins with its moves kept), the board turning for each player (`turning`, `autoFlipOn()`, `autoOrient()`, `setAutoFlip()`), a draw by agreement (`canOfferDraw()`, `offerDraw()`), `analyzeGame()`, and typed or appended explored moves (`exploreTyped()`, `exploreAppend()` for Analyze's Play to here). | — |
+| `pgn.js` | The game as PGN (2.18.0): `gamePgn()` writes the seven tags (with SetUp and FEN for a game begun part-way), the moves and the result; `parsePgn()` reads a pasted game back to positions and moves, or says what failed; Copy PGN, Download PGN, Copy FEN and Load a game. No `init()`; Analyze's Load reads PGN through it. | — |
 | `lines.js` | The evaluation bar and best line for the position on screen, and Calculate moves: the engine's MultiPV candidates drawn as ranked arrows. | 14 |
 | `input.js` | Moves typed in the move box: long algebraic (e2e4), SAN (Nf3, exd5, e8=Q) or castling (O-O), and SAN back to moves for replaying long games quickly. | — |
 
@@ -412,7 +452,7 @@ The Coach: its reading of the board, what a move does, the opening book and its 
 | `coach.js` | The Coach's reading of a position, the way a coach at the board would: piece values, material along a line, threats, loose and outnumbered pieces, development and the phase of the game. | — |
 | `facts.js` | What a move does, as checked facts in the order a coach would name them, and the voice that turns them into sentences from COACH_VOICE. | — |
 | `book.js` | Looks positions up in OPENING_BOOK, so the Coach can say a move is book and name the opening, even after a transposition. | — |
-| `notes.js` | The Coach at work: its own engine, the note for each move (your move judged against the best, the opponent's move read for you), the watch on your turn, the hint, and the review at the end. | 15 |
+| `notes.js` | The Coach at work: its own engine, the note for each move (your move judged against the best, the opponent's move read for you), the watch on your turn, the hint, and the review at the end, whose note carries its `actions` (show the turning point, or analyze it); `turningPly()` is that point's ply, for Analyze game. | 15 |
 
 ### `js/ui/`
 
@@ -424,23 +464,23 @@ controls and splitters.
 | --- | --- | --- |
 | `boot-screen.js` | The loading screen's order: `bootStarted(begin)` runs the page's boot once the M is written and starts the tips, `bootReady(drawn)` after the first frame starts the last stage and lifts the screen when it ends (once only, so the loop calls it freely), `bootStep(id, state)` moves a step of the meter forward, `bootCovering()` tells the loop to rest, `bootStop()` removes the screen when the boot halts or fails. See [The loading screen](#the-loading-screen). | — |
 | `snackbar.js` | One message at a time at the foot of the stage, with optional actions; it hides itself after a few seconds unless it is sticky. | — |
-| `analyze.js` | MONOLITH Analyze's searches and state: the deep MultiPV search with WDL, the field search over every legal move, the fork walk along line 1, and the recorded reference run. | — |
-| `analyze-view.js` | MONOLITH Analyze on screen: the stats, the search profile, the WDL ribbon, the Synaptic PV scrubber and its phantom preview, the stage instruments and the X-Ray readout. | — |
+| `analyze.js` | MONOLITH Analyze's searches and state: the deep MultiPV search with WDL, the field search over every legal move, the fork walk along line 1, the recorded reference run, and Load (`loadForAnalysis()`), which analyses a pasted FEN, or a PGN game read by `game/pgn.js`, where it is. | — |
+| `analyze-view.js` | MONOLITH Analyze on screen: the stats, the search profile, the WDL ribbon, the Synaptic PV scrubber and its phantom preview with Play to here (through `exploreAppend()` in `game/flow.js`), the stage instruments, the X-Ray readout and the source badges, full or short. | — |
 | `crucible.js` | MONOLITH Crucible: a paired-opening gauntlet between two engine configurations, decided by a real pentanomial GSPRT. | 17 |
-| `crucible-board.js` | A Crucible game expanded onto the 3D board: step through its moves, explore from any of them, and go back to the deck. | — |
+| `crucible-board.js` | A Crucible game expanded onto the 3D board: step through its moves (the Moves card lists and steps it), explore from any of them, and go back to the deck. While that game is on the board (`boardOverride`), the Play game's moves, Undo and review leave the board alone. | — |
 | `crucible-view.js` | The Crucible on screen: the verdict, the LLR oscilloscope, the Hive of games and the heartbeat of a game's evaluation. | 18 |
 | `palette.js` | The Command Palette: glass, one at a time, Ctrl K (⌘K on Apple keyboards). | 19 |
 | `telemetry.js` | MONOLITH's telemetry footer: browser-honest readouts, each with its source badge. | 20 |
 | `system-sheet.js` | The System sheet in Settings: the MONOLITH solved stops as swatches, and a contrast ledger computed in the page from the same colours. | — |
 | `grimoire.js` | The Grimoire, the reference tab, and term cards anywhere on the page. | 21 |
-| `nav.js` | Single-level navigation: the rail (a bottom bar on phones) and the tab switch, which also moves the world when it follows the destination; the world setting. | — |
+| `nav.js` | Single-level navigation: the rail (a bottom bar on phones) and the tab switch, which also moves the world when it follows the destination and gives each pane its own scroll position (through `panelScroller()`); the world setting. | — |
 | `diagram.js` | Flat SVG board diagrams drawn with Dennis's house piece set (`PIECE_SET`): study cards, the structure map, the board editor, piece icons, and single pieces placed in other drawings (`pieceUse()`). | — |
 | `gfx-meter.js` | The graphics meter in Settings, after Dennis's drawing (version 1.2): five back-rank cells meeting edge to edge on a dial a little more than a half circle (rook for Minimal to king for Ultra), each a button that takes the pointer only on its shape, and a needle that is one shape with the hub ring, turning about the hub, pointing between levels for Custom. Built and drawn by `panels.js`. | — |
 | `studies.js` | How a study runs (puzzles, practice games, set-ups), the study order behind Up next and Next study, and the progress counts. | — |
 | `position.js` | The Position tab in three views behind one switch: Studies (Up next, tiles, cards, the Study card), Read (the board you see, drawn) and Set up (a board editor tied to a coloured FEN). | 22 |
 | `panels.js` | The renderers that keep the panels in step with the game: the Play pane, the match strip, the players' cards with their captures, the evaluation bar, the move list, the Coach's feed and Settings (its Graphics rows built from `scene/quality.js`). | 23 |
-| `controls.js` | Wires every control on the page: the rail, the Play pane, the move box, Analyze, Crucible and Settings, the keyboard shortcuts, and the first render. The Position tab wires its own. | 24 |
-| `splitters.js` | Drag handles on the dock, the side panel and the move list, with keyboard control and saved sizes; also the dock's scrubber and heartbeat pointer handling. | 25 |
+| `controls.js` | Wires every control on the page: the rail, the Play pane, the move box, Analyze, Crucible and Settings, and the first render. The Position tab wires its own. | 24 |
+| `splitters.js` | Drag handles on the dock, the side panel and the move list, with keyboard control and saved sizes (the side panel's per world, through `desiredWorld()`; the others per destination); the page's keyboard shortcuts, the free board's among them (`sandbox()`); also the dock's scrubber and heartbeat pointer handling. | 25 |
 
 ## Adding to it
 
@@ -453,6 +493,8 @@ controls and splitters.
   belongs. Keep its top level to definitions (rule 1).
 - **A shared variable**: if a second module must assign it, move it into `app` in `js/app/store.js`
   under its owner, with a line on what it means.
+- **Something on the stage**: place it inside a band, or deepen its destination's band on
+  `#scene` so the camera fits the board clear of it (see [The stage's bands](#the-stages-bands)).
 - **Styles**: add them to the sheet of their concern. A new sheet goes into the page's `<link>` list
   at the place in the cascade where it belongs; `css/media.css` stays last.
 - **A study, a Coach line or a Grimoire entry**: edit the dataset in `js/data/`; STUDIES.md and

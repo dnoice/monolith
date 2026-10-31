@@ -1,17 +1,20 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Graphics Levels (digiSpace Edition - v1.3)
+    - Title: MONOLITH Graphics Levels (digiSpace Edition - v1.4)
     - File Name: GRAPHICS.md
     - Relative Path: GRAPHICS.md
     - Artifact Type: docs
-    - Version: 1.3.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.4.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.18.0: the light pass's full-resolution depth and depth-matched
+      composite, its video memory, and the 64-sided column shafts.
     - 1.3.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       meter as Dennis redrew it (version 1.2): cells edge to edge on a dial
       a little more than a half circle, and a needle that is one shape with
@@ -45,6 +48,8 @@
 
 ✒ Key Features:
     - The five levels, setting by setting, and what each step up buys.
+    - The light pass: its depth at full resolution, the march at the
+      level's fraction, and what the depth costs in video memory.
     - The meter Settings chooses them with, and what its needle shows.
     - The seven settings, their options and what depends on what.
     - Automatic: the GPU kinds it recognises, the memory and core caps,
@@ -99,7 +104,9 @@ between the two levels the settings fall between, by a rough estimate of their c
 screen. The estimate counts, in full-resolution scene draws, the scene, the HDR target with its
 multisampling and output pass, bloom, the light pass (its depth draw and its march), the mirror's
 second draw and the shadow map. It ranks the five levels in order on any screen, which is all it is
-for: it is not a frame-time prediction. The line under the dial, and the help below it, name the
+for: it is not a frame-time prediction. It still charges the light pass's depth draw at the march's
+share, though that draw has run at full resolution since 2.18.0; the levels rank in the same order
+either way. The line under the dial, and the help below it, name the
 nearer level ("about as demanding as High").
 
 ## The levels
@@ -119,17 +126,28 @@ The ladder is cut by what each step buys, cheapest first:
    markers and instruments drawn brighter than white glow. This is the cheapest step that changes
    the look the most.
 2. **Low to Medium: the second scene draws.** Ray-marched light draws the scene again, as a depth
-   pass, and marches each pixel's ray through the key light's cone and shadow map, so pieces and
-   columns cut real shafts out of the haze. MONOLITH's mirror floor draws the scene again,
-   reflected. Resolution rises to 1.5× on screens that have it.
-3. **Medium to High: resolution.** The light pass doubles its resolution in each direction and takes
-   40 steps, the mirror sharpens, shadows double, multisampling goes to 4× and the view renders at
-   up to 2×. Resolution multiplies the cost of everything else, which is why it comes last.
+   pass at the view's full resolution, and marches each ray through the key light's cone and
+   shadow map at the level's fraction of it, so pieces and columns cut real shafts out of the haze.
+   Laid over the scene, each pixel takes the light of the rays that ended at its own depth, and a
+   pixel on a silhouette mixes the light of both surfaces it covers, so column edges stay as smooth
+   as the anti-aliasing draws them. MONOLITH's mirror floor draws the scene again, reflected.
+   Resolution rises to 1.5× on screens that have it.
+3. **Medium to High: resolution.** The light's march doubles its resolution in each direction and
+   takes 40 steps, the mirror sharpens, shadows double, multisampling goes to 4× and the view
+   renders at up to 2×. Resolution multiplies the cost of everything else, which is why it comes
+   last.
 4. **High to Ultra: refinement.** Light at three-quarter resolution in 56 steps (less grain in the
    shafts, cleaner edges around the pieces), a full-resolution mirror and 4096 px shadows.
 
 Medium and High are the former Balanced and High, setting for setting. Minimal is the former Low.
 Low is new: HDR and bloom without the second scene draws.
+
+Since 2.18.0 the light pass's depth is drawn at full size, which takes about 1 to 11 MB more video
+memory at Medium and above, depending on the level and the screen; its colour channel is one byte
+a pixel, since only the depth is read. Two things hold at every level:
+the cathedral's column shafts are 64-sided, so their outlines stay round and steady as the camera
+orbits close to them, and the fog thins as the camera's fit to the stage draws it back, so the
+board reads the same at any window size.
 
 ## Fine-tune
 
@@ -143,7 +161,7 @@ not having.
 | HDR rendering | On, Off | The half-float, multisampled pipeline with bloom and the output pass. Off draws straight to the screen. | Low. It needs WebGL 2; without it the row reads Off and cannot change. |
 | Resolution | Up to 2×, Up to 1.5×, 1×, 0.75× | Pixels drawn per CSS pixel, never more than the screen has: on a 1× screen, "Up to 2×" draws 1×. 0.75× draws fewer pixels than the screen and lets the browser scale up. | The highest: every other cost scales with the pixel count. |
 | Anti-aliasing | 4× MSAA, 2× MSAA, Off | Multisampling of the HDR target. Options above what the GPU supports are not offered. | Moderate, and higher at high resolution. Needs HDR; without it the row reads "The browser's", the canvas's own anti-aliasing. |
-| Light shafts | Ray-marched at ¾, ½ or ¼ resolution; Planar | The volumetric light pass, or the cathedral's flat light planes instead. | High at ¾ and ½. Ray-marching needs HDR; without it the row reads Planar. |
+| Light shafts | Ray-marched at ¾, ½ or ¼ resolution; Planar | The volumetric light pass, or the cathedral's flat light planes instead. The fraction is the march's; the depth it reads is drawn at full resolution, and each pixel takes the light of the rays that ended at its own depth. | High at ¾ and ½. Ray-marching needs HDR; without it the row reads Planar. |
 | Reflections | Full, Sharp, Soft, Off | MONOLITH's mirror floor at 1, 0.75 or 0.4 of the view's resolution, or a plain floor. | Moderate: the scene draws once more, reflected. The cathedral has no mirror floor. |
 | Shadows | 4096 px, 2048 px, 1024 px, Off | The key light's shadow map. Off frees the map; the lit materials recompile without shadow lookups and the light shafts march unshadowed light. | Low to moderate. Sizes above the GPU's texture limit are not offered. |
 | Bloom | On, Off | The glow around anything brighter than white. | Low. Needs HDR; without it the row reads Off. |

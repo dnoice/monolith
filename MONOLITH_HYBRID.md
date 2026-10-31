@@ -4,14 +4,16 @@
     - File Name: MONOLITH_HYBRID.md
     - Relative Path: MONOLITH_HYBRID.md
     - Artifact Type: docs
-    - Version: 1.8.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.8.2
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.8.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.18.0: the cathedral is no longer called Gothic.
     - 1.8.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: the app is MONOLITH now, after this world, as Dennis
       chose; the page is index.html, its file in the repository.

@@ -1,17 +1,20 @@
 <!--
 ✒ Metadata
-    - Title: MONOLITH Studies (digiSpace Edition - v1.2)
+    - Title: MONOLITH Studies (digiSpace Edition - v1.3)
     - File Name: STUDIES.md
     - Relative Path: STUDIES.md
     - Artifact Type: docs
-    - Version: 1.2.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.3.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
+      2.18.0: the optional vs: 'both' field, the Castling drill played by
+      both sides, a set-up opened in Set up and its Who plays it.
     - 1.2.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and the preferences key is monolith-prefs-v2.
@@ -39,7 +42,8 @@
 
 ✒ Key Features:
     - The three modes (puzzle, practice, set-up) and the four goals, with
-      the exact rule that decides each.
+      the exact rule that decides each; who answers in each, and Set up's
+      Who plays it for a study's position opened there.
     - The checks every study passed, and the tool that repeats them.
     - The 18 studies, with what each one teaches.
     - The schema, field by field, and the steps for adding a study.
@@ -78,11 +82,17 @@ repeats the checks against the page as it ships.
 | --- | --- | --- |
 | `puzzle` | Find the moves. A wrong move is taken back and counted. | The replies come from the study's own line, after a short beat. |
 | `practice` | Play it out until the goal is met or lost. | Stockfish at full strength (level 8, Maximum), for that game only. |
-| `free` | A set-up: the position, loaded as an ordinary game. | Your own game settings. |
+| `free` | A set-up: the position, loaded as an ordinary game. | Play's own settings (opponent, side and level); with `vs: 'both'`, nobody: you move both sides on this screen. |
 
 A study never changes your saved game settings. When it ends (Restart, End study, Next, a new
 game or a loaded FEN), the next ordinary game uses your own opponent, side and level again.
 Rematch on a study's result card restarts the study.
+
+Open in Set up, on a study's page, puts its position in the Set up view instead, to edit or play
+as an ordinary position. There **Who plays it** decides the game Play this position starts:
+against Stockfish at Play's level, on the side to move or the other (Stockfish then moves first),
+or both sides on this screen. The line beside the button says which, and Play's own settings are
+left alone.
 
 ## Goals, and what decides them
 
@@ -146,7 +156,7 @@ It exits with code 1 when any study fails.
 | `lucena` | Endgames | 3 | practice | promote | Building a bridge |
 | `philidor` | Endgames | 3 | practice | hold, 12 moves | The sixth-rank defence, then checks from behind |
 | `start` | Set-ups | 1 | free | — | A normal game |
-| `castling-drill` | Set-ups | 1 | free | — | Castling both ways for both sides |
+| `castling-drill` | Set-ups | 1 | free, `vs: 'both'` | — | Castling both ways for both sides; you move both |
 
 ## Fields
 
@@ -159,6 +169,7 @@ It exits with code 1 when any study fails.
 | `fen` | The position. |
 | `side` | The side you play. In a `hold` study you may move second. |
 | `mode`, `goal` | As in the tables above; `goal` is `null` for a set-up. |
+| `vs` | Set-ups only, optional: `'both'` plays the position as a game where you move both sides; without it, a set-up uses Play's settings. |
 | `line` | Puzzles: the moves in long algebraic, yours and the replies in turn. |
 | `par` | Mate drills: Stockfish's quickest mate (see The checks). |
 | `moves` | Holds: your moves before the engine checkpoint. |
