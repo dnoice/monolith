@@ -264,7 +264,8 @@ export function offerDraw() {
      before that declines as too early to agree a draw.
    - Better than that, or a forced mate of its own: it declines and plays on for the win.
    After a decline the offer can be made again DRAW_RETRY_MOVES of your moves later; the wait
-   belongs to the game record (game.states), so a new or loaded game starts without one. */
+   belongs to the game record (game.states), so a new or loaded game starts without one, and it is
+   kept with the game through a reload (drawWaitAt() and setDrawWait(), js/app/snapshot.js). */
 export const DRAW_WORSE_CP = 100, DRAW_LEVEL_CP = 40, DRAW_FROM_MOVE = 20, DRAW_RETRY_MOVES = 5;
 const DRAW_SEARCH = { depth: 14, movetime: 800, multipv: 1 }, DRAW_BEAT = 0.6;   // seconds: an answer found at once still reads as considered
 let drawAsk = null;   // the offer being judged: { rec, st }
@@ -272,6 +273,13 @@ let drawWait = null;  // after a decline: { rec, at }, the move from which it ca
 // still judging only while the game is the one the offer was made in, at the same position
 export const drawJudging = () => !!drawAsk && drawAsk.rec === game.states && drawAsk.st === cur() && !game.result;
 const drawAgainAt = () => drawWait && drawWait.rec === game.states && cur().fullmove < drawWait.at ? drawWait.at : 0;
+// the game's wait as it is saved: the move it ends at, or 0 with none (or one from another game)
+export const drawWaitAt = () => drawWait && drawWait.rec === game.states ? drawWait.at : 0;
+// a saved wait back on the game now on the board (game.states set first); one that does not read,
+// or longer than a decline gives, is dropped
+export function setDrawWait(at) {
+  drawWait = Number.isInteger(at) && at > 0 && at <= cur().fullmove + DRAW_RETRY_MOVES ? { rec: game.states, at } : null;
+}
 // the computer as the player card names it (js/ui/panels.js playerName(): 'Stockfish' in both worlds)
 const CPU_NAME = 'Stockfish';
 async function judgeDraw() {
@@ -457,59 +465,101 @@ export function exploreOrigin() {
   return game.result ? 'the final position' : 'the live position';
 }
 
-/* ---------- looking at the engine in a two-player game (2.18.0) ----------
-   With two people on one screen, one of them using Analyze during the game is consulting
-   the engine, and the other is told. It counts for the side to move at the live position, and only
-   in a live two-player game: never a finished game, a game against the computer, the free board, a
+/* ---------- the engine's help in a two-player game (2.18.0; its kinds 2.19.0) ----------
+   With two people on one screen, one of them using the engine's help during the game is consulting
+   it, and the other is told. It counts for the side to move at the live position, and only in a
+   live two-player game: never a finished game, a game against the computer, the free board, a
    study, a game loaded for analysis or a Crucible game on the board (consultable()).
-   The trigger, chosen so that passing through the tab marks nothing:
-   - Analyze open on the game for CONSULT_DWELL_MS with the engine's evaluation on screen, at any of
-     its positions (the live one, an earlier move, a line from it): consultWatch() in
-     js/ui/analyze-view.js. Crossing the rail with the arrow keys, or a click on the way to another
-     tab, takes less than that.
-   - At once: a move tried in a line from the live position (a click, a drag, a typed move, Play to
-     here), or a move played in the game from Analyze with its evaluation on screen.
+   The kinds of help (CONSULT_KINDS), each recorded, so the move list and the PGN say which:
+   - analyze: chosen so that passing through the tab marks nothing. Analyze open on the game for
+     CONSULT_DWELL_MS with the engine's evaluation on screen, at any of its positions (the live one,
+     an earlier move, a line from it): consultWatch() in js/ui/analyze-view.js. Crossing the rail
+     with the arrow keys, or a click on the way to another tab, takes less than that. At once: a
+     move tried in a line from the live position (a click, a drag, a typed move, Play to here), or
+     a move played in the game from Analyze with its evaluation on screen.
+   - hint: a hint shown (giveHint() in js/coach/notes.js); its further steps add nothing.
+   - calc: Calculate moves started (calculateMoves() in js/game/lines.js), at any position shown.
+   - eval: the evaluation bar, once a game (consultBar()): the first time it shows in a live
+     two-player game it marks the side to move then, and after that nothing more in that game, even
+     when it is turned off and on again.
    The mark belongs to the position (its ply in the record) and lands on the move then played from
-   it: a badge in the move list, a comment in the PGN, kept through a reload (js/app/snapshot.js).
-   An undo keeps the mark of the position it returns to and drops those of positions it took away.
-   The other player is told at the handover: as the board turns to them, or as their turn starts
-   when the board does not turn. */
+   it: a badge in the move list, a comment in the PGN, kept through a reload (js/app/snapshot.js),
+   with every kind that touched it said once. A mark saved before the kinds were has none and reads
+   as Analyze. An undo keeps the mark of the position it returns to and drops those of positions it
+   took away. The other player is told at the handover: as the board turns to them, or as their
+   turn starts when the board does not turn. */
 export const CONSULT_DWELL_MS = 1500;
-const consults = new WeakMap();   // game.states → Set of plies whose side to move used Analyze there
+export const CONSULT_KINDS = ['hint', 'calc', 'eval', 'analyze'];
+// each kind as the move list's title, the PGN comment and the handover say it (… before this move)
+const USED = { hint: 'used a hint', calc: 'used Calculate', eval: 'had the evaluation bar on', analyze: 'used Analyze' };
+// and as the notice at the moment of use says it
+const USES = { hint: 'used a hint', calc: 'used Calculate', eval: 'has the evaluation bar on', analyze: 'used Analyze' };
+/* game.states → { plies, bar }: plies maps a ply to the Set of kinds of help its side to move used
+   there, and bar says the evaluation bar has marked this game */
+const consults = new WeakMap();
+const consultsOf = () => { let c = consults.get(game.states); if (!c) consults.set(game.states, c = { plies: new Map(), bar: false }); return c; };
 export const consultable = () => app.started && match.opponent === 'human' && !study.cur && !game.title && !game.result && !boardOverride;
-export const consultedAt = ply => { const s = consults.get(game.states); return !!s && s.has(ply); };
-export const consultPlies = () => [...(consults.get(game.states) || [])].sort((a, b) => a - b);
-// marks saved with a game (a reload, a hot update) back on its record, each a position it has
-export function setConsultPlies(list) {
-  const n = game.states.length, s = new Set((Array.isArray(list) ? list : []).filter(p => Number.isInteger(p) && p >= 0 && p < n));
-  if (s.size) consults.set(game.states, s); else consults.delete(game.states);
+// the kinds of help used at a position, in CONSULT_KINDS order
+export const consultKinds = ply => { const c = consults.get(game.states), k = c && c.plies.get(ply); return k ? CONSULT_KINDS.filter(x => k.has(x)) : []; };
+// a mark at the position; with a kind, a mark of that kind
+export const consultedAt = (ply, kind) => { const k = consultKinds(ply); return kind ? k.includes(kind) : k.length > 0; };
+export const consultPlies = () => { const c = consults.get(game.states); return c ? [...c.plies.keys()].sort((a, b) => a - b) : []; };
+// "used a hint and used Calculate": every kind used at the position, once each
+export function consultWords(ply) {
+  const w = consultKinds(ply).map(k => USED[k]);
+  return w.length > 1 ? `${w.slice(0, -1).join(', ')} and ${w[w.length - 1]}` : w.join('');
 }
-function consultPrune() { const s = consults.get(game.states); if (s) for (const p of [...s]) if (p > game.states.length - 1) s.delete(p); }
+// the marks as a game is saved: [{ ply, kinds }], and whether the bar has marked this game
+export const consultRecord = () => consultPlies().map(ply => ({ ply, kinds: consultKinds(ply) }));
+export const consultBarUsed = () => { const c = consults.get(game.states); return !!c && c.bar; };
+/* Marks saved with a game (a reload, a hot update) back on its record, each a position it has. An
+   entry is { ply, kinds }, or a bare ply from before the kinds, which reads as Analyze; bar: the
+   evaluation bar has marked this game already. */
+export function setConsultPlies(list, bar = false) {
+  const n = game.states.length, plies = new Map();
+  for (const e of Array.isArray(list) ? list : []) {
+    const ply = Number.isInteger(e) ? e : e && Number.isInteger(e.ply) ? e.ply : -1;
+    if (ply < 0 || ply >= n) continue;
+    const kinds = Number.isInteger(e) || !Array.isArray(e.kinds) ? [] : e.kinds.filter(k => CONSULT_KINDS.includes(k));
+    const k = plies.get(ply) || new Set(); for (const x of kinds.length ? kinds : ['analyze']) k.add(x); plies.set(ply, k);
+  }
+  if (plies.size || bar === true) consults.set(game.states, { plies, bar: bar === true }); else consults.delete(game.states);
+}
+function consultPrune() { const c = consults.get(game.states); if (c) for (const p of [...c.plies.keys()]) if (p > game.states.length - 1) c.plies.delete(p); }
 const sideWord = c => app.worldName === 'monolith' ? (c === 'w' ? 'White' : 'Black') : SIDE[c];
-// marks the live position for its side to move, saying so once; quiet: the caller renders
-export function markConsult(quiet = false) {
-  if (!consultable()) return false;
-  const ply = game.states.length - 1, st = cur();
-  let s = consults.get(game.states); if (!s) consults.set(game.states, s = new Set());
-  if (s.has(ply)) return false;
-  s.add(ply);
-  snack(`${sideWord(st.turn)} used Analyze: their move ${st.fullmove} is marked, and ${sideWord(Chess.other(st.turn))} will be told.`);
+// marks the live position for its side to move with a kind of help, saying so once for each kind;
+// quiet: the caller renders
+export function markConsult(kind = 'analyze', quiet = false) {
+  if (!consultable() || !USED[kind]) return false;
+  const ply = game.states.length - 1, st = cur(), c = consultsOf();
+  let k = c.plies.get(ply); if (!k) c.plies.set(ply, k = new Set());
+  if (k.has(kind)) return false;
+  k.add(kind);
+  snack(`${sideWord(st.turn)} ${USES[kind]}: their move ${st.fullmove} is marked, and ${sideWord(Chess.other(st.turn))} will be told.`);
   if (!quiet) render();
   return true;
 }
+/* The evaluation bar on screen (js/ui/panels.js renderEvalOnly, from inside a render): the first
+   time in a live two-player game it marks the side to move, and never again in that game. */
+export function consultBar() {
+  if (!consultable()) return;
+  const c = consultsOf(); if (c.bar) return;
+  c.bar = true;
+  setTimeout(() => markConsult('eval'), 0);   // outside the render that showed it: the mark renders (and saves) itself
+}
 // a move into a line from the live position
-function consultOnLine() { if (explore.on && !boardOverride && app.view === null && explore.base === cur()) markConsult(true); }
+function consultOnLine() { if (explore.on && !boardOverride && app.view === null && explore.base === cur()) markConsult('analyze', true); }
 // a move played in the game from Analyze with its evaluation on screen (js/game/play.js playMove)
-export function consultOnMove() { if (anEvalShown()) markConsult(true); }
+export function consultOnMove() { if (anEvalShown()) markConsult('analyze', true); }
 /* At the handover (js/game/play.js afterMove): the move just played carries a mark, so the player now
-   to move is told, as the board turns to them, or at once when it does not turn. A move that ended
-   the game has no handover; the badge and the PGN keep its mark. */
+   to move is told which help the other used, as the board turns to them, or at once when it does
+   not turn. A move that ended the game has no handover; the badge and the PGN keep its mark. */
 export function consultHandover() {
   const k = game.moves.length - 1;
   if (k < 0 || game.result || !consultedAt(k) || match.opponent !== 'human' || study.cur || game.title) return;
   const rec = game.states, n = rec.length, by = rec[k];
   setTimeout(() => {
     if (game.states !== rec || rec.length !== n || game.result) return;   // the game moved on meanwhile
-    snack(`${sideWord(by.turn)} used Analyze before their move ${by.fullmove}.`, [{ label: 'OK', act: () => {} }], true, 'consult');
+    snack(`${sideWord(by.turn)} ${consultWords(k)} before their move ${by.fullmove}.`, [{ label: 'OK', act: () => {} }], true, 'consult');
   }, autoFlipOn() ? autoBeat() : 0);
 }

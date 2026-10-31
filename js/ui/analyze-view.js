@@ -310,19 +310,20 @@ function gradeLines(lines) {
 }
 /* Looking at the engine in a two-player game (js/game/flow.js markConsult): Analyze open on a live
    two-player game, at the same position of its record, for CONSULT_DWELL_MS and with the engine's
-   evaluation on screen marks the side to move. Leaving the tab, a move, or a hidden page starts the
+   evaluation on screen marks the side to move as having used Analyze (a hint or Calculate marked
+   there already does not stand in for it). Leaving the tab, a move, or a hidden page starts the
    count again, so passing through the tab (the rail's arrow keys, a click on the way to another tab)
    marks nothing. Run from every render of the tab, and by its own timer when nothing renders. */
 let consultOpen = null, consultTimer = 0;   // { rec, ply, t }: open on this position since t
 function consultWatch() {
   const ply = game.states.length - 1;
-  if (prefs.tab !== 'analyze' || !consultable() || document.visibilityState === 'hidden' || consultedAt(ply)) { consultOpen = null; clearTimeout(consultTimer); consultTimer = 0; return; }
+  if (prefs.tab !== 'analyze' || !consultable() || document.visibilityState === 'hidden' || consultedAt(ply, 'analyze')) { consultOpen = null; clearTimeout(consultTimer); consultTimer = 0; return; }
   if (!consultOpen || consultOpen.rec !== game.states || consultOpen.ply !== ply) consultOpen = { rec: game.states, ply, t: performance.now() };
   const left = CONSULT_DWELL_MS - (performance.now() - consultOpen.t);
   if (left <= 0 && anEvalShown()) {
     const k = consultOpen; consultOpen = null; clearTimeout(consultTimer); consultTimer = 0;
     // outside the render that called this: the mark renders (and saves) itself
-    setTimeout(() => { if (k.rec === game.states && k.ply === game.states.length - 1 && anEvalShown()) markConsult(); }, 0);
+    setTimeout(() => { if (k.rec === game.states && k.ply === game.states.length - 1 && anEvalShown()) markConsult('analyze'); }, 0);
     return;
   }
   if (!consultTimer) consultTimer = setTimeout(() => { consultTimer = 0; consultWatch(); }, Math.max(250, left));

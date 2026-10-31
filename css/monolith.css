@@ -88,7 +88,7 @@
 :root[data-skin="monolith"] .stage-chip.castle{background:var(--mo-panel);color:var(--mo-ink);border-color:var(--mo-steel)}
 :root[data-skin="monolith"] .stage-hint{background:var(--mo-panel);font-family:var(--font-tele);font-size:11px}
 :root[data-skin="monolith"] .stage-reset{height:28px;border-radius:3px;border-color:var(--mo-rule);background:var(--mo-panel);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.1em;text-transform:uppercase;backdrop-filter:none;-webkit-backdrop-filter:none}
-:root[data-skin="monolith"] .stage-reset:hover{border-color:#3A4352;color:var(--mo-ink)}
+@media (hover:hover){:root[data-skin="monolith"] .stage-reset:hover{border-color:#3A4352;color:var(--mo-ink)}}
 :root[data-skin="monolith"] .stage-reset:focus-visible{outline-color:var(--mo-ink)}
 :root[data-skin="monolith"] .switch:checked{background:var(--mo-steel);border-color:var(--mo-steel)}
 :root[data-skin="monolith"] .switch:checked::before{background:var(--mo-canvas)}
@@ -148,7 +148,7 @@
 .pv-table{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
 .pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border:0;border-bottom:1px solid var(--pnl-line-soft);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
 /* a row: no face at rest, a state layer under the pointer, pressed while it is the line shown */
-.pv-row:hover{background:var(--pnl-hover)}
+@media (hover:hover){.pv-row:hover{background:var(--pnl-hover)}}
 .pv-row:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:-2px}
 .pv-row.focus{background:var(--pnl-press);border-left-color:var(--mo-steel)}
 .pv-row.best{border-left-color:var(--mo-cyan)}
@@ -203,7 +203,7 @@
 .layer-toggles{position:absolute;top:14px;right:var(--gutter-r);display:flex;gap:6px;z-index:2}
 .layer-btn{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border:1px solid var(--mo-rule);border-radius:3px;background:var(--mo-panel);color:var(--mo-ink2);font:500 10.5px/1 var(--font-tele);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .layer-btn::before{content:'';flex:none;width:8px;height:8px;border:1px solid var(--mo-ink3);border-radius:1px}
-.layer-btn:hover{border-color:#3A4352;color:var(--mo-ink)}
+@media (hover:hover){.layer-btn:hover{border-color:#3A4352;color:var(--mo-ink)}}
 .layer-btn[aria-pressed="true"],.layer-btn[aria-checked="true"]{color:var(--mo-ink);border-color:#3A4352}
 .layer-btn[aria-pressed="true"]::before,.layer-btn[aria-checked="true"]::before{background:var(--mo-ink);border-color:var(--mo-ink)}
 /* Explore (2.18.0): not a layer but where a move goes, so it stands a little apart, its mark a dot */
@@ -284,8 +284,8 @@
    and sunk while pinned */
 .syn-chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 8px;border:1px solid var(--mo-rule);border-radius:2px;background:linear-gradient(180deg,var(--pnl-card-hi),var(--pnl-card));box-shadow:var(--pnl-rim),var(--pnl-key);color:var(--mo-ink);font:500 12px/1 var(--font-ui-mo);font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;transition:border-color var(--dur-1),background-color var(--dur-1),transform var(--dur-1) var(--ease-std)}
 .syn-chip small{font:400 10px var(--font-tele);color:var(--mo-ink3)}
-.syn-chip:hover,.syn-chip.on{border-color:var(--mo-steel)}
-.syn-chip:hover{transform:translateY(-1px)}
+.syn-chip.on{border-color:var(--mo-steel)}
+@media (hover:hover){.syn-chip:hover{border-color:var(--mo-steel);transform:translateY(-1px)}}
 .syn-chip.on{background:var(--pnl-well);box-shadow:var(--pnl-sink);transform:none}
 .syn-chip:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:1px}
 .syn-l1 .syn-chip{color:var(--mo-cyan)}
