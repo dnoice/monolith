@@ -503,7 +503,9 @@ export function init() {
 
   // Moves card
   onRender(() => {
-    if (boardOverride) return renderCrMoves();   // a Crucible game on the board lists its own moves
+    // a Crucible game on the board lists its own moves: the card is never folded then (no game may
+    // have started), and the box's Play button goes with its input, which renderCrMoves() disables
+    if (boardOverride) { renderCrMoves(); $('#move-form button').disabled = $('#move-input').disabled; $('.moves-card').removeAttribute('data-idle'); return; }
     const list = $('#moves'), vp = viewedPly(), sb = sandbox(), tryOn = prefs.explore !== false;
     const marks = game.sans.map((_, j) => coachOn() ? coachMark(j + 1) : '');
     const rebuilt = rebuildIf(list, JSON.stringify([app.started, game.states[0] && game.states[0].fullmove, game.sans, marks, vp, sb && explore.sans, tryOn]), () => {
