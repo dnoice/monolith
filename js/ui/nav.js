@@ -95,7 +95,7 @@ export function buildNav() {
     const i = NAV.findIndex(n => n.id === prefs.tab), d = (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 1;
     const n = NAV[(i + d + NAV.length) % NAV.length]; setTab(n.id); $(`#nav-${n.id}`).focus();
   });
-  placeActions(); NARROW.addEventListener('change', placeActions);
+  watchActionsFocus(); placeActions(); NARROW.addEventListener('change', placeActions);
 }
 /* The app's actions (the command palette, Flip board, Sound and the release chip, #app-actions)
    stand at the foot of the rail, after its tabs. Under 900 px the rail is
@@ -104,11 +104,21 @@ export function buildNav() {
    elements, moved, so their ids, handlers and titles stay as they are; a control that had the
    focus keeps it. */
 const NARROW = matchMedia('(max-width: 899px)');
+/* Going under 900 px the rail's actions are hidden (css/media.css) in the same style pass as the
+   width, before the change reaches placeActions, and a hidden control loses the focus: one that
+   lost it that way, not to a click or Tab elsewhere, is the one to give it back to. */
+let hidFocus = null;
 function placeActions() {
   const a = $('#app-actions'), home = NARROW.matches ? $('.appbar') : $('.rail');
   if (!a || !home || a.parentElement === home) return;
-  const f = a.contains(document.activeElement) ? document.activeElement : null;
-  home.appendChild(a); if (f) f.focus();
+  const at = document.activeElement, f = a.contains(at) ? at : hidFocus && (!at || at === document.body) ? hidFocus : null;
+  hidFocus = null;
+  home.appendChild(a); if (f) f.focus({ preventScroll: true });
+}
+function watchActionsFocus() {
+  const a = $('#app-actions'); if (!a) return;
+  a.addEventListener('focusout', e => { hidFocus = !e.relatedTarget && !e.target.getClientRects().length ? e.target : null; });
+  document.addEventListener('focusin', () => { hidFocus = null; });
 }
 /* Every pane scrolls in the same element (panelScroller()), so each one's place is kept here when
    it is left and given back when it opens again: a pane opens at its own top, or where it was
