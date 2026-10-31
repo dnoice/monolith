@@ -88,6 +88,22 @@
   .panes{flex:none;overflow:visible;padding-left:var(--gutter-l)}
   .moves-card{max-height:none;min-height:0;padding-left:var(--gutter-l)}
   .moves{max-height:132px}
+  /* The move list as a strip held at the panel's foot, the steps beside it: in a game it sat under
+     the whole pane, 300 px below the fold at 390x844. One row of moves scrolls sideways, and the
+     move box waits behind its keyboard button. The strip lets go of the foot while the pane holds
+     its own row there (the setup's Start game, the board editor's Play this position), and with
+     nothing to list the card keeps its folded form. */
+  .moves-card:not([data-idle]){position:sticky;bottom:0;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;padding-block:6px}
+  .panel:has(#pane-play:not([hidden]) > #setup:not([hidden]),#pane-position:not([hidden]) #pos-setup-view:not([hidden])) .moves-card{position:static}
+  .moves-card:not([data-idle]) .moves-head{grid-area:1/2;gap:2px}
+  .moves-card:not([data-idle]) .moves-head h2{display:none}
+  .moves-head .icon-btn{width:40px;height:40px}
+  .moves-type{display:grid}
+  .moves-card:not([data-idle]) .moves{grid-area:1/1;display:flex;align-items:center;gap:2px;max-height:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+  .moves-card:not([data-idle]) .moves > *{flex:none;white-space:nowrap}
+  .moves-card:not([data-idle]) .moves .num{padding:3px 0 3px 6px}
+  .moves-card:not([data-idle]) .move-entry{grid-column:1/-1}
+  .moves-card:not(.typing):not([data-idle]) .move-entry{display:none}
   .player{left:calc(var(--gutter-l) + 18px);padding:6px 10px 6px 6px;gap:10px}
   .player .avatar{width:30px;height:30px}
   .player.top{top:10px}.player.bottom{bottom:10px}

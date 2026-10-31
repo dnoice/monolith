@@ -529,9 +529,10 @@ export function init() {
     });
     /* The move in view is kept visible by scrolling the list itself, and only when it changed:
        scrollIntoView also scrolled the whole panel on phones, pulling it down to the move list on
-       every render. */
+       every render. A phone's one-row strip (css/media.css) scrolls sideways. */
     const curEl = rebuilt && list.querySelector('.cur');
-    if (curEl) { const r = curEl.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; }
+    if (curEl) { const r = curEl.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; if (r.left < b.left) list.scrollLeft -= b.left - r.left; else if (r.right > b.right) list.scrollLeft += r.right - b.right; }
+    else if (rebuilt) list.scrollTop = list.scrollLeft = 0;   // the first position: the list's start
     const at = vp, last = game.states.length - 1;
     // on the free board First resets the line and Previous takes a move back; there is nothing ahead
     $('#nav-first').disabled = (!sb && at === 0) || app.busy; $('#nav-prev').disabled = (!sb && at === 0) || app.busy;

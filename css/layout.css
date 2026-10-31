@@ -415,6 +415,7 @@
 .moves-head h2{font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--md-on-surface-var);flex:1}
 .moves-head .icon-btn{width:34px;height:34px}
 .moves-head .icon-btn svg{width:20px;height:20px}
+.moves-type{display:none}   /* a phone's: the move box waits behind it there (css/media.css) */
 .moves{flex:1;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--md-outline) transparent;font-family:var(--font-mono);font-size:13px;display:grid;grid-template-columns:4ch 1fr 1fr;align-content:start;column-gap:6px;row-gap:2px;font-variant-numeric:tabular-nums}
 .moves .num{color:var(--md-on-surface-var);padding:3px 0}
 .mv{padding:3px 8px;border-radius:6px;cursor:pointer}
