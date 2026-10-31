@@ -105,6 +105,27 @@ function lathe(points, segs = 40) {
   for (const p of pts) if (p.x < 0) p.x = 0;
   const g = new THREE.LatheGeometry(pts, segs); g.computeVertexNormals(); return g;
 }
+/* The knight's neck, head, muzzle, ears and mane (Dennis, 10/30/2026: the knight read flat and
+   matte beside the rest of the set). They were plain boxes: a flat face mirrors one direction of
+   the room, so each face showed one even tone, while every lathe-turned piece curves and carries
+   its highlights across itself. Each part is now a block whose faces bow out: a box w × h × d
+   drawn on the superellipsoid |x/a|^n + |y/b|^n + |z/c|^n = 1 (a, b, c its half sizes), with the
+   surface's own normals, so the shading runs smoothly over faces and edges alike. Its bounding
+   box is the box's, so the knight stands as tall and wide as before (the camera's fit and
+   PIECE_TOP measure the same); n = 4 keeps the blocky silhouette while no face stays flat. */
+function block(w, h, d, n = 4, step = 0.03) {
+  const a = [w / 2, h / 2, d / 2], seg = a.map(v => Math.max(3, Math.round(2 * v / step)));
+  const g = new THREE.BoxGeometry(2, 2, 2, seg[0], seg[1], seg[2]), P = g.attributes.position, N = g.attributes.normal, c = [0, 0, 0];
+  for (let i = 0; i < P.count; i++) {
+    c[0] = P.getX(i); c[1] = P.getY(i); c[2] = P.getZ(i);
+    // pulled in along its ray from the centre onto the surface; a face's centre stays put
+    const s = Math.pow(Math.abs(c[0]) ** n + Math.abs(c[1]) ** n + Math.abs(c[2]) ** n, -1 / n);
+    P.setXYZ(i, c[0] * s * a[0], c[1] * s * a[1], c[2] * s * a[2]);
+    const gx = Math.sign(c[0]) * Math.abs(c[0] * s) ** (n - 1) / a[0], gy = Math.sign(c[1]) * Math.abs(c[1] * s) ** (n - 1) / a[1], gz = Math.sign(c[2]) * Math.abs(c[2] * s) ** (n - 1) / a[2];
+    const l = Math.hypot(gx, gy, gz); N.setXYZ(i, gx / l, gy / l, gz / l);
+  }
+  g.computeBoundingBox(); g.computeBoundingSphere(); return g;
+}
 const BASE = [[0, 0], [0.33, 0], [0.34, 0.05], [0.31, 0.09], [0.24, 0.13]];
 const PROFILES = {
   p: BASE.concat([[0.18, 0.3], [0.16, 0.42], [0.21, 0.46], [0.15, 0.5], [0.2, 0.57], [0.22, 0.66], [0.16, 0.76], [0.07, 0.8], [0, 0.81]]),
@@ -237,8 +258,8 @@ export function init() {
   GEO.pearl = new THREE.SphereGeometry(0.05, 10, 10);
   GEO.finial = new THREE.SphereGeometry(0.07, 12, 12);
   GEO.crossV = new THREE.BoxGeometry(0.06, 0.3, 0.06); GEO.crossH = new THREE.BoxGeometry(0.2, 0.06, 0.06);
-  GEO.neck = new THREE.BoxGeometry(0.26, 0.52, 0.22); GEO.head = new THREE.BoxGeometry(0.24, 0.24, 0.46);
-  GEO.muzzle = new THREE.BoxGeometry(0.18, 0.14, 0.16); GEO.ear = new THREE.BoxGeometry(0.06, 0.14, 0.07); GEO.mane = new THREE.BoxGeometry(0.08, 0.5, 0.14);
+  GEO.neck = block(0.26, 0.52, 0.22); GEO.head = block(0.24, 0.24, 0.46);
+  GEO.muzzle = block(0.18, 0.14, 0.16); GEO.ear = block(0.06, 0.14, 0.07); GEO.mane = block(0.08, 0.5, 0.14);
   piecesGroup = new THREE.Group(); piecesGroup.name = 'pieces'; scene.add(piecesGroup);
   // ---------- fragments (shatter)
   fragGeos = [new THREE.TetrahedronGeometry(0.09), new THREE.TetrahedronGeometry(0.06), new THREE.BoxGeometry(0.1, 0.07, 0.08), new THREE.DodecahedronGeometry(0.07)];
