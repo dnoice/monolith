@@ -5,14 +5,19 @@
     - File Name: monolith-logo.svg
     - Relative Path: assets/monolith-logo.svg
     - Artifact Type: illustration
-    - Version: 1.0.2
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.0.3
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.3 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      description says what the file is now: a brand file the page does not
+      read. From 2.17.0 tools/build-emblem.mjs wrote its board-logo group
+      into the app bar; since 2.18.0 the app bar draws the emblem as the M
+      of its wordmark.
     - 1.0.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — At
       Dennis's request the brand files dropped "conical" from their names
       while the logo is still being decided; the letter is the MONOLITH M,
@@ -33,8 +38,9 @@
     is measured from monolith-brand-kit.svg and written down in
     assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of
     it at 1200 px, and the emblem is the same mark with twelve pieces standing
-    on it. It is the source of the page's app bar logo: tools/build-emblem.mjs
-    writes it into index.html, reading its board-logo group.
+    on it. It is a brand file the page does not read: since 2.18.0 the app bar
+    draws the emblem as the M of its wordmark, from the one drawing
+    tools/build-emblem.mjs writes into index.html.
 
 ✒ Key Features:
     - Canvas 1200 x 1200; the MONOLITH M edge to edge on a 4 x 4 grid of 300
@@ -134,7 +140,7 @@
       <cc:Work
          rdf:about="">
         <dc:title>MONOLITH Logo (MONOLITH Edition - v1.0)</dc:title>
-        <dc:date>2026-10-30</dc:date>
+        <dc:date>2026-10-31</dc:date>
         <dc:creator>
           <cc:Agent>
             <dc:title>Dennis 'dendogg' Smaltz</dc:title>
@@ -151,7 +157,7 @@
           </cc:Agent>
         </dc:rights>
         <dc:language>en</dc:language>
-        <dc:description>MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of it at 1200 px, and the emblem is the same mark with twelve pieces standing on it. It is the source of the page's app bar logo: tools/build-emblem.mjs writes it into index.html, reading its board-logo group.</dc:description>
+        <dc:description>MONOLITH's official logo, chosen on 10/26/2026: the MONOLITH M cut into a four by four grid of slate tiles with black mortar, no pieces. The letter is measured from monolith-brand-kit.svg and written down in assets/brand/MONOLITH_M_SYSTEM.md; this file is the system's rendering of it at 1200 px, and the emblem is the same mark with twelve pieces standing on it. It is a brand file the page does not read: since 2.18.0 the app bar draws the emblem as the M of its wordmark, from the one drawing tools/build-emblem.mjs writes into index.html.</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>MONOLITH</rdf:li>

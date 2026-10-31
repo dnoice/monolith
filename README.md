@@ -74,8 +74,6 @@
     document to read next.
 
 ✒ Key Features:
-    - Screenshots of the six destinations and both worlds
-      (assets/screenshots/).
     - Running the page locally (Live Server or any static server), and
       publishing it on GitHub Pages.
     - A tour of the six destinations and the two worlds, with Settings
@@ -98,8 +96,6 @@
 
 A playable 3D chess game and a chess analysis instrument on one board, in the browser.
 
-![A game against the computer in the cathedral: marble and obsidian pieces on the 3D board, the Coach's notes and the move list in the panel](assets/screenshots/01-play-cathedral.jpg)
-
 The **cathedral** holds the game: marble and obsidian pieces that idle, glide, hop, lunge and
 shatter, played against Stockfish 19 or a friend, with a Coach that reads every move. The
 **MONOLITH** world, whose name the app carries, holds the instrument: engine analysis drawn into the
@@ -109,23 +105,6 @@ stays where Settings puts it.
 
 Current release: **2.18.0** (10/30/2026). The version shows at the foot of the rail (under the
 wordmark on a screen under 900 px wide) and under Settings → Help and about.
-
-## Screenshots
-
-| | |
-| --- | --- |
-| [![Analyze in MONOLITH: the move-value field glowing under the board, the candidate moves as ballistic vectors, the engine lines and the WDL ribbon](assets/screenshots/02-analyze-monolith.jpg)](assets/screenshots/02-analyze-monolith.jpg) | [![The Tactical X-Ray: a glass ring on the inspected square with its attackers and defenders, and the readout beside the board](assets/screenshots/03-analyze-xray.jpg)](assets/screenshots/03-analyze-xray.jpg) |
-| **Analyze**, in MONOLITH: Stockfish MultiPV drawn into the scene. | **The Tactical X-Ray**: attackers, defenders and what a move there costs. |
-| [![The Crucible deck: the SPRT verdict, the LLR oscilloscope with its bounds, and the Hive of 90 finished games](assets/screenshots/04-crucible-deck.png)](assets/screenshots/04-crucible-deck.png) | [![A Crucible game on the 3D board at its anomaly, with the heartbeat of its evaluation under the stage](assets/screenshots/05-crucible-game.jpg)](assets/screenshots/05-crucible-game.jpg) |
-| **The Crucible**: a recorded engine gauntlet, replayed and re-checked. | **A Crucible game** opened on the board at its anomaly, with its heartbeat. |
-| [![A study under way in the Position tab: the study card with its goal, on the cathedral board](assets/screenshots/06-position-study.jpg)](assets/screenshots/06-position-study.jpg) | [![The Grimoire open at a term's article, with its definition, where it appears and related terms](assets/screenshots/07-grimoire.jpg)](assets/screenshots/07-grimoire.jpg) |
-| **Position**: studies checked with Stockfish, a board reading and an editor. | **The Grimoire**: every term on these screens, explained. |
-| [![Settings, Graphics: the graphics meter, a half-dial of five levels carrying the back rank, its needle on High, chosen by hand](assets/screenshots/08-settings-graphics.jpg)](assets/screenshots/08-settings-graphics.jpg) | |
-| **Settings → Graphics**: five levels on the graphics meter, Automatic and Fine-tune. | |
-
-The screenshots are the app itself, captured in Chromium at 1600 × 1000 at the High graphics level.
-The capture rendered in software, so MONOLITH's telemetry footer, whose frame readout said so, is
-cropped from the four MONOLITH views.
 
 ## Running it
 
@@ -311,7 +290,7 @@ monolith/
 ├── tools/                build and check scripts (below)
 ├── assets/               the drawings (the house piece set among them), the MONOLITH logo and
 │                         emblem, the brand system that draws them (brand/, generator/), the
-│                         mock-ups, the game's sounds and screenshots/ for this README; mapped in
+│                         mock-ups, the game's sounds and screenshots/ of the app; mapped in
 │                         assets/README.md
 │   └── models/           the Blender pillars as .glb, their .blend sources, the 3D pieces as
 │                         .blend files, MANIFEST.md

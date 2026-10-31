@@ -347,10 +347,10 @@ because the page's loading screen is built from it (`tools/build-emblem.mjs`
 copies it into `index.html`): `emblem-monolith` > `board-emblem` >
 `board-row-NN-emblem` > `square-rNN-cNN-emblem`, and `pieces-emblem` >
 `pieces-white-emblem` > `piece-white-king-emblem` > its `-contour-emblem`
-and `-face-emblem` paths. The logo is the same under `logo-monolith` with
-the suffix `-logo`, and the page's app bar is built from it by the same tool,
-which reads its `board-logo` group. Keep both files' paths and these groups;
-after either mark changes, run `node tools/build-emblem.mjs` from the project
+and `-face-emblem` paths; the same copy draws the M of the app bar's
+wordmark. The logo is the same under `logo-monolith` with the suffix
+`-logo`; the page does not read it. Keep both files' paths and these groups;
+after the emblem changes, run `node tools/build-emblem.mjs` from the project
 root.
 
 Every mock-up in `assets/mockups` is built on these two marks, through
