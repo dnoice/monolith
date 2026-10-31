@@ -1,18 +1,22 @@
 /*
 ✒ Metadata
-    - Title: Design Tokens (MONOLITH Edition - v1.1)
+    - Title: Design Tokens (MONOLITH Edition - v1.2)
     - File Name: tokens.css
     - Relative Path: css/tokens.css
     - Artifact Type: stylesheet
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The side
+      panel's surface ladder (--pnl-*) in both worlds, a card's padding and
+      where its head band holds, three motion durations, and four colours
+      registered so the cards' faces cross-fade with the world.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — One
       panel width per world, a nearer-square stage from 900 to 1199 px,
       the rail's accent, field and inner radius tokens; h4 without margins.
@@ -20,9 +24,7 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The custom properties every other sheet reads: colour, type, shape and
@@ -38,8 +40,18 @@
       colours, radii (with --r-field for fields and --r-inner for tiles in
       a card, squared in MONOLITH) and easing.
     - The rail's selected destination, --md-nav-active with
-      --md-on-nav-active over it: the house gold in the cathedral, apart
-      from the panels' cool secondary; MONOLITH's ink on its canvas.
+      --md-on-nav-active over it: the house gold in the cathedral, MONOLITH's
+      ink on its canvas. The side panel's accent (--pnl-accent) is the same
+      colour, for its chosen options and its focus rings.
+    - The side panel's surface ladder (--pnl-*), one in each world: the
+      ground, the card raised on it (its face, rim and lift), the well sunk
+      into a card (with its line and inner shade), the key raised in a
+      card, the accent's tint and edge, state layers for hover and press,
+      and three inks.
+    - --pnl-pad, a card's padding, and --pnl-sticky-top, where a card's
+      head band holds under the top of the panel's scroller (its own value
+      on Position and on phones); the motion durations --dur-1, --dur-2 and
+      --dur-3 (120, 200 and 280 ms).
     - Layout tokens: one panel width per world (from 1280 px, 400 px in the
       cathedral and 440 px in MONOLITH; 368 px below), the panel's and the
       stage's floors (--panel-min, --stage-min), and from 900 to 1199 px a
@@ -49,8 +61,11 @@
       amber volatile, crimson anomaly; structure in ink and steel.
     - The MONOLITH world override (:root[data-skin="monolith"]): the shared
       tokens take the solved stops, and docked surfaces stay opaque.
-    - Base rules: box sizing, [hidden], form controls, headings and the #app
-      frame.
+    - Base rules: box sizing, [hidden], form controls, headings, the #app
+      frame, and the surfaces' .45 s cross-fade when the world changes. The
+      panel's cards and instrument sections cross-fade their gradient faces
+      too, since four of the ladder's colours (--pnl-ground, --pnl-card,
+      --pnl-card-hi, --pnl-accent) are registered with @property.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 1 of 12. The sheets are one cascade
@@ -211,7 +226,8 @@
   --r-ctl:3px;
   --r-field:3px;
   --r-inner:4px;
-  /* the panel's ladder, after the loading screen's tip card but quieter; the accent stays the rail's ink */
+  /* the panel's ladder, after the tip card the loading screen had in 2.18.0, but quieter; the
+     accent stays the rail's ink */
   --pnl-ground:var(--mo-panel);
   --pnl-card:#171C24;
   --pnl-card-hi:var(--mo-raised);

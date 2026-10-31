@@ -1,18 +1,26 @@
 /*
 ✒ Metadata
-    - Title: MONOLITH Components (MONOLITH Edition - v1.1)
+    - Title: MONOLITH Components (MONOLITH Edition - v1.2)
     - File Name: monolith.css
     - Relative Path: css/monolith.css
     - Artifact Type: stylesheet
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Analyze's
+      and the Crucible's sections raised as cards with a held head band,
+      heads a grid over a caption, readouts and the Load box in wells;
+      panel and dock badges read as terms, the chip as a status tag, PV
+      moves as raised keys, PV rows by state layers, no lines as a dashed
+      outline; the dock on the panel's ground; Analyze's list floor from
+      900 px; the profile's pointer; hover tints only where the pointer
+      hovers.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Analyze's
       safe bands place the toggles and the Explore switch, the WDL column,
       the key, a pinned line; the FEN or PGN box; the PV hint; the wordmark.
@@ -20,10 +28,6 @@
       bar's logo is now Dennis's Conical M: in MONOLITH its squares take
       the world's light slate, since the dark slate square sinks into the
       bar at 32 px; the steel colour for the star mark it replaced is gone.
-    - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
-      with the project: Wizard's Chess is now MONOLITH, the name Dennis
-      chose, and this header names the page by its file in the repository,
-      index.html.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -36,19 +40,34 @@
     - Shared components restyled for MONOLITH: the wordmark (in Michroma,
       the emblem's squares in the light slate), pane and group headings,
       the rail's labels, the player cards, the stage chips and Reset view.
-    - Instrument components: headings that wrap before they shrink,
-      readouts, badges, the WDL ribbon and its Sharpness halo.
-    - Analyze's pane: the search status in two lines under Go, a one-line
-      MultiPV subtitle, Sharpness with its chip on a row under the numbers,
-      and the Load box that takes a FEN or a PGN game.
+    - Instrument components: heads (in the panel and the dock a grid, the
+      title and its badge over the subtitle as a caption; on the deck a row
+      that wraps before it shrinks), readouts sunk in wells, source badges
+      (in the panel and the dock underlined terms with no box; boxed on the
+      stage and in the footer), the chip as a status tag (a tint and a
+      dot, no edge), the WDL ribbon and its Sharpness halo.
+    - In the panel, Analyze's and the Crucible's sections are cards raised
+      on the panel's ground, each first head a band held at the panel's top
+      while its section scrolls; a details section's summary is the
+      panel's disclosure row (css/layout.css), and a second head a sub-head
+      under a hairline.
+    - Analyze's pane: the search status in two lines under Go, the engine
+      lines as rows with state layers (pressed while shown, a dashed
+      outline when there are none), Sharpness with its chip on a row under
+      the numbers, the search profile (a crosshair, a sideways drag reading
+      it out), UCI option labels that fill their row, and the Load box (a
+      well) that takes a FEN or a PGN game. The move list's floor in
+      MONOLITH's Analyze applies from 900 px.
     - Stage instruments in Analyze's safe bands: the layer toggles at the
       top band's right, the Explore switch a little apart from them with a
       round mark (aria-checked, as a switch), the field's key under them,
       the WDL column in the right band, and a previewed or pinned line
       (with its Play to here) in the chips' slot at the top band's left. A
       stage under 760 px narrows the right band and widens the slot.
-    - The dock: the Synaptic PV scrubber (Analyze), whose head tells a
-      touch screen that a tap pins a line, and the heartbeat strip
+    - The dock, on the panel's ground: the Synaptic PV scrubber (Analyze),
+      whose head tells a touch screen that a tap pins a line, its moves
+      raised keys (lifting under the pointer, sunk while pinned) in a
+      scroller that keeps a swipe at its ends; and the heartbeat strip
       (Crucible).
     - The match strip's evaluation in Analyze at the move number's size,
       and the short source badges in the telemetry footer.

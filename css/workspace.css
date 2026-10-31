@@ -1,18 +1,23 @@
 /*
 ✒ Metadata
-    - Title: Workspace Styles (MONOLITH Edition - v1.1)
+    - Title: Workspace Styles (MONOLITH Edition - v1.2)
     - File Name: workspace.css
     - Relative Path: css/workspace.css
     - Artifact Type: stylesheet
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The move
+      list's one-row strip (data-strip), shared by phones and a folded
+      desktop list, with the fold button's two icons; the Synaptic PV head
+      on the panel's ground; the palette button's hover tint only where the
+      pointer hovers.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       Moves card folds to its title while there is nothing to list, the
       palette button takes the release chip's shape; no 1180 px title rule.
@@ -20,9 +25,6 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a [hidden] rule the base rule in
-      css/tokens.css already covers is gone.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -37,13 +39,23 @@
       (10/15/2026).
     - The palette button's own look, in the release chip's height and
       shape (the world's pill), which it keeps in the app bar under 900 px;
-      at the foot of the rail css/layout.css makes it an icon button.
+      at the foot of the rail css/layout.css makes it an icon button, its
+      key under it where the pointer is a mouse or a trackpad.
     - System sheet in Settings: swatches and the contrast ledger.
     - The dock at a fixed height while shown, so search lines scroll inside
-      it.
+      it under the Synaptic PV's head, held at the top on the panel's
+      ground.
     - The move list as a sheet docked under the panel, folded to its title
       (its controls gone until they can act) while there is nothing to
       list.
+    - The move list as a strip (data-strip, js/ui/controls.js): one row of
+      moves scrolling sideways (keeping a swipe at its ends), the steps
+      beside it and the move box behind its keyboard button. A phone's list
+      is always one (css/media.css holds it at the panel's foot); a wider
+      screen's is one when the Moves head's fold button folds it, with no
+      splitter and its own height, which wins over the MONOLITH floor of
+      Analyze's list. The fold button shows the way it goes, the unfold
+      icon while folded.
     - Splitters: the grip, drag, arrow keys (Shift for bigger steps), Home
       or double-click to reset.
 

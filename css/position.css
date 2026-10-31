@@ -1,17 +1,23 @@
 /*
 ✒ Metadata
-    - Title: Position Styles (MONOLITH Edition - v2.2)
+    - Title: Position Styles (MONOLITH Edition - v2.3)
     - File Name: position.css
     - Relative Path: css/position.css
     - Artifact Type: stylesheet
-    - Version: 2.2.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 2.3.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.3.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The view
+      switch a sunk track with the chosen view raised; Read's rules badges
+      as readings; a lit feature chip and a castling right that is on in
+      the accent's tint and edge; the FEN box's well on its wrapper, the
+      editor foot on the card's face; 112 px of scroll padding; hover tints
+      only where the pointer hovers.
     - 2.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Set up's
       Who plays it and a held foot; rings that fit their counts, cards in
       line, Start first on a phone; radius tokens; the frame's panel width.
@@ -19,10 +25,6 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 2.1.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a feature chip's name is cut short
-      with an ellipsis in a narrow column, and a [hidden] rule the base rule
-      already covers is gone.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -32,7 +34,10 @@
     a piece icon or a map mark looks the same wherever it appears.
 
 ✒ Key Features:
-    - The view switch, sticky at the top of the pane, with its badges.
+    - The view switch, sticky at the top of the pane, with its badges: a
+      track sunk into the panel, the chosen view raised in it with its icon
+      in the accent; what scrolls into view stops below it and the head
+      band held under it.
     - Diagrams: squares, pieces, coordinates and marks (passed, isolated,
       doubled, bishop, open and half-open files, shelter, focus, target,
       held, cursor) in a cathedral and a MONOLITH palette; the pieces in
@@ -42,11 +47,15 @@
       card grid with each card's level and kind in line, and the detail
       view, which on a phone puts what a study is and Start first.
     - Read: side-to-move bars, the material split bar and piece rows, the
-      phase meter, the structure map and its chips, the rules badges.
-    - Set up: the tool tray, the editor board, the position options and
-      the FEN box over its colour layer, with the six field chips; Who
-      plays it, and a foot that holds Play this position at the bottom of
-      the panel.
+      phase meter, the structure map and its chips (a lit one in the
+      accent's tint and edge), and the rules as readings: the castling
+      rights and the en passant square each a dot and the text, a right
+      usable now in the accent.
+    - Set up: the tool tray, the editor board, the position options (a
+      castling right that is on in the accent's tint and edge) and the FEN
+      box over its colour layer, the well on its wrapper, with the six
+      field chips; Who plays it, and a foot on the card's face that holds
+      Play this position at the bottom of the panel.
     - Corners from the radius tokens (--r-field, --r-inner), so MONOLITH
       squares them up.
 
