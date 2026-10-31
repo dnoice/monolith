@@ -145,10 +145,11 @@
 .mo-stats dt{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);margin-bottom:6px}
 .mo-stats dd{margin:0;font-size:16px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--mo-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pv-table{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
-.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border:0;border-bottom:1px solid var(--mo-rule);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
-.pv-row:hover{background:var(--mo-raised)}
-.pv-row:focus-visible{outline:2px solid var(--md-primary);outline-offset:-2px}
-.pv-row.focus{background:var(--mo-raised);border-left-color:var(--mo-steel)}
+.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border:0;border-bottom:1px solid var(--pnl-line-soft);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
+/* a row: no face at rest, a state layer under the pointer, pressed while it is the line shown */
+.pv-row:hover{background:var(--pnl-hover)}
+.pv-row:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:-2px}
+.pv-row.focus{background:var(--pnl-press);border-left-color:var(--mo-steel)}
 .pv-row.best{border-left-color:var(--mo-cyan)}
 .pv-row .i{font-family:var(--font-tele);font-size:11px;color:var(--mo-ink3)}
 .pv-row .pv-mv{font-weight:600;color:var(--q,var(--mo-ink));white-space:nowrap}
@@ -281,7 +282,7 @@
 .syn-chip:hover,.syn-chip.on{border-color:var(--mo-steel)}
 .syn-chip:hover{transform:translateY(-1px)}
 .syn-chip.on{background:var(--pnl-well);box-shadow:var(--pnl-sink);transform:none}
-.syn-chip:focus-visible{outline:2px solid var(--mo-ink);outline-offset:1px}
+.syn-chip:focus-visible{outline:2px solid var(--pnl-accent);outline-offset:1px}
 .syn-l1 .syn-chip{color:var(--mo-cyan)}
 .syn-chip.fork{box-shadow:var(--pnl-rim),var(--pnl-key),inset 0 -2px 0 var(--mo-ink)}
 .syn-chip.instab{border-color:var(--mo-amber)}

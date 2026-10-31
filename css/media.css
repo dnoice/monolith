@@ -215,7 +215,7 @@
   .switch.small{width:52px;height:32px}
   .switch.small::before{left:6px;width:16px;height:16px}
   .switch.small:checked::before{left:24px;width:22px;height:22px}
-  .pos-switch [role="tab"]{height:40px}
+  .pos-switch [role="tab"],.seg button,.ed-play .seg button{height:40px}
   .opt .select,.gfx-grid .select,.ed-ep select{height:40px}
   :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea){font-size:16px}
 }
