@@ -78,7 +78,8 @@
 :root[data-skin="monolith"] .pane-head h2{font-family:var(--font-struct);font-size:14px;letter-spacing:.24em;text-transform:uppercase;line-height:1.5}
 :root[data-skin="monolith"] :is(.group > legend,.group-title,.moves-head h2){font-family:var(--font-struct);font-weight:400;font-size:10px;letter-spacing:.2em}
 :root[data-skin="monolith"] .nav-item{font-family:var(--font-ui-mo);font-weight:500;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
-:root[data-skin="monolith"][data-tab="analyze"] .moves-card{max-height:30%;min-height:150px}
+/* the desktop list's share in Analyze; a phone's strip is one row and keeps its own height */
+@media (min-width:900px){:root[data-skin="monolith"][data-tab="analyze"] .moves-card{max-height:30%;min-height:150px}}
 :root[data-skin="monolith"] .player{background:var(--mo-panel);backdrop-filter:none;-webkit-backdrop-filter:none}
 :root[data-skin="monolith"] .player.active{border-color:var(--mo-steel);box-shadow:none}
 :root[data-skin="monolith"] .avatar.b{border-color:var(--mo-steel);color:var(--mo-steel)}
@@ -128,7 +129,7 @@
 .mo-stats dt{font:400 10px/1 var(--font-tele);letter-spacing:.08em;text-transform:uppercase;color:var(--mo-ink3);margin-bottom:6px}
 .mo-stats dd{margin:0;font-size:16px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--mo-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pv-table{display:flex;flex-direction:column;border-top:1px solid var(--mo-rule)}
-.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border-bottom:1px solid var(--mo-rule);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
+.pv-row{display:grid;grid-template-columns:14px 56px 52px 66px minmax(0,1fr);align-items:center;gap:8px;min-height:40px;padding:6px 6px 6px 4px;border:0;border-bottom:1px solid var(--mo-rule);border-left:2px solid transparent;font-size:12.5px;font-variant-numeric:tabular-nums;cursor:pointer;width:100%;background:transparent;color:inherit;text-align:left;font-family:inherit}
 .pv-row:hover{background:var(--mo-raised)}
 .pv-row:focus-visible{outline:2px solid var(--md-primary);outline-offset:-2px}
 .pv-row.focus{background:var(--mo-raised);border-left-color:var(--mo-steel)}

@@ -409,10 +409,13 @@
 .switch-row{display:flex;align-items:center;gap:16px;justify-content:space-between;min-height:48px}
 .switch-row label{display:flex;flex-direction:column;cursor:pointer}
 .switch-row label > span:not(.sr-label){font-size:12.5px;color:var(--md-on-surface-var)}
-.switch{appearance:none;-webkit-appearance:none;flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--md-outline);background:var(--md-surface-3);position:relative;cursor:pointer;margin:0;transition:background .2s,border-color .2s}
-.switch::before{content:'';position:absolute;top:50%;left:6px;width:16px;height:16px;border-radius:50%;background:var(--md-outline);transform:translateY(-50%);transition:left .2s var(--ease-std),width .2s,height .2s,background .2s}
-.switch:checked{background:var(--md-primary);border-color:var(--md-primary)}
-.switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-primary)}
+/* off, a track sunk into its card with a light thumb and edge, at 3:1 or better against both (a
+   dim thumb on a dim track read as disabled); on, the accent's track in the cathedral and steel in
+   MONOLITH (css/monolith.css), whose ink accent would make every row a white pill */
+.switch{appearance:none;-webkit-appearance:none;flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--pnl-ink-3);background:var(--pnl-well);box-shadow:var(--pnl-sink);position:relative;cursor:pointer;margin:0;transition:background .2s,border-color .2s}
+.switch::before{content:'';position:absolute;top:50%;left:6px;width:16px;height:16px;border-radius:50%;background:var(--pnl-ink-2);transform:translateY(-50%);transition:left .2s var(--ease-std),width .2s,height .2s,background .2s}
+.switch:checked{background:var(--pnl-accent);border-color:var(--pnl-accent);box-shadow:none}
+.switch:checked::before{left:24px;width:22px;height:22px;background:var(--md-on-nav-active)}
 
 /* analysis */
 .bestline{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:var(--r-ctl);background:var(--md-surface-2);font-family:var(--font-mono);font-size:12.5px;min-width:0}
