@@ -13,11 +13,8 @@
 
 ✒ Changelog:
     - 1.8.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.18.0:
-      the free board, PGN, draws, Settings' five cards, keys and palette
-      words, Who plays it, phones and touch; the cathedral drops "Gothic".
-      At Dennis's request the brand files drop "conical" from their names:
-      the documents list assets/brand/MONOLITH_M_SYSTEM.md, and the
-      loading screen's paragraph calls the letter the MONOLITH M.
+      the free board, PGN, draws, Explore in Analyze, the Analyze mark, the
+      app bar and rail, Settings, keys, phones, tools; the MONOLITH M.
     - 1.7.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.17.0:
       the Conical M Dennis made MONOLITH's official mark heads the app bar
       as the logo and opens the page as the emblem. The loading screen's
@@ -110,8 +107,8 @@ scene (a sub-surface move-value field, ballistic vectors, the Tactical X-Ray, a 
 Crucible, a real SPRT match between two engine configurations. The world follows where you are, or
 stays where Settings puts it.
 
-Current release: **2.18.0** (10/30/2026). The version shows in the app bar and under Settings →
-Help and about.
+Current release: **2.18.0** (10/30/2026). The version shows at the foot of the rail (under the
+wordmark on a screen under 900 px wide) and under Settings → Help and about.
 
 ## Screenshots
 
@@ -179,24 +176,32 @@ its licence asks (see Credits and licences).
 
 ## The destinations
 
-The rail on the left (a bottom bar on phones) has six destinations.
+The rail on the left (a bottom bar on phones) has six destinations, the one open in the rail's own
+colour: gold in the cathedral, ink in MONOLITH. At its foot stand the command palette, Flip board,
+Sound and the version; under 900 px wide the first three move to the end of the top bar. The top
+bar carries the MONOLITH wordmark, whose M is the emblem, with the world named under it, and at its
+right end the match strip, which says what the board is showing: who plays, the move and the last
+move.
 
 | Destination | World | What it does |
 | --- | --- | --- |
-| **Play** | Cathedral | A game against the computer at eight levels, adjustable mid-game, or against a friend. Choose marble or obsidian, or roll the die. Hint, Undo, Resign, the Coach and an end-of-game review with accuracy and the turning point. In a friend game the board turns to the side to move after each move (*Turn the board for each player*, on by default), and Draw offers a draw the other player agrees to or declines. Copy PGN, Download PGN and Copy FEN write out the game; *Load a game* on the setup takes a pasted PGN or FEN and plays on from it. The result card offers Rematch, the other side (Play obsidian or Play marble against the computer, Switch sides in a friend game) and *Analyze game*, which opens the game in Analyze at its turning point. A game in progress is kept in this browser through a reload or a closed tab. |
-| **Analyze** | MONOLITH | Stockfish MultiPV with win/draw/loss to a time limit or *Go infinite*. Shows depth, nodes, NPS, hashfull, Sharpness, the root move-value field, vectors and the Tactical X-Ray. Scrubbing a line shows it on the board as holograms and ghosts, and *Play to here* on a pinned line plays it onto the board as an explored line. **Load** takes a FEN or a PGN game and analyses it where it is, both sides moved by hand. A recorded Kasparov–Topalov run serves as a reference. |
+| **Play** | Cathedral | A game against the computer at eight levels, adjustable mid-game, or against a friend. Choose marble or obsidian, or roll the die. Hint, Undo, Resign, the Coach and an end-of-game review with accuracy and the turning point. In a friend game the board turns to the side to move after each move (*Turn the board for each player*, on by default), and a move played after its side used Analyze is marked in the move list and the PGN, and the other player is told. Draw offers a draw: in a friend game the other player agrees or declines; against the computer, on your turn, Stockfish judges the position at full strength and accepts when it stands a pawn or more worse or faces mate, or from move 20 when the position is level, and otherwise plays on, and you can offer again five moves later. Copy PGN, Download PGN and Copy FEN write out the game; *Load a game* on the setup takes a pasted PGN or FEN and plays on from it. The result card offers Rematch, the other side (Play obsidian or Play marble against the computer, Switch sides in a friend game) and *Analyze game*, which opens the game in Analyze at its turning point. A game in progress, with its marks, is kept in this browser through a reload or a closed tab. |
+| **Analyze** | MONOLITH | Stockfish MultiPV with win/draw/loss to a time limit or *Go infinite*. Shows depth, nodes, NPS, hashfull, Sharpness, the root move-value field, vectors and the Tactical X-Ray. Scrubbing a line shows it on the board as holograms and ghosts, and *Play to here* on a pinned line plays it onto the board as an explored line. During a game, a move made on its board starts a line from the live position and leaves the game alone, unless the **Explore** switch on the board is off. **Load** takes a FEN or a PGN game and analyses it where it is, both sides moved by hand. A recorded Kasparov–Topalov run serves as a reference. |
 | **Crucible** | MONOLITH | A recorded engine gauntlet, replayed and re-checked: LLR trace, Elo with its interval, the pentanomial, anomalies. Any game opens on the 3D board with its heartbeat, and the Moves card steps through it. Live runs between two configurations play in the browser and export a results JSON. |
 | **Position** | Cathedral | Three views behind one switch. **Studies**: mates, patterns, tactics, endgames and set-ups, each checked with Stockfish. **Read**: the board as bars, piece rows, a phase meter and a structure map. **Set up**: a board editor tied both ways to a FEN field, and *Who plays it*: against Stockfish, on the side to move or the other, or both sides on this screen. Every diagram uses Dennis's house piece set. |
 | **Grimoire** | Either | A reference for 149 terms on these screens, searchable and sorted by category. Underlined terms anywhere in the app open a short card. |
-| **Settings** | Either | Five cards. **Game**: Coach comments, Evaluation bar and *Move pieces on any board*. **Board**: legal-move markers, coordinates, *Turn the board for each player*, Flip board and Reset view. **Sound and motion**: sound and animation speed. **World and graphics**: the world, short source badges, MONOLITH's pillars and the graphics level (with Automatic and Fine-tune). **Help and about**: tips, *Keys and mouse*, the MONOLITH colour system with its contrast ledger, and the release. |
+| **Settings** | Either | Five cards. **Game**: Coach comments, Evaluation bar, *Move pieces on any board* and *Explore in Analyze*. **Board**: legal-move markers, coordinates, *Turn the board for each player*, Flip board and Reset view. **Sound and motion**: sound and animation speed. **World and graphics**: the world, short source badges, MONOLITH's pillars and the graphics level (with Automatic and Fine-tune). **Help and about**: tips, *Keys and mouse*, the MONOLITH colour system with its contrast ledger, and the release. |
 
 Every board can be played on while *Move pieces on any board* is turned on (Settings → Game, on by
 default). Before any game the board is free: both sides move in turn from the starting position,
 the moves fill the move list, and the chip's Undo and Reset take them back; *Play from here* opens
 the setup with that line, and Start game plays on from it. A Crucible game, an earlier move or a
 finished game takes your moves into a scratch line, and the game and the record never change. With
-the setting off, a click on the board before a game says how to start one. A piece moves by a
-click on it and then on its square, or by dragging it there.
+the setting off, a click on the board before a game says how to start one. In Analyze, the live
+position of a game in progress takes your moves into a line too while *Explore in Analyze* is on
+(Settings → Game, on by default; the Explore switch on the Analyze board, or `:explore analyze`);
+with it off, a move made there on your turn is played in the game. A piece moves by a click on it
+and then on its square, or by dragging it there.
 
 The side panel keeps one width per world, so moving between destinations never moves the edge of
 the board's stage, and a width you drag is kept for that world.
@@ -213,11 +218,11 @@ MONOLITH's three pillars are Dennis's Blender models, in three styles you choose
 
 The built pillars stand in for any model that cannot load.
 
-The page opens on Dennis's emblem, the MONOLITH M of slate squares carrying his house piece set
-(the bare M is the logo in the app bar), and takes its time: the M is written square by square
-(in gold in the cathedral, in ink in MONOLITH),
-the board is built while it rests, the pieces are set down one by one, and a glint crosses it
-before it lifts. Beneath it a loading meter fills a segment for each step as it really finishes
+The page opens on Dennis's emblem, the MONOLITH M of slate squares carrying the house piece set
+(the same emblem stands as the M of the wordmark in the app bar), and takes its time: the M is
+written square by square (in gold in the cathedral, in ink in MONOLITH), the board is built while
+it rests, the pieces are set down one by one, and a glint crosses it before it lifts. Beneath it
+a loading meter fills a segment for each step as it really finishes
 (the scripts, the board, the first frame, the pillar models, Stockfish), and a card turns over a tip
 about the page or a fact about chess every few seconds. It is already in the world the page opens
 in, follows Settings → Animation (Brisk shortens it, Minimal keeps it still) and Tips (Off leaves
@@ -261,18 +266,21 @@ resolution, anti-aliasing, light shafts, reflections, shadows and bloom one by o
 | F / V / X | Field, vectors, X-Ray, in Analyze |
 
 The command palette reaches most settings and actions by typing. Some examples: `:world monolith`,
-`:pillars classic`, `:define <term>`, `:copy pgn`, `:load pgn`, `:draw`, `:review`, `:autoflip`,
-`:resign`, `:legal`, `:animation brisk`, `:study` and `:badges short`. `:fen <position>` opens a
-position in Set up, to choose who plays it; in Analyze it is analysed where it is. Everyday words
-find commands too: *new game*, *take back*, *mute*, *graphics* and *give up* each find theirs, and
-a word no command knows, such as *castling*, opens its Grimoire entry.
+`:pillars classic`, `:define <term>`, `:copy pgn`, `:load pgn`, `:draw`, `:explore analyze`,
+`:review`, `:autoflip`, `:resign`, `:legal`, `:animation brisk`, `:study` and `:badges short`.
+`:fen <position>` opens a position in Set up, to choose who plays it; in Analyze it is analysed
+where it is. Everyday words find commands too: *new game*, *take back*, *mute*, *graphics* and
+*give up* each find theirs, and a word no command knows, such as *castling*, opens its Grimoire
+entry.
 
 ## Phones, tablets and touch screens
 
-Under 900 px wide the rail becomes a bottom bar and the panel sits under the stage. There the move
-list is a strip held at the panel's foot, with its step buttons beside it, and the move box opens
-from its keyboard button. Under 600 px the telemetry footer is set aside; the engine card and the
-Crucible's pane carry its readings.
+Under 900 px wide the rail becomes a bottom bar and the panel sits under the stage. The command
+palette, Flip board and Sound move to the end of the top bar, the version to a line under the
+wordmark, and the match strip leaves its job to the panel. There the move list is a strip held at
+the panel's foot, with its step buttons beside it, and the move box opens from its keyboard button.
+The telemetry footer is set aside there too; the engine card and the Crucible's pane carry its
+readings.
 
 - **A phone held sideways** has its own layout: the destinations down the left, the board across
   the full height and the panel at the right.
@@ -336,11 +344,11 @@ Run these from the project folder: the `.mjs` and `.js` scripts with Node 18 or 
 | Script | Use |
 | --- | --- |
 | `tools/build-piece-set.mjs` | Rebuilds `js/data/piece-set.js` from Dennis's drawing, `assets/chess-pieces.svg`. Re-run it whenever the drawing changes, and never edit the output by hand. |
-| `tools/build-emblem.mjs` | Writes Dennis's two official marks into `index.html`: the emblem, `assets/monolith-emblem.svg`, as the loading screen, and the logo, `assets/monolith-logo.svg`, in the app bar. Re-run it whenever either mark changes, and never edit the blocks it writes by hand. |
+| `tools/build-emblem.mjs` | Writes Dennis's emblem, `assets/monolith-emblem.svg`, into `index.html` once, as a hidden drawing that the loading screen draws square by square and the app bar draws whole, as the M of the wordmark; and the loading screen's arc of White's back rank, from `js/data/piece-set.js`. The logo, `assets/monolith-logo.svg`, is no longer read. Re-run it whenever the emblem changes, and never edit the blocks it writes by hand. |
 | `tools/pack-models.mjs` | Wraps each `assets/models/*.glb` as `.glb.json` for hosts that will not serve `.glb`, such as the published page. Live Server does not need these files. |
 | `tools/verify-studies.mjs` | Checks every study against the vendored Stockfish 19, using the same dataset and rules engine the page loads. |
 | `tools/calibrate.js` | Plays the computer's levels against Stockfish's Elo-limited mode and estimates each level's rating. [CALIBRATION.md](CALIBRATION.md) has the recipes and how to read the results. |
-| `tools/build-piece-models.py` | A Blender 5.2 script, not a Node one: builds the game's 3D pieces as `.blend` files in `assets/models/` (one per piece, in marble and obsidian, and `pieces.blend` for the set) from the numbers `js/scene/board.js` builds them with. It keeps a file already there unless given `--force`. |
+| `tools/build-piece-models.py` | A Blender 5.2 script, not a Node one: builds the game's 3D pieces as `.blend` files in `assets/models/` (one per piece, in marble and obsidian, and `pieces.blend` for the set) from the numbers `js/scene/board.js` builds them with. It keeps a file already there unless given `--force`. It is out of step with 2.18.0: the page now draws the knight's neck, head, muzzle, ears and mane as bowed blocks (`js/scene/board.js`) and gives obsidian a softer clearcoat (0.22 rough in `js/scene/materials.js`, where the script still writes 0.08), so the script stops at its check that `board.js` still says what it copies, and the `.blend` files show the earlier box knight. |
 
 The marks themselves, the brand variants and the mock-ups are drawn by the Python generators in
 `assets/generator/` (Python 3.10 or later); `python assets/generator/build_all.py` rebuilds and audits
@@ -377,4 +385,3 @@ blender --background --python tools/build-piece-models.py -- assets/models
   COACH_VOICE.md.
 
 <!-- ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once! -->
-

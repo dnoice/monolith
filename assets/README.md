@@ -13,12 +13,8 @@
 
 ✒ Changelog:
     - 1.0.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      brand rows, the generators and the commands name the renamed files
-      (MONOLITH_M_SYSTEM.md, monolith-brand-kit.svg and its generated
-      twin, the variants as monolith-m-<n>-<layout>-<skin>.svg,
-      monolith_m.py and load_monolith_m()) and call the letter the
-      MONOLITH M: at Dennis's request the brand files dropped "conical"
-      from their names while the logo is still being decided.
+      rows and commands name the brand files renamed at Dennis's request;
+      the app bar draws the emblem as the wordmark's M; no logo is read.
     - 1.0.2 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       saved his own design ideas over loading-01-rising-columns.svg and
       works in it: the mock-ups' row names his file and the generated
@@ -63,8 +59,8 @@ them, and nothing they write is edited by hand.
 
 | Path | Kind | What it is |
 |---|---|---|
-| `monolith-logo.svg` | generated | **The official logo**: the MONOLITH M tiled 4 × 4, slate tiles, black mortar, no pieces. The page's app bar carries it (`tools/build-emblem.mjs` writes it into `index.html`, reading its `board-logo` group), so its path and that group stay put. |
-| `monolith-emblem.svg` | generated | **The official emblem**: the same mark with the quartet of twelve pieces. The page's loading screen is built from this file (`tools/build-emblem.mjs` copies it into `index.html`), so its path and id scheme stay put. |
+| `monolith-logo.svg` | generated | **The official logo**: the MONOLITH M tiled 4 × 4, slate tiles, black mortar, no pieces. The page does not read it: since 2.18.0 the app bar draws the emblem, below, as the M of its wordmark, and `tools/build-emblem.mjs` ignores a logo path given to it. |
+| `monolith-emblem.svg` | generated | **The official emblem**: the same mark with the quartet of twelve pieces. The page's loading screen and the M of the app bar's wordmark are drawn from this file (`tools/build-emblem.mjs` writes it into `index.html` once, as a hidden drawing both use), so its path and id scheme stay put. |
 | `chess-pieces.svg` | source | Dennis's house piece set on a full board. Every piece in every mark and mock-up is stamped from it verbatim; `tools/build-piece-set.mjs` builds the board diagrams' pieces from it. Shared with ChessWorkstation, whose copy differs only in its header's Relative Path. |
 | `graphics-meter-design-v1.2.svg` | source | Dennis's graphics-quality gauge for the Settings panel. |
 | `brand/` | | The brand system. |
@@ -102,9 +98,10 @@ python assets/generator/monolith_m.py --only official     # just the logo and th
 python assets/generator/audit_assets.py                   # check the folder
 ```
 
-After a change to either official mark, run `node tools/build-emblem.mjs`
-from the project root: it writes the emblem into the loading screen and the
-logo into the app bar, so the page carries both.
+After a change to the emblem, run `node tools/build-emblem.mjs` from the
+project root: it writes the emblem into `index.html` once, as a hidden
+drawing that the loading screen and the app bar's wordmark both draw. The
+logo is no longer read, so a change to it alone needs no build.
 
 ## Conventions
 
