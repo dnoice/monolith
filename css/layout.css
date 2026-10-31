@@ -64,14 +64,14 @@
       shows), and Reset view is its icon alone under 580 px.
     - Panel parts: the kicker over every pane's title, segmented buttons,
       side choice cards, the difficulty slider, the in-game summary and
-      switch rows; Settings' five cards, and its graphics meter (Dennis's
-      dial of five back-rank cells, with its needle and pawn hub) and its
+      switch rows; Settings' five cards, and its graphics meter (a dial of
+      five back-rank cells, with its needle and pawn hub) and its
       Fine-tune rows.
     - Per-tab basics for Analyze (whose board has no player cards),
       Position and Settings, and the snackbar (one message at a time).
     - The stage's notices: WebGL missing (over the stage), and the page
       opened from disk (over the whole page, since nothing can run).
-    - The loading screen: Dennis's emblem on the stage colour, its squares
+    - The loading screen: the emblem on the stage colour, its squares
       and woods the board diagrams', with the name in Michroma and White's
       back rank in an arc over it; animated in three stages (the M written,
       a rest with the loading meter and a tip while the board is built, the
@@ -117,7 +117,7 @@
 .brand .logo{flex:none;width:.77em;height:.77em;width:calc(1cap * 1.08);height:calc(1cap * 1.08);overflow:visible;--emb-d:var(--dg-d);--emb-l:var(--dg-l);--emb-mortar:var(--md-surface-1);--emb-sw:24}
 /* the emblem's drawing: in the page once, out of the layout, drawn wherever a <use> names it */
 .emb-defs{position:absolute;width:0;height:0;overflow:hidden}
-/* The release on screen (Dennis, 10/22/2026): a chip, a label rather than a control, at the foot of
+/* The release on screen (10/22/2026): a chip, a label rather than a control, at the foot of
    the rail under the actions; on phones, where the bar has no room for it, a line under the title
    instead. Both read APP_VERSION. */
 .brand-text{display:flex;align-items:center;gap:10px;min-width:0}
@@ -327,7 +327,7 @@
 .seg:has(button:focus-visible){outline:2px solid var(--md-primary);outline-offset:2px}
 .seg button:focus-visible{outline:none;box-shadow:inset 0 -3px 0 var(--md-primary)}
 
-/* graphics: the level meter, after Dennis's drawing, version 1.2 (js/ui/gfx-meter.js). Five cells on
+/* graphics: the level meter, after its drawing, version 1.2 (js/ui/gfx-meter.js). Five cells on
    a dial a little more than a half circle, each a real button sized to its cell; only the cell's
    shape takes the pointer, so the button box itself is transparent to it. The needle, one shape
    with the hub ring, sits on top with the hub's face and the pawn, and takes none. */
@@ -486,14 +486,14 @@
 #snackbar .btn{height:34px;padding:0 12px}
 
 /* ---------- loading screen ----------
-   Dennis's emblem (10/24/2026): his M of chessboard squares carrying the house piece set, on the
+   The emblem (10/24/2026): the M of chessboard squares carrying the house piece set, on the
    stage colour of the world the page opens in (js/ui/boot-screen.js runs the order). Its squares
    and woods are the board diagrams' (css/position.css), so it changes with the world as they do,
    and the seams between squares are the stage colour. The emblem is in the page from its first
    paint, written there by tools/build-emblem.mjs: a <use> for every square and piece of the
    drawing it shares with the app bar's wordmark, each with its moment as a class: a0..a20 (when a
    square lights), g0..g12 (when the glint reaches it), i0..i11 (a piece's turn).
-   At Dennis's request (10/24/2026) it takes its time, with a loading meter and rotating tips:
+   It takes its time (10/24/2026), with a loading meter and rotating tips:
      1. From the first paint, 2.65 s: White's back rank flies in and settles in an arc over the
         emblem as the M is written square by square, stroke by stroke, each square lit in the
         world's primary colour and cooling to its own; the name gathers in, then the meter and

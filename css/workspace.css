@@ -31,10 +31,10 @@
     move sheet and the splitters.
 
 ✒ Key Features:
-    - Telemetry footer, and how it fits its width as room runs out (Dennis,
-      10/22/2026: it bled off the right edge).
-    - Command Palette: a quieter glass, focus shown as a cyan rule (Dennis,
-      10/15/2026).
+    - Telemetry footer, and how it fits its width as room runs out
+      (10/22/2026: it bled off the right edge).
+    - Command Palette: a quieter glass, focus shown as a cyan rule
+      (10/15/2026).
     - The palette button's own look, in the release chip's height and
       shape (the world's pill), which it keeps in the app bar under 900 px;
       at the foot of the rail css/layout.css makes it an icon button.
@@ -61,7 +61,7 @@
 /* telemetry footer */
 #telemetry{display:flex;align-items:stretch;min-width:0;height:30px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);background:var(--mo-panel);border-top:1px solid var(--mo-rule);font:400 11px/1 var(--font-tele);color:var(--mo-ink2);overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none}
 #telemetry::-webkit-scrollbar{display:none}
-/* The footer fits its width (Dennis, 10/22/2026: it bled off the right edge). As room runs out it
+/* The footer fits its width (10/22/2026: it bled off the right edge). As room runs out it
    steps down: compact keeps every source badge but shows only its source ("[SF]", full text on
    hover); tight also drops the sparklines and meters and closes the padding. If even that is too
    wide it scrolls (wheel or drag), with a fade marking the clipped edge. */
@@ -83,7 +83,7 @@
 .meter i{display:block;height:100%;background:var(--mo-steel)}
 
 /* Command Palette: glass, one at a time */
-/* Command palette, refined (Dennis, 10/15/2026): a quieter glass, the focus shown as a cyan
+/* Command palette, refined (10/15/2026): a quieter glass, the focus shown as a cyan
    rule under the input instead of a box, commands grouped when nothing is typed, the reason a
    command can't run as its own tag, and shortcuts beside the commands that have one. */
 #palette{position:fixed;inset:0;z-index:20;display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px;background:rgba(8,10,13,.5)}
@@ -133,7 +133,7 @@
 .ledger .pair{display:inline-block;width:22px;height:12px;margin-right:6px;vertical-align:-2px;border-radius:1px;box-shadow:0 0 0 1px var(--mo-rule)}
 
 /* The dock keeps a fixed height while it is shown, so lines arriving during a search scroll inside
-   it instead of growing it in steps and squeezing the board each time (Dennis, 10/22/2026). Its
+   it instead of growing it in steps and squeezing the board each time (10/22/2026). Its
    height, the side panel's width and the move list's height are the user's to drag (see the
    splitters below); these are the defaults. The board always keeps at least 240 px. */
 :root{--dock-h:auto;--beat-h:116px}
@@ -150,7 +150,7 @@
 :root .moves-card[data-idle]{height:auto;min-height:0}
 .moves-card[data-idle] .moves-head .icon-btn,.moves-card[data-idle] #split-moves,.moves-card[data-idle] .move-entry:has(input:disabled){display:none}
 /* The move list reads as a sheet docked under the panel rather than more content under the
-   panel's scrollbar (Dennis, 10/22/2026): a soft lift above its top edge, where its splitter's
+   panel's scrollbar (10/22/2026): a soft lift above its top edge, where its splitter's
    grip sits, and slim scrollbars on both. */
 .moves-card{box-shadow:0 -12px 18px -14px rgba(0,0,0,.6)}
 :root[data-skin="monolith"] .panes,:root[data-skin="monolith"] .moves{scrollbar-color:var(--mo-rule) transparent}

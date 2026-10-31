@@ -38,7 +38,7 @@
     number between the cathedral (0) and MONOLITH (1).
 
 ✒ Key Features:
-    - Files, organised as Dennis's pillar files are:
+    - Files, organised as the pillar files in assets/models/ are:
         - piece-pawn.blend … piece-king.blend: one piece in both woods, a
           collection for each (piece-pawn-marble, piece-pawn-obsidian)
           holding a root empty named for it and its parts as children, and
@@ -251,7 +251,7 @@ def layer_of(coll, l=None):
         if r: return r
 
 def exporter(coll, glb):
-    """The glTF exporter Dennis's pillar files carry, set the same way."""
+    """The glTF exporter the pillar files carry, set the same way."""
     bpy.context.view_layer.active_layer_collection = layer_of(coll)
     with bpy.context.temp_override(collection=coll):
         bpy.ops.collection.exporter_add(name='IO_FH_gltf2')

@@ -46,7 +46,7 @@
 ✒ Usage Instructions:
     Run with Node 18 or later from the project folder:
         node tools/pack-models.mjs [models-folder] [out-folder]
-    Dennis's own folder does not need the .glb.json files: Live Server
+    A local working copy does not need the .glb.json files: Live Server
     serves the .glb. Run this when publishing the page, after the models
     change.
 

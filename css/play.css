@@ -26,7 +26,7 @@
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
-    The Play pane as cards (Dennis, 10/22/2026), and the match strip in the
+    The Play pane as cards (10/22/2026), and the match strip in the
     app bar that names who is playing, the level and whose move it is. It
     also carries the free board before a game, the players' cards while
     the board turns, and the game record.
@@ -70,7 +70,7 @@
     - Compatible platforms: current Chrome, Edge, Firefox and Safari.
 ---------
 */
-/* ---------- cards: the Play pane's hierarchy (Dennis, 10/22/2026) ----------
+/* ---------- cards: the Play pane's hierarchy (10/22/2026) ----------
    Every block on Play is a card with its own head: an icon, a title, and on the right the value
    or state that block is about (the level's name, the engine's status). The turn card carries
    the moves you make most (Hint, Undo); New game and Resign sit apart at the foot. Group titles
@@ -130,12 +130,12 @@
 :root[data-skin="monolith"] .to-eco{font-family:var(--font-tele);color:var(--mo-steel)}
 :root[data-skin="monolith"] .turn-opening{color:var(--mo-ink2)}
 
-/* ---------- the match strip in the app bar (Dennis, 10/22/2026) ----------
+/* ---------- the match strip in the app bar (10/22/2026) ----------
    What the stage is showing, in one pill: the players with the side to move ringed, the move
    number and what is happening now (to move, thinking, check, the result), and the last move.
    Analyze and Crucible put their own title first instead of the players. Before a game it shows
    the game Start game will begin, as the Play tab's choices change, and that it has not started
-   (Dennis, 10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
+   (10/23/2026: the old "Play, New game / Next, Choose and start" read as out of place).
    Only a number takes the larger size. It stands at the bar's end, where the actions were before
    they moved to the rail, and has their room: it narrows as the bar does, the
    levels going under 1100 px and the last move under 1000, while the players or the title stay

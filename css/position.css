@@ -36,7 +36,7 @@
     - Diagrams: squares, pieces, coordinates and marks (passed, isolated,
       doubled, bishop, open and half-open files, shelter, focus, target,
       held, cursor) in a cathedral and a MONOLITH palette; the pieces in
-      Dennis's two woods (--pc-boxwood, --pc-ebony).
+      the house set's two woods (--pc-boxwood, --pc-ebony).
     - Studies: the Study card and its goal tracks, Up next, category tiles
       with rings (each count inside its ring; Set-ups' ring dashed), the
       card grid with each card's level and kind in line, and the detail
@@ -63,10 +63,10 @@
 ---------
 */
 /* ---------- Position: the tab's palette ----------
-   Dennis's request (10/23/2026): a Position tab with a stronger visual side than a stack of text.
-   The diagrams' pieces are his house set, in its two woods: boxwood faces with an ebony contour
+   A Position tab with a stronger visual side than a stack of text.
+   The diagrams' pieces are the house set, in its two woods: boxwood faces with an ebony contour
    for White, ebony faces with a boxwood contour for Black, so either side reads on either square.
-   The cathedral's squares are the ones he drew the set on (#e6e6e6 and #6f8a91); MONOLITH keeps
+   The cathedral's squares are the ones the set is drawn on (#e6e6e6 and #6f8a91); MONOLITH keeps
    its slate squares and the same woods. Study categories keep their own colours (data-scat),
    apart from the Grimoire's (data-cat). The FEN's six fields each have a colour (--fc0 to --fc5),
    shared by the box, its chips and the explanation. */
@@ -91,7 +91,7 @@
 .dg .dg-sq.l{fill:var(--dg-l)}.dg .dg-sq.d{fill:var(--dg-d)}
 .dg .dg-sq.dim{opacity:.62}
 .dg-pc.dim{opacity:.3}
-/* Dennis's house set: each piece is flat faces (--pc-face) inside one contour (--pc-line), and
+/* The house set: each piece is flat faces (--pc-face) inside one contour (--pc-line), and
    the two woods swap roles between the sides. White is boxwood, as the marble side is light. */
 .dg-pw,.dg-pb{stroke:none}
 .dg-pw{--pc-face:var(--pc-wf);--pc-line:var(--pc-wl)}

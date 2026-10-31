@@ -37,7 +37,7 @@
       board diagrams draw from.
 
 ✒ Description:
-    Reads Dennis's hand-drawn house piece set (chess-pieces.svg, a full
+    Reads the hand-drawn house piece set (chess-pieces.svg, a full
     board of the set) and writes js/data/piece-set.js, the six pieces the
     page's board diagrams draw. One drawing per piece is taken (the
     ebony-faced set, whose ids are White's), moved onto its own square, and
@@ -61,7 +61,7 @@
       a partial set.
     - Carries the output's version and changelog over: the same drawing
       gives the same file; a new one bumps the minor version and adds a
-      [dendogg] line, since the drawing is his and the build mechanical.
+      [dendogg] line: the drawing is hand work, the build mechanical.
       The header keeps three entries; one that rolls out is printed, to be
       moved to CHANGELOG.md.
 
@@ -221,10 +221,10 @@ const header = `/*
 ${entries}
 
 ✒ Description:
-    Dennis's hand-drawn house piece set (king, queen, rook, bishop, knight,
+    The hand-drawn house piece set (king, queen, rook, bishop, knight,
     pawn) as SVG markup, one piece per square of ${size} units, for the
-    board diagrams (js/ui/diagram.js). Generated from his drawing; the path
-    data is his, exactly as drawn.
+    board diagrams (js/ui/diagram.js). Generated from the drawing; the path
+    data is the drawing's, exactly as drawn.
 
 ✒ Key Features:
     - PIECE_SET.pieces: k, q, r, b, n, p, each a <g> that fills a square
@@ -241,7 +241,7 @@ ${entries}
         node tools/build-piece-set.mjs
 
 ✒ Other Important Information:
-    - Source: assets/chess-pieces.svg ${version}, Dennis's drawing (the same
+    - Source: assets/chess-pieces.svg ${version}, the set's drawing (the same
       drawing as ChessWorkstation's docs/design/concept/chess-pieces.svg);
       SHA-256 ${sha}.
     - The drawing's ebony-faced set (ranks 1 and 2) is the one copied; in
