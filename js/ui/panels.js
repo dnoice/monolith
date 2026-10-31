@@ -85,8 +85,8 @@ import { engine } from '../game/engine.js';
 import { boardState, drawArrows, lineQuality, qCss, QUALITY } from '../game/board-ui.js';
 import { levelNote, playMove, resultFor } from '../game/play.js';
 import {
-  analyzeGame, autoFlipOn, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState, sandbox, showView,
-  viewedPly
+  analyzeGame, autoFlipOn, canOfferDraw, drawJudging, explore, exploreAvailable, exploreLine, exploreOrigin, exploreState,
+  sandbox, showView, viewedPly
 } from '../game/flow.js';
 import { emptyCalc, evalView, pvToSan, scoreOf } from '../game/lines.js';
 import { openingOf } from '../coach/book.js';
@@ -284,6 +284,8 @@ export function init() {
       const state = el.querySelector('.pstate'); let txt = '', cls = 'pstate';
       const r = ex ? resultFor(bs) : live ? game.result : resultFor(st), on = app.started || ex;
       if (on && r) { if (r.winner === c) { txt = 'Won'; cls += ' won'; } else if (!r.winner) txt = 'Draw'; else txt = r.resigned === c ? 'Resigned' : 'Lost'; }
+      // a draw offer being judged: the computer thinks on your turn
+      else if (on && live && !ex && drawJudging() && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
       else if (on && bs.turn === c) {
         if (live && !ex && app.cpuThinking && c === cpuSide()) { txt = 'Thinking'; cls += ' think'; }
         else if (Chess.inCheck(bs)) { txt = 'Check'; cls += ' check'; }
@@ -378,7 +380,7 @@ export function init() {
     const banner = $('#turn-banner'); banner.hidden = !!r;
     const c = cur().turn, av = banner.querySelector('.avatar'); av.className = `avatar ${c}`; if (!av.querySelector('.king-icon')) av.innerHTML = KING_ICON;
     const yours = !cpu || c === match.human;
-    $('#turn-title').textContent = app.cpuThinking ? 'Stockfish is thinking' : cpu ? (yours ? 'Your move' : 'Stockfish to move') : `${SIDE[c]} to move`;
+    $('#turn-title').textContent = drawJudging() ? 'Stockfish is considering your offer' : app.cpuThinking ? 'Stockfish is thinking' : cpu ? (yours ? 'Your move' : 'Stockfish to move') : `${SIDE[c]} to move`;
     $('#turn-move').textContent = r ? '' : `Move ${cur().fullmove}`;
     // the opening, by name, as the book knows it at the move on the board (custom positions have none)
     const op = game.title ? null : openingOf(viewedPly()), toEl = $('#turn-opening');
@@ -396,7 +398,12 @@ export function init() {
     $('#btn-hint').title = !showing ? 'A nudge first; press again for the piece, then the move' : app.hint.level < 3 ? 'One more step of help' : 'Hide the hint';
     $('#btn-undo').disabled = app.busy || game.states.length < 2;
     $('#btn-resign').disabled = !!r || app.busy;
-    $('#btn-draw').hidden = cpu || !!sc || !!game.title; $('#btn-draw').disabled = !!r || app.busy;   // a draw by agreement, two players on one screen
+    /* a draw by agreement: two players on one screen, or against the computer on your turn (2.18.0);
+       the wait after the computer declined leaves it enabled, and a click names the move it ends at */
+    const dr = $('#btn-draw'), drOk = canOfferDraw();
+    dr.hidden = !!sc || !!game.title;
+    dr.disabled = !!r || app.busy || (cpu && (app.cpuThinking || c !== match.human || !engine.ready));
+    dr.title = !cpu ? 'Offer a draw: the other player agrees or plays on' : drOk === true ? 'Offer a draw: Stockfish judges the position, then agrees or plays on' : drOk;
     // strength can change mid-game; Stockfish reads the level when it starts each move
     $('#live-level-group').hidden = !cpu || !!sc;   // a study plays at its own strength
     // two players: the board's turn for each of them, switched here where it is used

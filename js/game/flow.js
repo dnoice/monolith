@@ -68,13 +68,13 @@ import { $, panelScroller, PI, prefs, reduceMotion, savePrefs } from '../app/bas
 import { setWorldYaw, worldYaw } from '../scene/sets.js';
 import { clearFragments, placePieces } from '../scene/board.js';
 import { cam } from '../scene/camera.js';
-import { tween } from '../scene/motion.js';
+import { tween, wait } from '../scene/motion.js';
 import { sound } from '../app/sound.js';
 import { cur, draft, game, learn, match, render, shown, SIDE } from '../app/state.js';
 import { hideSnack, snack } from '../ui/snackbar.js';
 import { engine } from './engine.js';
 import { deselect, rookSqOf, select } from './board-ui.js';
-import { animateBoardMove, askPromotion, maybeComputerMove, resultFor } from './play.js';
+import { animateBoardMove, askPromotion, maybeComputerMove, positionCmd, resultFor } from './play.js';
 import { celebrate, ceremonyGen, checkShudder, dealIn, restPose } from './ceremony.js';
 import { emptyCalc, refreshAnalysis } from './lines.js';
 import { coachKick, turningPly } from '../coach/notes.js';
@@ -194,18 +194,85 @@ export function undo() {
   const m = game.moves[game.moves.length - 1]; app.lastMove = m ? { from: m.from, to: m.to } : null;
   placePieces(cur()); render(); refreshAnalysis(); maybeComputerMove(); coachKick(); autoOrient(false);
 }
-/* A draw by agreement between two players on one screen: the side to move offers, the other side
-   answers. canOfferDraw() is true, or the reason it cannot be offered (a declaration, so the
-   palette's table can name it while the modules are still loading). */
-export function canOfferDraw() { return !app.started ? 'Start a game first' : game.result ? 'The game is over' : match.opponent !== 'human' || study.cur || game.title ? 'Two-player games only' : true; }
+/* A draw by agreement. Between two players on one screen the side to move offers and the other
+   side answers. Against the computer (2.18.0) you offer on your own turn and the computer judges
+   the position (judgeDraw below). canOfferDraw() is true, or the reason it cannot be offered (a
+   declaration, so the palette's table can name it while the modules are still loading). */
+export function canOfferDraw() {
+  if (!app.started) return 'Start a game first';
+  if (game.result) return 'The game is over';
+  if (study.cur) return 'Not in a study';
+  if (game.title) return 'Not in a game loaded for analysis';
+  if (match.opponent === 'human') return true;
+  if (drawJudging()) return 'Stockfish is considering your offer';
+  if (cur().turn !== match.human || app.cpuThinking) return 'Offer on your turn';
+  if (!engine.ready) return engine.failed ? 'The engine could not start here' : 'The engine is still loading';
+  const again = drawAgainAt();
+  return again ? `Stockfish declined. Offer again at move ${again}` : true;
+}
 export function offerDraw() {
-  if (canOfferDraw() !== true || app.busy) return;
+  if (app.busy) return;
+  const ok = canOfferDraw();
+  if (ok !== true) { if (match.opponent === 'cpu' && app.started && !game.result) snack(`${ok}.`); return; }
+  if (match.opponent === 'cpu') return judgeDraw();
   const by = cur().turn, rec = game.states, n = rec.length;
   snack(`${SIDE[by]} offers a draw. Does ${SIDE[Chess.other(by)].toLowerCase()} agree?`, [{ label: 'Keep playing', act: () => {} }, { label: 'Agree to a draw', filled: true, act: () => {
     if (game.states !== rec || rec.length !== n || game.result) return;   // asked about a position the game has since left
     game.result = { text: 'Draw agreed.', winner: null, agreed: true };
     render(); celebrate(game.result); coachKick();
   } }], true);
+}
+/* The computer's answer (Dennis's rule, 2.18.0). It judges the position at full strength whatever
+   level it plays at: a short search on the play engine (no Elo limit, MultiPV 1), its last scored
+   line read from its own side (the engine scores for the side to move, which is you).
+   - A pawn or more worse (DRAW_WORSE_CP), or facing a forced mate: it accepts.
+   - Roughly level, no more than DRAW_LEVEL_CP better: it accepts from move DRAW_FROM_MOVE on, and
+     before that declines as too early to agree a draw.
+   - Better than that, or a forced mate of its own: it declines and plays on for the win.
+   After a decline the offer can be made again DRAW_RETRY_MOVES of your moves later; the wait
+   belongs to the game record (game.states), so a new or loaded game starts without one. */
+export const DRAW_WORSE_CP = 100, DRAW_LEVEL_CP = 40, DRAW_FROM_MOVE = 20, DRAW_RETRY_MOVES = 5;
+const DRAW_SEARCH = { depth: 14, movetime: 800, multipv: 1 }, DRAW_BEAT = 0.6;   // seconds: an answer found at once still reads as considered
+let drawAsk = null;   // the offer being judged: { rec, st }
+let drawWait = null;  // after a decline: { rec, at }, the move from which it can be offered again
+// still judging only while the game is the one the offer was made in, at the same position
+export const drawJudging = () => !!drawAsk && drawAsk.rec === game.states && drawAsk.st === cur() && !game.result;
+const drawAgainAt = () => drawWait && drawWait.rec === game.states && cur().fullmove < drawWait.at ? drawWait.at : 0;
+// the computer as the player card names it (js/ui/panels.js playerName(): 'Stockfish' in both worlds)
+const CPU_NAME = 'Stockfish';
+async function judgeDraw() {
+  const rec = game.states, st = cur(), ask = drawAsk = { rec, st };
+  app.cpuThinking = true; deselect();
+  snack(`${CPU_NAME} is considering your draw offer…`, [], true, 'draw-offer');
+  render();
+  let last = null, best = null; const t0 = performance.now();
+  try {
+    best = await engine.go(positionCmd(rec.length - 1), DRAW_SEARCH, inf => { if (inf.multipv === 1) last = inf; });
+    await wait(Math.max(0, DRAW_BEAT - (performance.now() - t0) / 1000));
+  } catch (e) { console.error(e); best = null; }
+  finally {
+    if (drawAsk === ask) drawAsk = null;
+    // the flag is this offer's only while the game is the same one: a new game's own search keeps its flag
+    if (game.states === rec) app.cpuThinking = false;
+  }
+  // an undo, a new or loaded game, a resignation or a move while it judged: the offer lapses quietly
+  if (game.states !== rec || cur() !== st || game.result) { hideSnack('draw-offer'); render(); return; }
+  if (best === null || !last) { snack(`${CPU_NAME} gave no answer to the draw offer. Play on, or offer again.`); render(); refreshAnalysis(); return; }
+  const own = last.kind === 'mate' ? null : -last.value;   // centipawns from the computer's side
+  let accept, why;
+  if (last.kind === 'mate') { accept = last.value > 0; why = accept ? 'it faces a forced mate' : 'it sees a forced mate and plays on for the win'; }
+  else if (own <= -DRAW_WORSE_CP) { accept = true; why = 'it stands a pawn or more worse'; }
+  else if (own < DRAW_LEVEL_CP) { accept = st.fullmove >= DRAW_FROM_MOVE; why = accept ? 'the position is level' : 'it is too early in the game to agree a draw'; }
+  else { accept = false; why = 'it stands better and plays on for the win'; }
+  if (accept) {
+    game.result = { text: 'Draw agreed.', winner: null, agreed: true };
+    snack(`${CPU_NAME} accepts the draw: ${why}.`);
+    render(); if (app.view === null) celebrate(game.result); coachKick(); refreshAnalysis();
+    return;
+  }
+  drawWait = { rec, at: st.fullmove + DRAW_RETRY_MOVES };
+  snack(`${CPU_NAME} declines: ${why}. You can offer again at move ${drawWait.at}.`);
+  render(); refreshAnalysis();
 }
 /* A finished game in Analyze: at its turning point when the Coach found one, else at the last
    move (the final position of a mate or a stalemate has nothing left to search). */

@@ -164,16 +164,16 @@ const COMMANDS = [
   { cmd: ':copy pgn', desc: 'Copy the game as PGN, for another site or app (explored lines are not part of it)', run: copyPgn, when: () => app.started || 'No game yet' },
   { cmd: ':download pgn', desc: 'Save the game as a .pgn file', run: downloadPgn, when: () => app.started || 'No game yet' },
   { cmd: ':load pgn', desc: 'Paste a game in PGN (or a FEN) to review it or play on from it', run: openPgnLoad, when: yes },
-  { cmd: ':draw', desc: 'Offer a draw (two players on one screen)', run: offerDraw, when: canOfferDraw },
+  { cmd: ':draw', desc: 'Offer a draw: to the other player on one screen, or to Stockfish on your turn, which judges the position', run: offerDraw, when: canOfferDraw },
   { cmd: ':review', desc: 'Open the finished game in Analyze, at its turning point', run: analyzeGame, when: () => (app.started && !!game.result) || 'No finished game' }
 ];
 /* Palette groups (shown as headers when nothing is typed) and the keys that also run a command. */
 const PAL_GROUPS = [
   ['Analyze', [':go', ':stop', ':field', ':vectors', ':xray', ':reference', ':badges short', ':badges full']],
   ['Crucible', [':sprt start', ':sprt stop', ':recorded']],
-  ['Game', [':new', ':hint', ':undo', ':resign', ':rematch', ':coach', ':calc', ':eval', ':explore', ':explore back']],
+  ['Game', [':new', ':hint', ':undo', ':resign', ':draw', ':rematch', ':coach', ':calc', ':eval', ':explore', ':explore back']],
   ['Board', [':flip', ':legal', ':coords', ':fen', ':copy fen', ':reset view']],
-  ['Two players', [':autoflip', ':draw']],
+  ['Two players', [':autoflip']],
   ['Game record', [':copy pgn', ':download pgn', ':load pgn', ':review']],
   ['Position', [':study', ':read', ':setup']],
   ['Go to', [':play', ':analyze', ':crucible', ':position', ':grimoire', ':settings']],
