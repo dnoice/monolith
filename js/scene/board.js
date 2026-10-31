@@ -114,7 +114,9 @@ function lathe(points, segs = 40) {
    box is the box's, so the knight stands as tall and wide as before (the camera's fit and
    PIECE_TOP measure the same); n = 4 keeps the blocky silhouette while no face stays flat. */
 function block(w, h, d, n = 4, step = 0.03) {
-  const a = [w / 2, h / 2, d / 2], seg = a.map(v => Math.max(3, Math.round(2 * v / step)));
+  // an even count across each side puts a vertex on every face's centre, where the block reaches
+  // the box's own extent
+  const a = [w / 2, h / 2, d / 2], seg = a.map(v => 2 * Math.max(2, Math.round(v / step)));
   const g = new THREE.BoxGeometry(2, 2, 2, seg[0], seg[1], seg[2]), P = g.attributes.position, N = g.attributes.normal, c = [0, 0, 0];
   for (let i = 0; i < P.count; i++) {
     c[0] = P.getX(i); c[1] = P.getY(i); c[2] = P.getZ(i);
