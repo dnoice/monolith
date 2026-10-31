@@ -88,7 +88,7 @@
   .rail{gap:0}
   .nav-item{flex:1 1 0;width:auto;min-width:0;font-size:11px;letter-spacing:.1px}
   .nav-pill{width:44px}
-  .nav-label{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  :root[data-skin="monolith"] .nav-item{font-size:9px;letter-spacing:.04em}
+  .nav-label{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:16px}   /* one height in both worlds: the bar stays put */
+  :root[data-skin="monolith"] .nav-item{font-size:10px;letter-spacing:.04em}
   .term-pop{max-height:60vh}
 }

@@ -66,6 +66,11 @@
   .syn,.beat{padding-left:var(--gutter-l)}
   .syn-notes,.syn-head .badge{display:none}
   .beat canvas{height:92px}
+  /* the heartbeat's head keeps to one row (its sentence wrapped to three and the dock showed 40 px
+     of the strip); the badge goes, as the Synaptic PV's do */
+  .beat{gap:4px;padding-block:8px}
+  .beat .mo-sub{flex:1 1 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .beat .badge{display:none}
   .split{display:none}
   .moves-card,:root[data-moves-sized] .moves-card{height:auto}
   .wdl{top:52px;bottom:70px}
@@ -125,6 +130,15 @@
   #dock{border-top:0;border-left:1px solid var(--mo-rule);border-bottom:1px solid var(--mo-rule)}
   #telemetry{display:none}
   #snackbar{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+}
+/* ---------- phones: Analyze's panel more than a porthole ----------
+   The telemetry footer sat under the bottom bar, which moved up 25 px on entering MONOLITH, and it
+   ran off the right edge; the engine card and the Crucible's pane carry its readings here. With
+   the dock open Analyze's stage takes a smaller share: the board's width binds on a phone, so it
+   keeps its size and the panel gains the rows. */
+@media (max-width:599px){
+  #telemetry{display:none}
+  :root[data-tab="analyze"] .body{grid-template-rows:minmax(200px,38%) auto minmax(0,1fr) auto}
 }
 @media (max-width:420px){
   .pname .psub{display:none}
