@@ -56,7 +56,8 @@
    Structure headers in Michroma, interface in Geist with tabular figures, telemetry in Geist
    Mono. Docked surfaces are opaque; glass is kept for the X-Ray chip and the Command Palette. */
 :root[data-skin="monolith"] body{font-variant-numeric:tabular-nums}
-/* the wordmark in Michroma, tracked as the name was, the emblem one letter's tracking before it */
+/* the wordmark in Michroma, more widely tracked than the cathedral's Roboto, and the emblem a
+   letter's tracking before its O */
 :root[data-skin="monolith"] .brand-word{font-family:var(--font-struct);font-weight:400;font-size:30px;letter-spacing:.1em;gap:.12em;text-transform:uppercase}
 :root[data-skin="monolith"] .brand small{font-family:var(--font-tele);letter-spacing:.08em;margin-top:3px}
 /* the emblem's squares in MONOLITH's light slate in the wordmark: its dark slate sinks into the bar */
