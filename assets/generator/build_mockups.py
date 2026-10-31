@@ -144,7 +144,8 @@ TAGLINE_CHANGELOG = [
     f"OBSIDIAN · CATHEDRAL, as the cathedral is no longer called Gothic, and {RENAMED}.",
     *SET_CHANGELOG]
 
-# meter-01 and palette-study-03 show no mark, so they keep the set's 2.0.0.
+# meter-01 shows no mark, so it keeps the set's 2.0.0; palette-study-03, which shows none either,
+# has a 2.0.1 of its own (its subtitle).
 SET_HEADER = dict(version="2.0.0", changelog=SET_CHANGELOG, day=SET_DAY)
 
 ID_CONVENTION = (
@@ -784,8 +785,12 @@ def build_palette_study_meter():
         meter_widget(g, "meter", pal, x + 40, y + 48, cell_w - 80, active=3, sfx=sfx)
         g.text(f"cell-name{sfx}", x + 20, y + cell_h - 24, pal["label"], 14, pal["ink"], weight=600)
     sheet_chrome(svg, w, h, "MONOLITH — Palette Study 03: the graphics meter",
-                 "Dennis's gauge as the settings widget, HIGH active, in five palettes.", fname)
-    emit(svg, fname, title="MONOLITH Palette Study 03 Graphics Meter", **SET_HEADER,
+                 "The graphics gauge as the settings widget, HIGH active, in five palettes.", fname)
+    emit(svg, fname, title="MONOLITH Palette Study 03 Graphics Meter", version="2.0.1", day=date(2026, 10, 31),
+         changelog=["2.0.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The subtitle "
+                    "calls the gauge the graphics gauge, naming no one. The content credentials are "
+                    "removed with it: the C2PA manifest in the metadata, and its namespace, would no "
+                    "longer match the file.", *SET_CHANGELOG],
          description="Review sheet: the graphics gauge widget in the five candidate palettes, HIGH active in each.",
          key_features=["Five cells, one palette each", "Gauge geometry from graphics-meter-design-v1.2.svg, stamped verbatim"],
          other_info=["Source: graphics-meter-design-v1.2.svg", PAL_INFO],
