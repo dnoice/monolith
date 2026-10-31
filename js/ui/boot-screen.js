@@ -4,14 +4,17 @@
     - File Name: boot-screen.js
     - Relative Path: js/ui/boot-screen.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.2.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Its
+      comments and header call the tip a tip: it is set on the loading
+      screen under the meter now, not in a card.
     - 1.2.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
       asked the screen to slow down and breathe, with a loading meter and
       rotating tips: the stages are longer (2.65 s and 3.6 s), the meter
@@ -24,15 +27,12 @@
       the pieces when the first frame is drawn, and lifts the screen when
       the glint is done; a key or a click skips to the end of the stage
       under way, and keys go no further than the screen.
-    - 1.0.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release, for the loading screen Dennis asked for around his emblem:
-      the screen the page opens on stays until the 3D board has drawn its
-      first frame, then fades out.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The loading screen's lifetime, its order and what it reports. The screen
-    itself (#boot: the MONOLITH emblem, the name, the meter and the tip
-    card) is markup in the page, so it shows, and its first stage plays,
+    itself (#boot: the MONOLITH emblem, the name, the meter and the tip) is
+    markup in the page, so it shows, and its first stage plays,
     from the first paint, in the colours of the world the page will open
     in. This module lets the page's boot run once the M is written, keeps
     the meter to the steps that have actually finished, turns the tips
@@ -65,7 +65,7 @@
       none of them past the first frame, so the last two may still be under
       way as it lifts.
     - The tips: js/data/boot-tips.js's BOOT_TIPS, shuffled, one at a time
-      in the card from 1.7 s, the next every 5.2 s. Settings → Tips: Off
+      under the meter from 1.7 s, the next every 5.2 s. Settings → Tips: Off
       keeps them to the chess facts. Text between backticks is drawn as key
       caps, and {palette} names the palette's key for this keyboard.
     - The pace: the saved Animation speed, set on the root before the first
@@ -93,7 +93,7 @@
     - Dependencies: the #boot element and #app in index.html, and the
       early script there that sets data-boot-pace and data-boot-tips; the
       styles in css/layout.css (loading screen), which time the stages;
-      BOOT_TIPS from js/data/boot-tips.js (the card stays hidden without
+      BOOT_TIPS from js/data/boot-tips.js (the tip stays hidden without
       it).
     - Fallbacks outside this module: js/file-check.js removes the screen
       from disk (file://), and at the window's load event when the boot

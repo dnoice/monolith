@@ -4,14 +4,17 @@
     - File Name: boot-tips.js
     - Relative Path: js/data/boot-tips.js
     - Artifact Type: data
-    - Version: 1.0.1
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.0.2
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.2 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Header
+      only: an entry now shows on the loading screen itself, under a kicker
+      between two hairlines, where it had a card and a Tip chip.
     - 1.0.1 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       orbit tip names the left drag: drag a piece to move it, drag the board
       to orbit. It led with the middle button.
@@ -21,16 +24,16 @@
       destinations, and facts about chess.
 
 ✒ Description:
-    What the loading screen's card shows while the page starts, one entry
-    at a time in a shuffled order (js/ui/boot-screen.js). A tip is about
-    this page and was checked against it (the palette's commands in
+    What the loading screen shows under its meter while the page starts,
+    one entry at a time in a shuffled order (js/ui/boot-screen.js). A tip
+    is about this page and was checked against it (the palette's commands in
     js/ui/palette.js, the keys in js/ui/splitters.js, the destinations and
     controls in README.md); a fact is about chess and is settled history or
     arithmetic.
 
 ✒ Key Features:
-    - Each entry is { kind, text }: kind 'tip' (shown under a Tip chip) or
-      'fact' (under Did you know?).
+    - Each entry is { kind, text }: kind 'tip' (shown under the kicker Tip,
+      set between two hairlines) or 'fact' (under Did you know?).
     - In text, `backticks` mark a key or a command, drawn as a key cap, and
       {palette} stands for the palette's key on this keyboard (Ctrl K, or
       ⌘K on Apple keyboards).

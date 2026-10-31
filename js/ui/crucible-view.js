@@ -4,24 +4,24 @@
     - File Name: crucible-view.js
     - Relative Path: js/ui/crucible-view.js
     - Artifact Type: javascript
-    - Version: 1.2.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      anomaly count takes the class flagged when a game is flagged, for
+      css/crucible.css's crimson status tag, in place of an inline colour.
     - 1.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       verdict in a plain sentence, Start run in reach and on the empty deck,
       a readout on a hovered Hive tile, and the heartbeat drawn on phones.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       live-run note speaks of MONOLITH levels, under the app's new name,
       which Dennis chose.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a run stopped at its limit says why,
-      and the run note explains the book and the limits.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:

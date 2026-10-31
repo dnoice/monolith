@@ -1,36 +1,36 @@
 /*
 ✒ Metadata
-    - Title: Board And Pieces (MONOLITH Edition - v1.1)
+    - Title: Board And Pieces (MONOLITH Edition - v1.2)
     - File Name: board.js
     - Relative Path: js/scene/board.js
     - Artifact Type: javascript
-    - Version: 1.1.2
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — On
+      Dennis's ruling the knight's blocks are a little squarer (n = 4.5,
+      was 4) and the rook's merlons are blocks too, rounded at the edges
+      and corners (n = 7, step 0.02), in the same bounds; block() takes its
+      exponent from each call.
     - 1.1.2 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       knight's neck, head, muzzle, ears and mane are blocks with bowed faces
       (block()) within the old boxes' bounds, so the light runs across them.
     - 1.1.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: boardGen counts each rebuild of the
-      pieces, so a move still animating leaves a new board alone; fragments
-      keep their piece's shading, share one fading copy per capture and
-      shrink at the same speed at any frame rate; and clearFragments() lives
-      here and frees what it clears.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The board and everything on it: squares, highlight markers, coordinate
-    labels, the pieces (lathe-turned, with the knight's head and neck
-    built of bowed blocks) and the fragments a captured piece shatters into.
+    labels, the pieces (lathe-turned, with the knight's head and neck and
+    the rook's merlons built of bowed blocks) and the fragments a captured
+    piece shatters into.
 
 ✒ Key Features:
     - sqPos(): a square's world position; the board and its squares.
@@ -39,8 +39,11 @@
     - Coordinate labels on all four sides, relabelled when the board turns.
     - Pieces: lathe profiles per kind, buildPiece(), placePieces() and
       pieceAt().
-    - block(): the knight's neck, head, muzzle, ears and mane, boxes whose
-      faces bow out (a superellipsoid, n = 4) within the same bounds.
+    - block(w, h, d, n, step): a box whose faces bow out (a superellipsoid
+      of exponent n) within the same bounds. The knight's neck, head,
+      muzzle, ears and mane are blocks at n = 4.5; the rook's merlons at
+      n = 7 on a finer step (0.02), faces nearly flat and only the edges
+      and corners rounded.
     - Fragments: shatter(), stepFragments() and clearFragments() for
       captures.
     - boardGen: counts each rebuild of the pieces.

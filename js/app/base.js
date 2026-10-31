@@ -1,25 +1,27 @@
 /*
 ✒ Metadata
-    - Title: App Base (MONOLITH Edition - v1.6)
+    - Title: App Base (MONOLITH Edition - v1.7)
     - File Name: base.js
     - Relative Path: js/app/base.js
     - Artifact Type: javascript
-    - Version: 1.6.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.7.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.7.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      release on screen is 2.19.0. prefs.open keeps each panel disclosure
+      open or closed by id (eight ids, repaired to booleans; engineOpen
+      moves into it), and prefs.movesStrip the move list folded to one row.
     - 1.6.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       release on screen is 2.18.0. New defaults: autoFlip and analyzeExplore
       on, badges 'full', edVs 'cpu'; the last three keep to their choices.
     - 1.5.4 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       release on screen is 2.17.0.
-    - 1.5.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      release on screen is 2.16.0.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -37,7 +39,10 @@
       on first load), with defaults, and every saved value repaired to its
       type, list or range (nested ones too), including the move of an older
       graphics choice to the five levels (prefs.qualityScheme); savePrefs()
-      writes them.
+      writes them. prefs.open holds each panel disclosure's open state by
+      id, true or false for the eight ids it knows (an older engineOpen
+      moves into it); prefs.movesStrip, the move list folded to one row on
+      a wide screen.
     - reduceMotion and PI.
     - panelScroller(): the element that scrolls the panel at this width.
     - BootHalt: thrown to stop the boot, caught by js/main.js.
@@ -65,7 +70,7 @@ export class BootHalt extends Error {}
 export const $ = s => document.querySelector(s);
 /* The release on screen (10/22/2026), so it is always clear whether a copy is behind. These repeat
    the Version and Date in index.html's ✒ header; a release bumps all of them together. */
-export const APP_VERSION = '2.18.0', APP_DATE = '10/30/2026';
+export const APP_VERSION = '2.19.0', APP_DATE = '10/31/2026';
 export let reduceMotion; // set in init()
 /* The element that scrolls a destination's panel: the panes beside the stage on a wide screen,
    the whole panel under it at phone width (css/media.css, 899 px and below). */

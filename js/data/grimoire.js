@@ -4,14 +4,20 @@
     - File Name: grimoire.js
     - Relative Path: js/data/grimoire.js
     - Artifact Type: data
-    - Version: 1.3.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.3.1
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.3.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] —
+      Expected score, MONOLITH, Reference and Recorded and live name no one
+      as the source of the recorded runs, the data files or the design
+      plates. Annotation symbols and PGN name every kind of engine help
+      that marks a move (Analyze, a hint, Calculate moves, the evaluation
+      bar once a game), which the mark's title and the PGN comment name.
     - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — 2.18.0:
       a new entry, Turn the board for each player; PGN, draws, Explore,
       the Analyze mark, the app bar and rail, badges, touch and Settings.
@@ -19,9 +25,6 @@
       entries name the app MONOLITH, the name Dennis chose, and the MONOLITH
       entry says the whole app carries the world's name; this header names
       the page index.html, its file in the repository.
-    - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] —
-      Graphics tiers is now Graphics levels: Dennis's five levels,
-      Automatic and Fine-tune (Balanced kept as a name to search by).
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:

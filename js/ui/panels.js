@@ -1,31 +1,29 @@
 /*
 ✒ Metadata
-    - Title: Panel Renderers (MONOLITH Edition - v1.6)
+    - Title: Panel Renderers (MONOLITH Edition - v1.7)
     - File Name: panels.js
     - Relative Path: js/ui/panels.js
     - Artifact Type: javascript
-    - Version: 1.6.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.7.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.7.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      move list's mark covers every kind of engine help, its title and
+      label naming which (consultWords()); renderEvalOnly() marks a
+      two-player game when the bar first shows (consultBar()); the pillars
+      help names no one as the models' source.
     - 1.6.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The free
       board, Play from here, auto-flip, Draw (Stockfish too), the Analyze
       mark and evaluation; the Moves card folds, lists Crucible games.
     - 1.5.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.5.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: the move list, the Coach's notes and
-      the candidates are rebuilt only when what they show changes, so a
-      click or the focus inside them survives a render; on phones the panel
-      no longer jumps to the move list on every render; the strength slider
-      is hidden in a study; and Start game waits for the engine in a game
-      against the computer.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -49,9 +47,11 @@
       board stays put).
     - The Moves card: the game, the free board's line or a Crucible game's
       moves (renderCrMoves()); it folds to its head with nothing to list,
-      and a phone's one-row strip scrolls sideways to the move in view. A
-      move whose side used Analyze first carries the Analyze mark, and the
-      move box takes a typed move wherever a click would put it.
+      and the one-row strip (a phone's, or a wide screen's folded list)
+      scrolls sideways to the move in view. A move whose side used the
+      engine's help first (Analyze, a hint, Calculate or the evaluation
+      bar) carries the Analyze icon, its title saying who and which, and
+      the move box takes a typed move wherever a click would put it.
     - The Coach's feed: a badge and a note for each moment (verdict, reply,
       watch, end), with its actions (a move to show, or Analyze it).
     - radio(): segmented choices kept in step with the draft.
@@ -62,7 +62,8 @@
       and the Fine-tune rows (built once from js/scene/quality.js's
       SETTINGS).
     - renderEvalOnly(): the evaluation bar alone, shown or hidden and turned
-      with the board.
+      with the board; its first showing in a live two-player game marks the
+      side to move, once a game (consultBar() in js/game/flow.js).
 
 ✒ Usage Instructions:
     An ES module of the page; nothing in it runs on import. js/main.js calls
@@ -559,7 +560,8 @@ export function init() {
     });
     /* The move in view is kept visible by scrolling the list itself, and only when it changed:
        scrollIntoView also scrolled the whole panel on phones, pulling it down to the move list on
-       every render. A phone's one-row strip (css/media.css) scrolls sideways. */
+       every render. The one-row strip (css/workspace.css: a phone's, or a folded list on a wider
+       screen) scrolls sideways. */
     const curEl = rebuilt && list.querySelector('.cur');
     if (curEl) { const r = curEl.getBoundingClientRect(), b = list.getBoundingClientRect(); if (r.top < b.top) list.scrollTop -= b.top - r.top; else if (r.bottom > b.bottom) list.scrollTop += r.bottom - b.bottom; if (r.left < b.left) list.scrollLeft -= b.left - r.left; else if (r.right > b.right) list.scrollLeft += r.right - b.right; }
     else if (rebuilt) list.scrollTop = list.scrollLeft = 0;   // the first position: the list's start

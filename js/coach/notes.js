@@ -1,28 +1,28 @@
 /*
 ✒ Metadata
-    - Title: Coach Notes (MONOLITH Edition - v1.1)
+    - Title: Coach Notes (MONOLITH Edition - v1.2)
     - File Name: notes.js
     - Relative Path: js/coach/notes.js
     - Artifact Type: javascript
-    - Version: 1.1.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.2.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.2.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — In a
+      two-player game the hint marks the side to move when it shows
+      (markConsult('hint'), js/game/flow.js), so the move list, the PGN and
+      the other player say a hint was used.
     - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       end note offers Show <move> and Analyze it at the turning point, and
       turningPly() hands that ply to Analyze game.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: asking for a hint while one is being
-      worked out no longer cancels both; coachQueued() lets a study wait its
-      turn behind the Coach's reading.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -38,7 +38,10 @@
     - coachWatch(): check, threats of mate or material, loose pieces, else a
       tip for the phase.
     - Opening habits said once a game.
-    - giveHint(): a hint in steps, from a nudge to the move.
+    - giveHint(): a hint in steps, from a nudge to the move; in a live
+      two-player game its first step marks the side to move as having used
+      a hint (markConsult() in js/game/flow.js), and its further steps add
+      nothing.
     - coachReview() and coachEnd(): accuracy and the moves worth another
       look; the end note's actions show the turning point on the board or
       in Analyze.
@@ -54,9 +57,10 @@
 ✒ Other Important Information:
     - Dependencies: imports app/store.js, app/base.js, scene/board.js,
       app/state.js, game/engine.js, game/board-ui.js, game/play.js,
-      game/lines.js, coach/coach.js, coach/facts.js, coach/book.js and
-      game/input.js; globals Chess (js/core/chess.js), Monolith
-      (js/core/monolith.js) and COACH_VOICE (js/data/coach-voice.js).
+      game/lines.js, coach/coach.js, coach/facts.js, coach/book.js,
+      game/input.js and game/flow.js; globals Chess (js/core/chess.js),
+      Monolith (js/core/monolith.js) and COACH_VOICE
+      (js/data/coach-voice.js).
     - Shared state (js/app/store.js): sets app.hint; reads app.started.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari, served
       over http(s) (Live Server, a static host, the artifact); ES modules do

@@ -1,28 +1,27 @@
 /*
 ✒ Metadata
-    - Title: Grimoire (MONOLITH Edition - v1.3)
+    - Title: Grimoire (MONOLITH Edition - v1.4)
     - File Name: grimoire.js
     - Relative Path: js/ui/grimoire.js
     - Artifact Type: javascript
-    - Version: 1.3.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.4.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — Roving
+      term groups (data-roving): a group's terms are one Tab stop, the
+      arrows move between them, Home and End go to the ends; Analyze's six
+      search readouts are one.
     - 1.3.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Go to
       lands on the control an article names (GR_AT, grLand), auto-flip, PGN
       and Draw too; no matches offer Show N in All and Clear search.
     - 1.2.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose.
-    - 1.2.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From
-      the release audit Dennis asked for: the Grimoire draws at boot (a
-      reload onto it showed an empty index), keeps its place and focus on
-      phones and after Back, lists its terms as list items holding
-      buttons, and ignores a damaged saved category.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -42,6 +41,10 @@
       button takes the focus, a text field never. A hidden control leaves
       the jump at the tab's top. The palette's :keys uses grLand() too.
     - termify(): marks terms in the markup.
+    - Roving groups, set up in init() for every [data-roving] element
+      (Analyze's six search readouts): its terms are one Tab stop, which
+      comes back to the term last used there; the arrow keys move between
+      them, and Home and End go to the first and the last.
     - termOpen() and termClose(): the term card beside any marked term.
 
 ✒ Usage Instructions:

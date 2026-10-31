@@ -8,19 +8,29 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
 ✒ Metadata
-    - Title: MONOLITH (digiSpace Edition - v2.18)
+    - Title: MONOLITH (digiSpace Edition - v2.19)
     - File Name: index.html
     - Relative Path: index.html
     - Artifact Type: markup
-    - Version: 2.18.0
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 2.19.0
+    - Date: 10/31/2026
+    - Update: Saturday, October 31, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.19.0 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      side panel is redesigned: raised cards whose head bands hold at the
+      top, readings and fields in wells, the chosen option and the focus
+      ring in the world's accent, fold-outs that open as they were left, an
+      index for Settings, a crossfade between tabs and a move list that
+      folds to one row on a wide screen. A hint, Calculate and the
+      evaluation bar mark a friend game's move as Analyze does, naming
+      which. The knight is a little squarer and the rook's merlons are
+      rounded; the loading screen's tip is set on the stage, and Analyze's
+      search profile is a smooth curve over its own hash strip.
     - 2.18.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       board fits any stage and takes a dragged piece, with layouts for
       phones held sideways, upright tablets and touch. The board is free
@@ -35,15 +45,6 @@
       pieces, opens the page on the loading screen. Both are written in
       from assets/ by tools/build-emblem.mjs and drawn in the world's own
       board tones.
-    - 2.16.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Dennis
-      asked the loading screen to slow down and breathe, with a loading
-      meter and rotating tips and facts: the M is written in 2.65 s, the
-      pieces and the glint take 3.6 s and end on a breath, a meter under the
-      name fills a segment only as each step really finishes (the scripts,
-      the board, the first frame, the pillar models, Stockfish), and a
-      raised card turns over a tip about the page or a chess fact every 5.2
-      s. It follows Settings → Animation (Brisk shortens it, Minimal keeps
-      it still) and Tips (Off leaves the facts).
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -71,12 +72,14 @@
       apart; Start game kept at the pane's foot, asking before it ends a
       game. Friend games turn the board to the side to move a beat after
       each move (Turn the board for each player), and friends can agree a
-      draw; a side that looks at Analyze during the game has its move
-      marked (a badge in the move list, a comment in the PGN) and the
-      other player is told. Offered a draw on your turn, the computer
-      judges the position at full strength: it accepts when it stands a
-      pawn or more worse, faces mate, or is level from move 20, and
-      otherwise plays on, open to a new offer five moves later. Before a
+      draw; a side that uses the engine's help during the game (Analyze, a
+      hint, Calculate moves, or the evaluation bar, once a game) has its
+      move marked (a badge in the move list whose title says which, a
+      comment in the PGN naming it) and the other player is told. Offered
+      a draw on your turn, the computer judges the position at full
+      strength: it accepts when it stands a pawn or more worse, faces mate,
+      or is level from move 20, and otherwise plays on, open to a new offer
+      five moves later, a wait kept through a reload. Before a
       game the board is free on every tab, both sides moving in turn, and
       Play from here makes the line a game. A game in progress survives a
       reload. Copy PGN, Download PGN and Copy FEN sit under the game; Load
@@ -106,13 +109,14 @@
       play their replies from the line, hints one at a time; practice
       games are judged by their goal against Stockfish at full strength.
       Read: the board you see as bars, piece rows, a phase meter, a
-      structure map and rules badges; anything with squares lights them on
-      the map and the 3D board. Set up: a board editor (click, keyboard or
-      piece letter) tied both ways to a FEN coloured field by field, each
-      field explained, Who plays it (against Stockfish, from either side,
-      or both sides on this screen) and Play this position at its foot,
-      with a sentence saying how the game will be played. Solved studies
-      are kept in this browser. Every diagram draws the house piece set.
+      structure map and the rules as readings; anything with squares
+      lights them on the map and the 3D board. Set up: a board editor
+      (click, keyboard or piece letter) tied both ways to a FEN coloured
+      field by field, each field explained, Who plays it (against
+      Stockfish, from either side, or both sides on this screen) and Play
+      this position at its foot, with a sentence saying how the game will
+      be played. Solved studies are kept in this browser. Every diagram
+      draws the house piece set.
     - Grimoire: a reference for 149 terms on these screens (definition,
       how it reads in a game, in analysis and in the engine, where it is,
       an example, related terms), searchable and by category; underlined
@@ -123,7 +127,8 @@
       one baseline, narrowing with the bar (the levels go under 1100 px,
       the last move under 1000) while the players or the tab's title stay.
       The palette, Flip, Sound and the release chip sit at the foot of the
-      rail, and in the bar under 900 px.
+      rail, and in the bar under 900 px; with a mouse or trackpad the
+      palette's button shows its key there (in the bar from 600 px).
     - Loading screen: the emblem, the MONOLITH M of slate squares carrying
       the house piece set, in the colours of the world the page
       opens in, taking its time: the M written square by square, the board
@@ -134,9 +139,10 @@
       built, bows a to h with the glint and opens out as the screen lifts.
       Beneath it a loading meter fills a segment as each
       step really finishes (scripts, board, first frame, pillar models,
-      Stockfish), and a card turns over a tip or a chess fact. It follows
-      Animation speed and Tips; a key or a click skips ahead; reduced
-      motion keeps it still.
+      Stockfish), and under the meter a tip or a chess fact is set in the
+      screen's own type, under a kicker between two hairlines, the next
+      rising into place every 5.2 s. It follows Animation speed and Tips;
+      a key or a click skips ahead; reduced motion keeps it still.
     - Two worlds and one transition: materials, lights, haze, bloom and
       backdrop blend, the sets swap under a dip to the canvas, the camera
       eases to the world's pose. Settings pins a world or lets it follow,
@@ -176,8 +182,11 @@
       needle that is one shape with the hub ring, the pawn in its eye; it
       points between levels for Custom settings.
     - Analyze: MultiPV with WDL to a time limit or Go infinite; depth,
-      nodes, NPS, hashfull and time; Sharpness (MultiPV Dropoff); search
-      profile; UCI options; a root move-value field and a fork walk on a
+      nodes, NPS, hashfull and time, one Tab stop that the arrow keys move
+      through (data-roving); Sharpness (MultiPV Dropoff); the search
+      profile, depth as a smooth curve over a strip of its own for the hash
+      on one time axis, read out under the pointer or a finger; UCI
+      options; a root move-value field and a fork walk on a
       second engine; the X-Ray (toggle or held Space; on touch a tap on the
       board aims it) as a gauge ring with side-coloured beads and a state
       rim, its readout docked beside the board; scrubbing any line shows
@@ -201,7 +210,19 @@
       Sound and motion, World and graphics, Help and about), among them
       Coach comments, Evaluation bar, Turn the board for each player,
       Explore in Analyze and Short source badges; Keys and mouse and the
-      MONOLITH system fold away.
+      MONOLITH system fold away. An index under the title (Game, Board,
+      Motion, World, Help) brings a card's head to the top of the panel
+      and the focus to its title (tabindex="-1").
+    - Side panel: its cards, and Analyze's and the Crucible's sections,
+      stand raised on the panel's ground, each head band held at the top
+      while its card scrolls, with readings and fields sunk in wells; a
+      chosen option is a raised segment with a check in the world's
+      accent, and one focus ring in that accent marks the keyboard's
+      place. Every fold-out (Load a game, Engine lines, UCI options, Keys
+      and mouse, the MONOLITH system and the rest) is the same full-width
+      row and opens as it was left, even after a reload. Fold-outs open
+      over 280 ms and a choice in the rail crossfades the panes, where the
+      browser can; Minimal and reduced motion turn both off.
     - Layout: drag handles on the dock (in Crucible, the heartbeat's
       height), the side panel and the move list, the panel's width saved
       per world and the others per destination; arrow keys step them,
@@ -231,9 +252,10 @@
     - Review with the move list or ← →; typed moves in long algebraic, SAN
       (up to ten characters, as exd8=Q+) or castling notation; up to 899
       px wide the move list is a strip at the panel's foot, the move box
-      behind its keyboard button; on Play, F flips, U takes back (Ctrl or
-      Cmd Z too) and H asks for a hint; FEN load and copy; castling lanes;
-      click-through.
+      behind its keyboard button, and on a wider screen the Moves head's
+      fold button keeps it to that one row, remembered; on Play, F flips,
+      U takes back (Ctrl or Cmd Z too) and H asks for a hint; FEN load and
+      copy; castling lanes; click-through.
     - Structure: the rules, the MONOLITH maths, the levels and the five
       datasets are plain scripts (js/core, js/data) that Node tools load
       too; the app is ES modules by concern (app, scene, game, coach, ui)
@@ -262,10 +284,10 @@
     term: click it for its card, or open the Grimoire tab (/ searches).
     Position: pick a view with the switch at the top. Studies: Start on Up
     next, or open any card; the Study card at the top runs it. Read: point
-    at a bar, a chip or a badge to light its squares (click to keep them
-    lit). Set up: choose a tool from the tray and click squares (or use the
-    arrow keys, Enter, Delete and piece letters), or paste a FEN; choose
-    Who plays it, and Play this position starts a game from it.
+    at a bar, a chip or a rules row to light its squares (click to keep
+    them lit). Set up: choose a tool from the tray and click squares (or
+    use the arrow keys, Enter, Delete and piece letters), or paste a FEN;
+    choose Who plays it, and Play this position starts a game from it.
 
     Adding a feature: one NAV entry (js/ui/nav.js), one <section
     class="pane"> here with the matching id, and one onRender() callback in
@@ -329,9 +351,10 @@
       WebGL, served over http(s). Every level above Minimal needs WebGL 2;
       WebGL 1 draws Minimal.
     - Storage: preferences in localStorage (monolith-prefs-v2, moved from
-      wizards-chess-prefs-v2 on first load), solved studies among them, and
-      the game in progress (monolith-game-v1), so it survives a reload; the
-      page works when storage is blocked.
+      wizards-chess-prefs-v2 on first load), solved studies and the
+      panel's open fold-outs among them, and the game in progress
+      (monolith-game-v1), so it survives a reload; the page works when
+      storage is blocked.
     - Versioning: APP_VERSION and APP_DATE in js/app/base.js are what the
       page shows; they repeat Version and Date above, so a release bumps
       both.
