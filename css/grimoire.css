@@ -84,8 +84,10 @@
 .gr-it-cat{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gc)}
 .gr-item p{font-size:12.5px;line-height:1.45;color:var(--md-on-surface-var);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-wrap:pretty}
 .gr-item mark{background:transparent;color:var(--md-primary);font-weight:600}
-.gr-none{padding:16px 8px 10px;font-size:13px;color:var(--md-on-surface-var)}
-.gr-none-act{padding:0 8px 12px}
+/* nothing matches: the sentence in a dashed outline (inset by the list's own 8 px bleed), the way
+   out centred under it */
+.gr-none{margin:6px 8px 10px;padding:14px 12px;border:1px dashed var(--pnl-line);border-radius:var(--r-inner);font-size:13px;text-align:center;text-wrap:pretty;color:var(--pnl-ink-2)}
+.gr-none-act{justify-content:center;padding:0 8px 12px}
 .gr-article{display:flex;flex-direction:column;gap:16px;min-width:0}
 .gr-a-nav{display:flex;align-items:center;gap:2px;margin:-8px -8px -6px -12px}
 .gr-a-nav .grow{flex:1}
