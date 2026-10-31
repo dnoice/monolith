@@ -4,14 +4,17 @@
     - File Name: xray.css
     - Relative Path: css/xray.css
     - Artifact Type: stylesheet
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.0.3
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.0.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — On a
+      stage under 760 px the chip keeps 8 px from Analyze's WDL column; the
+      phone bar's labels keep one height, 10 px in MONOLITH.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -19,9 +22,7 @@
     - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a [hidden] rule the base rule in
       css/tokens.css already covers is gone.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Tactical X-Ray readout docked beside the board (Dennis, 10/22/2026):
@@ -29,11 +30,13 @@
     phones.
 
 ✒ Key Features:
-    - The docked chip beside the board, on either side.
+    - The docked chip beside the board, on either side; on the right it
+      stops 8 px short of Analyze's WDL column, on a narrow stage too.
     - The readout: the square, the mode, the gauge with its delta, the
       status, and each side's pieces as beads.
     - Phones: a two-line strip (the square and its state, then the gauge and
-      the move).
+      the move), and the bottom bar's labels at one line height in both
+      worlds, so the bar stays put when the world changes.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 11 of 12. The sheets are one cascade

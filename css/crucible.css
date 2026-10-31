@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Crucible Styles (MONOLITH Edition - v1.0)
+    - Title: Crucible Styles (MONOLITH Edition - v1.1)
     - File Name: crucible.css
     - Relative Path: css/crucible.css
     - Artifact Type: stylesheet
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — A
+      two-row board card with a 128 px band to clear it; the verdict in a
+      sentence, a next step on the empty deck, no Moves card under the deck.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -28,11 +31,19 @@
 
 ✒ Key Features:
     - The deck over the stage: its sections and canvases, the Hive and its
-      legend.
-    - The board card for an expanded Crucible game.
-    - The pane: the verdict, the result matrix, the Elo interval bar, the
-      pentanomial bars, the anomaly list, the configuration grid with
-      checked number fields, and the progress bar.
+      legend, and before a live run a note over the empty canvases saying
+      what to do next.
+    - The board card for an opened Crucible game, in two rows (the game and
+      its anomaly's move or result; where you are and the way back) with
+      Details under them; its foot wraps on a narrow stage.
+    - The board's top band (128 px on #scene) that keeps the board clear of
+      the closed card.
+    - The shared Moves card hidden under the deck and shown, listing that
+      game, while a game is on the board.
+    - The pane: the verdict and its reading as a sentence, the result
+      matrix, the Elo interval bar, the pentanomial bars, the anomaly list,
+      the configuration grid with checked number fields, how a live run
+      plays (folded under Start run), and the progress bar.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 4 of 12. The sheets are one cascade

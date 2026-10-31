@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Media Overrides (MONOLITH Edition - v1.0)
+    - Title: Media Overrides (MONOLITH Edition - v1.1)
     - File Name: media.css
     - Relative Path: css/media.css
     - Artifact Type: stylesheet
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Phones
+      held sideways, upright tablets and touch screens get their own rules;
+      on a phone the move list is a strip at the panel's foot.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -22,17 +25,34 @@
       Dennis asked for a proper separation of concerns.
 
 ✒ Description:
-    The overrides for small screens and reduced motion, kept last so they
-    win: on phones and narrow tablets the rail becomes a bottom bar, very
-    narrow screens tighten further, and reduced motion turns transitions
-    off.
+    The overrides for small screens, touch screens and reduced motion, kept
+    last so they win. Under 900 px the page is one column over a bottom
+    bar, with layouts of its own for a phone held sideways and a tablet
+    held upright; touch screens get targets a finger can hit, and reduced
+    motion turns transitions off.
 
 ✒ Key Features:
     - Up to 899 px: one column (stage, dock, panel, then the rail as a
       bottom bar); the splitters and the match strip are hidden and the
-      chrome is compact.
+      chrome is compact. The stage's safe bands narrow to the player cards'
+      compact rows, a chip taking the top card's place while it shows.
+    - Up to 899 px, the move list: a strip held at the panel's foot, one
+      row of moves scrolling sideways with the steps beside it and the move
+      box behind its keyboard button; the snackbar sits over the strip, up
+      to the screen's width, and the heartbeat's head keeps to one row.
+    - A phone held sideways (up to 899 px wide and 500 px tall): the rail
+      at the left, the stage the full height, the dock and the panel at the
+      right, and no telemetry footer.
+    - A tablet held upright (600 to 899 px, portrait): a stage up to 52% of
+      the height (Analyze keeps its share) and the panel's cards in a
+      centred 680 px column.
+    - Under 600 px: no telemetry footer, and Analyze's stage takes 38% so
+      its panel gains the rows.
     - Up to 420 px: no player subtitles, a tighter brand and narrower side
       cards.
+    - Touch screens (a coarse pointer): small buttons, tabs and menus 40 px
+      tall, the small switch at full size, and 16 px type in every field,
+      so iOS Safari does not zoom in on one.
     - prefers-reduced-motion: no transitions on the snackbar, the evaluation
       bar, switches and the instrument bars, and no halo animation.
 

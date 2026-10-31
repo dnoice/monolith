@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Grimoire Styles (MONOLITH Edition - v1.0)
+    - Title: Grimoire Styles (MONOLITH Edition - v1.1)
     - File Name: grimoire.css
     - Relative Path: css/grimoire.css
     - Artifact Type: stylesheet
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — One
+      ring round the search, a way out of an empty one, icons centred on
+      their headings; the panel's width and Moves card left to the frame.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -20,9 +23,7 @@
       release audit Dennis asked for: a selector for a class no page uses
       (.gr-cat-dot) and [hidden] rules the base rule in css/tokens.css
       already covers are gone.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Grimoire tab: the searchable index of terms, the category chips and
@@ -30,10 +31,12 @@
     inside the engine).
 
 ✒ Key Features:
-    - The search field and the category chips with their counts.
-    - The term index, with matches marked.
-    - The article: definition, the three viewpoints, where it is in
-      MONOLITH, an example and related terms.
+    - The search field, ringed once as a whole, and the category chips
+      with their counts.
+    - The term index, with matches marked; a search that finds nothing
+      offers its way out (Show N in All, Clear search).
+    - The article: definition, the three viewpoints (each icon centred on
+      its heading), where it is in MONOLITH, an example and related terms.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 7 of 12. The sheets are one cascade

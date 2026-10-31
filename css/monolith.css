@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: MONOLITH Components (MONOLITH Edition - v1.0)
+    - Title: MONOLITH Components (MONOLITH Edition - v1.1)
     - File Name: monolith.css
     - Relative Path: css/monolith.css
     - Artifact Type: stylesheet
-    - Version: 1.0.3
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Analyze's
+      safe bands place the toggles, the WDL column, the field's key and a
+      pinned line's Play to here; the FEN or PGN box; the PV's touch hint.
     - 1.0.3 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The app
       bar's logo is now Dennis's Conical M: in MONOLITH its squares take
       the world's light slate, since the dark slate square sinks into the
@@ -21,9 +24,6 @@
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
       index.html.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
-      release audit Dennis asked for: a rule for a class no page uses
-      (.ref-card) is gone.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -34,12 +34,22 @@
 
 ✒ Key Features:
     - Shared components restyled for MONOLITH: the brand, pane and group
-      headings, the rail, the player cards and the stage chips.
+      headings, the rail, the player cards, the stage chips and Reset view.
     - Instrument components: headings that wrap before they shrink,
       readouts, badges, the WDL ribbon and its Sharpness halo.
-    - Stage instruments: the layer toggles and notes laid over the 3D board.
-    - The dock: the Synaptic PV scrubber (Analyze) and the heartbeat strip
+    - Analyze's pane: the search status in two lines under Go, a one-line
+      MultiPV subtitle, Sharpness with its chip on a row under the numbers,
+      and the Load box that takes a FEN or a PGN game.
+    - Stage instruments in Analyze's safe bands: the layer toggles at the
+      top band's right with the field's key under them, the WDL column in
+      the right band, and a previewed or pinned line (with its Play to
+      here) in the chips' slot at the top band's left. A stage under 760 px
+      narrows the right band and widens the slot.
+    - The dock: the Synaptic PV scrubber (Analyze), whose head tells a
+      touch screen that a tap pins a line, and the heartbeat strip
       (Crucible).
+    - The match strip's evaluation in Analyze at the move number's size,
+      and the short source badges in the telemetry footer.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 3 of 12. The sheets are one cascade

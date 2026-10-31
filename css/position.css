@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Position Styles (MONOLITH Edition - v2.1)
+    - Title: Position Styles (MONOLITH Edition - v2.2)
     - File Name: position.css
     - Relative Path: css/position.css
     - Artifact Type: stylesheet
-    - Version: 2.1.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 2.2.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 2.2.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — Set up's
+      Who plays it and a held foot; rings that fit their counts, cards in
+      line, Start first on a phone; radius tokens; the frame's panel width.
     - 2.1.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -20,10 +23,6 @@
       release audit Dennis asked for: a feature chip's name is cut short
       with an ellipsis in a narrow column, and a [hidden] rule the base rule
       already covers is gone.
-    - 2.1.0 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      pieces take Dennis's house set and its two woods (boxwood White,
-      ebony Black); the cathedral's diagram squares are the ones he drew
-      the set on.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -39,11 +38,17 @@
       held, cursor) in a cathedral and a MONOLITH palette; the pieces in
       Dennis's two woods (--pc-boxwood, --pc-ebony).
     - Studies: the Study card and its goal tracks, Up next, category tiles
-      with rings, the card grid and the detail view.
+      with rings (each count inside its ring; Set-ups' ring dashed), the
+      card grid with each card's level and kind in line, and the detail
+      view, which on a phone puts what a study is and Start first.
     - Read: side-to-move bars, the material split bar and piece rows, the
       phase meter, the structure map and its chips, the rules badges.
     - Set up: the tool tray, the editor board, the position options and
-      the FEN box over its colour layer, with the six field chips.
+      the FEN box over its colour layer, with the six field chips; Who
+      plays it, and a foot that holds Play this position at the bottom of
+      the panel.
+    - Corners from the radius tokens (--r-field, --r-inner), so MONOLITH
+      squares them up.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 8 of 12. The sheets are one cascade

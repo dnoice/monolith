@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Play Cards (MONOLITH Edition - v1.0)
+    - Title: Play Cards (MONOLITH Edition - v1.1)
     - File Name: play.css
     - Relative Path: css/play.css
     - Artifact Type: stylesheet
-    - Version: 1.0.3
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      free board, the board turning, Start game held in reach, the PGN game
+      record, Draw, numbers whole in the strip; .kicker to css/layout.css.
     - 1.0.3 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -20,23 +23,34 @@
       release audit Dennis asked for: rules for classes no page uses
       (.card-rule, .card-sub) and [hidden] rules the base rule in
       css/tokens.css already covers are gone.
-    - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      match strip, which Dennis found disjointed before a game: only a
-      number takes the larger size, and a side the die will pick shows
-      half marble, half obsidian.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The Play pane as cards (Dennis, 10/22/2026), and the match strip in the
-    app bar that names who is playing, the level and whose move it is.
+    app bar that names who is playing, the level and whose move it is. It
+    also carries the free board before a game, the players' cards while
+    the board turns, and the game record.
 
 ✒ Key Features:
-    - Cards: head, aside, rule and sub-text, with switch rows and the level
-      inside a card.
+    - Cards: head and aside, with switch rows and the level inside a card;
+      group titles elsewhere end in a hairline.
     - Engine lines as a disclosure inside a card.
     - The status card: the turn banner, the move and the opening's name.
+    - The game's actions: two or three to a row (Draw, in a game between
+      two players), the words without their icons in a narrow panel.
+    - The setup's Start game held at the foot of the pane while the cards
+      scroll under it.
+    - The game record: Load a game folded at the foot of the setup with its
+      PGN box, and Copy PGN, Download PGN and Copy FEN under New game and
+      Resign.
+    - The free board before a game: its tried moves in the list, the line
+      Play from here opens the setup with, and on a phone the explore
+      chip's line over its three buttons.
+    - The board turning for each player: the players' cards out of sight
+      while it turns; a cut (Minimal, reduced motion) never hides them.
     - The match strip: players, level, move number, status and the last
-      move, in one line of the app bar.
+      move, in one line of the app bar; the move number and the last
+      segment are never cut short.
     - Narrow widths: at 1380, 1240 and 1080 px the strip drops its small
       labels, then the last move, then the players and title.
 

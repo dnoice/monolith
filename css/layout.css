@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Page Layout (MONOLITH Edition - v1.6)
+    - Title: Page Layout (MONOLITH Edition - v1.7)
     - File Name: layout.css
     - Relative Path: css/layout.css
     - Artifact Type: stylesheet
-    - Version: 1.6.0
-    - Date: 10/26/2026
-    - Update: Monday, October 26, 2026
+    - Version: 1.7.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.7.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      stage's overlays keep to safe bands off the board, the match strip to
+      the bar's centre line; Settings in cards; the loading screen's arc.
     - 1.6.0 (10/26/2026) [dendogg + Anthropic - Claude Opus 5.5] — The app
       bar carries Dennis's logo, the Conical M he made MONOLITH's official
       mark: its squares in the board diagrams' dark tone (in the cathedral
@@ -24,13 +27,6 @@
       rail, a segment for each step, a sheen on the step under way and a
       flash as each comes in) and the tip card (raised off the stage, a chip
       for its kind, key caps), styled for both worlds; the bar is gone.
-    - 1.4.0 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
-      loading screen animated, as Dennis asked: the M written square by
-      square, the pieces set down in turn, a glint, then the lift, timed by
-      class and by two marker animations (see the section). The graphics
-      meter follows his version 1.2 drawing: the needle turns about the hub,
-      which carries the Automatic mark; the ribbon is gone, and the chosen
-      cell sits above its neighbours, since the cells now meet.
     Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
@@ -41,25 +37,39 @@
     loading screen covers it until the 3D board has drawn.
 
 ✒ Key Features:
-    - App bar: the brand at its min-content width, with Dennis's logo (the
+    - App bar: three columns, so the match strip sits on the page's centre
+      line; the brand at its min-content width, with Dennis's logo (the
       Conical M, written into the page by tools/build-emblem.mjs) in the
-      board diagrams' tones, and the release chip beside the palette
-      button.
-    - Shared controls: state layers, ripples and focus rings.
-    - Body layout: the navigation rail, the stage and its overlays, the
-      panel and the move list that is always present.
-    - Panel parts: segmented buttons, side choice cards, the difficulty
-      slider, the in-game summary and switch rows; Settings' graphics
-      meter (Dennis's dial of five back-rank cells, with its needle and
-      pawn hub) and its Fine-tune rows.
-    - Per-tab basics for Analyze, Position and Settings, and the snackbar
-      (one message at a time).
+      board diagrams' tones; the release chip and the palette button in
+      one height and shape.
+    - Shared controls: state layers, ripples and focus rings; a segmented
+      choice is ringed whole, with a bar under the focused option.
+    - Body layout: the navigation rail, the stage, the panel at its world's
+      width (css/tokens.css) and the move list, which Settings and the
+      Grimoire leave out (its fold is in css/workspace.css, its phone strip
+      in css/media.css).
+    - The stage's safe bands (--safe-t, --safe-r, --safe-b, --safe-l on
+      #scene), which the camera fits the board inside: the player cards,
+      the chips and the orbit hint in the top band, the chips on a second
+      row of it on a narrow stage; the castling chip and Reset view in the
+      foot band.
+    - The Crucible's board on a narrow stage: an explored line's chip takes
+      the game card's place under 820 px (under 920 px while Reset view
+      shows), and Reset view is its icon alone under 580 px.
+    - Panel parts: the kicker over every pane's title, segmented buttons,
+      side choice cards, the difficulty slider, the in-game summary and
+      switch rows; Settings' five cards, and its graphics meter (Dennis's
+      dial of five back-rank cells, with its needle and pawn hub) and its
+      Fine-tune rows.
+    - Per-tab basics for Analyze (whose board has no player cards),
+      Position and Settings, and the snackbar (one message at a time).
     - The stage's notices: WebGL missing (over the stage), and the page
       opened from disk (over the whole page, since nothing can run).
     - The loading screen: Dennis's emblem on the stage colour, its squares
-      and woods the board diagrams', with the name in Michroma; animated in
-      three stages (the M written, a rest with a bar if the board takes
-      long, the pieces set and a glint) and still under reduced motion.
+      and woods the board diagrams', with the name in Michroma and White's
+      back rank in an arc over it; animated in three stages (the M written,
+      a rest with the loading meter and a tip while the board is built, the
+      pieces set and a glint) and still under reduced motion.
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 2 of 12. The sheets are one cascade
@@ -70,6 +80,9 @@
     - Dependencies: the tokens in css/tokens.css (custom properties) and
       the board diagrams' colours in css/position.css, the markup of
       index.html, and the class names the modules under js/ set.
+    - Safe bands: js/scene/camera.js reads --safe-t/r/b/l from the canvas
+      (#scene); css/monolith.css (Analyze), css/crucible.css and
+      css/media.css (phones) set their own.
     - Compatible platforms: current Chrome, Edge, Firefox and Safari.
 ---------
 */

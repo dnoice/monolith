@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Workspace Styles (MONOLITH Edition - v1.0)
+    - Title: Workspace Styles (MONOLITH Edition - v1.1)
     - File Name: workspace.css
     - Relative Path: css/workspace.css
     - Artifact Type: stylesheet
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      Moves card folds to its title while there is nothing to list, and
+      the palette button takes the release chip's height and shape.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -20,9 +23,7 @@
     - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a [hidden] rule the base rule in
       css/tokens.css already covers is gone.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     The parts of the workspace around the board that are not a tab: the
@@ -34,10 +35,14 @@
       10/22/2026: it bled off the right edge).
     - Command Palette: a quieter glass, focus shown as a cyan rule (Dennis,
       10/15/2026).
+    - The palette button in the app bar, in the release chip's height and
+      shape (the world's pill).
     - System sheet in Settings: swatches and the contrast ledger.
     - The dock at a fixed height while shown, so search lines scroll inside
       it.
-    - The move list as a sheet docked under the panel.
+    - The move list as a sheet docked under the panel, folded to its title
+      (its controls gone until they can act) while there is nothing to
+      list.
     - Splitters: the grip, drag, arrow keys (Shift for bigger steps), Home
       or double-click to reset.
 

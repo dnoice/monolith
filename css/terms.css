@@ -1,17 +1,20 @@
 /*
 ✒ Metadata
-    - Title: Term Styles (MONOLITH Edition - v1.0)
+    - Title: Term Styles (MONOLITH Edition - v1.1)
     - File Name: terms.css
     - Relative Path: css/terms.css
     - Artifact Type: stylesheet
-    - Version: 1.0.2
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      control a Grimoire article's Go to lands on is ringed for a moment,
+      and held ringed, without the fade, under reduced motion.
     - 1.0.2 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -19,13 +22,12 @@
     - 1.0.1 (10/23/2026) [dendogg + Anthropic - Claude Opus 5.5] — From the
       release audit Dennis asked for: a [hidden] rule the base rule in
       css/tokens.css already covers is gone.
-    - 1.0.0 (10/22/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
-      release as its own file: split out of wizards-chess.html 2.4.0 when
-      Dennis asked for a proper separation of concerns.
+    Earlier entries: see CHANGELOG.md (moved entries)
 
 ✒ Description:
     A Grimoire term wherever it appears on screen: a quiet dotted underline,
-    and the card a click or Enter opens. Badges keep their own look.
+    and the card a click or Enter opens. Badges keep their own look. The
+    control a Grimoire article's Go to lands on is ringed here too.
 
 ✒ Key Features:
     - The dotted underline for a term in running text, with hover, open and
@@ -34,6 +36,9 @@
       viewpoints and a foot with the link into the Grimoire.
     - Badges that are terms keep their badge look; the card has a MONOLITH
       variant.
+    - The landing ring: where a Grimoire article's Go to lands, the control
+      it names is ringed for a moment (and stays ringed, without the fade,
+      under reduced motion).
 
 ✒ Usage Instructions:
     Linked from index.html, stylesheet 9 of 12. The sheets are one cascade

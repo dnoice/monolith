@@ -1,18 +1,21 @@
 /*
 ✒ Metadata
-    - Title: Design Tokens (MONOLITH Edition - v1.0)
+    - Title: Design Tokens (MONOLITH Edition - v1.1)
     - File Name: tokens.css
     - Relative Path: css/tokens.css
     - Artifact Type: stylesheet
-    - Version: 1.0.1
-    - Date: 10/24/2026
-    - Update: Saturday, October 24, 2026
+    - Version: 1.1.0
+    - Date: 10/30/2026
+    - Update: Friday, October 30, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Fable 5.1; Anthropic - Claude
       Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — One
+      panel width per world, a nearer-square stage from 900 to 1199 px,
+      field and inner radius tokens, and h4 without the browser's margins.
     - 1.0.1 (10/24/2026) [dendogg + Anthropic - Claude Opus 5.5] — Renamed
       with the project: Wizard's Chess is now MONOLITH, the name Dennis
       chose, and this header names the page by its file in the repository,
@@ -29,10 +32,16 @@
 
 ✒ Key Features:
     - The layout concept: app bar, navigation rail (a bottom bar on phones),
-      the stage with a player card at each end, the dock, the panel over an
-      always-present move list, and the telemetry footer.
+      the stage with a player card at each end, the dock, the panel over
+      the move list (on the tabs that have moves), and the telemetry footer.
     - Material-style tokens for surfaces, text, outlines, primary and error
-      colours, radii and easing.
+      colours, radii (with --r-field for fields and --r-inner for tiles in
+      a card, squared in MONOLITH) and easing.
+    - Layout tokens: one panel width per world (from 1280 px, 400 px in the
+      cathedral and 440 px in MONOLITH; 368 px below), the panel's and the
+      stage's floors (--panel-min, --stage-min), and from 900 to 1199 px a
+      72 px rail, a 344 px panel floor and a stage floor of 60% of the
+      width.
     - The MONOLITH solved stops (System Sheet, plate 03): cyan optimal,
       amber volatile, crimson anomaly; structure in ink and steel.
     - The MONOLITH world override (:root[data-skin="monolith"]): the shared
@@ -53,7 +62,8 @@
 /* Layout concept: one screen, one level of navigation. App bar on top; below it a navigation
    rail (bottom bar on phones), the 3D stage with a player card at each end of the board, a dock
    under the stage for the instrument strips, and a panel that shows the selected destination
-   above a move list that is always present. A telemetry footer closes the MONOLITH world.
+   above a move list, on every tab that plays or reads moves. A telemetry footer closes the
+   MONOLITH world.
    Two worlds share one board: the Cathedral (play) and MONOLITH (the instrument). Tokens below
    are the cathedral's Material set; :root[data-skin="monolith"] remaps them to MONOLITH's solved
    stops, so every shared component follows the world without a second stylesheet.
