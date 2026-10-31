@@ -125,6 +125,7 @@
   .player .pcap:empty{display:none}
   .player .pstate{padding:2px 8px;font-size:10px}
   .player.top{top:8px}.player.bottom{bottom:8px}
+  .player{left:var(--gutter-l)}#stage:has(#evalbar:not([hidden])) .player{left:calc(var(--gutter-l) + 18px)}   /* clear of the evaluation bar while it shows, level with the chips when not */
   #stage > .stage-chip{left:16px;right:16px;width:fit-content;max-width:none;margin-inline:auto;transform:none;padding-block:5px}
   #stage > .stage-chip:not(.castle){top:8px}
   .stage-chip.castle{bottom:8px}
