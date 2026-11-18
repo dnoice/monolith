@@ -4,14 +4,21 @@
     - File Name: MANIFEST.md
     - Relative Path: assets/models/MANIFEST.md
     - Artifact Type: docs
-    - Version: 1.4.1
-    - Date: 10/31/2026
-    - Update: Saturday, October 31, 2026
+    - Version: 1.4.2
+    - Date: 11/18/2026
+    - Update: Wednesday, November 18, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.4.2 (11/18/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
+      Halo's .glb is now exported from column-halo-dendogg-scratchpad.blend,
+      Dennis's rework of the Halo: its row and its solid-geometry figures
+      are measured again (the build script's audit_mesh(), from that file),
+      with notes on its missing root node, its 10.316 height and the two
+      files that still export the earlier Halo. Rows for the three
+      scratchpad .blend files, the pawn's included, which had none.
     - 1.4.1 (10/31/2026) [dendogg + Anthropic - Claude Opus 5.5] — With
       2.19.0: The pieces says the vertex check covers what 1.0.0 built, the
       blocks are checked outside Blender only, and the files here keep the
@@ -75,7 +82,8 @@
     with the .blend it was exported from, and what the loading step needs
     to know: which file fits which slot, how each is placed, what its nodes
     and materials are, and what stays as the fallback; and of the game's
-    3D pieces as .blend files, which the page does not load.
+    3D pieces and the modelling scratchpads as .blend files, which the
+    page does not load.
 
 ✒ Key Features:
     - One row per file with its origin, size, triangle count and SHA-256,
@@ -101,6 +109,10 @@
       whose 03-source/monoliths_build.py writes them to its 05-delivery/
       and copies them here. A rebuild never replaces a file here that was
       changed after it was delivered; it lists it as kept instead.
+      The script's default copy target is still the project's old
+      folder, so it copies here only when given --game-dir.
+    - column-halo.glb is the exception: it is exported from
+      column-halo-dendogg-scratchpad.blend, kept here beside it.
     - The pieces are built by tools/build-piece-models.py in the project
       itself, from js/scene/board.js, and keep any file already here.
     - Living record: adding or changing rows does not bump this header's
@@ -114,6 +126,9 @@ The models the page can load at run time, each a .glb with the .blend it
 was exported from. They are generated files: the Blender workspace's job
 2026-011 builds them with `03-source/monoliths_build.py` and copies them
 here. Change a model in its .blend (see Editing a model) or in that script.
+The Halo's .glb is the one exception: it is exported from
+`column-halo-dendogg-scratchpad.blend`, a reworked Halo kept here, and
+no longer from the script's `column-halo.blend`.
 
 | File | Kind | Origin | License | Notes |
 | ---- | ---- | ------ | ------- | ----- |
@@ -127,8 +142,9 @@ here. Change a model in its .blend (see Editing a model) or in that script.
 | `column-doric.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0 | own work | The Doric column alone; exports the .glb above. 121,710 bytes. SHA-256 `ea64c72412df8d3c79958f722bca29f0c3358c3502fcde245c33cedb6d39bf52` |
 | `column-tuscan.glb` | export | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0, through `column-tuscan.blend`'s exporter | own work | Classic. 3.4 × 10.4, 3,890 triangles, 72,572 bytes. SHA-256 `92b428f0eedaecb3d679d0ec41d009de3ae87a773a01677760d214c8061fab80` |
 | `column-tuscan.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0 | own work | The Tuscan column alone; exports the .glb above. 116,574 bytes. SHA-256 `6f890f8a482c81b1b4e1ce9e1edd0c99dd8df1d6009e97885f1856421e9f9204` |
-| `column-halo.glb` | export | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0, through `column-halo.blend`'s exporter | own work | Modern. 3.24 × 10.4, 2,672 triangles, 65,460 bytes. SHA-256 `56768753052721cae5f4fd1d1675a999170840a3b3d537622b4ed32b9a7914ba` |
-| `column-halo.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0 | own work | The Halo column alone; exports the .glb above. 107,678 bytes. SHA-256 `9f37cc53ea14224c05c30c9161fe7c31909aabf7176ba76334189f543ecb349f` |
+| `column-halo.glb` | export | own work, through `column-halo-dendogg-scratchpad.blend`'s exporter (10/31/2026, glTF I/O 5.2.40) | own work | Modern. 3.24 × 10.32 (10.316 tall, 0.084 under the 10.4 the columns are built to; see Columns in the side slots), 3,670 triangles, 106,124 bytes. Three meshes and no root node (see Loading them). Measured 11/18/2026: triangles and size by the build script's `audit_mesh()` from the scratchpad, matching the file's own accessors. SHA-256 `b98f33d358512df4a21f563885adca2be68583c25cd86dcfa7f768cdccfe301d` |
+| `column-halo.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0 | own work | The Halo column as the build script made it. Its exporter writes the earlier Halo (2,672 triangles, 65,460 bytes), not the .glb above: exporting from it replaces the game's Halo with that one. 107,678 bytes. SHA-256 `9f37cc53ea14224c05c30c9161fe7c31909aabf7176ba76334189f543ecb349f` |
+| `column-halo-dendogg-scratchpad.blend` | blend | own work | own work | The Halo reworked by hand, and the source of `column-halo.glb`: the same three meshes and three materials, named as in `column-halo.blend`, the body now two closed drums and the band a closed ring, with live 0.05 bevels and, on the steel, Blender's Smooth by Angle (linked from its Essentials). No root empty: the meshes sit in the `column-halo` collection, whose glTF for MONOLITH exporter writes `column-halo.glb` beside the file in world space (Export at Collection Center off); `review` is empty. Run on a copy (11/18/2026, Blender 5.2.3), it writes the .glb above with the same nodes, meshes, materials and binary data, only the exporter's version (5.2.41) differing. No Windows user folder in it. 124,227 bytes. SHA-256 `6c8122a1a8e92dc07fe93994f629a565d14ba3a7ea9b93e9a166a181f36e9a32` |
 | `column-fin.glb` | export | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0, through `column-fin.blend`'s exporter | own work | Modern. 3.24 × 10.4, 2,820 triangles, 64,212 bytes. SHA-256 `13a0ef569966900c8ecbd523b4dbbc2ab8ed3208505701daf7e7da362fdeb0c5` |
 | `column-fin.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.2.0 | own work | The Fin column alone; exports the .glb above. 105,194 bytes. SHA-256 `ae055047f5474e8e03add807b1e868af897b51cd2980fb1d218f070b6c7df945` |
 | `column-solomonic.glb` | export | generated: Blender job 2026-011, `monoliths_build.py` 1.4.0, through `column-solomonic.blend`'s exporter | own work | Classic, one watertight mesh. 3.4 × 10.4, 5,312 triangles, 111,600 bytes. SHA-256 `b71e782e56ce42feed58abc4f6a0f664062ce392ac4d283e6a18d54af4bae82b` |
@@ -137,11 +153,13 @@ here. Change a model in its .blend (see Editing a model) or in that script.
 | `column-prism.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.4.0 | own work | The Prism column alone, one fused mesh with a live bevel; exports the .glb above. 109,699 bytes. SHA-256 `314892e453aa4b73ec060c41f44ff161c63b2e6fd490171a03ae3a3866d469d2` |
 | `column-rook.glb` | export | generated: Blender job 2026-011, `monoliths_build.py` 1.5.0, through `column-rook.blend`'s exporter | own work | The game's rook as a pillar, one watertight mesh. 3.4 × 10.4, 4,160 triangles, 86,088 bytes. SHA-256 `b89af77e95ef94e02cd4094e7f5344654a34344839f81c22f0fd243f140d5753` |
 | `column-rook.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.5.0 | own work | The Rook alone, one fused mesh with a live bevel; exports the .glb above. 137,662 bytes. SHA-256 `3b7db7524febd48c4b9e7b6014d4b4da37709dc9fd8c9d3f3b784c63c43efc17` |
-| `pillars.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.5.0 | own work | All ten models side by side, 5 apart, and nothing else: no lights, cameras, floor, room or world. Each model's collection has its own exporter, which writes the same .glb as the model's own file. 252,469 bytes. SHA-256 `692f948fc175d4d46aa8356fac2336688a84a4e39962c1c78b5b98368d008252` |
+| `pillars.blend` | blend | generated: Blender job 2026-011, `monoliths_build.py` 1.5.0 | own work | All ten models side by side, 5 apart, and nothing else: no lights, cameras, floor, room or world. Each model's collection has its own exporter, which writes the same .glb as the model's own file; the Halo's, like `column-halo.blend`'s, writes the earlier Halo, not `column-halo.glb`. 252,469 bytes. SHA-256 `692f948fc175d4d46aa8356fac2336688a84a4e39962c1c78b5b98368d008252` |
 | `piece-pawn.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's pawn, in marble and obsidian, with the review room; exports `piece-pawn-marble.glb` and `piece-pawn-obsidian.glb` when asked (none are kept here). 0.72 × 0.81, 6,640 triangles a wood. 103,903 bytes. SHA-256 `d09ea539a3ec74287bf87c17c4f173be76fabf053d2f56670da3779e72ae0753` |
+| `piece-pawn-dendogg-playground.blend` | blend | own work | own work | A playground for the pawn, laid out as `piece-pawn.blend`: the marble pawn only, its root empty and its body in `material-marble`, the body a mesh of 1,642 vertices with no modifier where `piece-pawn.blend`'s is an 85-point profile under the lathe; no obsidian and no review room. Its collection's exporter writes `piece-pawn-marble.glb` when asked, the name `piece-pawn.blend`'s marble exporter uses (none is kept here). The build script neither reads nor replaces it. No Windows user folder in it. 146,986 bytes. SHA-256 `af9a94a0ba19a5852f3584219b6311a0e93260f3a9364893e2c81e5ad196b70a` |
 | `piece-knight.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's knight, in marble and obsidian, with the review room; exports `piece-knight-marble.glb` and `piece-knight-obsidian.glb` when asked (none are kept here). 0.72 × 1.11 × 0.82, 4,300 triangles a wood. 105,649 bytes. SHA-256 `0a423307fe8f37d8436339e2d813df5a228349c3f92701fd3cdb3b3cbf18aa39` |
 | `piece-bishop.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's bishop, in marble and obsidian, with the review room; exports `piece-bishop-marble.glb` and `piece-bishop-obsidian.glb` when asked (none are kept here). 0.72 × 1.19, 6,904 triangles a wood. 107,646 bytes. SHA-256 `c8fff33a8d7ce8339cfd962ed7402add658f4b728488c7a709856de964c2113f` |
 | `piece-rook.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's rook, in marble and obsidian, with the review room; exports `piece-rook-marble.glb` and `piece-rook-obsidian.glb` when asked (none are kept here). 0.72 × 0.98, 5,692 triangles a wood. 104,952 bytes. SHA-256 `31897c0e2d8c878f10d957b5d2626b4782d575d3da16390bd8da196e2c85fa6c` |
+| `piece-rook-dendogg-scratchpad.blend` | blend | own work | own work | A scratchpad for the rook, laid out as `piece-rook.blend` (`piece-rook-marble` and `piece-rook-obsidian` under `piece-rook`, both materials): the marble rook's profile, under the lathe, and its six box merlons are `piece-rook.blend`'s, vertex for vertex; in the obsidian collection the rook is reworked, its body a mesh of 2,360 vertices with no lathe and no merlons, and beside it stand five primitives on one axis (four cylinders and a cube), not yet named or given a material. `review` is empty. Each wood's exporter writes `piece-rook-{wood}.glb` when asked (none are kept here), the obsidian one taking the five primitives too. The build script neither reads nor replaces it. No Windows user folder in it. 199,941 bytes. SHA-256 `a2adad5d99fe7ac6829676be854ecbc23f38563bacb0c0cd1d544ea11dc3d765` |
 | `piece-queen.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's queen, in marble and obsidian, with the review room; exports `piece-queen-marble.glb` and `piece-queen-obsidian.glb` when asked (none are kept here). 0.72 × 1.45, 7,084 triangles a wood. 110,650 bytes. SHA-256 `f9ce1210b913acbdb7d628f9d7017b5887ee17967b770629adf2a97058987ff2` |
 | `piece-king.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | The game's king, in marble and obsidian, with the review room; exports `piece-king-marble.glb` and `piece-king-obsidian.glb` when asked (none are kept here). 0.72 × 1.70, 6,664 triangles a wood. 104,779 bytes. SHA-256 `5074cf06c867b662b09d8261588b6f5b170bd0cdb4c2e3be1374a953b75c7436` |
 | `pieces.blend` | blend | generated: `tools/build-piece-models.py` 1.0.0, from `js/scene/board.js` | own work | All twelve pieces a square apart, pawn to king, marble in front, and nothing else; each piece's collection has its own exporter, which writes the same .glb as the piece's own file. 115,514 bytes. SHA-256 `e05c965843ba232b970a086a6a7b3f4ee52d5353efdb799ae6801d5f16895d10` |
@@ -175,7 +193,11 @@ The columns, round, each built at the centre slot's size:
   abacus.
 - **Halo** (modern) — a smooth drum tapering to its crown, on a round
   steel foot, broken a little above mid-height by a recessed cyan band
-  between steel rings.
+  between steel rings. Since its rework
+  (`column-halo-dendogg-scratchpad.blend`) its body is two closed drums
+  and its band a closed ring, and the upper drum rises 0.16 out of a
+  steel collar to its top at 10.316, where the script's Halo had a
+  narrower crown up to 10.4.
 - **Fin** (modern) — twelve tapering blades round a slim core, the core
   lit cyan at its foot between the blades, under a steel collar.
 - **Solomonic** (classic) — a four-strand barley-twist shaft making two
@@ -236,7 +258,10 @@ It follows this placement:
   plinths and abacuses have a facing.
 - **Nodes:** one root per file, named for it (`monolith-stele`,
   `column-doric`), with its meshes as children and no transform on any
-  node.
+  node. `column-halo.glb` has no root: exported from its scratchpad, its
+  three meshes are the scene's own nodes, still with no transform.
+  `pillars.js` takes the node named for the file, or the whole scene when
+  there is none, so the Halo loads as it is.
 - **Shadows:** the files carry none of three's flags; set `castShadow` and
   `receiveShadow` on every mesh, as `mesh(…, true, true)` does for the
   built ones.
@@ -247,9 +272,12 @@ Each column is built for the centre slot (10.4 tall, 3.4 at its widest).
 Scaled evenly by the table's factor it takes a side slot's height; its
 bevels, 0.05 everywhere, are still 0.041 at 0.827, above the 0.04 the 2.2.1
 note asks for. Scaled, a column is 2.81 wide on the left and 3.07 on the
-right, a little wider than the boxes there (2.6 and 2.8). A set can be one
-column three times or a mix; the review renders show Doric with Tuscan,
-Halo with Fin, and the Rook in all three.
+right, a little wider than the boxes there (2.6 and 2.8). The reworked
+Halo is 10.316 tall, and `pillars.js` scales every column by the slot's
+height over 10.4, so on the left it stands 8.53 of the slot's 8.6, its
+top 0.07 under the built pillar's (measured in the page, 11/18/2026).
+A set can be one column three times or a mix; the review renders show
+Doric with Tuscan, Halo with Fin, and the Rook in all three.
 
 ### Materials
 
@@ -285,6 +313,17 @@ the root's space. One closed solid means one shell, no open or
 non-manifold edges, no faces wound against their neighbours, no doubled
 points, and no face passing through another.
 
+The Halo's row was measured again on 11/18/2026, from
+`column-halo-dendogg-scratchpad.blend`, the file its .glb now comes from,
+by the same script's `audit_mesh()` and `is_solid()`, imported unchanged
+and run on Blender 5.2.3's command line: the three meshes of its
+`column-halo` collection, modifiers applied, joined in world space, where
+its exporter takes them. `--audit` itself opens only the delivered files
+and finds each model by a root empty the scratchpad does not have. Run
+the same day on `column-halo.blend`, `--audit`'s own function gave that
+file's earlier figures again: 3 meshes, 8 shells, 384 open edges, 240
+crossing faces, 0 doubled points.
+
 | Model | Meshes | Shells | Open edges | Crossing faces | Doubled points | One closed solid |
 | ----- | ------ | ------ | ---------- | -------------- | -------------- | ---------------- |
 | `monolith-stele` | 4 | 10 | 0 | 167 | 94 | no |
@@ -292,7 +331,7 @@ points, and no face passing through another.
 | `monolith-spire` | 2 | 4 | 0 | 114 | 12 | no |
 | `column-doric` | 6 | 7 | 336 | 606 | 0 | no |
 | `column-tuscan` | 7 | 8 | 432 | 316 | 96 | no |
-| `column-halo` | 3 | 8 | 384 | 240 | 0 | no |
+| `column-halo` | 3 | 7 | 48 | 556 | 0 | no |
 | `column-fin` | 4 | 17 | 192 | 780 | 0 | no |
 | `column-solomonic` | 1 | 1 | 0 | 0 | 0 | yes |
 | `column-prism` | 1 | 1 | 0 | 0 | 0 | yes |
@@ -301,10 +340,14 @@ points, and no face passing through another.
 The first seven are assemblies: closed or nearly closed parts that overlap
 where they meet, so their surfaces cross inside one another. Nothing of
 that shows from outside, and they render correctly, but they are not one
-solid. The Solomonic and the Prism are built from closed parts fused by an
-exact Boolean union into one mesh, and the Rook's crown is cut from its
-turned body by an exact Boolean difference; each is checked before and
-after its bevel, and its build stops if either check fails.
+solid. In the reworked Halo every part but the top steel collar is
+closed (the two drums, the band, the foot and the band's two rings); the
+collar's 48 open edges are its inner rim at 10.16, inside the drum, and
+all 556 crossing faces lie where one part meets another. The Solomonic
+and the Prism are built from closed parts fused by an exact Boolean
+union into one mesh, and the Rook's crown is cut from its turned body by
+an exact Boolean difference; each is checked before and after its bevel,
+and its build stops if either check fails.
 
 ## The pieces
 
@@ -347,6 +390,10 @@ The rows above are measured from those files and stay as they are until the rebu
 - **The review room** in each piece's file is the pillars' (the light panels, the mirror floor, a
   key and two rim spots, `world-monolith-room`, a camera framing both woods), at the pieces' scale:
   a sixth of the pillars', the spots' power by the square of that. Cycles, 64 samples.
+- **The scratchpads,** `piece-pawn-dendogg-playground.blend` and
+  `piece-rook-dendogg-scratchpad.blend`, are worked by hand from the script's layout (see their
+  rows). The script writes only `piece-{name}.blend` and `pieces.blend`, so it never reads or
+  replaces them; their exporters write the same .glb names as the script's files.
 - **Rebuilding** keeps every file already here, since it may hold work done since; `--force`
   replaces them. A rebuild never writes this machine's paths into a file: the render output is
   `//` and the File Browser's folder is blanked, as Editing a model describes.
@@ -404,5 +451,14 @@ Each .blend holds one model, ready to change and export again:
   own exporter, set to export the model as if it stood at the origin, so
   it writes the same .glb as the model's own file. Edit a model in one of
   its two files, not both, or they part.
+- **The Halo has parted from both.** Its .glb comes from
+  `column-halo-dendogg-scratchpad.blend`: select its `column-halo`
+  collection and export as above. `column-halo.blend` and the Halo in
+  `pillars.blend` still hold the script's Halo, and their exporters write
+  that one over the game's file. A rebuild of the job keeps the file here,
+  since it no longer matches the delivered one, unless run with
+  `--overwrite`; its default copy target is still the project's old
+  folder (`wizards-chess/assets/models/`), so it copies nothing here
+  without `--game-dir`.
 
 <!-- ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once! -->
