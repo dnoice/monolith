@@ -4,14 +4,19 @@
     - File Name: README.md
     - Relative Path: assets/README.md
     - Artifact Type: docs
-    - Version: 1.0.3
-    - Date: 10/30/2026
-    - Update: Friday, October 30, 2026
+    - Version: 1.1.0
+    - Date: 11/07/2026
+    - Update: Saturday, November 7, 2026
     - Author: Dennis 'dendogg' Smaltz
     - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
     - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
 
 ✒ Changelog:
+    - 1.1.0 (11/07/2026) [dendogg + Anthropic - Claude Opus 5.5] — Rows
+      for the tall concept set Dennis is drawing for Inkscape and Blender:
+      his castle-concept.svg, and the bishop, queen and king drawn at his
+      request in its grammar, with the generator that seeded them. A
+      convention says where those three stop being generated files.
     - 1.0.3 (10/30/2026) [dendogg + Anthropic - Claude Opus 5.5] — The
       rows and commands name the brand files renamed at Dennis's request;
       the app bar draws the emblem as the wordmark's M; no logo is read.
@@ -40,10 +45,13 @@
       Inkscape, the generators write everything else
     - The paths the app reads, which stay where they are
     - The build, relabel, render and audit commands
+    - The tall concept set: which pieces are Dennis's drawings and which
+      were seeded by a generator and then handed over
 
 ✒ Other Important Information:
-    - Dependencies: Python 3.10+ with shapely, numpy, lxml, svgpathtools;
-      Pillow and playwright with Chromium to render the review images
+    - Dependencies: Python 3.10+ with shapely, numpy, lxml, svgpathtools,
+      and skia-pathops for build_piece_concepts.py; Pillow and playwright
+      with Chromium to render the review images
     - The app's own code (index.html, js/, tools/) lives outside this
       folder and is not described here
 ---------
@@ -62,6 +70,10 @@ them, and nothing they write is edited by hand.
 | `monolith-logo.svg` | generated | **The official logo**: the MONOLITH M tiled 4 × 4, slate tiles, black mortar, no pieces. The page does not read it: since 2.18.0 the app bar draws the emblem, below, as the M of its wordmark, and `tools/build-emblem.mjs` ignores a logo path given to it. |
 | `monolith-emblem.svg` | generated | **The official emblem**: the same mark with the quartet of twelve pieces. The page's loading screen and the M of the app bar's wordmark are drawn from this file (`tools/build-emblem.mjs` writes it into `index.html` once, as a hidden drawing both use), so its path and id scheme stay put. |
 | `chess-pieces.svg` | source | The house piece set on a full board. Every piece in every mark and mock-up is stamped from it verbatim; `tools/build-piece-set.mjs` builds the board diagrams' pieces from it. Shared with ChessWorkstation, whose copy holds the same drawing. |
+| `castle-concept.svg` | source | Dennis's castle for the tall concept set, the stone-and-gold set drawn in Inkscape and carried into Blender: every face a gradient cell, one 10 px black outline compound running between them, a two-tier plinth with a glowing door. The other concept pieces are measured against it. |
+| `bishop-concept.svg` | source | The tall set's bishop: a pen-nib mitre with a see-through slot over a gold-belted orb, a staff down a tapered body, on the castle's plinth at its scale and baseline. Seeded by `generator/build_piece_concepts.py` (see Conventions). |
+| `queen-concept.svg` | source | The tall set's queen: a crowned head in a rayed halo over a wrapped robe whose pleats are fluted like the knight's pillar, on the castle's plinth. Seeded by `generator/build_piece_concepts.py`. |
+| `king-concept.svg` | source | The tall set's king: a crenellated crown and spire in a barred halo over an art-deco block holding a ringed orb and a glowing channel down into the plinth's door. Seeded by `generator/build_piece_concepts.py`. |
 | `graphics-meter-design-v1.2.svg` | source | The graphics-quality gauge for the Settings panel. |
 | `brand/` | | The brand system. |
 | `brand/MONOLITH_M_SYSTEM.md` | doc | The system: the letter's parameters and equations, the tiling, the skins, the layouts, the official marks. |
@@ -87,6 +99,7 @@ them, and nothing they write is edited by hand.
 | `generator/relabel_sources.py` | Gives every element of a hand-drawn source a descriptive id without touching a node; run it after an Inkscape pass on the kit or the meter. |
 | `generator/render_review.py` | Renders the review PNGs and GIFs with headless Chromium. |
 | `generator/audit_assets.py` | Checks every SVG, document and script in this folder: headers, titles, an id on every element, no generator defaults, live internal references, stock namedview, and no `assets/...` path that points at a missing file. |
+| `generator/build_piece_concepts.py` | Draws the bishop, queen and king of the tall concept set in the castle's grammar (cells, a 10 px outline compound, the castle's plinth, Dennis's palette) and seeds their SVGs. It refuses to overwrite one that exists unless given `--force`, and it is not a `build_all.py` step. |
 | `generator/build_all.py` | Runs the generators in order and then the audit. |
 
 ## Commands
@@ -111,6 +124,10 @@ logo is no longer read, so a change to it alone needs no build.
   boxwood-faced set. `chess-pieces.svg` names its sets the other way round
   (its own open question of which wood is White); the loader reads the
   face's wood, so nothing depends on that file's ids.
+- The concept pieces are the one exception to the rule below:
+  `build_piece_concepts.py` seeds `bishop-concept.svg`, `queen-concept.svg` and
+  `king-concept.svg` once, and from then on they are Dennis's hand-drawn
+  sources, worked in Inkscape like `castle-concept.svg`.
 - A generated file is never edited by hand: change the generator or its
   parameters and rebuild.
 

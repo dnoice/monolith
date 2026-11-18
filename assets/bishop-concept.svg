@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+✒ Metadata
+    - Title: Bishop Concept (MONOLITH Edition - v1.0)
+    - File Name: bishop-concept.svg
+    - Relative Path: assets/bishop-concept.svg
+    - Artifact Type: illustration
+    - Version: 1.0.0
+    - Date: 11/07/2026
+    - Update: Saturday, November 7, 2026
+    - Author: Dennis 'dendogg' Smaltz
+    - A.I. Acknowledgement: Anthropic - Claude Opus 5.5
+    - Signature: ︻デ═─── ✦ ✦ ✦ | Aim Twice, Shoot Once!
+
+✒ Changelog:
+    - 1.0.0 (11/07/2026) [dendogg + Anthropic - Claude Opus 5.5] — First
+      version, drawn when Dennis asked for the rest of the tall set after
+      his castle and pawn: the bishop in the castle's grammar, on its
+      plinth, at its scale.
+
+✒ Description:
+    The bishop of the tall MONOLITH concept set, drawn to stand beside
+    Dennis's castle-concept.svg: a pen-nib mitre of two petals joined at the
+    tip, a see-through slot above a glass orb belted in gold, and a gold staff
+    running down a tapered body to a disc, on the castle's two-tier plinth
+    with its glowing door. Same 10 px black outline, palette, scale and
+    baseline as the castle.
+
+✒ Key Features:
+    - Canvas cropped to the silhouette, 547 x 1617; the bottom edge is the
+      castle's baseline
+    - bishop-mitre: the petals, their inner faces (upper pair in shadow,
+      lower pair lit from the orb), and a real see-through slot above the
+      orb
+    - bishop-mitre-orb: glass, gold band and catch-light; bishop-staff: rod
+      in two lengths and the disc
+    - bishop-body: the centre strip and the left and right faces;
+      bishop-plinth: the castle's tiers, arch band and door
+    - Construction: one black outline compound (the silhouette minus every
+      cell, even-odd) under gradient cells that sit in its holes, 10 px
+      between every cell, as in the castle
+    - One flat layer: groups only, no Inkscape layers; every colour from the
+      palette lifted from Dennis's pawn, castle and knight pillar
+
+✒ Id Convention:
+    component-subcomponent-panel: <piece>-<part>-<subpart>, nested groups for
+    every unit (<piece>-piece holds the outline and the part groups). Halves
+    the outline cuts apart take -left/-right, -upper/-lower, -inner/-outer or
+    -NN counted left to right. Gradients: gradient-<palette key> holds the
+    stops once; gradient-<element id> places them on one element.
+
+✒ Other Important Information:
+    - Measured off assets/models/chess-pieces-refrence-image.png at 3.85 px
+      per reference pixel, the castle's scale, and set on the castle's
+      plinth
+    - Part of the tall set for Inkscape and Blender; the 2D board set is a
+      separate cut
+    - Seeded by assets/generator/build_piece_concepts.py. Once Dennis takes
+      the drawing over in Inkscape this SVG is the source of record, and the
+      generator will not overwrite it unless told to with its force flag
+    - XML note: an SVG header cannot carry the standard's closing dash rule,
+      because a double hyphen is illegal inside an XML comment
+-->
+
+<svg
+   width="547"
+   height="1617.0013"
+   viewBox="0 0 547 1617.0013"
+   version="1.1"
+   id="svg-bishop-concept"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="bishop-concept.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title-bishop-concept">Bishop Concept (MONOLITH Edition - v1.0)</title>
+  <sodipodi:namedview
+     id="namedview-bishop-concept"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showborder="false"
+     inkscape:zoom="0.35"
+     inkscape:cx="273.5"
+     inkscape:cy="808.5007"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg-bishop-concept" />
+  <defs
+     id="defs-bishop-concept">
+    <linearGradient id="gradient-glow-slit" inkscape:collect="always">
+      <stop id="gradient-glow-slit-stop-01" offset="0" style="stop-color:#f89e25;stop-opacity:1" />
+      <stop id="gradient-glow-slit-stop-02" offset="0.25" style="stop-color:#fec03c;stop-opacity:1" />
+      <stop id="gradient-glow-slit-stop-03" offset="0.5" style="stop-color:#fee15a;stop-opacity:1" />
+      <stop id="gradient-glow-slit-stop-04" offset="0.75" style="stop-color:#fefcb7;stop-opacity:1" />
+      <stop id="gradient-glow-slit-stop-05" offset="1" style="stop-color:#fcfcd0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-shadow" inkscape:collect="always">
+      <stop id="gradient-stone-shadow-stop-01" offset="0" style="stop-color:#816247;stop-opacity:1" />
+      <stop id="gradient-stone-shadow-stop-02" offset="0.25" style="stop-color:#b09073;stop-opacity:1" />
+      <stop id="gradient-stone-shadow-stop-03" offset="0.5" style="stop-color:#cba984;stop-opacity:1" />
+      <stop id="gradient-stone-shadow-stop-04" offset="0.75" style="stop-color:#cba987;stop-opacity:1" />
+      <stop id="gradient-stone-shadow-stop-05" offset="1" style="stop-color:#c5a485;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-tier" inkscape:collect="always">
+      <stop id="gradient-stone-tier-stop-01" offset="0" style="stop-color:#c8a98c;stop-opacity:1" />
+      <stop id="gradient-stone-tier-stop-02" offset="0.25" style="stop-color:#e1c2a3;stop-opacity:1" />
+      <stop id="gradient-stone-tier-stop-03" offset="0.5" style="stop-color:#ebcca9;stop-opacity:1" />
+      <stop id="gradient-stone-tier-stop-04" offset="0.75" style="stop-color:#e2c4a6;stop-opacity:1" />
+      <stop id="gradient-stone-tier-stop-05" offset="1" style="stop-color:#c9aa8e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-face" inkscape:collect="always">
+      <stop id="gradient-stone-face-stop-01" offset="0" style="stop-color:#c3a589;stop-opacity:1" />
+      <stop id="gradient-stone-face-stop-02" offset="0.247" style="stop-color:#d9bb9d;stop-opacity:1" />
+      <stop id="gradient-stone-face-stop-03" offset="0.501" style="stop-color:#f3dbc1;stop-opacity:1" />
+      <stop id="gradient-stone-face-stop-04" offset="0.75" style="stop-color:#d5b699;stop-opacity:1" />
+      <stop id="gradient-stone-face-stop-05" offset="1" style="stop-color:#c5a78c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-shade" inkscape:collect="always">
+      <stop id="gradient-stone-shade-stop-01" offset="0" style="stop-color:#8f6942;stop-opacity:1" />
+      <stop id="gradient-stone-shade-stop-02" offset="1" style="stop-color:#dfc8ae;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-lit" inkscape:collect="always">
+      <stop id="gradient-stone-lit-stop-01" offset="0" style="stop-color:#d9bfa4;stop-opacity:1" />
+      <stop id="gradient-stone-lit-stop-02" offset="1" style="stop-color:#eddcc6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-crown" inkscape:collect="always">
+      <stop id="gradient-stone-crown-stop-01" offset="0" style="stop-color:#c8a98c;stop-opacity:1" />
+      <stop id="gradient-stone-crown-stop-02" offset="0.25" style="stop-color:#e7cdb2;stop-opacity:1" />
+      <stop id="gradient-stone-crown-stop-03" offset="0.5" style="stop-color:#f5dabd;stop-opacity:1" />
+      <stop id="gradient-stone-crown-stop-04" offset="0.75" style="stop-color:#e7ccb1;stop-opacity:1" />
+      <stop id="gradient-stone-crown-stop-05" offset="1" style="stop-color:#cbac8e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-stone-twin" inkscape:collect="always">
+      <stop id="gradient-stone-twin-stop-01" offset="0" style="stop-color:#b79a7e;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-02" offset="0.24" style="stop-color:#ecd5bb;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-03" offset="0.42" style="stop-color:#d2b598;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-04" offset="0.5" style="stop-color:#c9ab8e;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-05" offset="0.58" style="stop-color:#d8bc9f;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-06" offset="0.76" style="stop-color:#f4ddc3;stop-opacity:1" />
+      <stop id="gradient-stone-twin-stop-07" offset="1" style="stop-color:#c7a98c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-recess-deep" inkscape:collect="always">
+      <stop id="gradient-recess-deep-stop-01" offset="0" style="stop-color:#745437;stop-opacity:1" />
+      <stop id="gradient-recess-deep-stop-02" offset="0.247" style="stop-color:#a1794d;stop-opacity:1" />
+      <stop id="gradient-recess-deep-stop-03" offset="0.5" style="stop-color:#b78a56;stop-opacity:1" />
+      <stop id="gradient-recess-deep-stop-04" offset="1" style="stop-color:#cc9a5d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-orb-glass" inkscape:collect="always">
+      <stop id="gradient-orb-glass-stop-01" offset="0" style="stop-color:#e4c7a6;stop-opacity:1" />
+      <stop id="gradient-orb-glass-stop-02" offset="0.5" style="stop-color:#e1bf93;stop-opacity:1" />
+      <stop id="gradient-orb-glass-stop-03" offset="1" style="stop-color:#fdfcc4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-gold-band" inkscape:collect="always">
+      <stop id="gradient-gold-band-stop-01" offset="0" style="stop-color:#de9b3f;stop-opacity:1" />
+      <stop id="gradient-gold-band-stop-02" offset="0.5" style="stop-color:#fee181;stop-opacity:1" />
+      <stop id="gradient-gold-band-stop-03" offset="1" style="stop-color:#dd942c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient-highlight" inkscape:collect="always">
+      <stop id="gradient-highlight-stop-01" offset="0" style="stop-color:#ffffff;stop-opacity:0.95" />
+      <stop id="gradient-highlight-stop-02" offset="1" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <linearGradient id="gradient-bishop-plinth-door-glow" inkscape:collect="always" xlink:href="#gradient-glow-slit" x1="273.5" y1="1385.001" x2="273.5" y2="1607.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-plinth-door-niche-left" inkscape:collect="always" xlink:href="#gradient-stone-shadow" x1="221.516" y1="1388.335" x2="221.516" y2="1607.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-plinth-door-niche-right" inkscape:collect="always" xlink:href="#gradient-stone-shadow" x1="325.485" y1="1388.335" x2="325.485" y2="1607.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-plinth-tier-upper" inkscape:collect="always" xlink:href="#gradient-stone-tier" x1="41" y1="1357.001" x2="506" y2="1357.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-plinth-tier-lower-left" inkscape:collect="always" xlink:href="#gradient-stone-face" x1="10" y1="1529.001" x2="537" y2="1529.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-plinth-tier-lower-right" inkscape:collect="always" xlink:href="#gradient-stone-face" x1="10" y1="1529.001" x2="537" y2="1529.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-body-face-left" inkscape:collect="always" xlink:href="#gradient-stone-shade" x1="66.5" y1="987.501" x2="177.498" y2="987.501" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-body-face-right" inkscape:collect="always" xlink:href="#gradient-stone-lit" x1="480.5" y1="987.501" x2="369.502" y2="987.501" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-body-strip" inkscape:collect="always" xlink:href="#gradient-stone-crown" x1="175.5" y1="987.501" x2="371.5" y2="987.501" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-petals" inkscape:collect="always" xlink:href="#gradient-stone-twin" x1="64.5" y1="356.001" x2="482.5" y2="356.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-petal-inner-upper-left" inkscape:collect="always" xlink:href="#gradient-stone-shadow" x1="204.592" y1="111.928" x2="204.592" y2="391.82" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-petal-inner-upper-right" inkscape:collect="always" xlink:href="#gradient-stone-shadow" x1="342.408" y1="111.928" x2="342.408" y2="391.82" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-petal-inner-lower-left" inkscape:collect="always" xlink:href="#gradient-recess-deep" x1="204.681" y1="628.014" x2="204.681" y2="432.196" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-petal-inner-lower-right" inkscape:collect="always" xlink:href="#gradient-recess-deep" x1="342.318" y1="628.014" x2="342.318" y2="432.196" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-orb-glass-left" inkscape:collect="always" xlink:href="#gradient-orb-glass" x1="273.5" y1="336.001" x2="273.5" y2="488.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-orb-glass-right" inkscape:collect="always" xlink:href="#gradient-orb-glass" x1="273.5" y1="336.001" x2="273.5" y2="488.001" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-mitre-orb-band" inkscape:collect="always" xlink:href="#gradient-gold-band" x1="149.5" y1="412.001" x2="397.5" y2="412.001" gradientUnits="userSpaceOnUse" />
+    <radialGradient id="gradient-bishop-mitre-orb-highlight" inkscape:collect="always" xlink:href="#gradient-highlight" cx="299.5" cy="370.001" r="24" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-staff-rod-upper" inkscape:collect="always" xlink:href="#gradient-gold-band" x1="264.5" y1="607.91" x2="282.5" y2="607.91" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-staff-rod-lower" inkscape:collect="always" xlink:href="#gradient-gold-band" x1="264.5" y1="607.91" x2="282.5" y2="607.91" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradient-bishop-staff-disc" inkscape:collect="always" xlink:href="#gradient-gold-band" x1="233.5" y1="1162.001" x2="313.5" y2="1162.001" gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g id="bishop-piece">
+    <path id="bishop-outline" d="M 283.174,7.468 A 434.319,434.319 0 0 0 337.129,131.287 A 569.704,569.704 0 0 0 370.907,178.452 A 1535.362,1535.362 0 0 0 405.545,220.108 A 1281.788,1281.788 0 0 1 438.283,259.573 A 347.065,347.065 0 0 1 466.008,300.101 A 192.483,192.483 0 0 1 492.5,397.001 A 174.081,174.081 0 0 1 474.721,476.25 A 216.225,216.225 0 0 1 456.319,505.979 A 676.251,676.251 0 0 1 435.257,532.838 A 740.338,740.338 0 0 0 413.953,559.943 A 271.732,271.732 0 0 0 394.329,590.522 A 245.118,245.118 0 0 0 367.5,674.689 L 367.5,702.001 A 10.34,10.34 0 0 1 367.498,702.202 A 10.104,10.104 0 0 1 369.502,702.001 L 413.5,702.001 A 10,10 0 0 1 423.427,710.794 L 490.427,1261.794 A 10.096,10.096 0 0 1 490.501,1263.001 L 506,1263.001 A 10,10 0 0 1 516,1273.001 L 516,1441.001 L 537,1441.001 A 10,10 0 0 1 547,1451.001 L 547,1607.001 A 10,10 0 0 1 537,1617.001 L 407.5,1617.001 A 10.044,10.044 0 0 1 402.5,1615.663 A 10.045,10.045 0 0 1 397.5,1617.001 L 359.5,1617.001 A 10.044,10.044 0 0 1 354.5,1615.663 A 10.044,10.044 0 0 1 349.5,1617.001 L 309.5,1617.001 A 10.044,10.044 0 0 1 304.5,1615.663 A 10.044,10.044 0 0 1 299.5,1617.001 L 247.5,1617.001 A 10.045,10.045 0 0 1 242.5,1615.663 A 10.044,10.044 0 0 1 237.5,1617.001 L 197.5,1617.001 A 10.045,10.045 0 0 1 192.5,1615.663 A 10.044,10.044 0 0 1 187.5,1617.001 L 149.5,1617.001 A 10.045,10.045 0 0 1 144.5,1615.663 A 10.045,10.045 0 0 1 139.5,1617.001 L 10,1617.001 A 10,10 0 0 1 0,1607.001 L 0,1451.001 A 10,10 0 0 1 10,1441.001 L 31,1441.001 L 31,1273.001 A 10,10 0 0 1 41,1263.001 L 56.5,1263.001 A 9.993,9.993 0 0 1 56.573,1261.794 L 123.573,710.794 A 10,10 0 0 1 133.5,702.001 L 177.498,702.001 A 9.969,9.969 0 0 1 179.502,702.202 A 10.337,10.337 0 0 1 179.5,702.001 L 179.5,674.689 A 245.118,245.118 0 0 0 152.671,590.522 A 271.727,271.727 0 0 0 133.047,559.943 A 740.285,740.285 0 0 0 111.743,532.838 A 676.192,676.192 0 0 1 90.681,505.979 A 216.223,216.223 0 0 1 72.279,476.25 A 174.081,174.081 0 0 1 54.5,397.001 A 192.483,192.483 0 0 1 80.992,300.101 A 347.063,347.063 0 0 1 108.717,259.573 A 1281.784,1281.784 0 0 1 141.455,220.108 A 1535.387,1535.387 0 0 0 176.093,178.451 A 569.706,569.706 0 0 0 209.871,131.287 A 434.319,434.319 0 0 0 263.826,7.468 A 10,10 0 0 1 283.174,7.468 Z M 175.5,1263.001 L 371.5,1263.001 L 359.5,712.001 L 292.5,712.001 L 292.5,1112.818 A 9.904,9.904 0 0 1 292.109,1115.593 A 50,50 0 0 1 273.5,1212.001 A 50,50 0 0 1 254.892,1115.593 A 10.079,10.079 0 0 1 254.5,1112.818 L 254.5,712.001 L 187.5,712.001 Z M 273.5,10.001 C 219.9,214.701 64.5,254.401 64.5,397.001 C 64.5,520.801 169.2,525.901 189.5,674.001 L 189.5,702.001 L 254.5,702.001 L 254.5,638.014 A 10,10 0 0 1 246.268,633.691 Q 184.524,544.159 152.347,471.029 Q 146.656,458.512 144.759,432.936 A 10.031,10.031 0 0 1 146.046,427.236 A 21.001,21.001 0 0 1 146.011,396.8 A 10.025,10.025 0 0 1 144.709,391.117 Q 146.56,364.857 152.269,351.155 A 710.122,710.122 0 0 0 174.961,291.25 A 449.142,449.142 0 0 0 191.588,215.68 A 175.51,175.51 0 0 1 211.737,154.531 A 220.468,220.468 0 0 1 247.273,105.016 A 10.001,10.001 0 0 1 257.166,102.289 A 19.007,19.007 0 0 1 289.834,102.289 A 10.009,10.009 0 0 1 299.727,105.016 A 220.465,220.465 0 0 1 335.263,154.531 A 175.829,175.829 0 0 1 355.429,215.81 A 448.411,448.411 0 0 0 372.039,291.25 A 709.562,709.562 0 0 0 394.716,351.121 Q 400.44,364.858 402.291,391.117 A 10.032,10.032 0 0 1 400.99,396.801 A 21,21 0 0 1 400.954,427.236 A 10.023,10.023 0 0 1 402.241,432.936 Q 400.344,458.511 394.604,471.139 Q 362.476,544.159 300.732,633.691 A 9.999,9.999 0 0 1 292.5,638.016 L 292.5,702.001 L 357.5,702.001 L 357.5,674.001 C 377.8,525.901 482.5,520.801 482.5,397.001 C 482.5,254.401 327.1,214.701 273.5,10.001 Z M 41,1273.001 L 41,1441.001 L 140.714,1441.001 A 134,134 0 0 1 406.286,1441.001 L 506,1441.001 L 506,1273.001 Z M 66.5,1263.001 L 165.5,1263.001 A 9.964,9.964 0 0 1 165.502,1262.784 L 177.498,712.001 L 133.5,712.001 Z M 381.5,1263.001 L 480.5,1263.001 L 413.5,712.001 L 369.502,712.001 L 381.498,1262.784 A 10.238,10.238 0 0 1 381.5,1263.001 Z M 149.5,1459.001 L 149.5,1607.001 L 187.5,1607.001 L 187.5,1459.001 A 86,86 0 0 1 273.5,1373.001 A 86,86 0 0 1 359.5,1459.001 L 359.5,1607.001 L 397.5,1607.001 L 397.5,1459.001 A 124,124 0 0 0 273.5,1335.001 A 124,124 0 0 0 149.5,1459.001 Z M 10,1451.001 L 10,1607.001 L 139.5,1607.001 L 139.5,1459.001 A 133.948,133.948 0 0 1 139.739,1451.001 Z M 407.261,1451.001 A 133.935,133.935 0 0 1 407.5,1459.001 L 407.5,1607.001 L 537,1607.001 L 537,1451.001 Z M 247.5,1411.001 L 247.5,1607.001 L 299.5,1607.001 L 299.5,1411.001 A 26,26 0 0 0 273.5,1385.001 A 26,26 0 0 0 247.5,1411.001 Z M 282.5,497.529 A 86.007,86.007 0 0 1 264.5,497.529 L 264.5,1112.818 A 50.001,50.001 0 0 1 282.5,1112.818 Z M 392.269,432.196 A 20.804,20.804 0 0 1 386.5,433.001 L 356.541,433.001 A 13.744,13.744 0 0 1 355.797,436.966 A 86,86 0 0 1 292.368,495.906 A 10.1,10.1 0 0 1 292.5,497.529 L 292.5,628.014 C 337.39,562.92 366.107,511.076 385.5,467.001 C 388.939,459.437 391.195,446.669 392.269,432.196 Z M 254.5,628.014 L 254.5,497.529 A 10.024,10.024 0 0 1 254.631,495.906 A 85.999,85.999 0 0 1 190.848,435.765 A 9.904,9.904 0 0 1 190.458,433.001 L 160.5,433.001 A 20.803,20.803 0 0 1 154.731,432.196 C 155.805,446.669 158.061,459.437 161.5,467.001 C 180.893,511.076 209.61,562.92 254.5,628.014 Z M 160.5,391.001 L 190.459,391.001 A 13.746,13.746 0 0 1 191.203,387.037 A 86.006,86.006 0 0 1 197.559,371.641 C 198.393,333.428 207.947,295.215 217.5,257.001 C 224.639,228.446 238.913,199.891 254.5,174.973 L 254.5,111.928 C 229.934,137.613 206.263,177.307 201.5,217.001 C 193.5,277.001 177.5,317.001 161.5,355.001 C 158.01,363.377 155.738,376.869 154.684,391.82 A 20.8,20.8 0 0 1 160.5,391.001 Z M 292.5,111.928 L 292.5,174.973 C 308.087,199.891 322.361,228.446 329.5,257.001 C 339.053,295.214 348.607,333.428 349.441,371.641 A 86.01,86.01 0 0 1 356.152,388.238 A 9.906,9.906 0 0 1 356.542,391.001 L 386.5,391.001 A 20.798,20.798 0 0 1 392.316,391.82 C 391.262,376.869 388.99,363.377 385.5,355.001 C 369.5,317.001 353.5,277.001 345.5,217.001 C 340.737,177.307 317.066,137.613 292.5,111.928 Z M 237.5,1411.001 A 36,36 0 0 1 245.531,1388.335 A 76,76 0 0 0 197.5,1459.001 L 197.5,1607.001 L 237.5,1607.001 Z M 309.5,1607.001 L 349.5,1607.001 L 349.5,1459.001 A 76,76 0 0 0 301.469,1388.335 A 36.02,36.02 0 0 1 309.5,1411.001 Z M 346.541,391.001 A 76,76 0 0 0 200.459,391.001 Z M 346.541,433.001 L 200.459,433.001 A 76,76 0 0 0 346.541,433.001 Z M 160.5,401.001 A 11,11 0 0 0 149.5,412.001 A 11,11 0 0 0 160.5,423.001 L 386.5,423.001 A 11,11 0 0 0 397.5,412.001 A 11,11 0 0 0 386.5,401.001 Z M 313.5,1162.001 A 40,40 0 0 0 253.5,1127.36 A 40,40 0 0 0 253.5,1196.642 A 40,40 0 0 0 313.5,1162.001 Z M 264.5,112.001 L 264.5,326.474 A 85.966,85.966 0 0 1 282.5,326.474 L 282.5,112.001 A 9,9 0 0 0 273.5,103.001 A 9,9 0 0 0 264.5,112.001 Z M 208.431,355.769 A 86.002,86.002 0 0 1 254.632,328.097 A 10.104,10.104 0 0 1 254.5,326.474 L 254.5,194.452 A 260.525,260.525 0 0 0 227.201,259.427 A 1178.48,1178.48 0 0 0 214.079,316.216 A 377.266,377.266 0 0 0 208.431,355.769 Z M 338.569,355.77 A 377.28,377.28 0 0 0 332.921,316.216 A 1178.501,1178.501 0 0 0 319.799,259.427 A 260.525,260.525 0 0 0 292.5,194.452 L 292.5,326.474 A 10.026,10.026 0 0 1 292.369,328.097 A 86.001,86.001 0 0 1 338.569,355.77 Z" style="fill:#000000;fill-rule:evenodd;stroke:none" />
+    <g id="bishop-plinth">
+      <g id="bishop-plinth-door">
+        <path id="bishop-plinth-door-glow" d="M 247.5,1411.001 A 26,26 0 0 1 273.5,1385.001 A 26,26 0 0 1 299.5,1411.001 L 299.5,1607.001 L 247.5,1607.001 Z" style="fill:url(#gradient-bishop-plinth-door-glow);fill-rule:evenodd;stroke:none" />
+        <path id="bishop-plinth-door-niche-left" d="M 237.5,1411.001 L 237.5,1607.001 L 197.5,1607.001 L 197.5,1459.001 A 76,76 0 0 1 245.531,1388.335 A 36.02,36.02 0 0 0 237.5,1411.001 Z" style="fill:url(#gradient-bishop-plinth-door-niche-left);fill-rule:evenodd;stroke:none" />
+        <path id="bishop-plinth-door-niche-right" d="M 309.5,1607.001 L 309.5,1411.001 A 36,36 0 0 0 301.469,1388.335 A 76,76 0 0 1 349.5,1459.001 L 349.5,1607.001 Z" style="fill:url(#gradient-bishop-plinth-door-niche-right);fill-rule:evenodd;stroke:none" />
+      </g>
+      <path id="bishop-plinth-arch-band" d="M 149.5,1459.001 A 124,124 0 0 1 273.5,1335.001 A 124,124 0 0 1 397.5,1459.001 L 397.5,1607.001 L 359.5,1607.001 L 359.5,1459.001 A 86,86 0 0 0 273.5,1373.001 A 86,86 0 0 0 187.5,1459.001 L 187.5,1607.001 L 149.5,1607.001 Z" style="fill:#f3dbc1;fill-rule:evenodd;stroke:none" />
+      <path id="bishop-plinth-tier-upper" d="M 41,1273.001 L 506,1273.001 L 506,1441.001 L 406.286,1441.001 A 134,134 0 0 0 140.714,1441.001 L 41,1441.001 Z" style="fill:url(#gradient-bishop-plinth-tier-upper);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-plinth-tier-lower-left" d="M 10,1451.001 L 139.739,1451.001 A 133.948,133.948 0 0 0 139.5,1459.001 L 139.5,1607.001 L 10,1607.001 Z" style="fill:url(#gradient-bishop-plinth-tier-lower-left);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-plinth-tier-lower-right" d="M 407.261,1451.001 L 537,1451.001 L 537,1607.001 L 407.5,1607.001 L 407.5,1459.001 A 133.935,133.935 0 0 0 407.261,1451.001 Z" style="fill:url(#gradient-bishop-plinth-tier-lower-right);fill-rule:evenodd;stroke:none" />
+    </g>
+    <g id="bishop-body">
+      <path id="bishop-body-face-left" d="M 66.5,1263.001 L 133.5,712.001 L 177.498,712.001 L 165.502,1262.784 A 9.964,9.964 0 0 0 165.5,1263.001 Z" style="fill:url(#gradient-bishop-body-face-left);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-body-face-right" d="M 381.5,1263.001 A 10.238,10.238 0 0 0 381.498,1262.784 L 369.502,712.001 L 413.5,712.001 L 480.5,1263.001 Z" style="fill:url(#gradient-bishop-body-face-right);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-body-strip" d="M 175.5,1263.001 L 187.5,712.001 L 254.5,712.001 L 254.5,1112.818 A 10.079,10.079 0 0 0 254.892,1115.593 A 50,50 0 0 0 273.5,1212.001 A 50,50 0 0 0 292.109,1115.593 A 9.904,9.904 0 0 0 292.5,1112.818 L 292.5,712.001 L 359.5,712.001 L 371.5,1263.001 Z" style="fill:url(#gradient-bishop-body-strip);fill-rule:evenodd;stroke:none" />
+    </g>
+    <g id="bishop-mitre">
+      <path id="bishop-mitre-petals" d="M 273.5,10.001 C 327.1,214.701 482.5,254.401 482.5,397.001 C 482.5,520.801 377.8,525.901 357.5,674.001 L 357.5,702.001 L 292.5,702.001 L 292.5,638.016 A 10.036,10.036 0 0 0 300.732,633.691 Q 362.476,544.159 394.604,471.139 Q 400.344,458.511 402.241,432.936 A 10.023,10.023 0 0 0 400.954,427.236 A 21.001,21.001 0 0 0 400.99,396.801 A 10.032,10.032 0 0 0 402.291,391.117 Q 400.44,364.858 394.716,351.121 A 709.562,709.562 0 0 1 372.039,291.25 A 448.411,448.411 0 0 1 355.429,215.81 A 175.829,175.829 0 0 0 335.263,154.531 A 220.465,220.465 0 0 0 299.727,105.016 A 10.009,10.009 0 0 0 289.834,102.289 A 19.007,19.007 0 0 0 257.166,102.289 A 10.009,10.009 0 0 0 247.273,105.016 A 220.468,220.468 0 0 0 211.737,154.531 A 175.51,175.51 0 0 0 191.588,215.68 A 449.142,449.142 0 0 1 174.961,291.25 A 710.122,710.122 0 0 1 152.269,351.155 Q 146.56,364.857 144.709,391.117 A 10.025,10.025 0 0 0 146.011,396.8 A 21.001,21.001 0 0 0 146.046,427.236 A 10.031,10.031 0 0 0 144.759,432.936 Q 146.656,458.512 152.347,471.029 Q 184.524,544.159 246.268,633.691 A 10,10 0 0 0 254.5,638.014 L 254.5,702.001 L 189.5,702.001 L 189.5,674.001 C 169.2,525.901 64.5,520.801 64.5,397.001 C 64.5,254.401 219.9,214.701 273.5,10.001 Z" style="fill:url(#gradient-bishop-mitre-petals);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-mitre-petal-inner-upper-left" d="M 160.5,391.001 A 20.8,20.8 0 0 0 154.684,391.82 C 155.738,376.869 158.01,363.377 161.5,355.001 C 177.5,317.001 193.5,277.001 201.5,217.001 C 206.263,177.307 229.934,137.613 254.5,111.928 L 254.5,174.973 C 238.913,199.891 224.639,228.446 217.5,257.001 C 207.947,295.215 198.393,333.428 197.559,371.641 A 86.006,86.006 0 0 0 190.848,388.238 A 9.951,9.951 0 0 0 190.459,391.001 Z" style="fill:url(#gradient-bishop-mitre-petal-inner-upper-left);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-mitre-petal-inner-upper-right" d="M 292.5,111.928 C 317.066,137.613 340.737,177.307 345.5,217.001 C 353.5,277.001 369.5,317.001 385.5,355.001 C 388.99,363.377 391.262,376.869 392.316,391.82 A 20.798,20.798 0 0 0 386.5,391.001 L 356.542,391.001 A 13.788,13.788 0 0 0 355.797,387.037 A 86.01,86.01 0 0 0 349.441,371.641 C 348.607,333.428 339.053,295.214 329.5,257.001 C 322.361,228.446 308.087,199.891 292.5,174.973 L 292.5,112.001 Z" style="fill:url(#gradient-bishop-mitre-petal-inner-upper-right);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-mitre-petal-inner-lower-left" d="M 254.5,628.014 C 209.61,562.92 180.893,511.076 161.5,467.001 C 158.061,459.437 155.805,446.669 154.731,432.196 A 20.803,20.803 0 0 0 160.5,433.001 L 190.458,433.001 A 13.785,13.785 0 0 0 191.203,436.966 A 86,86 0 0 0 254.631,495.906 A 10.024,10.024 0 0 0 254.5,497.529 Z" style="fill:url(#gradient-bishop-mitre-petal-inner-lower-left);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-mitre-petal-inner-lower-right" d="M 392.269,432.196 C 391.195,446.669 388.939,459.437 385.5,467.001 C 366.107,511.076 337.39,562.92 292.5,628.014 L 292.5,497.529 A 10.1,10.1 0 0 0 292.368,495.906 A 85.999,85.999 0 0 0 356.152,435.765 A 9.952,9.952 0 0 0 356.541,433.001 L 386.5,433.001 A 20.804,20.804 0 0 0 392.269,432.196 Z" style="fill:url(#gradient-bishop-mitre-petal-inner-lower-right);fill-rule:evenodd;stroke:none" />
+      <g id="bishop-mitre-orb">
+        <path id="bishop-mitre-orb-glass-left" d="M 346.541,391.001 L 200.459,391.001 A 76,76 0 0 1 346.541,391.001 Z" style="fill:url(#gradient-bishop-mitre-orb-glass-left);fill-rule:evenodd;stroke:none" />
+        <path id="bishop-mitre-orb-glass-right" d="M 346.541,433.001 A 76,76 0 0 1 200.459,433.001 Z" style="fill:url(#gradient-bishop-mitre-orb-glass-right);fill-rule:evenodd;stroke:none" />
+        <path id="bishop-mitre-orb-band" d="M 160.5,401.001 L 386.5,401.001 A 11,11 0 0 1 397.5,412.001 A 11,11 0 0 1 386.5,423.001 L 160.5,423.001 A 11,11 0 0 1 149.5,412.001 A 11,11 0 0 1 160.5,401.001 Z" style="fill:url(#gradient-bishop-mitre-orb-band);fill-rule:evenodd;stroke:none" />
+        <path id="bishop-mitre-orb-highlight" d="M 318.925,359.673 C 322.036,365.525 315.862,374.893 305.134,380.597 C 294.406,386.301 283.187,386.181 280.075,380.33 C 276.964,374.478 283.138,365.11 293.866,359.406 C 304.594,353.702 315.813,353.821 318.925,359.673 Z" style="fill:url(#gradient-bishop-mitre-orb-highlight);fill-rule:evenodd;stroke:none" />
+      </g>
+    </g>
+    <g id="bishop-staff">
+      <path id="bishop-staff-rod-upper" d="M 264.5,112.001 A 9,9 0 0 1 273.5,103.001 A 9,9 0 0 1 282.5,112.001 L 282.5,326.474 A 85.874,85.874 0 0 0 264.5,326.474 Z" style="fill:url(#gradient-bishop-staff-rod-upper);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-staff-rod-lower" d="M 282.5,497.529 L 282.5,1112.818 A 50.001,50.001 0 0 0 264.5,1112.818 L 264.5,497.529 A 86.007,86.007 0 0 0 282.5,497.529 Z" style="fill:url(#gradient-bishop-staff-rod-lower);fill-rule:evenodd;stroke:none" />
+      <path id="bishop-staff-disc" d="M 313.5,1162.001 A 40,40 0 0 1 253.5,1196.642 A 40,40 0 0 1 253.5,1127.36 A 40,40 0 0 1 313.5,1162.001 Z" style="fill:url(#gradient-bishop-staff-disc);fill-rule:evenodd;stroke:none" />
+    </g>
+  </g>
+  <metadata
+     id="metadata-bishop-concept">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Bishop Concept (MONOLITH Edition - v1.0)</dc:title>
+        <dc:date>2026-11-07</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Anthropic - Claude Opus 5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Dennis 'dendogg' Smaltz</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:language>en</dc:language>
+        <dc:description>The bishop of the tall MONOLITH concept set, drawn to stand beside Dennis's castle-concept.svg: a pen-nib mitre of two petals joined at the tip, a see-through slot above a glass orb belted in gold, and a gold staff running down a tapered body to a disc, on the castle's two-tier plinth with its glowing door. Same 10 px black outline, palette, scale and baseline as the castle.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>chess</rdf:li>
+            <rdf:li>bishop</rdf:li>
+            <rdf:li>MONOLITH</rdf:li>
+            <rdf:li>concept set</rdf:li>
+            <rdf:li>art deco</rdf:li>
+            <rdf:li>mitre</rdf:li>
+            <rdf:li>orb</rdf:li>
+            <rdf:li>plinth</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
